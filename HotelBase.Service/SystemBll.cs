@@ -12,9 +12,19 @@ namespace HotelBase.Service
 {
     public class SystemBll
     {
-        public static BasePageResponse<UserListResponse> GetUserList(UserListRequest request)
+        public static BasePageResponse<UserModel> GetUserList(UserListRequest request)
         {
-            var response = Sys_UserInfoAccess.GetUser(request);
+            var response = Sys_UserInfoAccess.GetUserList(request);
+            return response;
+        }
+        public static UserModelResponse GetUserModel(int id, string account)
+        {
+            var model = Sys_UserInfoAccess.GetUserModel(id, account);
+            var response = new UserModelResponse
+            {
+                IsSuccess = model?.Id > 0 ? 1 : 0,
+                Model = model
+            };
             return response;
         }
     }

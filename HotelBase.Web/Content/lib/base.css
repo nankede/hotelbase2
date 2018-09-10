@@ -100,6 +100,18 @@ img {
     margin-right: .28em;
 }
 
+    .lay-form-item-caption > label {
+        min-width: 110px;
+    }
+
+.lay-form-foot {
+    box-sizing: border-box;
+    margin-top: 1.58em;
+    padding: 15px 0;
+    border-top: 1px dashed #eeeeee;
+    text-align: right;
+}
+
 .lay-input {
     width: calc(100% - 1.14em);
     box-sizing: border-box;

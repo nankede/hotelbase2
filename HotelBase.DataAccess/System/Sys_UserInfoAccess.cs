@@ -14,22 +14,27 @@ namespace HotelBase.DataAccess
 {
     public class Sys_UserInfoAccess
     {
-        public static BasePageResponse<UserListResponse> GetUser(UserListRequest request)
+        /// <summary>
+        /// 用户列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BasePageResponse<UserModel> GetUserList(UserListRequest request)
         {
-            var response = new BasePageResponse<UserListResponse>();
+            var response = new BasePageResponse<UserModel>();
             var totalSql = "SELECT Count(1) FROM Sys_UserInfo ; ";
             var total = MysqlHelper.GetScalar<int>(totalSql);
             if (total > 0)
             {
                 response.IsSuccess = 1;
                 response.Total = total;
-                response.List = new List<UserListResponse>();
+                response.List = new List<UserModel>();
                 var sql = "SELECT * FROM Sys_UserInfo   ";
                 sql += MysqlHelper.GetPageSql(request.PageIndex, request.PageSize);
                 var list = MysqlHelper.GetList<Sys_UserInfoModel>(sql);
                 list?.ForEach(x =>
                 {
-                    response.List.Add(new UserListResponse
+                    response.List.Add(new UserModel
                     {
                         Account = x.UIAccount,
                         DepartId = x.UIDepartId,
@@ -37,6 +42,7 @@ namespace HotelBase.DataAccess
                         Id = x.Id,
                         IsValid = x.UIIsValid,
                         Name = x.UIName,
+                        R = x.UIResponsibility,
                         Responsibility = GetResponsibility(x.UIResponsibility)
                     });
                 });
@@ -51,6 +57,51 @@ namespace HotelBase.DataAccess
         public static string GetResponsibility(int r)
         {
             return r == 100 ? "超级管理员" : "未知职责";
+        }
+
+        /// <summary>
+        /// 用户列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static UserModel GetUserModel(int id, string account)
+        {
+            if (id <= 0 && string.IsNullOrEmpty(account))
+            {
+                return null;
+            }
+            var model = new UserModel();
+
+            var para = new DynamicParameters();
+
+            var sql = "SELECT * FROM Sys_UserInfo    ";
+            if (id > 0)
+            {
+                sql += " WHERE  id=@id  LIMIT 1;  ";
+                para.Add("@id", id);
+            }
+            else if (!string.IsNullOrEmpty(account))
+            {
+                sql += " WHERE  UIAccount=@account  LIMIT 1;  ";
+                para.Add("@account", account);
+            }
+            var data = MysqlHelper.GetModel<Sys_UserInfoModel>(sql, para);
+            if (data != null && data.Id > 0)
+            {
+                model = new UserModel
+                {
+                    Account = data.UIAccount,
+                    DepartId = data.UIDepartId,
+                    DepartName = data.UIDepartName,
+                    Id = data.Id,
+                    IsValid = data.UIIsValid,
+                    Name = data.UIName,
+                    R = data.UIResponsibility,
+                    Responsibility = GetResponsibility(data.UIResponsibility)
+                };
+                return model;
+            }
+            return null;
         }
     }
 }

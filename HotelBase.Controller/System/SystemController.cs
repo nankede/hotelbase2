@@ -58,7 +58,7 @@ namespace HotelBase.Web.Controller.System
             {
                 PageIndex = id
             };
-            var response = SystemBll.GetUserList(request);
+            var response = SystemBll.GetUserModel(id, string.Empty);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         #endregion

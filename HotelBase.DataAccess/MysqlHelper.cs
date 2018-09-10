@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using HotelBase.Common;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,20 @@ namespace HotelBase.DataAccess
         {
             using (var conn = new MySqlConnection(connectionString))
             {
-                var resutl = conn.Query<T>(sql, param).ToList();
-                conn.Close();
-                return resutl;
+                try
+                {
+                    var resutl = conn.Query<T>(sql, param).ToList();
+                    return resutl;
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("GetScalar查询异常", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+                return default(List<T>);
             }
         }
 
@@ -50,9 +62,20 @@ namespace HotelBase.DataAccess
         {
             using (var conn = new MySqlConnection(connectionString))
             {
-                var resutl = conn.ExecuteScalar<T>(sql, param);
-                conn.Close();
-                return resutl;
+                try
+                {
+                    var resutl = conn.ExecuteScalar<T>(sql, param);
+                    return resutl;
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("GetScalar查询异常", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+                return default(T);
             }
         }
 
@@ -65,9 +88,20 @@ namespace HotelBase.DataAccess
         {
             using (var conn = new MySqlConnection(connectionString))
             {
-                var resutl = conn.QueryFirst<T>(sql, param);
-                conn.Close();
-                return resutl;
+                try
+                {
+                    var resutl = conn.QueryFirst<T>(sql, param);
+                    return resutl;
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("GetModel查询异常", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+                return default(T);
             }
         }
 
@@ -100,9 +134,21 @@ namespace HotelBase.DataAccess
         {
             using (var conn = new MySqlConnection(connectionString))
             {
-                var resutl = conn.Execute(sql, param);
-                conn.Close();
-                return resutl;
+                try
+                {
+                    var resutl = conn.Execute(sql, param);
+                    return resutl;
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("GetModel查询异常", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+
+                return 0;
             }
         }
     }

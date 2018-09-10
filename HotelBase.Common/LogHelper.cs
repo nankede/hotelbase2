@@ -112,6 +112,17 @@ namespace HotelBase.Common
             var current = OperatorProvider.Instance.Current;
             Write(Level.Error, "程序异常", message, current?.UserId ?? 0, current?.RealName ?? string.Empty);
         }
+        /// <summary>
+        /// 错误信息。
+        /// </summary>
+        /// <param name="message"></param>
+        public static void Error(string message, Exception ex = null)
+        {
+            var log = $"{message},异常堆栈：{ex?.ToString()}";
+            var current = OperatorProvider.Instance.Current;
+            Write(Level.Error, "程序异常", log, current?.UserId ?? 0, current?.RealName ?? string.Empty);
+        }
+
 
         /// <summary>
         /// 致命异常信息。一般来讲，发生致命异常之后程序将无法继续执行。
