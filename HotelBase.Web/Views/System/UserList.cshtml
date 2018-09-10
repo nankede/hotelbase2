@@ -1,19 +1,95 @@
-﻿<table class="lay-table">
-    <thead>
-        <tr>
-            <th width="25%">姓名</th>
-            <th width="25%">归属部门</th>
-            <th>职责AAA</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-hide="customerList!=null &amp;&amp;customerList.length > 0">
-            <td colspan="4" class="eui-table-empty">暂无数据显示</td>
-        </tr>
-        <!-- ngRepeat: o in customerList -->
-    </tbody>
-</table>
+﻿<div class="lay-form" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <table class="lay-table">
+        <thead>
+            <tr>
+                <th width="20%">姓名</th>
+                <th width="20%">归属部门</th>
+                <th>职责</th>
+                <th width="20%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="u in userList">
+                <td ng-bind="u.UIName"></td>
+                <td ng-bind="u.UIDepartName"></td>
+                <td ng-bind="u.UIResponsibility"></td>
+                <td>
+                    <input type="button" class="lay-btn lay-btn-edit" value="详情" ng-click="detail(u.Id)" />
+                </td>
+            </tr>
+
+            <tr ng-hide="userList!=null &&userList.length > 0">
+                <td colspan="4" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="pager"></div>
+</div>
 
 @section foot{
-
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                listUrl: "GetUserList",
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                $scope.search();
+            }
+            //查询
+            $scope.search = function (index) {
+                index = !index || index <= 0 ? 1 : index;
+                var para = {};
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.listUrl,
+                    type: 'get',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        var msg = "";
+                        $scope.userList = [];
+                        if (data != null && data.length > 0) {
+                            $scope.userList = data;
+                            $scope.pagerInit(index, data.length);
+                        }
+                        else {
+                            eMsg({
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.Search(index);
+                };
+                pager.render();
+            }
+            $scope.detail = function (id) {
+                alert("打开详情页面，id:" + id);
+            }
+        });
+    </script>
 }

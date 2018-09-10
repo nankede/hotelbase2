@@ -18,6 +18,10 @@ namespace HotelBase.Entity.Tables
         public string UIName { get; set; }
         /// <summary> 职责 </summary>
         public int UIResponsibility { get; set; }
+        /// <summary> 部门Id </summary>
+        public int UIDepartId { get; set; }
+        /// <summary>部门名称 </summary>
+        public string UIDepartName { get; set; }
         /// <summary>是否有效 </summary>
         public int UIIsValid { get; set; }
         /// <summary>新增时间 </summary>

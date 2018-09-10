@@ -12,9 +12,23 @@ namespace HotelBase.Web.Controller.System
 {
     public class SystemController : BaseController
     {
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
         public ActionResult UserList()
         {
             return View();
+        }
+
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetUserList()
+        {
+            var lsit = TestBll.GetUser();
+            return Json(lsit, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -102,6 +102,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\lib\angular.min.js" />
     <Content Include="Content\lib\base.css" />
     <Content Include="Content\lib\base.js" />
     <Content Include="Content\lib\jquery.min.js" />

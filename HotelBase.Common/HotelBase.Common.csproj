@@ -62,7 +62,7 @@
     <Compile Include="Format\ConvertHelper.cs" />
     <Compile Include="Format\EnumHelper.cs" />
     <Compile Include="Format\JsonHelper.cs" />
-    <Compile Include="Log\LogHelper.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="Network\HttpMethods.cs" />
     <Compile Include="Network\Net.cs" />
     <Compile Include="Operator\OperatorProvider.cs" />
