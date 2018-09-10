@@ -12,7 +12,7 @@ namespace HotelBase.Web.Controller.System
 {
     public class SystemController : BaseController
     {
-        public ActionResult User()
+        public ActionResult UserList()
         {
             return View();
         }
