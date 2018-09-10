@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotelBase.DataAccess
 {
-    public static class MysqlHelper<T>
+    public static class MysqlHelper
     {
         /// <summary>
         /// 数据库连接
@@ -21,7 +21,7 @@ namespace HotelBase.DataAccess
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static List<T> GetList(string sql, object param = null)
+        public static List<T> GetList<T>(string sql, object param = null)
         {
             using (var conn = new MySqlConnection(connectionString))
             {
@@ -32,15 +32,40 @@ namespace HotelBase.DataAccess
         }
 
         /// <summary>
+        /// 分页用的Limt
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public static string GetPageSql(int index, int size)
+        {
+            return $" limit {(index - 1) * size},{size} ; ";
+        }
+
+        /// <summary>
         /// GetModel
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static T GetModel(string sql, object param = null)
+        public static T GetScalar<T>(string sql, object param = null)
         {
             using (var conn = new MySqlConnection(connectionString))
             {
                 var resutl = conn.ExecuteScalar<T>(sql, param);
+                conn.Close();
+                return resutl;
+            }
+        }
+
+        /// <summary>
+        /// GetModel
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public static T GetModel<T>(string sql, object param = null)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                var resutl = conn.QueryFirst<T>(sql, param);
                 conn.Close();
                 return resutl;
             }

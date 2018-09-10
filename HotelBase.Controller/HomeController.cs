@@ -23,12 +23,5 @@ namespace HotelBase.Web.Controllers
         {
             return View();
         }
-        
-        public JsonResult GetUser()
-        {
-            var lsit = TestBll.GetUser();
-            return Json(new { a = 1, List = lsit }, JsonRequestBehavior.AllowGet);
-
-        }
     }
 }

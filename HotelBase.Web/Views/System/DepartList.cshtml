@@ -10,9 +10,9 @@
         </thead>
         <tbody>
             <tr ng-repeat="u in userList">
-                <td ng-bind="u.Name"></td>
-                <td ng-bind="u.DepartName"></td>
-                <td ng-bind="u.Responsibility"></td>
+                <td ng-bind="u.UIName"></td>
+                <td ng-bind="u.UIDepartName"></td>
+                <td ng-bind="u.UIResponsibility"></td>
                 <td>
                     <input type="button" class="lay-btn lay-btn-edit" value="详情" ng-click="detail(u.Id)" />
                 </td>
@@ -43,7 +43,7 @@
             //查询
             $scope.search = function (index) {
                 index = !index || index <= 0 ? 1 : index;
-                var para = { index: index };
+                var para = {};
                 eLoading.show();
                 $.ajax({
                     url: $scope.config.listUrl,
@@ -54,9 +54,9 @@
                     success: function (data) {
                         var msg = "";
                         $scope.userList = [];
-                        if (data != null && data.IsSuccess > 0) {
-                            $scope.userList = data.List;
-                            $scope.pagerInit(index, data.Total);
+                        if (data != null && data.length > 0) {
+                            $scope.userList = data;
+                            $scope.pagerInit(index, data.length);
                         }
                         else {
                             eMsg({
