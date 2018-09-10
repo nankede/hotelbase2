@@ -1,0 +1,158 @@
+﻿@section head{
+    <style>
+        .nav-left {
+            width: 200px;
+            background-color: #313d4a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2016;
+            height: 100%;
+            -webkit-transition: .2s;
+            transition: .2s;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .nav-head {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: 60px;
+            position: relative;
+            border-bottom: 1px #dbdbdb solid;
+            padding-left: 60px;
+            background-color: #f8f9f8;
+            box-shadow: 0 1px 3px #dbdbdb;
+        }
+
+        .logo {
+            color: #fff;
+            background-color: #202730;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            -webkit-box-flex: 0;
+            -ms-flex: none;
+            flex: none;
+        }
+
+            .logo:before {
+                content: "";
+                display: inline-block;
+                width: 33px;
+                height: 33px;
+                /*background-image: url(../../img/indexNew/IcoList.png);*/
+                background-repeat: no-repeat;
+                background-position: -300px -100px;
+                position: absolute;
+                top: 13px;
+                left: 10px;
+                z-index: 10;
+            }
+
+        .nav-list {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+        }
+
+        .left-menu-moudle {
+            color: #fff;
+            display: block;
+            height: 40px;
+        }
+
+        .left-menu-list > li ul > li:before {
+            content: "";
+            width: 9px;
+            height: 9px;
+            border-radius: 9px;
+            background-color: #47596c;
+            position: absolute;
+            top: 14px;
+            left: 17px;
+            z-index: 5;
+        }
+
+        .page-nav {
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px #eeeeee solid;
+            position: relative;
+            padding-left: 40px;
+            color: #999;
+        }
+    </style>
+}
+<div>
+    <div class="nav-left">
+        <span data-href="/home/index/" class="logo">
+            <span class="system-title">酒店管理后台</span>
+        </span>
+        <div class="nav-list">
+            <ul class="left-menu">
+                <li class="left-menu-moudle">
+                    <i class="left-menu-before"></i>
+                    <span>资源管理</span>
+                    <i class="left-menu-after"></i>
+                    <div class="left-menu-list">
+                        <ul>
+                            <li class="left-menu-detail" data-url="/home/Default">供应商管理</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="left-menu-moudle">
+                    <i class="left-menu-before"></i>
+                    <span>订单管理</span>
+                    <i class="left-menu-after"></i>
+                </li>
+                <li class="left-menu-moudle">
+                    <i class="left-menu-before"></i>
+                    <span>订单统计</span>
+                    <i class="left-menu-after"></i>
+                </li>
+                <li class="left-menu-moudle">
+                    <i class="left-menu-before"></i>
+                    <span>系统管理</span>
+                    <i class="left-menu-after"></i>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="nav-head">
+
+
+    </div>
+    <div class="main-body">
+        <div class="page-nav"></div>
+        <div class="page-main">
+            <iframe id="ifm" src="" width="100%" height="100%" style="border:none;"></iframe>
+        </div>
+    </div>
+</div>
+@section foot{
+    <script>
+        function navInit() {
+            $(".left-menu-detail").onclick = function () {
+                var url = $(this).attr('data-url');
+                if ($('#ifm').prop('src') == url) { return; }
+                $('#ifm').prop('src', url);
+            }
+        }
+        $(function () {
+            navInit();
+        });
+    </script>
+}

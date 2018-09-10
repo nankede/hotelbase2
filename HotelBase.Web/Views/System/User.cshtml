@@ -1,0 +1,19 @@
+﻿<table class="lay-table">
+    <thead>
+        <tr>
+            <th width="25%">姓名</th>
+            <th width="25%">归属部门</th>
+            <th>职责</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-hide="customerList!=null &amp;&amp;customerList.length > 0">
+            <td colspan="4" class="eui-table-empty">暂无数据显示</td>
+        </tr>
+        <!-- ngRepeat: o in customerList -->
+    </tbody>
+</table>
+
+@section foot{
+
+}
