@@ -1,0 +1,55 @@
+﻿<div class="lay-form" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    
+</div>
+
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                detailUrl: "GetUserDetail",
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                $scope.getDetail();
+            }
+            //查询
+            $scope.getDetail = function () {
+                //index = !index || index <= 0 ? 1 : index;
+                var para = { id: index };
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.detailUrl,
+                    type: 'get',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        var msg = "";
+                        if (data != null && data.IsSuccess > 0) {
+                           
+                        }
+                        else {
+                            eMsg({
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+        });
+    </script>
+}

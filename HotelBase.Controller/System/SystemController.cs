@@ -37,6 +37,30 @@ namespace HotelBase.Web.Controller.System
             var response = SystemBll.GetUserList(request);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult UserDetail(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetUserDetail(int id)
+        {
+            var request = new UserListRequest
+            {
+                PageIndex = id
+            };
+            var response = SystemBll.GetUserList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
         #endregion
         #region 部门
 

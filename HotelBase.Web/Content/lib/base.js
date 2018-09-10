@@ -370,8 +370,8 @@ if (!Array.prototype.findIndex) {
 	    return app;
 	};
 
-	w.eui = {}
-	w.eui.util = u;
+	w.lay = {}
+    w.lay.util = u;
 
 })(jQuery, window);
 ;(function($, w) {
@@ -381,7 +381,7 @@ w.eAlert = function(options) {
     ea.init(opts);
 };
 w.eAlert.close = function($eAlert) {
-    $eAlert.find('.eui-alert-close').trigger('click');
+    $eAlert.find('.lay-alert-close').trigger('click');
 };
 
 var defaults = {
@@ -429,10 +429,10 @@ ea.render = function(opts) {
     var text = opts.text;
     var alertIdAttr = opts.alertHook.type === 'id' ? opts.alertHook.value : '';
     var alertClassAttr = opts.alertHook.type === 'class' ? opts.alertHook.value : '';
-    alertClassAttr += ' eui-alert-' + opts.type;
+    alertClassAttr += ' lay-alert-' + opts.type;
 
 
-    var iconHtml = opts.icon.show ? '<div class="eui-alert-cont-icon"></div>' : '';
+    var iconHtml = opts.icon.show ? '<div class="lay-alert-cont-icon"></div>' : '';
 
 
     var buttonsHtml = '';
@@ -441,7 +441,7 @@ ea.render = function(opts) {
             var classAttr = button.hook.type === 'class' ? button.hook.value : '';
             var idAttr = button.hook.type === 'id' ? button.hook.value : '';
             buttonsHtml += '' +
-                    '<button type="button" class="eui-btn eui-btn-secondary ' + classAttr + '" id="' + idAttr + '">' +
+                    '<button type="button" class="lay-btn lay-btn-secondary ' + classAttr + '" id="' + idAttr + '">' +
                         button.text +
                     '</button>';
         });
@@ -450,40 +450,40 @@ ea.render = function(opts) {
         var cancelButtonClassAttr = opts.cancelButton.hook.type === 'class' ? opts.cancelButton.hook.value : '';
         var cancelButtonIdAttr = opts.cancelButton.hook.type === 'id' ? opts.cancelButton.hook.value : '';
         var cancelButtonHtml = opts.cancelButton.show ?
-                '<button type="button" class="eui-btn eui-btn-cancel eui-alert-cancelBtn ' + cancelButtonClassAttr + '" id="' + cancelButtonIdAttr + '">' + opts.cancelButton.text + '</button>' : '';
+                '<button type="button" class="lay-btn lay-btn-cancel lay-alert-cancelBtn ' + cancelButtonClassAttr + '" id="' + cancelButtonIdAttr + '">' + opts.cancelButton.text + '</button>' : '';
 
         var confirmButtonClassAttr = opts.confirmButton.hook.type === 'class' ? opts.confirmButton.hook.value : '';
         var confirmButtonIdAttr = opts.confirmButton.hook.type === 'id' ? opts.confirmButton.hook.value : '';
         var confirmButtonHtml = opts.confirmButton.show ?
-                '<button type="button" class="eui-btn eui-btn-secondary eui-alert-confirmBtn ' + confirmButtonClassAttr + '" id="' + confirmButtonIdAttr + '">' + opts.confirmButton.text + '</button>' : '';
+                '<button type="button" class="lay-btn lay-btn-secondary lay-alert-confirmBtn ' + confirmButtonClassAttr + '" id="' + confirmButtonIdAttr + '">' + opts.confirmButton.text + '</button>' : '';
 
         buttonsHtml = cancelButtonHtml + confirmButtonHtml;
     }
 
 
     var alertHtml = '' +
-            '<div class="eui-alert ' + alertClassAttr + '" id="' + alertIdAttr + '">' +
-                '<div class="eui-alert-mask"></div>' +
-                '<div class="eui-alert-cont">' +
-                    '<div class="eui-alert-cont-hd">' +
-                        '<h3 class="eui-alert-title">' + title + '</h3>' +
-                        '<button type="button" class="eui-alert-close"></button>' +
+            '<div class="lay-alert ' + alertClassAttr + '" id="' + alertIdAttr + '">' +
+                '<div class="lay-alert-mask"></div>' +
+                '<div class="lay-alert-cont">' +
+                    '<div class="lay-alert-cont-hd">' +
+                        '<h3 class="lay-alert-title">' + title + '</h3>' +
+                        '<button type="button" class="lay-alert-close"></button>' +
                     '</div>' +
-                    '<div class="eui-alert-cont-bd">' +
+                    '<div class="lay-alert-cont-bd">' +
                         iconHtml +
-                        '<div class="eui-alert-cont-text">' + text + '</div>' +
+                        '<div class="lay-alert-cont-text">' + text + '</div>' +
                     '</div>' +
-                    '<div class="eui-alert-cont-ft">' + buttonsHtml + '</div>' +
+                    '<div class="lay-alert-cont-ft">' + buttonsHtml + '</div>' +
                 '</div>' +
             '</div>';
 
     $('body').append(alertHtml);
-    var $eAlert = $('body').find(' > .eui-alert:last-child');
+    var $eAlert = $('body').find(' > .lay-alert:last-child');
     return $eAlert;
 };
 ea.bindEvent = function(opts, $eAlert) {
-    $eAlert.delegate('.eui-alert-close', 'click', function(event) {
-        $eAlert.addClass('eui-alert-removing');
+    $eAlert.delegate('.lay-alert-close', 'click', function(event) {
+        $eAlert.addClass('lay-alert-removing');
         setTimeout(function() {
             $eAlert.remove();
         }, 300);
@@ -492,32 +492,32 @@ ea.bindEvent = function(opts, $eAlert) {
     });
 
     if (opts.buttons.length === 0) {
-        $eAlert.delegate('.eui-alert-cancelBtn', 'click', function(event) {
+        $eAlert.delegate('.lay-alert-cancelBtn', 'click', function(event) {
             var $button = $(event.currentTarget);
             var cbThis = { $eAlert: $eAlert, $button: $button, event: event };
             if ($.isFunction(opts.onCancel)) {
                 opts.onCancel.call(cbThis);
             }
             else {
-                $eAlert.find('.eui-alert-close').trigger('click');
+                $eAlert.find('.lay-alert-close').trigger('click');
             }
         });
 
-        $eAlert.delegate('.eui-alert-confirmBtn', 'click', function(event) {
+        $eAlert.delegate('.lay-alert-confirmBtn', 'click', function(event) {
             var $button = $(event.currentTarget);
             var cbThis = { $eAlert: $eAlert, $button: $button, event: event };
             if ($.isFunction(opts.onConfirm)) {
                 opts.onConfirm.call(cbThis);
             }
             else {
-                $eAlert.find('.eui-alert-close').trigger('click');
+                $eAlert.find('.lay-alert-close').trigger('click');
             }
         });
     }
     else {
-        $eAlert.delegate('.eui-alert-cont-ft > button', 'click', function(event) {
+        $eAlert.delegate('.lay-alert-cont-ft > button', 'click', function(event) {
             var $button = $(event.currentTarget);
-            var index = $eAlert.find('.eui-alert-cont-ft > button').index($button);
+            var index = $eAlert.find('.lay-alert-cont-ft > button').index($button);
             var cbThis = { $eAlert: $eAlert, $button: $button, event: event };
             if ($.isFunction(opts.buttons[index].cb)) {
                 opts.buttons[index].cb.call(cbThis);
@@ -546,19 +546,19 @@ var defaults = {
 var em = {};
 em.render = function(opts) {
     var msgHtml = '' +
-            '<div class="eui-msg">' +
-                '<div class="eui-msg-mask"></div>' +
-                '<div class="eui-msg-cont">' +
+            '<div class="lay-msg">' +
+                '<div class="lay-msg-mask"></div>' +
+                '<div class="lay-msg-cont">' +
                     opts.text +
                 '</div>' +
             '</div>';
 
     setTimeout(function() {
         $('body').append(msgHtml);
-        var $eMsg = $('body').find(' > .eui-msg:last-child');
+        var $eMsg = $('body').find(' > .lay-msg:last-child');
         
         setTimeout(function() {
-            $eMsg.addClass('eui-msg-removing');
+            $eMsg.addClass('lay-msg-removing');
             
             setTimeout(function() {
                 $eMsg.remove();
@@ -591,7 +591,7 @@ em.init = function(opts) {
 			this.bindEvent();
 		},
 		setDialogId:function(){
-			eDialogId = 'eui-dialog-';
+			eDialogId = 'lay-dialog-';
             eDialogId = this.element.attr('id') != null && (this.element.attr('id')).trim() !== '' ? this.element.attr('id') : eDialogId + EDialog.index;
             this.element.attr('id', eDialogId);
 		},
@@ -603,15 +603,15 @@ em.init = function(opts) {
 		destroy:function(){
 			var hasExist = window.eDialogInstances[this.element.attr('id')] != null;
             if (hasExist) {
-                this.element.undelegate('.eui-dialog-btn-close', 'click');
+                this.element.undelegate('.lay-dialog-btn-close', 'click');
                 delete window.eDialogInstances[this.element.attr('id')];
             }
 		},
 		show:function(){
 			if(!this.element.hasClass('show')){
 				this.element.addClass('show');
-				if($('body').find('.eui-dialog-mask.show').length === 0){
-					this.element.find('.eui-dialog-mask').addClass('show');
+				if($('body').find('.lay-dialog-mask.show').length === 0){
+					this.element.find('.lay-dialog-mask').addClass('show');
 				}
 				this.state = 'show';
 				this.element.trigger('change',this.state);
@@ -620,8 +620,8 @@ em.init = function(opts) {
 		hide:function(){
 			if(this.element.hasClass('show')){
 				this.element.removeClass('show');
-				if($('body').find('.eui-dialog.show').length === 0){
-					this.element.find('.eui-dialog-mask').removeClass('show');
+				if($('body').find('.lay-dialog.show').length === 0){
+					this.element.find('.lay-dialog-mask').removeClass('show');
 				}	        
 				this.state = 'hide';
 				this.element.trigger('change',this.state);
@@ -630,7 +630,7 @@ em.init = function(opts) {
 		bindEvent:function(){
 			var that = this;
 			var element = that.element; 
-			element.delegate('.eui-dialog-btn-close','click', function(e){
+			element.delegate('.lay-dialog-btn-close','click', function(e){
 				that.hide();
 			});
 		}
@@ -704,13 +704,13 @@ em.init = function(opts) {
 
         var $element = $(element);
         var $eDropDown;
-        var eDropDownId = 'eui-dropdown-';
+        var eDropDownId = 'lay-dropdown-';
         var observer;
 
         var opts = $.extend({}, defaults, options);
 
         function init() {
-            $eDropDown = $element.next('.eui-dropdown');
+            $eDropDown = $element.next('.lay-dropdown');
             //判断$elemt是不是select，否的话报错
             destory();
 
@@ -740,42 +740,42 @@ em.init = function(opts) {
             eDropDownId = ($element.attr('id') || '').trim() !== '' ? 
                     (eDropDownId + $element.attr('id')) : (eDropDownId + EDropDown.index);
             var selectId = ($element.attr('id') || '').trim() !== '' ? 
-                    ($element.attr('id')) : ('eui-select-' + EDropDown.index);
+                    ($element.attr('id')) : ('lay-select-' + EDropDown.index);
             var eDropdownHtml = `
-                    <div class="eui-dropdown" id="${eDropDownId}">
-                        <button type="button" class="eui-dropdown-btn"></button>
-                        <div class="eui-dropdown-panel">
-                            <div class="eui-dropdown-search" style="${opts.showSearch ? '' : 'display: none;'}">
-                                <input type="text" class="eui-input" placeholder=${opts.searchPlaceholder}></input>
+                    <div class="lay-dropdown" id="${eDropDownId}">
+                        <button type="button" class="lay-dropdown-btn"></button>
+                        <div class="lay-dropdown-panel">
+                            <div class="lay-dropdown-search" style="${opts.showSearch ? '' : 'display: none;'}">
+                                <input type="text" class="lay-input" placeholder=${opts.searchPlaceholder}></input>
                             </div>
-                            <div class="eui-dropdown-list">
-                                <ul class="eui-dropdown-list-initial"></ul>
+                            <div class="lay-dropdown-list">
+                                <ul class="lay-dropdown-list-initial"></ul>
                             </div>
                         </div>
                     </div>`;
 
             $element.after(eDropdownHtml);
-            $eDropDown = $element.next('.eui-dropdown');
-            $element.addClass('eui-select-hide').attr('id', selectId);
+            $eDropDown = $element.next('.lay-dropdown');
+            $element.addClass('lay-select-hide').attr('id', selectId);
             updateEDropDownList();
         }
 
         function bindEvent() {
 
-            $eDropDown.delegate('.eui-dropdown-list li', 'click', function() {
+            $eDropDown.delegate('.lay-dropdown-list li', 'click', function() {
                 var value = $(this).attr('data-value');
                 setValue(value);
                 updateOptionList($(this));
 
-                $eDropDown.find('.eui-dropdown-btn').trigger('click');              
+                $eDropDown.find('.lay-dropdown-btn').trigger('click');              
             });
 
-            $eDropDown.delegate('.eui-dropdown-btn', 'click', function() {
-                $('.eui-dropdown').not($eDropDown[0]).find('.eui-dropdown-btn').removeClass('eui-dropdown-btn-active');
-                $(this).toggleClass('eui-dropdown-btn-active');
+            $eDropDown.delegate('.lay-dropdown-btn', 'click', function() {
+                $('.lay-dropdown').not($eDropDown[0]).find('.lay-dropdown-btn').removeClass('lay-dropdown-btn-active');
+                $(this).toggleClass('lay-dropdown-btn-active');
             });
 
-            $eDropDown.delegate('.eui-dropdown-search > input', 'input', function(event) {
+            $eDropDown.delegate('.lay-dropdown-search > input', 'input', function(event) {
                 var $input = $(event.currentTarget);
                 var inputVal = $input.val().trim();
 
@@ -824,7 +824,7 @@ em.init = function(opts) {
                         </li>`;
 
             });
-            $eDropDown.find('.eui-dropdown-list-initial').html(dropdownInitialListHtml);
+            $eDropDown.find('.lay-dropdown-list-initial').html(dropdownInitialListHtml);
             setValue($element.val());           
         }
 
@@ -849,21 +849,21 @@ em.init = function(opts) {
 
         function setValue(value) {
             var optionEle = $element.find('option[value="' + value + '"]');
-            $eDropDown.find('.eui-dropdown-btn').text(optionEle.text()).attr('data-value', value);
-            $eDropDown.find('.eui-dropdown-list-item-active').removeClass('eui-dropdown-list-item-active');
-            $eDropDown.find('.eui-dropdown-list li[data-value="' + value + '"]').addClass('eui-dropdown-list-item-active');
+            $eDropDown.find('.lay-dropdown-btn').text(optionEle.text()).attr('data-value', value);
+            $eDropDown.find('.lay-dropdown-list-item-active').removeClass('lay-dropdown-list-item-active');
+            $eDropDown.find('.lay-dropdown-list li[data-value="' + value + '"]').addClass('lay-dropdown-list-item-active');
         }
 
         function search(inputVal) {
-            var $list = $eDropDown.find('.eui-dropdown-list > ul');
+            var $list = $eDropDown.find('.lay-dropdown-list > ul');
             var $searchedListItem = null;
             if (inputVal === '') {
-                $list.find('> li').removeClass('eui-dropdown-item-hidden');
+                $list.find('> li').removeClass('lay-dropdown-item-hidden');
             }
             else {
                 $searchedListItem = $list.find(`> li[title*=${inputVal}]`);
-                $list.find('> li').addClass('eui-dropdown-item-hidden');                  
-                $searchedListItem.removeClass('eui-dropdown-item-hidden');
+                $list.find('> li').addClass('lay-dropdown-item-hidden');                  
+                $searchedListItem.removeClass('lay-dropdown-item-hidden');
             }
         };
 
@@ -914,9 +914,9 @@ em.init = function(opts) {
     $(function() {
         $('body').on('click', function(event) {
             var clickEle = $(event.target);
-            var canRemoveClass = clickEle.parents('.eui-dropdown').length === 0;
+            var canRemoveClass = clickEle.parents('.lay-dropdown').length === 0;
             if (canRemoveClass) {
-                $('.eui-dropdown-btn').removeClass('eui-dropdown-btn-active');
+                $('.lay-dropdown-btn').removeClass('lay-dropdown-btn-active');
             }       
         });
     });
@@ -957,39 +957,39 @@ var defaults = {
 //eMultiSelect type checkbox
 var emc = {};
 emc.destroy = function($element) {
-    var $eMultiSelect = $element.find('.eui-multiSelect');
+    var $eMultiSelect = $element.find('.lay-multiSelect');
     var id = $eMultiSelect.attr('id');
-    $element.find('.eui-multiSelect').remove();
+    $element.find('.lay-multiSelect').remove();
     delete w.eMultiSelectInst[id];
 };
 
 emc.render = function(opts, $element) {
     var eMultiSelectHtml = `
-        <div class="eui-multiSelect" data-type="${opts.type}" data-index=${EMultiSelect.index} 
-                id="eui-multiSelect-${$element.attr('id') || EMultiSelect.index}">
-            <div class="eui-multiSelect-hd">
-                <div class="eui-multiSelect-result eui-input eui-multiSelect-result-empty" placeholder="${opts.placeholder}">
+        <div class="lay-multiSelect" data-type="${opts.type}" data-index=${EMultiSelect.index} 
+                id="lay-multiSelect-${$element.attr('id') || EMultiSelect.index}">
+            <div class="lay-multiSelect-hd">
+                <div class="lay-multiSelect-result lay-input lay-multiSelect-result-empty" placeholder="${opts.placeholder}">
                     ${opts.type === 'button' ? '<ul></ul>' : ''}
                 </div>
-                <button type="button" class="eui-btn"></button>
+                <button type="button" class="lay-btn"></button>
             </div>
-            <div class="eui-multiSelect-bd">
-                <div class="eui-multiSelect-search" style="${opts.showSearch ? '' : 'display: none;'}">
-                    <input type="text" class="eui-input" placeholder=${opts.searchPlaceholder}>
+            <div class="lay-multiSelect-bd">
+                <div class="lay-multiSelect-search" style="${opts.showSearch ? '' : 'display: none;'}">
+                    <input type="text" class="lay-input" placeholder=${opts.searchPlaceholder}>
                 </div>
-                <div class="eui-multiSelect-panel">
+                <div class="lay-multiSelect-panel">
                     <ul></ul>
                 </div>
-                <div class="eui-multiSelect-handle" style="${opts.showButton ? '' : 'display: none;'}">
-                    <button type="button" class="eui-btn eui-btn-secondary eui-multiSelect-confirm">确定</button>
-                    <button type="button" class="eui-btn eui-btn-cancel eui-multiSelect-cancel">取消</button>
-                    <button type="button" class="eui-btn eui-btn-cancel eui-multiSelect-clear">清空</button>
+                <div class="lay-multiSelect-handle" style="${opts.showButton ? '' : 'display: none;'}">
+                    <button type="button" class="lay-btn lay-btn-secondary lay-multiSelect-confirm">确定</button>
+                    <button type="button" class="lay-btn lay-btn-cancel lay-multiSelect-cancel">取消</button>
+                    <button type="button" class="lay-btn lay-btn-cancel lay-multiSelect-clear">清空</button>
                 </div>
             </div>
         </div>`;
 
     $element.html(eMultiSelectHtml);
-    var $eMultiSelect = $element.find(' > .eui-multiSelect');
+    var $eMultiSelect = $element.find(' > .lay-multiSelect');
 
     if ($.isArray(opts.source)) {
         emc.renderList(opts, $eMultiSelect, opts.source);
@@ -1065,8 +1065,8 @@ emc.handleData = function(opts, $eMultiSelect, data) {
 emc.renderList = function(opts, $eMultiSelect, data) {
     var listHtml = ``;
     var eMultiSelectIndex = $eMultiSelect.attr('data-index');
-    var allCheckboxId = `#eui-multiSelect-${eMultiSelectIndex}-checkbox-${opts.allCheckbox.value}`;
-    var $list = $eMultiSelect.find('.eui-multiSelect-panel > ul');
+    var allCheckboxId = `#lay-multiSelect-${eMultiSelectIndex}-checkbox-${opts.allCheckbox.value}`;
+    var $list = $eMultiSelect.find('.lay-multiSelect-panel > ul');
     var otherAttrList = (opts.resultItem.other || '').split(',').filter(function(attr) {
         return (attr || '').trim() !== '';
     });
@@ -1107,12 +1107,12 @@ emc.renderList = function(opts, $eMultiSelect, data) {
 
         listHtml += `
             <li>
-                <input type="checkbox" name="eui-multiSelect-${eMultiSelectIndex}-checkbox" 
-                    class="${opts.type === 'checkbox' ? 'eui-checkbox' : 'eui-checkbox-variant'}"
-                    id="eui-multiSelect-${eMultiSelectIndex}-checkbox-${item[opts.resultItem.value]}" 
+                <input type="checkbox" name="lay-multiSelect-${eMultiSelectIndex}-checkbox" 
+                    class="${opts.type === 'checkbox' ? 'lay-checkbox' : 'lay-checkbox-variant'}"
+                    id="lay-multiSelect-${eMultiSelectIndex}-checkbox-${item[opts.resultItem.value]}" 
                     value="${item[opts.resultItem.value]}" title="${item[opts.resultItem.text]}"
                     ${otherAttr} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
-                <label for="eui-multiSelect-${eMultiSelectIndex}-checkbox-${item[opts.resultItem.value]}" 
+                <label for="lay-multiSelect-${eMultiSelectIndex}-checkbox-${item[opts.resultItem.value]}" 
                     title=${item[opts.resultItem.text]}>${item[opts.resultItem.text]}</label>
             </li>
         `;
@@ -1125,13 +1125,13 @@ emc.renderList = function(opts, $eMultiSelect, data) {
 
     //判断是否要选中全部
     if (('' + defaultValue) === ('' + opts.allCheckbox.value)) {
-        $eMultiSelect.find('.eui-multiSelect-panel input[type="checkbox"]:not(:disabled)').prop('checked', true);
+        $eMultiSelect.find('.lay-multiSelect-panel input[type="checkbox"]:not(:disabled)').prop('checked', true);
     }
     else {
         var checkedLength = $list.find(`input[type="checkbox"]:not(${allCheckboxId}):checked`).length;
         var checkboxLength = $list.find(`input[type="checkbox"]:not(${allCheckboxId})`).length;
         if (checkboxLength === checkedLength) {
-            $eMultiSelect.find('.eui-multiSelect-panel input[type="checkbox"]:not(:disabled)').prop('checked', true);
+            $eMultiSelect.find('.lay-multiSelect-panel input[type="checkbox"]:not(:disabled)').prop('checked', true);
         }
     }
 
@@ -1149,9 +1149,9 @@ emc.renderList = function(opts, $eMultiSelect, data) {
 emc.changeCheckboxState = function(opts, $eMultiSelect, $checkbox, checked, forbidCb) {
     $checkbox.prop('checked', checked);
 
-    var $list = $eMultiSelect.find('.eui-multiSelect-panel > ul');
+    var $list = $eMultiSelect.find('.lay-multiSelect-panel > ul');
     var eMultiSelectIndex = $eMultiSelect.attr('data-index');
-    var allCheckboxId = `#eui-multiSelect-${eMultiSelectIndex}-checkbox-${opts.allCheckbox.value}`;
+    var allCheckboxId = `#lay-multiSelect-${eMultiSelectIndex}-checkbox-${opts.allCheckbox.value}`;
     var $allCheckbox = $list.find(allCheckboxId);
     var exsistAllCheckbox = $allCheckbox.length > 0;
     var checkboxIsAllCheckbox = `#${$checkbox.attr('id')}` === allCheckboxId;
@@ -1177,9 +1177,9 @@ emc.changeCheckboxState = function(opts, $eMultiSelect, $checkbox, checked, forb
 };
 
 emc.getCheckedbox = function(opts, $eMultiSelect) {
-    var $list = $eMultiSelect.find('.eui-multiSelect-panel > ul');
+    var $list = $eMultiSelect.find('.lay-multiSelect-panel > ul');
     var eMultiSelectIndex = $eMultiSelect.attr('data-index');
-    var allCheckboxId = `#eui-multiSelect-${eMultiSelectIndex}-checkbox-${opts.allCheckbox.value}`;
+    var allCheckboxId = `#lay-multiSelect-${eMultiSelectIndex}-checkbox-${opts.allCheckbox.value}`;
     var $allCheckbox = $list.find(allCheckboxId);
     var exsistAllCheckbox = $allCheckbox.length > 0;
     var $checkedbox = $list.find(`input[type="checkbox"]:not(${allCheckboxId}):checked`);
@@ -1196,7 +1196,7 @@ emc.getCheckedbox = function(opts, $eMultiSelect) {
 };
 
 emc.setCheckedValue = function(opts, $eMultiSelect, $checkedbox, forbidCb) {
-    var $result = $eMultiSelect.find('.eui-multiSelect-result');
+    var $result = $eMultiSelect.find('.lay-multiSelect-result');
     var checkedboxList = $.makeArray($checkedbox);
     var value = checkedboxList.map(function(checkbox) {
         return $(checkbox).val();
@@ -1208,10 +1208,10 @@ emc.setCheckedValue = function(opts, $eMultiSelect, $checkedbox, forbidCb) {
 
     //显隐placeholder
     if (value === '') {
-        $result.addClass('eui-multiSelect-result-empty');
+        $result.addClass('lay-multiSelect-result-empty');
     }
     else {
-        $result.removeClass('eui-multiSelect-result-empty');
+        $result.removeClass('lay-multiSelect-result-empty');
     }
 
     //分不同的类别给result添加展示的数据
@@ -1237,8 +1237,8 @@ emc.setCheckedValue = function(opts, $eMultiSelect, $checkedbox, forbidCb) {
 };
 
 emc.cancelCheckedbox = function(opts, $eMultiSelect) {
-    var $list = $eMultiSelect.find('.eui-multiSelect-panel > ul');
-    var $selectResult = $eMultiSelect.find('.eui-multiSelect-result');
+    var $list = $eMultiSelect.find('.lay-multiSelect-panel > ul');
+    var $selectResult = $eMultiSelect.find('.lay-multiSelect-result');
     var value = ($selectResult.attr('value') || '').trim();
 
     $list.find('input[type="checkbox"]').prop('checked', false);
@@ -1259,7 +1259,7 @@ emc.cancelCheckedbox = function(opts, $eMultiSelect) {
 };
 
 emc.clearCheckedbox = function(opts, $eMultiSelect) {
-    var $list = $eMultiSelect.find('.eui-multiSelect-panel > ul');
+    var $list = $eMultiSelect.find('.lay-multiSelect-panel > ul');
     $list.find('input[type="checkbox"]:not(:disabled)').prop('checked', false);    
 
     var $checkedbox = emc.getCheckedbox(opts, $eMultiSelect);
@@ -1268,8 +1268,8 @@ emc.clearCheckedbox = function(opts, $eMultiSelect) {
     var cbThis = { 
         $eMultiSelect: $eMultiSelect,
         $checkedbox: emc.getCheckedbox(opts, $eMultiSelect),
-        value: $eMultiSelect.find('.eui-multiSelect-result').attr('value'),
-        text: $eMultiSelect.find('.eui-multiSelect-result').attr('text')
+        value: $eMultiSelect.find('.lay-multiSelect-result').attr('value'),
+        text: $eMultiSelect.find('.lay-multiSelect-result').attr('text')
     };
     if ($.isFunction(opts.onClear)) { opts.onClear.call(cbThis); }
 
@@ -1277,19 +1277,19 @@ emc.clearCheckedbox = function(opts, $eMultiSelect) {
 };
 
 emc.search = function(opts, $eMultiSelect, inputVal) {
-    var $list = $eMultiSelect.find('.eui-multiSelect-panel > ul');
+    var $list = $eMultiSelect.find('.lay-multiSelect-panel > ul');
     var $searchedCheckbox = null;
     if (inputVal === '') {
-        $list.find('> li').removeClass('eui-multiSelect-item-hidden');
+        $list.find('> li').removeClass('lay-multiSelect-item-hidden');
     }
     else {
         $searchedCheckbox = $list.find(`input[type="checkbox"][title*=${inputVal}]`);
         if ($searchedCheckbox.length > 0) {
-            $list.find('> li').addClass('eui-multiSelect-item-hidden');
-            $searchedCheckbox.parent().removeClass('eui-multiSelect-item-hidden');
+            $list.find('> li').addClass('lay-multiSelect-item-hidden');
+            $searchedCheckbox.parent().removeClass('lay-multiSelect-item-hidden');
         }
         else {
-            $list.find('> li').addClass('eui-multiSelect-item-hidden');
+            $list.find('> li').addClass('lay-multiSelect-item-hidden');
         }
     }
 
@@ -1298,7 +1298,7 @@ emc.search = function(opts, $eMultiSelect, inputVal) {
 };
 
 emc.bindEvent = function(opts, $eMultiSelect) {
-    $eMultiSelect.delegate('.eui-multiSelect-panel input[type="checkbox"]', 'change', function(event) {
+    $eMultiSelect.delegate('.lay-multiSelect-panel input[type="checkbox"]', 'change', function(event) {
         var $checkbox = $(event.currentTarget);
         var checked = $checkbox.prop('checked');
 
@@ -1311,7 +1311,7 @@ emc.bindEvent = function(opts, $eMultiSelect) {
         }
     });
 
-    $eMultiSelect.delegate('.eui-multiSelect-search .eui-input', 'input', function(event) {
+    $eMultiSelect.delegate('.lay-multiSelect-search .lay-input', 'input', function(event) {
         var $input = $(event.currentTarget);
         var inputVal = $input.val().trim();
 
@@ -1326,19 +1326,19 @@ emc.bindEvent = function(opts, $eMultiSelect) {
         }, 500);
     });
 
-    $eMultiSelect.delegate('.eui-multiSelect-handle .eui-multiSelect-confirm', 'click', function(event) {
+    $eMultiSelect.delegate('.lay-multiSelect-handle .lay-multiSelect-confirm', 'click', function(event) {
         $eMultiSelect.trigger('confirm');
     });
 
-    $eMultiSelect.delegate('.eui-multiSelect-handle .eui-multiSelect-cancel', 'click', function(event) {
+    $eMultiSelect.delegate('.lay-multiSelect-handle .lay-multiSelect-cancel', 'click', function(event) {
         $eMultiSelect.trigger('cancel');      
     });
 
-    $eMultiSelect.delegate('.eui-multiSelect-handle .eui-multiSelect-clear', 'click', function(event) {
+    $eMultiSelect.delegate('.lay-multiSelect-handle .lay-multiSelect-clear', 'click', function(event) {
         $eMultiSelect.trigger('clear');
     });
 
-    $eMultiSelect.delegate('.eui-multiSelect-result', 'click', function(event) {
+    $eMultiSelect.delegate('.lay-multiSelect-result', 'click', function(event) {
         var $clickEle = $(event.currentTarget);
 
         //当点击已选项的li时，不在该事件回调里面做处理
@@ -1346,14 +1346,14 @@ emc.bindEvent = function(opts, $eMultiSelect) {
             return false;
         }
         else {
-            $eMultiSelect.toggleClass('eui-multiSelect-open');
+            $eMultiSelect.toggleClass('lay-multiSelect-open');
         }
     });
 
-    $eMultiSelect.delegate('.eui-multiSelect-result li', 'click', function(event) {
+    $eMultiSelect.delegate('.lay-multiSelect-result li', 'click', function(event) {
         var $clickEle = $(event.currentTarget);
         var value = $(this).attr('value');
-        var $panel = $eMultiSelect.find('.eui-multiSelect-panel');
+        var $panel = $eMultiSelect.find('.lay-multiSelect-panel');
         var $checkbox = $panel.find(`input[type="checkbox"][value=${value}]`);
         
         $checkbox.prop('checked', false);
@@ -1365,8 +1365,8 @@ emc.bindEvent = function(opts, $eMultiSelect) {
         emc.setCheckedValue(opts, $eMultiSelect, $checkedbox);  
     });
 
-    $eMultiSelect.delegate('.eui-multiSelect-hd > .eui-btn', 'click', function(event) {
-        $eMultiSelect.toggleClass('eui-multiSelect-open');
+    $eMultiSelect.delegate('.lay-multiSelect-hd > .lay-btn', 'click', function(event) {
+        $eMultiSelect.toggleClass('lay-multiSelect-open');
     });
 
     $eMultiSelect.on('confirm', function(event) {
@@ -1385,16 +1385,16 @@ emc.bindEvent = function(opts, $eMultiSelect) {
     });
 
     $eMultiSelect.on('open', function(event) {
-        $eMultiSelect.addClass('eui-multiSelect-open');
+        $eMultiSelect.addClass('lay-multiSelect-open');
     });
 
     $eMultiSelect.on('close', function(event) {
-        $eMultiSelect.removeClass('eui-multiSelect-open');
+        $eMultiSelect.removeClass('lay-multiSelect-open');
     });
 };
 
 emc.init = function(opts, $element) {
-    var exsist = $element.find('.eui-multiSelect').length > 0;
+    var exsist = $element.find('.lay-multiSelect').length > 0;
     if (exsist) {
         emc.destroy($element);
     }
@@ -1416,7 +1416,7 @@ var EMultiSelect = function(options, $element) {
     }
 
     return {
-        id: `eui-multiSelect-${$element.attr('id') || EMultiSelect.index}`,
+        id: `lay-multiSelect-${$element.attr('id') || EMultiSelect.index}`,
         selector: $element.selector,
         opts: opts,
         render: emc.renderList
@@ -1453,10 +1453,10 @@ $.fn.eMultiSelect = function(options) {
 
 $.fn.eMultiSelect.getValue = function(selector) {
     var valueList = [];
-    var eMultiSelectList = $.makeArray($(selector).find('.eui-multiSelect'));
+    var eMultiSelectList = $.makeArray($(selector).find('.lay-multiSelect'));
     eMultiSelectList.forEach(function(eMultiSelect) {
         valueList.push({
-            value: $(eMultiSelect).find('.eui-multiSelect-result').attr('value'),
+            value: $(eMultiSelect).find('.lay-multiSelect-result').attr('value'),
             id: $(eMultiSelect).attr('id')
         });
     });
@@ -1472,10 +1472,10 @@ $.fn.eMultiSelect.getValue = function(selector) {
 
 $.fn.eMultiSelect.getText = function(selector) {
     var textList = [];
-    var eMultiSelectList = $.makeArray($(selector).find('.eui-multiSelect'));
+    var eMultiSelectList = $.makeArray($(selector).find('.lay-multiSelect'));
     eMultiSelectList.forEach(function(eMultiSelect) {
         textList.push({
-            text: $(eMultiSelect).find('.eui-multiSelect-result').attr('text'),
+            text: $(eMultiSelect).find('.lay-multiSelect-result').attr('text'),
             id: $(eMultiSelect).attr('id')
         });
     });
@@ -1508,9 +1508,9 @@ $.fn.eMultiSelect.render = function(selector, data, defaults) {
 $(function() {
     $('body').on('click', function(event) {
         var $clickEle = $(event.target);
-        var isClickEleInEMultiSelect = $clickEle.hasClass('eui-multiSelect') || $clickEle.parents('.eui-multiSelect').length > 0;
+        var isClickEleInEMultiSelect = $clickEle.hasClass('lay-multiSelect') || $clickEle.parents('.lay-multiSelect').length > 0;
         if (!isClickEleInEMultiSelect) {
-            $('.eui-multiSelect').trigger('close');
+            $('.lay-multiSelect').trigger('close');
         }
     });
 });
@@ -1569,9 +1569,9 @@ $(function() {
             }
             var mainHTML = ''+
                 '<div class="eSearchWrapper">'+
-                    '<div class="eui-form-item">'+
-                        '<div class="eui-form-item-control">'+
-                            '<input type="text" class="eui-input" placeholder="'+ placeholder+'">'+
+                    '<div class="lay-form-item">'+
+                        '<div class="lay-form-item-control">'+
+                            '<input type="text" class="lay-input" placeholder="'+ placeholder+'">'+
                             '<i class="input-icon search-icon"></i>'+
                         '</div>'+
                     '</div>'+
@@ -1582,7 +1582,7 @@ $(function() {
         bindEvent:function(){
             var that = this;
             var options = that.options;
-            var $inputObj = that.element.find('.eui-input');
+            var $inputObj = that.element.find('.lay-input');
 
             $inputObj.on('focus', { 'options': options }, focusSearchInput);
             $inputObj.on('keyup',{'options':options}, keyupSearchInput);
@@ -1824,29 +1824,29 @@ var defaults = {
 
 var es = {};
 es.destroy = function($element) {
-    var $eSearch2 = $element.find('.eui-search2');
+    var $eSearch2 = $element.find('.lay-search2');
     var id = $eSearch2.attr('id');
-    $element.find('.eui-search2').remove();
+    $element.find('.lay-search2').remove();
     delete w.eSearch2Inst[id];
 };
 es.render = function(opts, $element) {
     var eSearch2Html = `
-        <div class="eui-search2" id="eui-search2-${$element.attr('id') || ESearch2.index}">
-            <div class="eui-search2-hd">
-                <div class="eui-search2-input">
-                    <input type="text" class="eui-input" placeholder="${opts.placeholder}">
-                    ${opts.showClear ? '<button type="button" class="eui-btn" style="display: none;"></button>' : ''}
+        <div class="lay-search2" id="lay-search2-${$element.attr('id') || ESearch2.index}">
+            <div class="lay-search2-hd">
+                <div class="lay-search2-input">
+                    <input type="text" class="lay-input" placeholder="${opts.placeholder}">
+                    ${opts.showClear ? '<button type="button" class="lay-btn" style="display: none;"></button>' : ''}
                 </div>
             </div>
-            <div class="eui-search2-bd">
-                <div class="eui-search2-list">
+            <div class="lay-search2-bd">
+                <div class="lay-search2-list">
                     <ul></ul>
                 </div>
             </div>
         </div>`;
 
     $element.html(eSearch2Html);
-    var $eSearch2 = $element.find(' > .eui-search2');
+    var $eSearch2 = $element.find(' > .lay-search2');
     return $eSearch2;
 };
 es.renderSearchList = function(opts, $eSearch2, data) {
@@ -1863,7 +1863,7 @@ es.renderSearchList = function(opts, $eSearch2, data) {
             <li ${otherAttr} data-id="${item[opts.resultItem.value]}">${item[opts.resultItem.text]}</li>
         `;
     });
-    $eSearch2.find('.eui-search2-list > ul').html(searchListHtml);
+    $eSearch2.find('.lay-search2-list > ul').html(searchListHtml);
 
     if ($.isFunction(opts.onRender)) {
         var cbThis = { $eSearch2: $eSearch2 };
@@ -1871,8 +1871,8 @@ es.renderSearchList = function(opts, $eSearch2, data) {
     }
 };
 es.showMsgInList = function(msg, $eSearch2) {
-    var msgHtml = `<li class="eui-search2-list-msg">${msg}</li>`;
-    $eSearch2.find('.eui-search2-list > ul').html(msgHtml);
+    var msgHtml = `<li class="lay-search2-list-msg">${msg}</li>`;
+    $eSearch2.find('.lay-search2-list > ul').html(msgHtml);
 };
 es.handleUserInputEvent = function(opts, $eSearch2, $input) {
     var inputVal = $input.val().trim();
@@ -1881,10 +1881,10 @@ es.handleUserInputEvent = function(opts, $eSearch2, $input) {
     $input.attr('data-value', '').attr('title', '');
 
     if (inputVal === '') {
-        $input.siblings('.eui-btn').hide();
+        $input.siblings('.lay-btn').hide();
     }
     else {
-        $input.siblings('.eui-btn').show();
+        $input.siblings('.lay-btn').show();
     }
 
     setTimeout(function() {
@@ -1920,7 +1920,7 @@ es.searchFromAjax = function(opts, $eSearch2) {
     }
 
     var ajaxSendData = {};
-    var inputVal = $eSearch2.find('.eui-search2-input .eui-input').val().trim();
+    var inputVal = $eSearch2.find('.lay-search2-input .lay-input').val().trim();
     ajaxSendData[opts.searchKey] = encodeURIComponent(inputVal);
 
     //发送异步前的回调，必须要return ajaxSendData
@@ -1983,7 +1983,7 @@ es.searchFromAjax = function(opts, $eSearch2) {
     });
 };
 es.searchFromData = function(opts, $eSearch2) {
-    var inputVal = $eSearch2.find('.eui-search2-input .eui-input').val().trim();
+    var inputVal = $eSearch2.find('.lay-search2-input .lay-input').val().trim();
     var searchedData = (opts.searchSource || []).filter(function(item) {
         return (item[opts.searchKey] || '').indexOf(inputVal) > -1;
     });
@@ -2006,17 +2006,17 @@ es.searchFromData = function(opts, $eSearch2) {
 es.setSelectedValue = function(opts, $eSearch2, $selectedItem) {
     var selectedItemValue = $selectedItem.attr(`data-id`);
     var selectedItemText = $selectedItem.text();
-    var exsistSelectedItem = $eSearch2.find(`.eui-search2-multiSelectedItem[data-value="${selectedItemValue}"]`).length > 0;
+    var exsistSelectedItem = $eSearch2.find(`.lay-search2-multiSelectedItem[data-value="${selectedItemValue}"]`).length > 0;
     //将选中的添加到搜索框
     //
     if (opts.multiple && !exsistSelectedItem) {
-        var selectedListItemHtml = `<div class="eui-search2-multiSelectedItem" data-value="${selectedItemValue}">${selectedItemText}</div>`;
-        $eSearch2.find('.eui-search2-input').before(selectedListItemHtml);
+        var selectedListItemHtml = `<div class="lay-search2-multiSelectedItem" data-value="${selectedItemValue}">${selectedItemText}</div>`;
+        $eSearch2.find('.lay-search2-input').before(selectedListItemHtml);
     }
     else {
-        var $input = $eSearch2.find('.eui-search2-input > .eui-input');
+        var $input = $eSearch2.find('.lay-search2-input > .lay-input');
         $input.val(selectedItemText).attr('data-value', selectedItemValue).attr('title', selectedItemText);
-        $input.siblings('.eui-btn').show();
+        $input.siblings('.lay-btn').show();
     }
 
     //
@@ -2035,12 +2035,12 @@ es.setSelectedValue = function(opts, $eSearch2, $selectedItem) {
 es.getValue = function(opts, $eSearch2) {
     var value;
     if (opts.multiple) {
-        value = $.makeArray($eSearch2.find('.eui-search2-multiSelectedItem')).map(function(li) {
+        value = $.makeArray($eSearch2.find('.lay-search2-multiSelectedItem')).map(function(li) {
             return $(li).attr('data-value');
         }).join();
     }
     else {
-        value = $eSearch2.find('.eui-search2-input > .eui-input').attr('data-value');
+        value = $eSearch2.find('.lay-search2-input > .lay-input').attr('data-value');
     }
 
     return value == null ? '' : value;
@@ -2048,12 +2048,12 @@ es.getValue = function(opts, $eSearch2) {
 es.getText = function(opts, $eSearch2) {
     var text;
     if (opts.multiple) {
-        text = $.makeArray($eSearch2.find('.eui-search2-multiSelectedItem')).map(function(li) {
+        text = $.makeArray($eSearch2.find('.lay-search2-multiSelectedItem')).map(function(li) {
             return $(li).text();
         }).join();
     }
     else {
-        text = $eSearch2.find('.eui-search2-input > .eui-input').val();
+        text = $eSearch2.find('.lay-search2-input > .lay-input').val();
     }
 
     return text;
@@ -2072,10 +2072,10 @@ es.deleteMultiSelectedItem = function(opts, $eSearch2, $deletedItem) {
     }
 };
 es.clearInput = function(opts, $eSearch2, forbidCb) {
-    var $input = $eSearch2.find('.eui-search2-input > .eui-input');
+    var $input = $eSearch2.find('.lay-search2-input > .lay-input');
 
     $input.val('').attr('data-value', '').attr('title', '');
-    $input.siblings('.eui-btn').hide();
+    $input.siblings('.lay-btn').hide();
 
     var canCallCb = $.isFunction(opts.onClear) && (typeof forbidCb === 'undefined' || forbidCb === false);
     if (canCallCb) {
@@ -2084,32 +2084,32 @@ es.clearInput = function(opts, $eSearch2, forbidCb) {
     }
 };
 es.bindEvent = function(opts, $eSearch2) {
-    $eSearch2.delegate('.eui-search2-input > .eui-input', 'focus', function(event) {
+    $eSearch2.delegate('.lay-search2-input > .lay-input', 'focus', function(event) {
         var cbThis = { $eSearch2: $eSearch2, event: event };
         if ($.isFunction(opts.onFocus)) { opts.onFocus.call(cbThis); }
     });
 
-    $eSearch2.delegate('.eui-search2-input > .eui-input', 'blur', function(event) {
+    $eSearch2.delegate('.lay-search2-input > .lay-input', 'blur', function(event) {
         var cbThis = { $eSearch2: $eSearch2, event: event };
         if ($.isFunction(opts.onBlur)) { opts.onBlur.call(cbThis); }
     });
 
-    $eSearch2.delegate('.eui-search2-input > .eui-input', 'input', function(event) {
+    $eSearch2.delegate('.lay-search2-input > .lay-input', 'input', function(event) {
         var $input = $(event.currentTarget);
         es.handleUserInputEvent(opts, $eSearch2, $input);
     });
 
-    $eSearch2.delegate('.eui-search2-list > ul > li:not(.eui-search2-list-msg)', 'click', function(event) {
+    $eSearch2.delegate('.lay-search2-list > ul > li:not(.lay-search2-list-msg)', 'click', function(event) {
         var $selectedItem = $(event.currentTarget);
         es.setSelectedValue(opts, $eSearch2, $selectedItem);
     });
 
-    $eSearch2.delegate('.eui-search2-multiSelectedItem', 'click', function(event) {
+    $eSearch2.delegate('.lay-search2-multiSelectedItem', 'click', function(event) {
         var $deletedItem = $(event.currentTarget);
         es.deleteMultiSelectedItem(opts, $eSearch2, $deletedItem);
     });
 
-    $eSearch2.delegate('.eui-search2-input > .eui-btn', 'click', function(event) {
+    $eSearch2.delegate('.lay-search2-input > .lay-btn', 'click', function(event) {
         $eSearch2.trigger('clear');
     });
 
@@ -2122,11 +2122,11 @@ es.bindEvent = function(opts, $eSearch2) {
     });
 
     $eSearch2.on('open', function(event) {
-        $eSearch2.addClass('eui-search2-open');
+        $eSearch2.addClass('lay-search2-open');
     });
 
     $eSearch2.on('close', function(event) {
-        $eSearch2.removeClass('eui-search2-open');
+        $eSearch2.removeClass('lay-search2-open');
 
         if (opts.multiple) {
             es.clearInput(opts, $eSearch2, true);
@@ -2134,7 +2134,7 @@ es.bindEvent = function(opts, $eSearch2) {
     });
 };
 es.init = function(opts, $element) {
-    var exsist = $element.find('.eui-search2').length > 0;
+    var exsist = $element.find('.lay-search2').length > 0;
     if (exsist) {
         es.destroy($element);
     }
@@ -2150,7 +2150,7 @@ var ESearch2 = function(options, $element) {
     es.init(opts, $element);
 
     return {
-        id: `eui-search2-${$element.attr('id') || ESearch2.index}`,
+        id: `lay-search2-${$element.attr('id') || ESearch2.index}`,
         selector: $element.selector,
         opts: opts,
     };
@@ -2252,17 +2252,17 @@ $.fn.eSearch2.setDefaults = function(selector, defaults) {
 
         if (inst.opts.multiple) {
             var selectedListItemHtml = defaults.map(function(defaultItem) {
-                return `<div class="eui-search2-multiSelectedItem" data-value="${defaultItem.value}">${defaultItem.text}</div>`;
+                return `<div class="lay-search2-multiSelectedItem" data-value="${defaultItem.value}">${defaultItem.text}</div>`;
             }).join('');
             
-            $eSearch2.find('.eui-search2-input').before(selectedListItemHtml);
+            $eSearch2.find('.lay-search2-input').before(selectedListItemHtml);
         }
         else {
-            var $input = $eSearch2.find('.eui-search2-input > .eui-input');
+            var $input = $eSearch2.find('.lay-search2-input > .lay-input');
             var selectedItemText = defaults[0].text || '';
             var selectedItemValue = defaults[0].value || '';
             $input.val(selectedItemText).attr('data-value', selectedItemValue).attr('title', selectedItemText);
-            $input.siblings('.eui-btn').show();
+            $input.siblings('.lay-btn').show();
         }        
     });    
 }
@@ -2271,9 +2271,9 @@ $.fn.eSearch2.setDefaults = function(selector, defaults) {
 $(function() {
     $('body').on('click', function(event) {
         var $clickEle = $(event.target);
-        var isClickEleInEsearch2 = $clickEle.hasClass('eui-search2') || $clickEle.parents('.eui-search2').length > 0;
+        var isClickEleInEsearch2 = $clickEle.hasClass('lay-search2') || $clickEle.parents('.lay-search2').length > 0;
         if (!isClickEleInEsearch2) {
-            $('.eui-search2').trigger('close');
+            $('.lay-search2').trigger('close');
         }
     });
 });
@@ -2602,7 +2602,7 @@ $(function() {
 			this.bindEvent();
 		},
 		setId:function(){
-			eSortId = 'eui-sort-';
+			eSortId = 'lay-sort-';
 			eSortId = this.element.attr('id') != null && (this.element.attr('id')).trim() !== '' ? this.element.attr('id'): eSortId + ESort.index;
             this.element.attr('id',eSortId);
 		},
@@ -2626,16 +2626,16 @@ $(function() {
 		handleSortBtnClick:function(e){
 			var obj = e.data;
 			var element = obj.element;
-			if(!element.hasClass('eui-btn-sort-active')){
-                element.addClass('eui-btn-sort-active').addClass('eui-btn-sort-asce');
+			if(!element.hasClass('lay-btn-sort-active')){
+                element.addClass('lay-btn-sort-active').addClass('lay-btn-sort-asce');
                 obj.state = 'asce';
             }
             else {
-                if(element.hasClass('eui-btn-sort-asce')){
-                    element.removeClass('eui-btn-sort-asce').addClass('eui-btn-sort-desc');
+                if(element.hasClass('lay-btn-sort-asce')){
+                    element.removeClass('lay-btn-sort-asce').addClass('lay-btn-sort-desc');
                     obj.state = 'desc';
                 }else{
-                    element.removeClass('eui-btn-sort-desc').addClass('eui-btn-sort-asce');
+                    element.removeClass('lay-btn-sort-desc').addClass('lay-btn-sort-asce');
                     obj.state = 'asce';
                 }
             }
@@ -2684,7 +2684,7 @@ $(function() {
         };
 
         var $eTab = $(element);
-        var eTabId = 'eui-tab-';
+        var eTabId = 'lay-tab-';
         var eTabClassName = '';
 
         var opts = $.extend({}, defaults, options);
@@ -2696,7 +2696,7 @@ $(function() {
 
             bindEvent();
 
-            $eTab.find('> .eui-tab-btn-list > li:nth-child(' + opts.activeIndex + ')').trigger('click');
+            $eTab.find('> .lay-tab-btn-list > li:nth-child(' + opts.activeIndex + ')').trigger('click');
         }
 
         /**
@@ -2708,31 +2708,31 @@ $(function() {
         function destory() {
             var hasExist = w.eTabInst[$eTab.attr('id')] != null;
             if (hasExist) {
-                $eTab.undelegate('> .eui-tab-btn-list > li', 'click');
+                $eTab.undelegate('> .lay-tab-btn-list > li', 'click');
                 $eTab.removeClass(w.eTabInst[$eTab.attr('id')].className);
                 delete w.eTabInst[$eTab.attr('id')];
             }
         }
 
         function renderHtml() {
-            eTabClassName = 'eui-tab-type-' + opts.tabType + 
-                    ' eui-tab-animationType-' + opts.animationType +
-                    ' eui-tab-style-' + opts.tabStyle +
-                    ' eui-tab-' + opts.tabDirection;
+            eTabClassName = 'lay-tab-type-' + opts.tabType + 
+                    ' lay-tab-animationType-' + opts.animationType +
+                    ' lay-tab-style-' + opts.tabStyle +
+                    ' lay-tab-' + opts.tabDirection;
             eTabId = $eTab.attr('id') != null && ($eTab.attr('id')).trim() !== '' ? $eTab.attr('id') : eTabId + ETab.index;
             $eTab.addClass(eTabClassName).attr('id', eTabId);
         }
 
         function bindEvent() {
-            $eTab.delegate('> .eui-tab-btn-list > li', 'click', handleTabBtnClick);
+            $eTab.delegate('> .lay-tab-btn-list > li', 'click', handleTabBtnClick);
         }
 
         function handleTabBtnClick() {
-            $(this).siblings('li.eui-tab-btn-active').removeClass('eui-tab-btn-active');
-            $(this).addClass('eui-tab-btn-active');
+            $(this).siblings('li.lay-tab-btn-active').removeClass('lay-tab-btn-active');
+            $(this).addClass('lay-tab-btn-active');
             $eTab.trigger('change', $(this));
 
-            var contList = $(this).parent().parent().find(' > .eui-tab-cont-list');
+            var contList = $(this).parent().parent().find(' > .lay-tab-cont-list');
             var tab_btn = $(this);
             var tab_btn_index = $(this).parent().find('> li').index(tab_btn);
 
@@ -2743,8 +2743,8 @@ $(function() {
                         var position = opts.tabDirection === 'horizontal' ? 'left' : 'top';
                         contList.find('> ul').css(position, offset);
                     }
-                    contList.find('> ul > .eui-tab-cont-active').removeClass('eui-tab-cont-active');
-                    contList.find('> ul > li:nth-child(' + (tab_btn_index + 1) + ')').addClass('eui-tab-cont-active');
+                    contList.find('> ul > .lay-tab-cont-active').removeClass('lay-tab-cont-active');
+                    contList.find('> ul > li:nth-child(' + (tab_btn_index + 1) + ')').addClass('lay-tab-cont-active');
                     break;
                 }
                 case '2': {
@@ -2830,7 +2830,7 @@ $(function() {
 
         function init() {
             //禁止重复初始化
-            var hasExist = $element.find('.eui-upload-img').length > 0;
+            var hasExist = $element.find('.lay-upload-img').length > 0;
             if (hasExist) {
                 return;
             }
@@ -2842,16 +2842,16 @@ $(function() {
 
         function renderHtml() {
             var imgHtml = '' +
-                    '<div class="eui-upload-img">' +
-                        '<ul class="eui-upload-img-list"></ul>' +
-                        '<div class="eui-upload-img-btn">' +
+                    '<div class="lay-upload-img">' +
+                        '<ul class="lay-upload-img-list"></ul>' +
+                        '<div class="lay-upload-img-btn">' +
                             '<input type="file" accept="' + opts.accept + '">' +
                         '</div>' +
-                        '<p class="eui-upload-img-tip">' + opts.uploadTip + '</p>' +
+                        '<p class="lay-upload-img-tip">' + opts.uploadTip + '</p>' +
                     '</div>';
 
             $element.html(imgHtml);
-            $eUpload = $element.find(' > .eui-upload-img');
+            $eUpload = $element.find(' > .lay-upload-img');
         }
 
         function bindEvent() {
@@ -2883,18 +2883,18 @@ $(function() {
                 }
 
                 //当选择了最大个数的图片后隐藏上传按钮
-                var canHideImgBtn = $eUpload.find(' > .eui-upload-img-list > li').length === opts.maxLength - 1;
+                var canHideImgBtn = $eUpload.find(' > .lay-upload-img-list > li').length === opts.maxLength - 1;
                 if (canHideImgBtn) {
-                    $eUpload.find('.eui-upload-img-btn').hide();
+                    $eUpload.find('.lay-upload-img-btn').hide();
                 }
 
                 //创建li,构造进度
                 var liHtml = '' +
-                        '<li class="eui-upload-uploading">' +
-                            '<span class="eui-upload-progress">上传中</span>' +
-                            '<button type="button" class="eui-upload-deleteBtn" title="删除"></button>' +
+                        '<li class="lay-upload-uploading">' +
+                            '<span class="lay-upload-progress">上传中</span>' +
+                            '<button type="button" class="lay-upload-deleteBtn" title="删除"></button>' +
                         '</li>';
-                var newLi = $eUpload.find('.eui-upload-img-list').append(liHtml).find('li:last-child');
+                var newLi = $eUpload.find('.lay-upload-img-list').append(liHtml).find('li:last-child');
                 readImgDataUrl(file, function() {
                     var imgUrl = this.target.result;
                     newLi.css('background-image', 'url(' + imgUrl + ')');
@@ -2902,13 +2902,13 @@ $(function() {
                 startUpload(file, newLi);
             });
 
-            $eUpload.delegate('.eui-upload-deleteBtn', 'click', function(e) {
+            $eUpload.delegate('.lay-upload-deleteBtn', 'click', function(e) {
                 e.stopPropagation();
                 var deleteBtn = e.target;
                 var inputFileEle = $eUpload.find('input[type="file"]');
 
                 $(deleteBtn).parent().remove();
-                $eUpload.find('.eui-upload-img-btn').show();
+                $eUpload.find('.lay-upload-img-btn').show();
                 inputFileEle.replaceWith(inputFileEle.clone(true));
             });
         }
@@ -3002,32 +3002,32 @@ el.render = function($wrapper) {
         $wrapper = $('body');
     }
     else {
-        $wrapper.addClass('eui-box-fixed-loading');
+        $wrapper.addClass('lay-box-fixed-loading');
     }  
 
     var loadingHtml = '' +
-            '<div class="eui-loading">' +
-                '<div class="eui-loading-mask"></div>' +
-                '<div class="eui-loading-cont">' +
-                    '<div class="eui-loading-cont-rect1"></div>' +
-                    '<div class="eui-loading-cont-rect2"></div>' +
-                    '<div class="eui-loading-cont-rect3"></div>' +
-                    '<div class="eui-loading-cont-rect4"></div>' +
-                    '<div class="eui-loading-cont-rect5"></div>' +
+            '<div class="lay-loading">' +
+                '<div class="lay-loading-mask"></div>' +
+                '<div class="lay-loading-cont">' +
+                    '<div class="lay-loading-cont-rect1"></div>' +
+                    '<div class="lay-loading-cont-rect2"></div>' +
+                    '<div class="lay-loading-cont-rect3"></div>' +
+                    '<div class="lay-loading-cont-rect4"></div>' +
+                    '<div class="lay-loading-cont-rect5"></div>' +
                 '</div>' +
             '</div>';
-    if ($wrapper.find('> .eui-loading').length === 0) {
+    if ($wrapper.find('> .lay-loading').length === 0) {
         $wrapper.append(loadingHtml);
     }
 };
 el.remove = function($wrapper) {
     $wrapper = $wrapper || $('body');
-    var $loadings = $wrapper.find('> .eui-loading');
-    $loadings.addClass('eui-loading-removing');
+    var $loadings = $wrapper.find('> .lay-loading');
+    $loadings.addClass('lay-loading-removing');
 
     setTimeout(function() {
         $loadings.remove();
-        $wrapper.removeClass('eui-box-fixed-loading'); 
+        $wrapper.removeClass('lay-box-fixed-loading'); 
     }, 500);
 };
 
@@ -3246,7 +3246,7 @@ window.PagerView = function(id, options) {
             }
         }
         if (this.showSearch && self._pageCount > 1) {
-            str += '<div class="pagerView-search">跳转到<input type="number" class="eui-input"><button type="button" class="eui-btn eui-btn-primary">GO</button></div>';
+            str += '<div class="pagerView-search">跳转到<input type="number" class="lay-input"><button type="button" class="lay-btn lay-btn-primary">GO</button></div>';
         }
         if (this.showDetails && self.itemCount > 0) {
             str += ' 共' + self._pageCount + '页, ' + self.itemCount + '条记录 ';
@@ -3312,9 +3312,9 @@ window.PagerView = function(id, options) {
                     if(clickCount % 2 ==0){
                         clickCount=0;
                     }
-                    if($('.eui-tip[id=eui-tip-'+eTipIndex+']').length > 0){
+                    if($('.lay-tip[id=lay-tip-'+eTipIndex+']').length > 0){
                         setTimeout(function() {
-                            $('.eui-tip[id=eui-tip-'+eTipIndex+']').remove();
+                            $('.lay-tip[id=lay-tip-'+eTipIndex+']').remove();
                         }, 100);
                         return;
                     }                  
@@ -3326,19 +3326,19 @@ window.PagerView = function(id, options) {
                 $(element).on('mouseenter mouseleave',function(event){
                     if(event.type == "mouseenter"){ 
                         clearTimeout(hideDelayTimer);
-                        if($('.eui-tip[id=eui-tip-'+eTipIndex+']').length > 0){
+                        if($('.lay-tip[id=lay-tip-'+eTipIndex+']').length > 0){
                             return;
                         } 
                         renderHtml(eTipIndex);   
                     } 
                     else if(event.type == "mouseleave"){
                         hideDelayTimer = setTimeout(function() {
-                            $('.eui-tip[id=eui-tip-'+eTipIndex+']').remove();
+                            $('.lay-tip[id=lay-tip-'+eTipIndex+']').remove();
                         }, 100);             
                     }
                 });            
             } else if(opts.type == 'autoHover') {
-                if($('.eui-tip[id=eui-tip-'+eTipIndex+']').length > 0){
+                if($('.lay-tip[id=lay-tip-'+eTipIndex+']').length > 0){
                     return;
                 }   
                 renderHtml(eTipIndex,'ShowCause');
@@ -3346,7 +3346,7 @@ window.PagerView = function(id, options) {
                     return;             
                 }  
                 setTimeout(function() {
-                    $('.eui-tip[id=eui-tip-'+eTipIndex+']').remove();
+                    $('.lay-tip[id=lay-tip-'+eTipIndex+']').remove();
                 }, timer || 3000);
             }
         }
@@ -3358,15 +3358,15 @@ window.PagerView = function(id, options) {
             var eTipCont = '';
             var bodyScrollTop = $('body').scrollTop();
             var bodyScrollLeft = $('body').scrollLeft();
-            eTipCont = `<div class="eui-tip ${opts.hook.split(',').join(' ')}" id=${'eui-tip-'+eTipIndex}>
-                                <div class="eui-tip-inner" style="max-height:${opts.eTipMaxHeight ? opts.eTipMaxHeight+'px' : 'none'}">${tipText}</div>
-                                <i class="eui-tip-icon"></i>
+            eTipCont = `<div class="lay-tip ${opts.hook.split(',').join(' ')}" id=${'lay-tip-'+eTipIndex}>
+                                <div class="lay-tip-inner" style="max-height:${opts.eTipMaxHeight ? opts.eTipMaxHeight+'px' : 'none'}">${tipText}</div>
+                                <i class="lay-tip-icon"></i>
                             </div>`;    
             $('body').append(eTipCont);
             setTipPosition(eTipIndex, otherParam, bodyScrollTop, bodyScrollLeft);
         }
         function setTipPosition(eTipIndex,clickCause, bodyScrollTop, bodyScrollLeft){
-            var eTipEle = $('.eui-tip[id=eui-tip-'+eTipIndex+']');
+            var eTipEle = $('.lay-tip[id=lay-tip-'+eTipIndex+']');
 
             var iconDirection = '';
 
@@ -3422,8 +3422,8 @@ window.PagerView = function(id, options) {
                 //上
                 else {
                     eTipEle.css(TipInTop);
-                    if(eTipHeight !=$('.eui-tip[id=eui-tip-'+eTipIndex+']').outerHeight()) {
-                        eTipHeight = $('.eui-tip[id=eui-tip-'+eTipIndex+']').outerHeight(); 
+                    if(eTipHeight !=$('.lay-tip[id=lay-tip-'+eTipIndex+']').outerHeight()) {
+                        eTipHeight = $('.lay-tip[id=lay-tip-'+eTipIndex+']').outerHeight(); 
                         eTipEle.css({
                             'top': elementTop+$('body').scrollTop() - eTipHeight - 5 + 'px'
                         });
@@ -3446,8 +3446,8 @@ window.PagerView = function(id, options) {
                         break;
                     case 'top':
                         eTipEle.css(TipInTop);
-                        if(eTipHeight !=$('.eui-tip[id=eui-tip-'+eTipIndex+']').outerHeight()) {
-                            eTipHeight = $('.eui-tip[id=eui-tip-'+eTipIndex+']').outerHeight(); 
+                        if(eTipHeight !=$('.lay-tip[id=lay-tip-'+eTipIndex+']').outerHeight()) {
+                            eTipHeight = $('.lay-tip[id=lay-tip-'+eTipIndex+']').outerHeight(); 
                             eTipEle.css({
                                 'top': elementTop+$('body').scrollTop() - eTipHeight - 5 + 'px'
                             });
@@ -3456,7 +3456,7 @@ window.PagerView = function(id, options) {
                         break;
                 }
             }
-            eTipEle.find('.eui-tip-icon').addClass('eui-tip-icon-'+iconDirection);
+            eTipEle.find('.lay-tip-icon').addClass('lay-tip-icon-'+iconDirection);
             // $(element).attr('_currEleTip','_currEleTip'+eTipIndex);
 
             if(!clickCause) {
@@ -3467,7 +3467,7 @@ window.PagerView = function(id, options) {
             if($(element).attr('_currEleTip')) {
                 var num = $(element).attr('_currEleTip').match(/\d+/).join();
                 if(num != eTipIndex) {
-                    $('#eui-tip-'+num).remove();
+                    $('#lay-tip-'+num).remove();
                     $(element).attr('_currEleTip','_currEleTip'+eTipIndex);
                 }
             } else {
@@ -3477,11 +3477,11 @@ window.PagerView = function(id, options) {
             
         }
         function tipHoverFn(eTipIndex) {
-            $('.eui-tip[id=eui-tip-'+eTipIndex+']').hover(function(){
+            $('.lay-tip[id=lay-tip-'+eTipIndex+']').hover(function(){
                 clearTimeout(hideDelayTimer);
             }, function(){
                 hideDelayTimer = setTimeout(function() {
-                    $('.eui-tip[id=eui-tip-'+eTipIndex+']').remove();
+                    $('.lay-tip[id=lay-tip-'+eTipIndex+']').remove();
                 }, 100);   
             });
         }
@@ -3489,7 +3489,7 @@ window.PagerView = function(id, options) {
         init();
 
         return {
-            id: 'eui-tip-'+ETip.index,
+            id: 'lay-tip-'+ETip.index,
         }
 
     };
@@ -3533,8 +3533,8 @@ window.PagerView = function(id, options) {
         if($(selector).length === 1) {
             if($(selector).attr('_currEleTip')) {
                 var num = $(selector).attr('_currEleTip').match(/\d+/).join();
-                if($('#eui-tip-'+num).length > 0) {
-                    $('#eui-tip-'+num).remove();
+                if($('#lay-tip-'+num).length > 0) {
+                    $('#lay-tip-'+num).remove();
                 }
             }
             $(selector).eTip(options, $(selector), timer);
@@ -3544,8 +3544,8 @@ window.PagerView = function(id, options) {
                 var item = this;
                 if($(item).attr('_currEleTip')) {
                     var num = $(item).attr('_currEleTip').match(/\d+/).join();
-                    if($('#eui-tip-'+num).length > 0) {
-                        $('#eui-tip-'+num).remove();
+                    if($('#lay-tip-'+num).length > 0) {
+                        $('#lay-tip-'+num).remove();
                     }
                 }
                 $(selector).eTip(options, item, timer);
@@ -3559,7 +3559,7 @@ window.PagerView = function(id, options) {
             if(_currEleTip){
                 var num = _currEleTip.match(/\d+/).join();
                 setTimeout(function() {
-                    $('#eui-tip-'+num).remove();
+                    $('#lay-tip-'+num).remove();
                 }, 100);  
             }    
         });     
@@ -3780,7 +3780,7 @@ var defaults = {
 
 var et = {};
 et.destroy = function($element) {
-    var $eTree = $element.find('.eui-tree');
+    var $eTree = $element.find('.lay-tree');
     var id = $eTree.attr('id');
     var zTreeObj = $.fn.zTree.getZTreeObj(id);
 
@@ -3789,10 +3789,10 @@ et.destroy = function($element) {
 };
 
 et.render = function(opts, $element) {
-    var eTreeHtml = `<ul class="eui-tree ztree" id="eui-tree-${$element.attr('id') || ETree.index}"></ul>`;
+    var eTreeHtml = `<ul class="lay-tree ztree" id="lay-tree-${$element.attr('id') || ETree.index}"></ul>`;
 
     $element.html(eTreeHtml);
-    var $eTree = $element.find('> .eui-tree');
+    var $eTree = $element.find('> .lay-tree');
 
     if ($.isArray(opts.source)) {
         //将renderTree变成异步操作，让eTree的实例对象先于render方法返回
@@ -4050,7 +4050,7 @@ et.bindEvent = function(opts, $eTree) {
 };
 
 et.init = function(opts, $element) {
-    var exsist = $element.find('.eui-tree').length > 0;
+    var exsist = $element.find('.lay-tree').length > 0;
     if (exsist) {
         et.destroy($element);
     }
@@ -4078,7 +4078,7 @@ var ETree = function(options, $element) {
     et.init(opts, $element);
 
     return {
-        id: `eui-tree-${$element.attr('id') || ETree.index}`,
+        id: `lay-tree-${$element.attr('id') || ETree.index}`,
         selector: $element.selector,
         opts: opts
     };
@@ -4238,36 +4238,36 @@ var defaults = {
 //eMultiSelect type checkbox
 var ets = {};
 ets.destroy = function($element) {
-    var $eTreeSelect = $element.find('.eui-treeSelect');
+    var $eTreeSelect = $element.find('.lay-treeSelect');
     var id = $eTreeSelect.attr('id');
-    $element.find('.eui-treeSelect').remove();
+    $element.find('.lay-treeSelect').remove();
     delete w.eTreeSelectInst[id];
 };
 
 ets.render = function(opts, $element) {
     var eTreeSelectHtml = `
-        <div class="eui-treeSelect" data-type="${opts.multiple ? 'multiple' : 'single'}"
-                id="eui-treeSelect-${$element.attr('id') || ETreeSelect.index}" data-fixed="${opts.fixed}">
-            <div class="eui-treeSelect-hd">
-                <div class="eui-treeSelect-result eui-input eui-treeSelect-result-empty" placeholder="${opts.placeholder}">
+        <div class="lay-treeSelect" data-type="${opts.multiple ? 'multiple' : 'single'}"
+                id="lay-treeSelect-${$element.attr('id') || ETreeSelect.index}" data-fixed="${opts.fixed}">
+            <div class="lay-treeSelect-hd">
+                <div class="lay-treeSelect-result lay-input lay-treeSelect-result-empty" placeholder="${opts.placeholder}">
                 </div>
-                <button type="button" class="eui-btn"></button>
+                <button type="button" class="lay-btn"></button>
             </div>
-            <div class="eui-treeSelect-bd">
-                <div class="eui-treeSelect-search" style="${opts.showSearch ? '' : 'display: none;'}">
-                    <input type="text" class="eui-input" placeholder=${opts.searchPlaceholder}>
+            <div class="lay-treeSelect-bd">
+                <div class="lay-treeSelect-search" style="${opts.showSearch ? '' : 'display: none;'}">
+                    <input type="text" class="lay-input" placeholder=${opts.searchPlaceholder}>
                 </div>
-                <div class="eui-treeSelect-panel" id="eui-treeSelect-panel-${$element.attr('id') || ETreeSelect.index}"></div>
-                <div class="eui-treeSelect-handle" style="${opts.showButton ? '' : 'display: none;'}">
-                    <button type="button" class="eui-btn eui-btn-secondary eui-treeSelect-confirm">确定</button>
-                    <button type="button" class="eui-btn eui-btn-cancel eui-treeSelect-cancel">取消</button>
-                    <button type="button" class="eui-btn eui-btn-cancel eui-treeSelect-clear">清空</button>
+                <div class="lay-treeSelect-panel" id="lay-treeSelect-panel-${$element.attr('id') || ETreeSelect.index}"></div>
+                <div class="lay-treeSelect-handle" style="${opts.showButton ? '' : 'display: none;'}">
+                    <button type="button" class="lay-btn lay-btn-secondary lay-treeSelect-confirm">确定</button>
+                    <button type="button" class="lay-btn lay-btn-cancel lay-treeSelect-cancel">取消</button>
+                    <button type="button" class="lay-btn lay-btn-cancel lay-treeSelect-clear">清空</button>
                 </div>
             </div>
         </div>`;
 
     $element.html(eTreeSelectHtml);
-    var $eTreeSelect = $element.find(' > .eui-treeSelect');
+    var $eTreeSelect = $element.find(' > .lay-treeSelect');
 
     ets.renderTreeSelect(opts, $eTreeSelect);
 
@@ -4276,7 +4276,7 @@ ets.render = function(opts, $element) {
 
 ets.renderTreeSelect = function(opts, $eTreeSelect) {
     var zTreeObj;
-    var treeSelectPanelId = $eTreeSelect.find('.eui-treeSelect-panel').attr('id');
+    var treeSelectPanelId = $eTreeSelect.find('.lay-treeSelect-panel').attr('id');
     $(`#${treeSelectPanelId}`).eTree({
         source: opts.source, //string or array
         sourceRequestType: opts.sourceRequestType,
@@ -4307,7 +4307,7 @@ ets.renderTreeSelect = function(opts, $eTreeSelect) {
         onBeforeSend: opts.onBeforeSend,
         onGetData: opts.onGetData,
         onRender: function() {
-            var treeWrapperId = $eTreeSelect.find('.eui-treeSelect-panel > .eui-tree').attr('id');
+            var treeWrapperId = $eTreeSelect.find('.lay-treeSelect-panel > .lay-tree').attr('id');
             zTreeObj = $.fn.zTree.getZTreeObj(treeWrapperId);
 
             //由于数据来源可能是异步，而这两个方法都要取zTreeObj
@@ -4331,7 +4331,7 @@ ets.renderTreeSelect = function(opts, $eTreeSelect) {
 };
 
 ets.setTreeSelectResult = function(opts, $eTreeSelect) {
-    var $treeSelectResult = $eTreeSelect.find('.eui-treeSelect-result');
+    var $treeSelectResult = $eTreeSelect.find('.lay-treeSelect-result');
     var checkedStuff = ets.getCheckedStuff(opts, $eTreeSelect);
     var checkedNodeList = checkedStuff.nodes || [];
     var value = checkedStuff.value || '';
@@ -4339,10 +4339,10 @@ ets.setTreeSelectResult = function(opts, $eTreeSelect) {
 
     //显隐placeholder
     if (value.trim() === '') {
-        $treeSelectResult.addClass('eui-treeSelect-result-empty');
+        $treeSelectResult.addClass('lay-treeSelect-result-empty');
     }
     else {
-        $treeSelectResult.removeClass('eui-treeSelect-result-empty');
+        $treeSelectResult.removeClass('lay-treeSelect-result-empty');
     }
 
     //多选和单选，呈现的结果形式不同
@@ -4371,7 +4371,7 @@ ets.setTreeSelectResult = function(opts, $eTreeSelect) {
 };
 
 ets.getCheckedStuff = function(opts, $eTreeSelect) {
-    var treeSelectPanelId = $eTreeSelect.find('.eui-treeSelect-panel').attr('id');
+    var treeSelectPanelId = $eTreeSelect.find('.lay-treeSelect-panel').attr('id');
     var checkedNodeList = $.fn.eTree.getFullCheckedNodes(`#${treeSelectPanelId}`);
     var valueKey = opts.isSimple ? opts.resultItem.idKey : opts.resultItem.value;
     var textKey = opts.resultItem.text;
@@ -4404,7 +4404,7 @@ ets.cancelTreeSelect = function(opts, $eTreeSelect, zTreeObj) {
     }
 
     var valueKey = opts.isSimple ? opts.resultItem.idKey : opts.resultItem.value;
-    var valueList = ($eTreeSelect.find('.eui-treeSelect-result').attr('value') || '').split(',').filter(function(value) {
+    var valueList = ($eTreeSelect.find('.lay-treeSelect-result').attr('value') || '').split(',').filter(function(value) {
         return ('' + value).trim() !== '';
     });
 
@@ -4432,7 +4432,7 @@ ets.cancelTreeSelect = function(opts, $eTreeSelect, zTreeObj) {
 
 ets.clearTreeSelect = function(opts, $eTreeSelect, zTreeObj) {
     var valueKey = opts.isSimple ? opts.resultItem.idKey : opts.resultItem.value;
-    var valueList = ($eTreeSelect.find('.eui-treeSelect-result').attr('value') || '').split(',').filter(function(value) {
+    var valueList = ($eTreeSelect.find('.lay-treeSelect-result').attr('value') || '').split(',').filter(function(value) {
         return ('' + value).trim() !== '';
     });
 
@@ -4522,12 +4522,12 @@ ets.search = function(opts, $eTreeSelect, zTreeObj, inputVal) {
 };
 
 //fixed定位时，该函数用来设置
-//1、eui-treeSelect-bd的min-width;
-//2、eui-treeSelect-bd的max-height，因为fixed定位超出浏览器高度时不会自动出现滚动条，
+//1、lay-treeSelect-bd的min-width;
+//2、lay-treeSelect-bd的max-height，因为fixed定位超出浏览器高度时不会自动出现滚动条，
 //   所以要设置max-height最大到浏览器底部边缘，防止被淹没
 ets.setFixedStuff = function(opts, $eTreeSelect) {
-    var $treeSelectHd = $eTreeSelect.find('.eui-treeSelect-hd');
-    var $treeSelectBd = $eTreeSelect.find('.eui-treeSelect-bd');
+    var $treeSelectHd = $eTreeSelect.find('.lay-treeSelect-hd');
+    var $treeSelectBd = $eTreeSelect.find('.lay-treeSelect-bd');
     var treeSelectHdWidth = $treeSelectHd.outerWidth();
     var treeSelectHdHeight = $treeSelectHd.outerHeight();
     var treeSelectBdMarginTop = 5;
@@ -4541,22 +4541,22 @@ ets.setFixedStuff = function(opts, $eTreeSelect) {
 
 
 ets.bindEvent = function(opts, $eTreeSelect, zTreeObj) {
-    $eTreeSelect.delegate('.eui-treeSelect-handle .eui-treeSelect-confirm', 'click', function(event) {
+    $eTreeSelect.delegate('.lay-treeSelect-handle .lay-treeSelect-confirm', 'click', function(event) {
         ets.confirmTreeSelect(opts, $eTreeSelect, zTreeObj);
         $eTreeSelect.trigger('close');
     });
 
-    $eTreeSelect.delegate('.eui-treeSelect-handle .eui-treeSelect-cancel', 'click', function(event) {
+    $eTreeSelect.delegate('.lay-treeSelect-handle .lay-treeSelect-cancel', 'click', function(event) {
         ets.cancelTreeSelect(opts, $eTreeSelect, zTreeObj);
         $eTreeSelect.trigger('close');
     });
 
-    $eTreeSelect.delegate('.eui-treeSelect-handle .eui-treeSelect-clear', 'click', function(event) {
+    $eTreeSelect.delegate('.lay-treeSelect-handle .lay-treeSelect-clear', 'click', function(event) {
         ets.clearTreeSelect(opts, $eTreeSelect, zTreeObj);
         $eTreeSelect.trigger('close');
     });
 
-    $eTreeSelect.delegate('.eui-treeSelect-result', 'click', function(event) {
+    $eTreeSelect.delegate('.lay-treeSelect-result', 'click', function(event) {
         var $clickEle = $(event.currentTarget);
 
         //当点击已选项的li时，不在该事件回调里面做处理
@@ -4566,7 +4566,7 @@ ets.bindEvent = function(opts, $eTreeSelect, zTreeObj) {
 
 
         //控制面板的展开与收起
-        if ($eTreeSelect.hasClass('eui-treeSelect-open')) {
+        if ($eTreeSelect.hasClass('lay-treeSelect-open')) {
             $eTreeSelect.trigger('close');
         }
         else {
@@ -4574,12 +4574,12 @@ ets.bindEvent = function(opts, $eTreeSelect, zTreeObj) {
         }
     });
 
-    $eTreeSelect.delegate('.eui-treeSelect-result li', 'click', function(event) {
+    $eTreeSelect.delegate('.lay-treeSelect-result li', 'click', function(event) {
         var $clickEle = $(event.currentTarget);
         ets.deleteTreeSelectResultItem(opts, $eTreeSelect, zTreeObj, $clickEle);
     });
 
-    $eTreeSelect.delegate('.eui-treeSelect-search .eui-input', 'input', function(event) {
+    $eTreeSelect.delegate('.lay-treeSelect-search .lay-input', 'input', function(event) {
         var $input = $(event.currentTarget);
         var inputVal = $input.val().trim();
 
@@ -4594,9 +4594,9 @@ ets.bindEvent = function(opts, $eTreeSelect, zTreeObj) {
         }, 500);
     });
 
-    $eTreeSelect.delegate('.eui-treeSelect-hd > .eui-btn', 'click', function(event) {
+    $eTreeSelect.delegate('.lay-treeSelect-hd > .lay-btn', 'click', function(event) {
         //控制面板的展开与收起
-        if ($eTreeSelect.hasClass('eui-treeSelect-open')) {
+        if ($eTreeSelect.hasClass('lay-treeSelect-open')) {
             $eTreeSelect.trigger('close');
         }
         else {
@@ -4606,24 +4606,24 @@ ets.bindEvent = function(opts, $eTreeSelect, zTreeObj) {
 
     $eTreeSelect.on('open', function(event) {
         if (opts.fixed) {
-            $('body').addClass('eui-body-fixed-treeSelect');
+            $('body').addClass('lay-body-fixed-treeSelect');
             ets.setFixedStuff(opts, $eTreeSelect);
         }
 
-        $eTreeSelect.addClass('eui-treeSelect-open');
+        $eTreeSelect.addClass('lay-treeSelect-open');
     });
 
     $eTreeSelect.on('close', function(event) {
         if (opts.fixed) {
-            $('body').removeClass('eui-body-fixed-treeSelect');
+            $('body').removeClass('lay-body-fixed-treeSelect');
         }
 
-        $eTreeSelect.removeClass('eui-treeSelect-open');
+        $eTreeSelect.removeClass('lay-treeSelect-open');
     });
 };
 
 ets.init = function(opts, $element) {
-    var exsist = $element.find('.eui-treeSelect').length > 0;
+    var exsist = $element.find('.lay-treeSelect').length > 0;
     if (exsist) {
         ets.destroy($element);
     }
@@ -4651,7 +4651,7 @@ var ETreeSelect = function(options, $element) {
     ets.init(opts, $element);
 
     return {
-        id: `eui-treeSelect-${$element.attr('id') || ETreeSelect.index}`,
+        id: `lay-treeSelect-${$element.attr('id') || ETreeSelect.index}`,
         selector: $element.selector,
         opts: opts
     };
@@ -4691,7 +4691,7 @@ $.fn.eTreeSelect.getValue = function(selector) {
 
     instListFromSelector.forEach(function(inst) {
         valueList.push({
-            value: $(`#${inst.id}`).find('.eui-treeSelect-result').attr('value'),
+            value: $(`#${inst.id}`).find('.lay-treeSelect-result').attr('value'),
             id: inst.id
         });
     });
@@ -4711,7 +4711,7 @@ $.fn.eTreeSelect.getText = function(selector) {
 
     instListFromSelector.forEach(function(inst) {
         textList.push({
-            text: $(`#${inst.id}`).find('.eui-treeSelect-result').attr('text'),
+            text: $(`#${inst.id}`).find('.lay-treeSelect-result').attr('text'),
             id: inst.id
         });
     });
@@ -4740,7 +4740,7 @@ $.fn.eTreeSelect.setDefaults = function(selector, defaults) {
 
     instListFromSelector.forEach(function(inst) {
         var $eTreeSelect = $(`#${inst.id}`);
-        var treeSelector = `#${$eTreeSelect.find('.eui-treeSelect-panel').attr('id')}`;
+        var treeSelector = `#${$eTreeSelect.find('.lay-treeSelect-panel').attr('id')}`;
         inst.opts.defaults = defaults;
         $.fn.eTree.setDefaults(treeSelector, defaults);
         ets.setTreeSelectResult(inst.opts, $eTreeSelect);
@@ -4750,9 +4750,9 @@ $.fn.eTreeSelect.setDefaults = function(selector, defaults) {
 $(function() {
     $('body').on('click', function(event) {
         var $clickEle = $(event.target);
-        var isClickEleInETreeSelect = $clickEle.hasClass('eui-treeSelect') || $clickEle.parents('.eui-treeSelect').length > 0;
+        var isClickEleInETreeSelect = $clickEle.hasClass('lay-treeSelect') || $clickEle.parents('.lay-treeSelect').length > 0;
         if (!isClickEleInETreeSelect) {
-            $('.eui-treeSelect').trigger('close');
+            $('.lay-treeSelect').trigger('close');
         }
     });
 });
@@ -4785,12 +4785,12 @@ var esl = {};
 esl.destroy = function(opts, $element) {
     var idAttr = $element.attr('id');
 
-    $element.removeClass('eui-scrollLoad');
+    $element.removeClass('lay-scrollLoad');
     delete w.eScrollLoadInst[idAttr];
 };
 
 esl.render = function(opts, $element) {
-    $element.addClass('eui-scrollLoad');
+    $element.addClass('lay-scrollLoad');
     esl.loadPage(opts, $element);
 };
 
@@ -4801,7 +4801,7 @@ esl.bindEvent = function(opts, $element) {
         }
     });
 
-    $element.delegate('.eui-scrollLoad-errorBtn', 'click', function(event) {
+    $element.delegate('.lay-scrollLoad-errorBtn', 'click', function(event) {
         opts._isLoadPageError = false;
         $.fn.eScrollLoad.loadPage(`#${$element.attr('id')}`);
     });
@@ -4813,7 +4813,7 @@ esl.init = function(opts, $element) {
         throw new Error('被初始化时，该元素必须要设置id属性')
     }
 
-    var exsist = $element.hasClass('.eui-scrollLoad');
+    var exsist = $element.hasClass('.lay-scrollLoad');
     if (exsist) {
         esl.destroy(opts, $element);
     }
@@ -4914,7 +4914,7 @@ esl.handleLoadPageError = function(opts, $element) {
 
     //显示出错文案
     var errorTip = `
-        <button type="button" class="eui-scrollLoad-errorBtn">
+        <button type="button" class="lay-scrollLoad-errorBtn">
             出错了，点我重新加载
         </button>`;
     esl.util.showTip(opts, $element, errorTip);
@@ -4935,12 +4935,12 @@ esl.util.showLoading = function(opts, $element, tip) {
 };
 
 esl.util.hideLoading = function(opts, $element) {
-    $element.find('.eui-scrollLoad-tip').remove();
+    $element.find('.lay-scrollLoad-tip').remove();
 };
 
 esl.util.showTip = function(opts, $element, tip) {
-    $element.find('.eui-scrollLoad-tip').remove();
-    $element.append(`<div class="eui-scrollLoad-tip">${tip}</div>`);
+    $element.find('.lay-scrollLoad-tip').remove();
+    $element.append(`<div class="lay-scrollLoad-tip">${tip}</div>`);
 };
 
 esl.util.handleLoadPageError = esl.handleLoadPageError;
@@ -5024,900 +5024,3 @@ $.fn.eScrollLoad.loadPage = function(selector, pageIndex) {
 };
 
 })(jQuery, window);
-;(function($,w){
-    //多次初始化，但是却只拨打一次
-    //这2个变量是为挂断电话准备
-    var initMore = 0;
-    var callOnce = 0;
-    //多次初始化，但是却只拨打一次
-    //这2个变量是为重复请求准备
-    var repeatMore = 0;
-    var repeatOne = 0;
-    var defaults = {
-        phoneNumber:'',
-        tips:'请输入手机号',
-        isRight:true,
-        jobNumber:'',
-        environment:'',
-        appId:'',
-        token:'',
-        isSmsBtn:0,
-        smsConfig:{
-            title: '模板',
-            width: '650px',
-            height: '410px',
-            lock: true,
-            max: false,
-            url:'',
-        },
-        getCallStatus: 0,
-        getCallTypeUrl: {
-            url:'',
-        },
-        setCallTypeUrl: {
-            url:'',
-            params: '',
-            type:'get',
-        },
-        onNormalCall: null,
-        onNormalLogin: null,
-        onNormalHangUpFail: null,
-        onNormalCallOn: null,
-        onNormalCallError: null,
-        onNormalHangUp: null,
-        onCoolPadCall: null,
-        onGeneralCall: null
-    };
-    // 全局变量-定时器
-    var callTimer = null;
-
-    var ep = {
-        event: function(opts,$ele){
-            var that = this;
-            
-            $ele.delegate(".eui-phone-set","click",function(){
-                var $clickEle = $(this);
-                if (!$clickEle.hasClass("disabled")) {
-                    if ($ele.find(".eui-phone-box").hasClass("show")) {
-                        $ele.find(".eui-phone-box").removeClass("show");
-                    }else{
-                        $ele.find(".eui-phone-box").addClass("show");
-                    };
-                };
-            });
-
-            $ele.delegate(".eui-phone-type","click",function(){
-                var $clickEle = $(this);
-                $clickEle.addClass("eui-phone-selected").siblings(".eui-phone-selected").removeClass("eui-phone-selected");
-            });
-
-            $ele.delegate(".eui-dialog-btn-close","click",function(){
-                $ele.find(".eui-phone-box").removeClass("show");
-            });
-
-            $ele.delegate(".eui-phone-btn","click",function(){
-                var type = $ele.find(".eui-phone-selected").attr("data-type"),
-                    des = $ele.find(".eui-phone-selected").attr("data-des");
-                var status = $ele.find(".calling");
-                that.setCallType(opts,$ele,type,des);
-            });
-            
-            $ele.delegate(".eui-phone-sms","click",function(){
-                var con = opts.smsConfig;
-                var tit = con.title,
-                    w = con.width,
-                    h = con.height,
-                    lock = con.lock,
-                    max = con.max,
-                    content = 'url:' + con.url;
-                if ($.isFunction($.dialog)) {
-                    $.dialog({
-                        title: tit,
-                        width: w,
-                        height: h,
-                        lock: lock,
-                        max: max,
-                        content: content
-                    });
-                }else{
-                    eMsg({
-                        text: '请于eui之前加载$.dialog插件',
-                        timer: 2000
-                    });
-                };
-            });
-
-            //拨打电话
-            $ele.delegate(".calling .eui-phone-button:not(.eui-phone-none)","click",function(){
-                var $clickEle = $(this),
-                    type = $clickEle.attr("data-type"),
-                    isCall = 'isCalling';
-                if (opts.phoneNumber == '') {
-                    eMsg({
-                        text: opts.tips,
-                        timer: 1000
-                    });
-                    return;
-                };
-                $clickEle.attr("disabled",true);
-                //普通拨打
-                if (type == 1) {
-                    // 正在拨打状态调整
-                    isCall = 'isCalling';
-                    that.resetCallStatus($ele,type,isCall,opts);
-                    //判断拨打电话窗口是否打开
-                    CallCenterWebSpBar.isHubOpened({ jobnum: opts.jobNumber })
-                    .done(function (data) {
-                        console.info(JSON.stringify(data));
-                        //true-窗口已打开，false-窗口未打开
-                        if (data.isSuccess) {
-                            repeatOne = repeatMore;
-                            that.initNormalCall($ele,type,isCall,opts);
-                        }else{
-                            // 打开窗口-监听登录事件
-                            CallCenterWebSpBar.openWebSoftPhoneWindow()
-                            .done(function (msg) {
-                                console.info(JSON.stringify(msg));
-                                if (msg.isSuccess) {
-                                    //不管初始化几次，最终拨打只打最后一次
-                                    //后面检测是否登录的方法有用到
-                                    callOnce = initMore;
-                                    repeatOne = repeatMore;
-                                    that.callTo($ele,type,isCall,opts);
-                                }else{
-                                    $("body").find(".eui-alert").remove();
-                                    eAlert({
-                                        title: '坐席拨打失败',
-                                        text: `
-                                            <div id="warm_tips">
-                                                请确认以下几点事项：<br/>
-                                                1.<span>Avaya one-X</span>是否已登录？<br/>
-                                                2.关闭<span>右下角</span>拨打电话小窗口<br/>
-                                                3.请检查是否申请过<span>坐席账户</span>?<br/>
-                                                4.电脑的<span>网络信号</span>是否正常？（请勿使用无线网）<br/>
-                                                其他问题，请联系<span>吐槽小强</span>！
-                                            </div>
-                                            `,
-                                        icon: {
-                                            show: false     
-                                        },
-                                        cancelButton: {
-                                            show: false,
-                                        },
-                                        onConfirm: function() {
-                                            eAlert.close(this.$eAlert);
-                                        },
-                                    });
-                                    var isCall = 'hangUp',
-                                        type = 1;
-                                    that.resetCallStatus($ele,type,isCall,opts); 
-                                };
-                            })
-                            .fail(function (msg) {
-                                console.warn(JSON.stringify(msg));
-                                if (msg.isSuccess) {
-                                    //不管初始化几次，最终拨打只打最后一次
-                                    //后面检测是否登录的方法有用到
-                                    callOnce = initMore;
-                                    repeatOne = repeatMore;
-                                    that.callTo($ele,type,isCall,opts);
-                                }else{
-                                    $("body").find(".eui-alert").remove();
-                                    eAlert({
-                                        title: '坐席拨打失败',
-                                        text: `
-                                            <div id="warm_tips">
-                                                请确认以下几点事项：<br/>
-                                                1.<span>Avaya one-X</span>是否已登录？<br/>
-                                                2.关闭<span>右下角</span>拨打电话小窗口<br/>
-                                                3.请检查是否申请过<span>坐席账户</span>?<br/>
-                                                4.电脑的<span>网络信号</span>是否正常？（请勿使用无线网）<br/>
-                                                其他问题，请联系<span>吐槽小强</span>！
-                                            </div>
-                                            `,
-                                        icon: {
-                                            show: false     
-                                        },
-                                        cancelButton: {
-                                            show: false,
-                                        },
-                                        onConfirm: function() {
-                                            eAlert.close(this.$eAlert);
-                                        },
-                                    });
-                                    var isCall = 'hangUp',
-                                        type = 1;
-                                    that.resetCallStatus($ele,type,isCall,opts); 
-                                };
-                            });
-                        }
-                    }).fail(function (data) {
-                        console.info(JSON.stringify(data));
-                        //true-窗口已打开，false-窗口未打开
-                        if (data.isSuccess) {
-                            repeatOne = repeatMore;
-                            that.initNormalCall($ele,type,isCall,opts);
-                        }else{
-                            // 打开窗口-监听登录事件
-                            CallCenterWebSpBar.openWebSoftPhoneWindow()
-                            .done(function (msg) {
-                                console.warn(JSON.stringify(msg));
-                                if (msg.isSuccess) {
-                                    //不管初始化几次，最终拨打只打最后一次
-                                    //后面检测是否登录的方法有用到
-                                    callOnce = initMore;
-                                    repeatOne = repeatMore;
-                                    that.callTo($ele,type,isCall,opts);
-                                }else{
-                                    $("body").find(".eui-alert").remove();
-                                    eAlert({
-                                        title: '坐席拨打失败',
-                                        text: `
-                                            <div id="warm_tips">
-                                                请确认以下几点事项：<br/>
-                                                1.<span>Avaya one-X</span>是否已登录？<br/>
-                                                2.关闭<span>右下角</span>拨打电话小窗口<br/>
-                                                3.请检查是否申请过<span>坐席账户</span>?<br/>
-                                                4.电脑的<span>网络信号</span>是否正常？（请勿使用无线网）<br/>
-                                                其他问题，请联系<span>吐槽小强</span>！
-                                            </div>
-                                            `,
-                                        icon: {
-                                            show: false     
-                                        },
-                                        cancelButton: {
-                                            show: false,
-                                        },
-                                        onConfirm: function() {
-                                            eAlert.close(this.$eAlert);
-                                        },
-                                    });
-                                    var isCall = 'hangUp',
-                                        type = 1;
-                                    that.resetCallStatus($ele,type,isCall,opts); 
-                                };
-                            })
-                            .fail(function (msg) {
-                                console.warn(JSON.stringify(msg));
-                                if (msg.isSuccess) {
-                                    //不管初始化几次，最终拨打只打最后一次
-                                    //后面检测是否登录的方法有用到
-                                    callOnce = initMore;
-                                    repeatOne = repeatMore;
-                                    that.callTo($ele,type,isCall,opts);
-                                }else{
-                                    $("body").find(".eui-alert").remove();
-                                    eAlert({
-                                        title: '坐席拨打失败',
-                                        text: `
-                                            <div id="warm_tips">
-                                                请确认以下几点事项：<br/>
-                                                1.<span>Avaya one-X</span>是否已登录？<br/>
-                                                2.关闭<span>右下角</span>拨打电话小窗口<br/>
-                                                3.请检查是否申请过<span>坐席账户</span>?<br/>
-                                                4.电脑的<span>网络信号</span>是否正常？（请勿使用无线网）<br/>
-                                                其他问题，请联系<span>吐槽小强</span>！
-                                            </div>
-                                            `,
-                                        icon: {
-                                            show: false     
-                                        },
-                                        cancelButton: {
-                                            show: false,
-                                        },
-                                        onConfirm: function() {
-                                            eAlert.close(this.$eAlert);
-                                        },
-                                    });
-                                    var isCall = 'hangUp',
-                                        type = 1;
-                                    that.resetCallStatus($ele,type,isCall,opts); 
-                                };
-                            });
-                        };
-                    });
-                };
-                // 小顾拨打和通用拨打-开发人员对接即可
-                // 小顾拨打
-                if (type == 2) {
-                    if ($.isFunction(opts.onCoolPadCall)) {
-                        opts.onCoolPadCall.call();
-                    }
-                };
-                // 通用拨打
-                if (type == 3) {
-                    if ($.isFunction(opts.onGeneralCall)) {
-                        opts.onGeneralCall.call();
-                    }
-                };
-            });
-
-            //挂断电话
-            $ele.delegate(".eui-phone-hang-up","click",function(){
-                var $clickEle = $(this),
-                    type = $clickEle.attr("data-type"),
-                    isCall = 'hangUp';
-                // 只有坐席电话才有挂断按钮，另外两种在手机上面操作
-                CallCenterWebSpBar.hangup().done(function (retdata) {
-                    console.info(JSON.stringify(retdata));
-                }).fail(function (msg) {
-                    console.warn(JSON.stringify(msg));
-                });
-                //如果挂断事件一直不返回，那么5s后自动设置挂断状态
-                setTimeout(function(){
-                    var tar = $ele.find(".eui-phone").hasClass("eui-phone-ready");
-                    if (!tar) {
-                        if ($.isFunction(opts.onNormalHangUpFail)) {
-                            var msg = {
-                                isSuccess:false,
-                                message:'超时'
-                            };
-                            opts.onNormalHangUpFail.call((msg));
-                        };
-                        that.resetCallStatus($ele,type,isCall,opts,true);
-                    };
-                },6000);
-                clearInterval(callTimer);
-            });
-
-            // 挂断会触发
-            CallCenterWebSpBar.on('CallCleared', function (msg) {
-                clearInterval(callTimer);
-                if (msg.isAnswered) {
-                    isCall = 'hangUp';
-                    var type = 1;
-                    that.resetCallStatus($ele,type,isCall,opts);
-                    if ($.isFunction(opts.onNormalHangUp)) {
-                        opts.onNormalHangUp.call((msg));
-                    };
-                }else{
-                    isCall = 'hangUp';
-                    var type = 1;
-                    that.resetCallStatus($ele,type,isCall,opts);
-                    if ($.isFunction(opts.onNormalHangUp)) {
-                        opts.onNormalHangUp.call((msg));
-                    };
-                };
-                var type = 1,
-                    isCall = 'hangUp';
-                that.resetCallStatus($ele,type,isCall,opts);
-            });
-
-            /*
-                这里是一些和电话相关的事件
-            */
-            //暴露挂断事件
-            // 一键禁止
-            $ele.on("forBid",function(){
-                var type = that.getDataType($ele),
-                    $tar = $ele.find(".calling");
-                $tar.find(".eui-phone-button").attr("disabled",true);
-            });
-            // 解除禁止
-            $ele.on("unForBid",function(){
-                var type = that.getDataType($ele),
-                    $tar = $ele.find(".calling");
-                $tar.find(".eui-phone-button").attr("disabled",false);
-            });
-            // 挂断
-            $ele.on("hangUp",function(){
-                var type = that.getDataType($ele);
-                type == 1 && $ele.find(".eui-phone-hang-up").trigger("click");
-            });
-            // 拨打电话
-            $ele.on("toCall",function(){
-                var type = that.getDataType($ele),
-                    $tar = $ele.find(".calling");
-                $tar.find(".eui-phone-button:not(.eui-phone-none)").trigger("click");
-            });
-            // 关闭拨打电话窗口
-            $ele.on("closeCall",function(){
-                CallCenterWebSpBar.closeWebSoftPhoneWindow();
-            });
-
-            // 正在拨打事件
-            $ele.on("calling",function(event){              
-                var type = that.getDataType($ele),
-                    isCall = 'isCalling';
-                that.resetCallStatus($ele,type,isCall,opts);
-            });
-
-            //接通事件
-            // 小顾和通用拨打状态调整和坐席不同，直接重置为初始状态即可。
-            $ele.on("callSuccess",function(){
-                var type = that.getDataType($ele),
-                    isCall = 'hangUp';
-                that.resetCallStatus($ele,type,isCall,opts);
-            });
-
-            //拨打失败事件
-            $ele.on("callFail",function(){
-                var type = that.getDataType($ele),
-                    isCall = 'hangUp';
-                that.resetCallStatus($ele,type,isCall,opts);
-            });
-            
-            $("body").delegate("#closeCallWindow","click",function(){
-                if (typeof CallCenterWebSpBar != 'undefined') {
-                    eMsg({
-                        text: '窗口已关闭',
-                        timer: 500
-                    });
-                    CallCenterWebSpBar.closeWebSoftPhoneWindow();
-                };
-            });
-
-            $("body").on("click", function(event) {
-                var $clickEle = $(event.target);
-                var isClickEleInePhone = $clickEle.hasClass("eui-phone-set") || $clickEle.hasClass("eui-phone-box") || $clickEle.parents(".eui-phone-box").length > 0;
-                if (!isClickEleInePhone) {
-                    $ele.find(".eui-phone-box").removeClass("show");
-                };
-            });
-        },
-        destroy: function($ele){
-            $ele.unbind();
-            $ele.find(".eui-phone").remove();
-        },
-        callTo: function($ele,type,isCall,opts){
-            var that = this;
-            if (initMore == callOnce) {
-                CallCenterWebSpBar.on('AgentLogin', function (data) {
-                    if(data.isSuccess == true){
-                        setTimeout(function(){
-                            if ($.isFunction(opts.onNormalLogin)) {
-                                opts.onNormalLogin.call((data));
-                            };
-                            that.initNormalCall($ele,type,isCall,opts);
-                        },800);
-                    }else{
-                        $("body").find(".eui-alert").remove();
-                        eAlert({
-                            title: '坐席拨打失败',
-                            text: `
-                                <div id="warm_tips">
-                                    请确认以下几点事项：<br/>
-                                    1.<span>Avaya one-X</span>是否已登录？<br/>
-                                    2.关闭<span>右下角</span>拨打电话小窗口<br/>
-                                    3.电脑的<span>网络信号</span>是否正常？（请勿使用无线网）<br/>
-                                    其他问题，请联系<span>吐槽小强</span>！
-                                </div>
-                                `,
-                            icon: {
-                                show: false     
-                            },
-                            cancelButton: {
-                                show: false,
-                            },
-                            onConfirm: function() {
-                                eAlert.close(this.$eAlert);
-                            },
-                        });
-                        var isCall = 'hangUp',
-                            type = 1;
-                        that.initNormalCall($ele,type,isCall,opts);
-                    };
-                });
-            }else{
-                $("body").find(".eui-alert").remove();
-                eAlert({
-                    title: '坐席拨打失败',
-                    text: `
-                        <div id="warm_tips">
-                            请确认以下几点事项：<br/>
-                            1.<span>Avaya one-X</span>是否已登录？<br/>
-                            2.关闭<span>右下角</span>拨打电话小窗口<br/>
-                            3.电脑的<span>网络信号</span>是否正常？（请勿使用无线网）<br/>
-                            其他问题，请联系<span>吐槽小强</span>！
-                        </div>
-                        `,
-                    icon: {
-                        show: false     
-                    },
-                    cancelButton: {
-                        show: false,
-                    },
-                    onConfirm: function() {
-                        eAlert.close(this.$eAlert);
-                    },
-                });
-                var isCall = 'hangUp',
-                    type = 1;
-                that.initNormalCall($ele,type,isCall,opts);
-            }
-        },
-        initNormalCall: function($ele,type,isCall,opts){
-            var that = this;
-            initMore++;
-            
-            // type = 1;
-
-            //calledNum只能包含数字，不能有横线-，小括号（），等
-            // 由于通信啥的特殊性，代码会走到done和fail里面，所以两处代码一样，具体@wmy09534
-            if (repeatOne == repeatMore) {
-                CallCenterWebSpBar.makeCall({ calledNum: opts.phoneNumber})
-                .done(function (msg) {
-                    console.warn(JSON.stringify(msg));
-
-                    if ($.isFunction(opts.onNormalCall)) {
-                        opts.onNormalCall.call((msg));
-                    };
-                    if (msg.isSuccess) {
-                        isCall = 'isCalling';
-                        defaults.getCallStatus = '1';
-                    }else{
-                        isCall = 'hangUp';
-                        defaults.getCallStatus = '0';
-                        if ($.isFunction(opts.onNormalCallError)) {
-                            opts.onNormalCallError.call((msg));
-                        };
-                        $("body").find(".eui-alert").remove();
-                        eAlert({
-                            title: '坐席拨打失败',
-                            text: `
-                                <div id="warm_tips">
-                                    请确认以下几点事项：<br/>
-                                    1.<span>Avaya one-X</span>是否已登录？<br/>
-                                    2.关闭<span>右下角</span>拨打电话小窗口<br/>
-                                    3.电脑的<span>网络信号</span>是否正常？（请勿使用无线网）<br/>
-                                    其他问题，请联系<span>吐槽小强</span>！
-                                </div>
-                                `,
-                            icon: {
-                                show: false     
-                            },
-                            cancelButton: {
-                                show: false,
-                            },
-                            onConfirm: function() {
-                                eAlert.close(this.$eAlert);
-                            },
-                        });
-                    };
-                    that.resetCallStatus($ele,type,isCall,opts);
-                })
-                .fail(function (msg) {
-                    console.warn(JSON.stringify(msg));
-                    if ($.isFunction(opts.onNormalCall)) {
-                        opts.onNormalCall.call((msg));
-                    };
-                    if (msg.isSuccess) {
-                        isCall = 'isCalling';
-                        defaults.getCallStatus = '1';
-                        
-                    }else{
-                        isCall = 'hangUp';
-                        defaults.getCallStatus = '0';
-                        if ($.isFunction(opts.onNormalCallError)) {
-                            opts.onNormalCallError.call((msg));
-                        };
-                        $("body").find(".eui-alert").remove();
-                        eAlert({
-                            title: '坐席拨打失败',
-                            text: `
-                                <div id="warm_tips">
-                                    请确认以下几点事项：<br/>
-                                    1.<span>Avaya one-X</span>是否已登录？<br/>
-                                    2.关闭<span>右下角</span>拨打电话小窗口<br/>
-                                    3.电脑的<span>网络信号</span>是否正常？（请勿使用无线网）<br/>
-                                    其他问题，请联系<span>吐槽小强</span>！
-                                </div>
-                                `,
-                            icon: {
-                                show: false     
-                            },
-                            cancelButton: {
-                                show: false,
-                            },
-                            onConfirm: function() {
-                                eAlert.close(this.$eAlert);
-                            },
-                        });
-                    };
-                    type = 1;
-                    that.resetCallStatus($ele,type,isCall,opts);
-                    // that.resetCallStatus($ele,type,isCall,opts);
-                });
-            };
-            repeatMore++;
-            // 坐席手机电话-接通事件
-            CallCenterWebSpBar.on('CallEstablished', function (msg) {
-                if (msg.isAnswered) {
-                    isCall = 'called';
-                    that.getCallTime($ele,0);
-                    if ($.isFunction(opts.onNormalCallOn)) {
-                        opts.onNormalCallOn.call((msg));
-                    };
-                    that.resetCallStatus($ele,type,isCall,opts);
-                }else{
-                    if ($.isFunction(opts.onNormalCallError)) {
-                        opts.onNormalCallError.call((msg));
-                    };
-                };
-            });
-        },
-        // 修改电话状态
-        calling: function($ele,type,isCall,opts){
-            this.resetCallStatus($ele,type,isCall,opts);
-        },
-        // 获取当前激活的电话按钮
-        getDataType: function($ele){
-            var tar = $ele.find(".calling");
-            var TYPE = tar.find("button:not(.eui-phone-none)").attr("data-type");
-            return TYPE;
-        },
-        // 通过接口获取电话类型
-        getCallType: function(opts,ePhone){
-            var $ele = ePhone;
-            var get = opts.getCallTypeUrl;
-            $.ajax({
-                url:get.url,
-                type: 'get',
-                datatype: 'json',
-                success: function(data){
-                    // 修改电话类型
-                    if (data) {
-                        var type = data.DefaultCallType || 1,
-                            tarBtn = $ele.find(".calling"),
-                            tarLi = $ele.find(".eui-phone-list"),
-                            tarText = $ele.find(".eui-phone-description");
-                        type == 1 && tarText.html("请外拨");
-                        type == 2 && tarText.html("小顾已就绪 请外拨");
-                        type == 3 && tarText.html("坐席已就绪 请外拨");
-                        tarBtn.find("button").each(function(){
-                            var $clickEle = $(this);
-                            ($clickEle.attr("data-type") == type) && ($clickEle.removeClass("eui-phone-none").siblings().addClass("eui-phone-none"));
-                        });
-                        tarLi.find("li").each(function(){
-                            var $clickEle = $(this);
-                            ($clickEle.attr("data-type") == type) && ($clickEle.addClass("eui-phone-selected").siblings().removeClass("eui-phone-selected"));
-                        });
-                    }else{
-                        console.log('电话初始化类型失败');
-                    };
-                },
-                error: function(error){
-                    console.log('电话初始化类型失败' + error.status);
-                }
-            });
-        },
-        // 设置电话类型
-        setCallType: function(opts,$ele,type,des){
-            var set = opts.setCallTypeUrl,
-                url = '';
-            if (set.url.indexOf('?') > -1) {
-                url = set.url + '&' + set.params + '=' + type
-            }else{
-                url = set.url + '?' + set.params + '=' + type
-            };
-            $.ajax({
-                url: url,
-                type: set.type,
-                datatype: 'json',
-                success: function(data){
-                    if (data) {
-                        var status = $ele.find(".calling");
-                        status.find(".eui-phone-button").each(function(){
-                            var $clickEle = $(this);
-                            ($clickEle.attr("data-type") == type) && ($clickEle.removeClass("eui-phone-none").siblings().addClass("eui-phone-none"));
-                        });
-                        $ele.find(".eui-phone-box").removeClass("show")
-                            .end().find(".eui-phone-description").html(des)
-                            .end().find(".eui-phone-hang-up");
-                    }else{
-                        $ele.find(".eui-phone-box").removeClass("show")
-                        eMsg({
-                            text: '抱歉，拨打方式设置失败',
-                            timer: 1000
-                        });
-                    };
-                },
-                error: function(error){
-                    $ele.find(".eui-phone-box").removeClass("show")
-                            .end().find(".eui-phone-description").html(des)
-                            .end().find(".eui-phone-hang-up");
-                    console.error('拨打方式设置失败' + error.status);
-                    eMsg({
-                        text: '抱歉，拨打方式设置失败',
-                        timer: 1000
-                    });
-                }
-            });
-        },
-        // 修改电话状态
-        resetCallStatus: function($ele,callType,isCall,opts,bool){
-            var that = this;
-            // 拨打电话需要修改各种状态，包括但不限于禁止切换类型-修改拨打背景和文字。
-            // callType表示拨打的电话类型
-            var callTxt = $ele.find(".eui-phone-description");
-            if (isCall == 'isCalling') {
-                $ele.find(".eui-phone-set").addClass("disabled")
-                    .end().addClass("eui-phone-iscalling").removeClass("eui-phone-ready");
-                if (callType == 1) {
-                    $ele.find(".calling .eui-phone-button").attr("disabled",true)
-                        .end().find(".eui-phone-hang-up").removeClass("eui-phone-none");
-                };
-                callType == 1 && callTxt.html("正在呼出 请注意接听......");
-                callType == 2 && callTxt.html("<p class='eui-phone-others'>小顾努力拨打中，请注意接听</p><p class='eui-phone-others'>如需挂断，请在手机上操作</p>");
-                callType == 3 && callTxt.html("<p class='eui-phone-others'>坐席努力拨打中，请注意接听</p><p class='eui-phone-others'>如需挂断，请在手机上操作</p>");
-                // 修改拨打电话状态
-                defaults.getCallStatus = '1';
-            };
-            if (isCall == 'called') {
-                $ele.find(".eui-phone-set").addClass("disabled")
-                    .end().addClass("eui-phone-connected").removeClass("eui-phone-ready").removeClass("eui-phone-iscalling");
-                if (callType == 1) {
-                    $ele.find(".calling .eui-phone-button").attr("disabled",true)
-                        .end().find(".eui-phone-hang-up").removeClass("eui-phone-none");
-                        callTxt.html("已接通 请注意说辞");
-                    setTimeout(function(){
-                        $ele.find(".eui-phone-call-time").removeClass("eui-phone-none");
-                        callTxt.html("正在通话");
-                    },2000);
-                };
-                defaults.getCallStatus = '1';
-            };
-            if (isCall == 'hangUp') {
-                $ele.addClass("eui-phone-callend").removeClass("eui-phone-iscalling").removeClass("eui-phone-connected")
-                    .end().find(".eui-phone-hang-up").addClass("eui-phone-none");
-                if (callType == 1) {
-                    var allTime = $ele.find(".eui-phone-call-time").text();
-                    callTxt.html("通话已结束 总" + allTime);
-                    $ele.find(".eui-phone-good").addClass("eui-phone-none")
-                        .end().find(".eui-phone-call-time").addClass("eui-phone-none");
-                    if (bool) {
-                        that.changeCallStatus($ele,callTxt,bool);
-                    }else{
-                        that.changeCallStatus($ele,callTxt);
-                    };
-                }else{
-                    $ele.find(".calling .eui-phone-button").attr("disabled",false)
-                        .end().find(".eui-phone-set").removeClass("disabled")
-                        .end().addClass("eui-phone-ready").removeClass("eui-phone-iscalling").removeClass("eui-phone-callend").removeClass("eui-phone-connected")
-                    callType == 2 && callTxt.html("小顾已就绪 请外拨");
-                    callType == 3 && callTxt.html("坐席已就绪 请外拨");
-                };
-                defaults.getCallStatus = '0';
-            };
-        },
-        changeCallStatus: function($ele,callTxt,bool){
-            if (bool) {
-                $ele.find(".calling .eui-phone-button").attr("disabled",false)
-            }else{
-                setTimeout(function(){
-                    $ele.find(".calling .eui-phone-button").attr("disabled",false)
-                },4000);
-            };
-            $ele.find(".eui-phone-set").removeClass("disabled")
-                .end().find(".eui-phone-call-time").addClass("eui-phone-none").text('时长 00:00')
-                .end().addClass("eui-phone-ready").removeClass("eui-phone-iscalling").removeClass("eui-phone-callend").removeClass("eui-phone-connected");
-            callTxt.html("请外拨");
-        },
-        renderHtml: function(opts,$ele){
-            var isRight = !opts.isRight ? 'eui-phone-tips-right' : '';
-            var ePhoneHtml = `
-                        <div class="eui-phone eui-phone-ready" id="eui-phone-${$ele.attr("id") || EPhone.index}">
-                            <div class="eui-phone-hd">
-                                <div class="eui-phone-call calling">
-                                    <button data-type="1" class="eui-phone-button eui-phone-seat ">坐席拨打</button>
-                                    <button data-type="2" class="eui-phone-button eui-phone-coolpad eui-phone-none">小顾酷派版</button>
-                                    <button data-type="3" class="eui-phone-button eui-phone-general eui-phone-none">通用拨打</button>
-                                </div>
-                                ${opts.isSmsBtn == 1 ? '<div class="eui-phone-call"><button class="eui-phone-button eui-phone-sms">短信</button></div>' : ''}
-                                <div class="eui-phone-set"></div>
-                                <div class="eui-phone-status">
-                                    <span class="eui-phone-good eui-phone-shake eui-phone-none"></span>
-                                    <span class="eui-phone-description">请外拨</span>
-                                    <span class="eui-phone-call-time eui-phone-none">时长 00:00</span>
-                                </div>
-                                <div class="eui-phone-call"><button data-type="1" class="eui-phone-button eui-phone-hang-up eui-phone-none">挂断</button></div>
-                            </div>
-                            <div class="eui-phone-bd">
-                                <div class="eui-dialog eui-phone-box">
-                                    <div class="eui-dialog-cont">
-                                        <div class="eui-dialog-hd">
-                                            <h3>请选择常用拨打方式</h3>
-                                            <button class="eui-dialog-btn-close"></button>
-                                        </div>
-                                        <div class="eui-dialog-bd" style="overflow: initial;">
-                                            <ul class="eui-phone-list">
-                                                <li data-type="1" class="eui-phone-type eui-phone-selected" data-des="请外拨">
-                                                    坐席拨打
-                                                    <span class="">（有井星或者讯鸟账号的）</span>
-                                                </li>
-                                                <li data-type="2" class="eui-phone-type" data-des="小顾已就绪 请外拨">
-                                                    小顾酷派版
-                                                    <span class="">（有公司定制的酷派手机的）</span>
-                                                </li>
-                                                <li data-type="3" class="eui-phone-type" data-des="坐席已就绪 请外拨">
-                                                    通用拨打
-                                                    <span class="">（下载小顾通用版即可用）</span>
-                                                    <span class="eui-phone-tips">
-                                                        <div class="eui-phone-tips-box ${isRight}">
-                                                            使用注意点：<br>
-                                                            1、下载小顾通用版，按照指示维护小顾坐席手机号码<br>
-                                                            2、被叫号码与小顾坐席号码不可以是同一个<br>
-                                                        </div>
-                                                    </span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="eui-dialog-ft">
-                                            <button type="button" class="eui-btn eui-btn-secondary eui-phone-btn">确定</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-            $ele.html(ePhoneHtml);
-            var $tar = $ele.find(".eui-phone");
-            return $tar;
-        },
-        getCallTime: function($ele,second){
-            clearInterval(callTimer);
-            var h = 0, m = 0, s = 0, returnStr = '';
-            callTimer = setInterval(function () {
-                second++;
-                h = Math.floor(second / 60 / 60 % 24);
-                m = Math.floor(second / 60 % 60);
-                s = Math.floor(second % 60);
-                h = h < 10 ? "0" + h : h;
-                m = m < 10 ? "0" + m : m;
-                s = s < 10 ? "0" + s : s;
-                var returnStr = '时长 ' + h + ":" + m + ":" + s;
-                if (h == "00") {
-                    returnStr = '时长 ' + m + ":" + s;
-                };
-                $ele.find(".eui-phone-call-time").text(returnStr).attr("data-second", second);
-                if(second >= 60) {
-                    $ele.find(".eui-phone-good").removeClass("eui-phone-none");
-                };
-            }, 1000);
-        },
-        init: function(opts,$ele){
-            var exsist = $ele.find(".eui-phone").length;
-                exsist > 0 && this.destroy($ele);
-            var ePhone = this.renderHtml(opts,$ele);
-                this.event(opts,ePhone);
-            //根据该请求，判断电话类型
-            this.getCallType(opts,ePhone);
-            var num = opts.jobNumber + '',
-                envir = opts.environment + '',
-                appid = opts.appId + '',
-                token = opts.token + '';
-            CallCenterWebSpBar.init(num, envir, appid, token);
-        }
-    };
-    
-    var EPhone = function(opts,$ele){
-        ++EPhone.index;
-        var opts = $.extend({},defaults,opts);
-        ep.init(opts,$ele);
-        return {
-            id: `eui-phone-${$ele.attr("id") || EPhone.index} `,
-            selector: $ele.selector,
-            opts: opts
-        }
-    };
-    EPhone.index = 0;
-
-    $.fn.ePhone = function(opts){
-        var result;
-        if (this.length == 1) {
-            return result = new EPhone(opts,this);
-        }else if (this.length > 1){
-            result = [];
-            this.each(function(){
-                var $clickEle = $(this);
-                var eachItem = new EPhone(opts,$clickEle);
-                result.push(eachItem);
-            });
-            return result;
-        };
-    };
-    //获取拨打电话的状态，1 || 0。
-    $.fn.ePhone.getCallStatus = function(){
-        return defaults.getCallStatus
-    };
-})(jQuery,window);

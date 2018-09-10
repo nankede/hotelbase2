@@ -26,6 +26,19 @@
     <div id="pager"></div>
 </div>
 
+<div class="lay-dialog" id="dialogDetail">
+    <div class="lay-dialog-mask"></div>
+    <div class="lay-dialog-cont" style="width:760px;height:480px;">
+        <div class="lay-dialog-hd">
+            <h3>用户信息</h3>
+            <button class="lay-dialog-btn-close"></button>
+        </div>
+        <div class="lay-dialog-bd">
+            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
+        </div>
+    </div>
+</div>
+
 @section foot{
     <script>
         var app = angular.module('myApp', []);
@@ -88,7 +101,9 @@
                 pager.render();
             }
             $scope.detail = function (id) {
-                alert("打开详情页面，id:" + id);
+                var url = "/system/userdetail?id=" + id;
+                $('#ifm').prop('src', url);
+                $("#dialogDetail").eDialog('show');
             }
         });
     </script>
