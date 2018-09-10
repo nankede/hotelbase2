@@ -37,6 +37,16 @@ namespace HotelBase.Entity
         /// 总数
         /// </summary>
         public int Total { get; set; }
+
+        /// <summary>
+        /// Id
+        /// </summary>
+        public int AddId { get; set; }
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Msg { get; set; }
     }
 
     /// <summary>

@@ -1,0 +1,221 @@
+﻿@section head{
+    <style>
+        body {
+            min-width: unset !important;
+            height: unset !important;
+        }
+    </style>
+}
+
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>上级名称</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="dic.DParentName" disabled />
+        </div>
+    </div>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>Code</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="dic.DCode" disabled />
+        </div>
+    </div>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>名称</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="dic.DName" placeholder="请输入名称" />
+        </div>
+    </div>
+    <div class="lay-form-item">
+
+        <div class="lay-form-item-caption ">
+            <label>Value</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="dic.DValue" placeholder="请输入Value值" />
+        </div>
+    </div>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>描述</label>
+        </div>
+        <div class="lay-form-item-control">
+            <textarea rows="3" class="lay-input" ng-model="dic.DRemark" placeholder="请输入描述" style="width:185px;"></textarea>
+        </div>
+    </div>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>排序</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="dic.DSort" placeholder="请输入描述" />
+        </div>
+    </div>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>状态</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input type="radio" class="lay-radio-variant"
+                   name="rdo-valid" id="rdo-valid-0" ng-model="dic.DIsValid" value="0" />
+            <label for="rdo-valid-0">
+                <span>无效</span>
+            </label>
+            <input type="radio" class="lay-radio-variant"
+                   name="rdo-valid" id="rdo-valid-1" ng-model="dic.DIsValid" value="1" />
+            <label for="rdo-valid-1">
+                <span>有效</span>
+            </label>
+        </div>
+    </div>
+    <div class="lay-form-foot">
+        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+    </div>
+</div>
+<input id="hfId" type="hidden" value="@ViewBag.Id" />
+<input id="hfPId" type="hidden" value="@ViewBag.PId" />
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.Id = $('#hfId').val();
+            $scope.pId = $('#hfPId').val();
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                detailUrl: "GetDicDetail",
+                newUrl: "GetDicNew",
+                addUrl: "AddDic",
+
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                if ($scope.Id > 0) {//详情
+                    $scope.getDetail();
+                }
+                else if ($scope.pId > 0) {//新增
+                    $scope.getNewDetail();
+                }
+            }
+            //查询
+            $scope.getDetail = function () {
+                var para = { id: $scope.Id };
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.detailUrl,
+                    type: 'get',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.dic = undefined;
+                        var msg = "";
+                        if (data != null && data.Id > 0) {
+                            $scope.dic = data;
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //新增查询
+            $scope.getNewDetail = function () {
+                var para = { pid: $scope.pId };
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.newUrl,
+                    type: 'get',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.dic = undefined;
+                        var msg = "";
+                        if (data != null && data.DCode > 0) {
+                            $scope.dic = data;
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '新增失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '新增失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+            //保存
+            $scope.Save = function () {
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.addUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: $scope.dic,
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.dic.Id = data.AddId;
+                            eMsg({
+                                timer: 2000,
+                                text: '操作成功，关闭页面！'
+                            });
+                            //关闭页面
+                        }
+                        else {
+                            var msg = data ? data.Msg : "";
+                            eMsg({
+                                timer: 2000,
+                                text: '操作失败,' + msg
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '新增失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+        });
+    </script>
+}

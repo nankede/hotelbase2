@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using HotelBase.Common;
 using HotelBase.Entity.Models;
+using HotelBase.Entity.Tables;
 using HotelBase.Service;
 using HotelBase.Web.Controllers;
 
@@ -85,5 +86,75 @@ namespace HotelBase.Web.Controller.System
         }
         #endregion
 
+        #region 字典
+
+        /// <summary>
+        /// 字典列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DicList()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 数据字典列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetDicList(GetDicListRequest request)
+        {
+            var response = SystemBll.GetDicList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 字典新增
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult AddDic(Sys_BaseDictionaryModel request)
+        {
+            if (request.Id <= 0)
+            {
+                var res = SystemBll.AddDicModel(request);
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var res = SystemBll.UpdateDicModel(request);
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 字典列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DicDetail(int id, int pId)
+        {
+            ViewBag.Id = id;
+            ViewBag.PId = pId;
+            return View();
+        }
+
+        /// <summary>
+        /// 数据字典
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetDicDetail(int id)
+        {
+            var response = SystemBll.GetDicModel(id, 0);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 数据字典
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetDicNew(int pid)
+        {
+            var response = SystemBll.GetNewDicModel(pid);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

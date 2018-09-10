@@ -122,7 +122,24 @@ namespace HotelBase.DataAccess
         /// <returns></returns>
         public static int Insert(string sql, object param = null)
         {
-            return Execute(sql, param);
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.ExecuteScalar<int>(sql, param);
+                    var resutl = conn.Query<int>("SELECT @@IDENTITY;").FirstOrDefault();
+                    return resutl;
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("Insert异常", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+                return 0;
+            }
         }
 
         /// <summary>

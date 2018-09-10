@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="System\Sys_BaseDictionaryAccess.cs" />
     <Compile Include="System\Sys_UserInfoAccess.cs" />
     <Compile Include="MysqlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

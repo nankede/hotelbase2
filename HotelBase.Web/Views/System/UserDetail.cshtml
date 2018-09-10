@@ -82,7 +82,7 @@
                         }
                         else {
                             eMsg({
-                                text: '查询失败，请稍后重试！'
+                                timer: 2000,                                text: '查询失败，请稍后重试！'
                             });
                         }
                         $scope.$apply();
@@ -90,7 +90,7 @@
                     error: function () {
                         console.log("err");
                         eMsg({
-                            text: '查询失败，请稍后重试！'
+                            timer: 2000,                            text: '查询失败，请稍后重试！'
                         });
                     },
                     complete: function () {
