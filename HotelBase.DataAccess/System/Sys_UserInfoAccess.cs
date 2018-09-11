@@ -60,7 +60,7 @@ namespace HotelBase.DataAccess
         }
 
         /// <summary>
-        /// 用户列表
+        /// 用户详情
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>

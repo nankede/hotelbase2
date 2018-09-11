@@ -177,9 +177,9 @@ namespace HotelBase.DataAccess.System
             para.Add("@DRemark", model.DRemark ?? string.Empty);
             para.Add("@DIsValid", model.DIsValid);
             para.Add("@DSort", model.DSort);
-            var id = MysqlHelper.Update(sql.ToString(), para);
+            var c = MysqlHelper.Update(sql.ToString(), para);
             _DicList = null;
-            return id;
+            return c;
         }
     }
 }

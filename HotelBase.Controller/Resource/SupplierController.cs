@@ -25,6 +25,54 @@ namespace HotelBase.Web.Controller.System
             return View();
         }
 
+        /// <summary>
+        /// 供应商详情
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Detail(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        /// <summary>
+        /// 查询供应商
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetList(SupplierSearchRequest request)
+        {
+            var list = SupplierBll.GetList(request);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 新增供应商
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult Save(H_SupplierModel request)
+        {
+            if (request.Id > 0)
+            {
+                var response = SupplierBll.Update(request);
+                return Json(response);
+            }
+            else
+            {
+                var response = SupplierBll.Insert(request);
+                return Json(response);
+            }
+        }
+
+        /// <summary>
+        /// 查询供应商详情
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetDateil(int id)
+        {
+            var model = SupplierBll.GetDetail(id);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

@@ -1,5 +1,136 @@
-﻿<div>
-    <h1> 供应商列表页面 </h1>
+﻿@{
+    ViewBag.PageTitle = "供应商管理";
+}
+<div class="lay-form" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>供应商Id</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" type="number" ng-model="Search.Id" placeholder="请输入供应商Id" />
+        </div>
+        <div class="lay-form-item-caption ">
+            <label>供应商名称</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="Search.Name" placeholder="请输入供应商名称" />
+        </div>
+        <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
+        <input type="button" class="lay-btn lay-btn-primary" value="新增" ng-click="detail(0)">
+    </div>
+    <table class="lay-table">
+        <thead>
+            <tr>
+                <th width="10%">供应商ID</th>
+                <th>供应商名称</th>
+                <th width="15%">供应商来源</th>
+                <th width="15%">联系人</th>
+                <th width="15%">产品经理</th>
+                <th width="15%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="d in list">
+                <td ng-bind="d.Id"></td>
+                <td ng-bind="d.Name"></td>
+                <td ng-bind="d.Source"></td>
+                <td ng-bind="d.Linker"></td>
+                <td ng-bind="d.PmName"></td>
+                <td>
+                    <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(d.Id)" />
+                </td>
+            </tr>
 
-    <h1> 加油！！！</h1>
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="6" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="pager"></div>
 </div>
+
+<div class="lay-dialog" id="dialogDetail">
+    <div class="lay-dialog-mask"></div>
+    <div class="lay-dialog-cont" style="width:760px;height:530px;">
+        <div class="lay-dialog-hd">
+            <h3>字典信息</h3>
+            <button class="lay-dialog-btn-close"></button>
+        </div>
+        <div class="lay-dialog-bd">
+            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
+        </div>
+    </div>
+</div>
+
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                listUrl: "/supplier/getlist/",
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                $scope.Search = { PageIndex: 1, Id: '', Name: '' };
+                $scope.search(1);
+            }
+            //查询
+            $scope.search = function (index) {
+                $("#dialogDetail").eDialog('hide');
+                $scope.Search.PageIndex = index;
+                var para = $scope.Search;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.listUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.list = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.list = data.List;
+                            $scope.pagerInit(index, data.Total);
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                };
+                pager.render();
+            }
+            $scope.detail = function (id) {
+                var url = "/supplier/detail?id=" + id;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+        });
+    </script>
+}
