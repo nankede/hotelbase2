@@ -15,7 +15,7 @@
         <div class="lay-form-item-control">
             <input class="lay-input" ng-model="Search.Code" placeholder="请输入Code" />
         </div>
-        <input type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
+        <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
         <input type="button" class="lay-btn lay-btn-primary none" value="新增" ng-click="Add(0)">
     </div>
     <table class="lay-table">
@@ -84,6 +84,7 @@
             }
             //查询
             $scope.search = function (index) {
+                $("#dialogDetail").eDialog('hide');
                 $scope.Search.PageIndex = index;
                 var para = $scope.Search;
                 eLoading.show();
@@ -143,5 +144,7 @@
                 $("#dialogDetail").eDialog('show');
             }
         });
+
+
     </script>
 }

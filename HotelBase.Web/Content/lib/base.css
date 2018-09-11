@@ -105,7 +105,8 @@ img {
 }
 
     .lay-form-item-caption > label {
-        min-width: 110px;
+        min-width: 90px;
+        margin-left: 16px;
     }
 
 .lay-form-foot {

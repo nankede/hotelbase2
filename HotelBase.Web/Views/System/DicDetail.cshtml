@@ -194,6 +194,7 @@
                                 text: '操作成功，关闭页面！'
                             });
                             //关闭页面
+                            setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
                         }
                         else {
                             var msg = data ? data.Msg : "";
