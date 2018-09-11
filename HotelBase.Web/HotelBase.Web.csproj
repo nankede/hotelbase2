@@ -102,6 +102,45 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\animate.min.css" />
+    <Content Include="Content\css\bootstrap.min14ed.css" />
+    <Content Include="Content\css\font-awesome.min93e3.css" />
+    <Content Include="Content\css\patterns\header-profile-skin-1.png" />
+    <Content Include="Content\css\patterns\header-profile-skin-3.png" />
+    <Content Include="Content\css\patterns\header-profile.png" />
+    <Content Include="Content\css\patterns\shattered.png" />
+    <Content Include="Content\css\style.min862f.css" />
+    <Content Include="Content\fonts\fontawesome-webfont93e3.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\js\plugins\layer\extend\layer.ext.js" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\demo.html" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\laydate\laydate.js" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\laydate\need\laydate.css" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\laydate\skins\dahong\icon.png" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\laydate\skins\dahong\laydate.css" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\laydate\skins\default\icon.png" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\laydate\skins\default\laydate.css" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\laydate\skins\molv\icon.png" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\laydate\skins\molv\laydate.css" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\更新日志.txt" />
+    <Content Include="Content\js\plugins\layer\laydate\laydate.js" />
+    <Content Include="Content\js\plugins\layer\laydate\need\laydate.css" />
+    <Content Include="Content\js\plugins\layer\laydate\skins\dahong\icon.png" />
+    <Content Include="Content\js\plugins\layer\laydate\skins\dahong\laydate.css" />
+    <Content Include="Content\js\plugins\layer\laydate\skins\default\icon.png" />
+    <Content Include="Content\js\plugins\layer\laydate\skins\default\laydate.css" />
+    <Content Include="Content\js\plugins\layer\laydate\skins\molv\icon.png" />
+    <Content Include="Content\js\plugins\layer\laydate\skins\molv\laydate.css" />
+    <Content Include="Content\js\plugins\layer\layer.min.js" />
+    <Content Include="Content\js\plugins\layer\layim\layim.css" />
+    <Content Include="Content\js\plugins\layer\layim\layim.js" />
+    <Content Include="Content\js\plugins\layer\layim\loading.gif" />
+    <Content Include="Content\js\plugins\layer\skin\layer.css" />
+    <Content Include="Content\js\plugins\layer\skin\layer.ext.css" />
+    <Content Include="Content\js\plugins\layer\skin\moon\style.css" />
+    <Content Include="Content\js\plugins\metisMenu\jquery.metisMenu.js" />
+    <Content Include="Content\js\plugins\pace\pace.min.js" />
+    <Content Include="Content\js\plugins\slimscroll\jquery.slimscroll.min.js" />
     <Content Include="Content\lib\angular.min.js" />
     <Content Include="Content\lib\base.css" />
     <Content Include="Content\lib\base.js" />
@@ -143,6 +182,18 @@
     <Content Include="Views\System\UserDetail.cshtml" />
     <Content Include="Views\System\DicList.cshtml" />
     <Content Include="Views\System\DicDetail.cshtml" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1.zip" />
+    <Content Include="Content\js\plugins\layer\laydate-v1.1\layDate官网.url" />
+    <Content Include="Content\fonts\fontawesome-webfont93e3.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont93e3.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont93e3.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont93e3.woff2" />
+    <Content Include="Content\fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regulard41d.eot" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
