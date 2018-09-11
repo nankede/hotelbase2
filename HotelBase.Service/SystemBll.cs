@@ -133,5 +133,19 @@ namespace HotelBase.Service
             return res;
         }
         #endregion
+
+        #region 国家地区
+
+        /// <summary>
+        /// 查询区域列表
+        /// pid =1 省份
+        /// </summary>
+        /// <returns></returns>
+        public static List<AreaInfoModel> GetAreaList(int pId)
+        {
+            return Sys_AreaInfoAccess.GetAreaList(pId);
+        }
+
+        #endregion
     }
 }
