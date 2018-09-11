@@ -45,9 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DataController.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="BaseController.cs" />
+    <Compile Include="Order\OrderController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource\SupplierController.cs" />
+    <Compile Include="Resource\HotelController.cs" />
     <Compile Include="System\SystemController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,5 +72,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

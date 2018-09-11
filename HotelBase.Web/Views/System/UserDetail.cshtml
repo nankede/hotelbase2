@@ -52,7 +52,7 @@
                 $scope.pageInit();
             });
             $scope.config = {
-                detailUrl: "GetUserDetail",
+                detailUrl: "/system/getuserdetail",
                 resList: [
                     { value: 0, name: "未设定" },
                     { value: 1, name: "资源维护" },
@@ -82,7 +82,8 @@
                         }
                         else {
                             eMsg({
-                                timer: 2000,                                text: '查询失败，请稍后重试！'
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
                             });
                         }
                         $scope.$apply();
@@ -90,7 +91,8 @@
                     error: function () {
                         console.log("err");
                         eMsg({
-                            timer: 2000,                            text: '查询失败，请稍后重试！'
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
                         });
                     },
                     complete: function () {

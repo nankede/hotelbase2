@@ -47,7 +47,7 @@
                 $scope.pageInit();
             });
             $scope.config = {
-                listUrl: "GetUserList",
+                listUrl: "/system/getuserlist",
             }
             //页面初始化
             $scope.pageInit = function () {
@@ -73,7 +73,8 @@
                         }
                         else {
                             eMsg({
-                                timer: 2000,                                text: '查询失败，请稍后重试！'
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
                             });
                         }
                         $scope.$apply();
@@ -81,7 +82,8 @@
                     error: function () {
                         console.log("err");
                         eMsg({
-                            timer: 2000,                            text: '查询失败，请稍后重试！'
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
                         });
                     },
                     complete: function () {
@@ -96,7 +98,7 @@
                 pager.size = 10;
                 pager.itemCount = total;
                 pager.onclick = function (index) {
-                    $scope.Search(index);
+                    $scope.search(index);
                 };
                 pager.render();
             }

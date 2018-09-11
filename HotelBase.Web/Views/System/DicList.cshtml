@@ -75,7 +75,7 @@
                 $scope.pageInit();
             });
             $scope.config = {
-                listUrl: "GetDicList",
+                listUrl: "/system/getdiclist/",
             }
             //页面初始化
             $scope.pageInit = function () {
@@ -127,7 +127,7 @@
                 pager.size = 10;
                 pager.itemCount = total;
                 pager.onclick = function (index) {
-                    $scope.Search(index);
+                    $scope.search(index);
                 };
                 pager.render();
             }

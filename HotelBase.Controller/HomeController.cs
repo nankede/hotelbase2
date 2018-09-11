@@ -23,5 +23,15 @@ namespace HotelBase.Web.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 工作台
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult WorkList()
+        {
+            return View();
+        }
+
     }
 }
