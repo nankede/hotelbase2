@@ -30,7 +30,7 @@ namespace HotelBase.DataAccess.Resource
             , `SFinancePhone`, `SFinanceBankName`, `SFinanceAccount`, `SFinanceName`
             , `SInvoiceTitle`, `SInvoiceTax`, `SInvoiceItem`, `SInvoiceType`
             , `SCooperationBegin`, `SCooperationEnd`, `SIsValid`, `SAddName`
-            , `SPMId`, `SPMName` ) VALUES ");
+            , `SPMId`, `SPMName` )  ");
             sql.Append(@" VALUES  
             ( @SCode, @SSourceId, @SName, @SFullName, @SAddress, @SLinker
             , @SLinkPhone, @SLinkQQ, @SLinkMail, @SLinkFax, @SFinanceLinker
@@ -42,6 +42,7 @@ namespace HotelBase.DataAccess.Resource
             var para = new DynamicParameters();
             para.Add("@SCode", model.SCode ?? string.Empty);
             para.Add("@SSourceId", model.SSourceId);
+            para.Add("@SName", model.SName ?? string.Empty);
             para.Add("@SFullName", model.SFullName ?? string.Empty);
             para.Add("@SAddress", model.SAddress ?? string.Empty);
             para.Add("@SLinker", model.SLinker ?? string.Empty);
@@ -94,6 +95,7 @@ namespace HotelBase.DataAccess.Resource
             para.Add("@Id", model.Id);
             para.Add("@SCode", model.SCode ?? string.Empty);
             para.Add("@SSourceId", model.SSourceId);
+            para.Add("@SName", model.SName ?? string.Empty);
             para.Add("@SFullName", model.SFullName ?? string.Empty);
             para.Add("@SAddress", model.SAddress ?? string.Empty);
             para.Add("@SLinker", model.SLinker ?? string.Empty);
@@ -194,7 +196,7 @@ namespace HotelBase.DataAccess.Resource
                 return null;
             }
             var para = new DynamicParameters();
-            var sql = "SELECT * FROM Sys_UserInfo  WHERE  id=@id  LIMIT 1;   ";
+            var sql = "SELECT * FROM H_Supplier  WHERE  id=@id  LIMIT 1;   ";
             para.Add("@id", id);
             var data = MysqlHelper.GetModel<H_SupplierModel>(sql, para);
             return data;

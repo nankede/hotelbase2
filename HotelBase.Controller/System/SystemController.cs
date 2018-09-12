@@ -155,6 +155,17 @@ namespace HotelBase.Web.Controller.System
             var response = SystemBll.GetNewDicModel(pid);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 根据父Code查数据字典列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public JsonResult GetDicListByPCode(int pCode)
+        {
+            var response = SystemBll.GetDicListByPCode(pCode);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region 国家地区

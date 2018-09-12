@@ -180,6 +180,8 @@
     <Content Include="Content\lib\contabs.min.js" />
     <Content Include="Content\lib\hplus.min.js" />
     <Content Include="Content\lib\jquery.min.js" />
+    <Content Include="Content\lib\laydate.css" />
+    <Content Include="Content\lib\laydate.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
@@ -236,6 +238,7 @@
     <Content Include="Views\Data\OrderStatics.cshtml" />
     <Content Include="Views\Order\Book.cshtml" />
     <Content Include="Views\Supplier\Detail.cshtml" />
+    <Content Include="Content\fonts\iconfont.woff" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

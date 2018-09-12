@@ -1,5 +1,365 @@
-﻿<div>
-    <h1> 供应商详情页面-Id:@ViewBag.Id </h1>
-
-    <h1> 加油！！！</h1>
+﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div>
+        <h3 class="cont-title">基础信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-4 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>供应商名称</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="m.SName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-4 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>供应商来源</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <select class="lay-select  lay-input" ng-model="m.SSourceId" ng-init="m.SSourceId=0" ng-options="item.Code as item. Name for item in Source"></select>
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>联系人</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="m.SLinker" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>联系电话</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="m.SLinkPhone" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>QQ/微信</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="m.SLinkQQ" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>邮箱</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="m.SLinkMail" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption ">
+                    <label>公司地址</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SAddress" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption ">
+                    <label>公司全称</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SFullName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption ">
+                    <label>合作时间</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" id="txtDate" ng-model="CooperationDate" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="cont-title">财务信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption  lay-must">
+                    <label>财务对接人</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="m.SFinanceLinker" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption lay-must">
+                    <label>财务电话</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="m.SFinancePhone" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="cont-title">打款信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption  lay-must">
+                    <label>开户行</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SFinanceBankName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption lay-must">
+                    <label>账号</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SFinanceAccount" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption ">
+                    <label>户名</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SFinanceName" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="cont-title">开票信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption  lay-must">
+                    <label>开票抬头</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SInvoiceTitle" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption lay-must">
+                    <label>税号</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SInvoiceTax" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption ">
+                    <label>项目</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SInvoiceItem" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-5">
+                <div class="lay-form-item-caption ">
+                    <label>发票类型</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SInvoiceType" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lay-form-foot">
+        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+    </div>
 </div>
+<input id="hfId" type="hidden" value="@ViewBag.Id" />
+@section foot{
+    <script>
+
+        var mobileReg = /^1(3|4|5|7|8|9)\d{9}$/;
+        var telReg = /^(\d{3,4}-?)?\d{7,9}$/;
+        var emailReg = /\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.Source = [{ Code: 0, Name: '请选择' }];
+            $scope.config = {
+                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
+                detailUrl: "/supplier/getdateil/",
+                saveUrl: "/supplier/save/",
+            };
+            $scope.Id = $('#hfId').val();
+            $(function () {
+                $scope.pageInit();
+            });
+            //初始化
+            $scope.pageInit = function () {
+                laydate.render({
+                    elem: '#txtDate',
+                    range: '~'
+                })
+                $scope.getSource();
+                if ($scope.Id > 0) {
+                    $scope.getDetail();
+                }
+            }
+            //获取来源
+            $scope.getSource = function () {
+                $.ajax({
+                    url: $scope.config.sourceUrl,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.Source = data;
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getSource");
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+
+            //详情
+            $scope.getDetail = function () {
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                            var begin = $scope.DateFormt(data.SCooperationBegin, 'yyyy-MM-dd');
+                            var end = $scope.DateFormt(data.SCooperationEnd, 'yyyy-MM-dd');
+                            if (begin != '' && end != '') {
+                                $scope.CooperationDate = begin + ' ~ ' + end;
+                            }
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //保存
+            $scope.Save = function () {
+                if ($('#txtDate').val() != '') {
+                    var date = $('#txtDate').val().split('~');
+                    $scope.m.SCooperationBegin = date[0];
+                    $scope.m.SCooperationEnd = date[1];
+                }
+                var c = $scope.checkData();
+                if (!c) return;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.saveUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: $scope.m,
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.m.Id = data.AddId;
+                            eMsg({
+                                timer: 2000,
+                                text: '操作成功，正在自动关闭页面！'
+                            });
+                            //关闭页面
+                            setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                        }
+                        else {
+                            var msg = data ? data.Msg : "";
+                            eMsg({
+                                timer: 2000,
+                                text: '操作失败,' + msg
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-save");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //数据验证
+            $scope.checkData = function () {
+                if ($scope.m.SName.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '供应商姓名不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.m.SSourceId == 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '请选择供应商来源！'
+                    });
+                    return false;
+                }
+                if ($scope.m.SLinkPhone.length > 0 && !mobileReg.test($scope.m.SLinkPhone) && !telReg.test($scope.m.SLinkPhone)) {
+                    eMsg({
+                        timer: 2000,
+                        text: '请输入正确的联系电话！'
+                    });
+                    return false;
+                }
+
+                return true;
+            }
+            //日期
+            $scope.DateFormt = function (obj, format) {
+                if (!obj) return '';
+                obj = obj.replace('Date', '').replace('(', '').replace(')', '').replace(/\//g, '');
+                obj = parseInt(obj);
+                if (obj < 0) return '';
+                obj = new Date(obj);
+                format = format || 'yyyy-MM-dd HH:mm:ss';
+                var date = {
+                    "M+": obj.getMonth() + 1,
+                    "d+": obj.getDate(),
+                    "h+": obj.getHours() % 12 == 0 ? 12 : obj.getHours() % 12,
+                    "H+": obj.getHours(),
+                    "m+": obj.getMinutes(),
+                    "s+": obj.getSeconds(),
+                    "q+": Math.floor((obj.getMonth() + 3) / 3),
+                    "S+": obj.getMilliseconds()
+                };
+                if (/(y+)/i.test(format)) {
+                    format = format.replace(RegExp.$1, (obj.getFullYear() + '').substr(4 - RegExp.$1.length));
+                }
+                for (var k in date) {
+                    if (new RegExp("(" + k + ")").test(format)) {
+                        format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                            ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+                    }
+                }
+                return format;
+            };
+
+        });
+    </script>
+}

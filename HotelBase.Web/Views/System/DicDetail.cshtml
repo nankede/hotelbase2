@@ -116,7 +116,6 @@
                     timeout: 20000,
                     success: function (data) {
                         $scope.dic = undefined;
-                        var msg = "";
                         if (data != null && data.Id > 0) {
                             $scope.dic = data;
                         }
@@ -191,7 +190,7 @@
                             $scope.dic.Id = data.AddId;
                             eMsg({
                                 timer: 2000,
-                                text: '操作成功，关闭页面！'
+                                text: '操作成功，正在自动关闭页面！'
                             });
                             //关闭页面
                             setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);

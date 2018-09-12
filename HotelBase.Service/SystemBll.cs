@@ -52,6 +52,32 @@ namespace HotelBase.Service
         {
             return Sys_BaseDictionaryAccess.GetDicList(request);
         }
+        
+        /// <summary>
+        /// 根据父Code查数据字典列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static List<BaseDic> GetDicListByPCode(int pCode)
+        {
+            var list = new List<BaseDic>();
+            list.Add(new BaseDic { Code = 0, Name = "请选择" });
+            var pId = GetDicModel(0, pCode)?.Id ?? 0;
+            if (pId > 0)
+            {
+                var data = Sys_BaseDictionaryAccess.GetDicList(new GetDicListRequest
+                {
+                    ParentId = pId,
+                    PageSize = 100
+                });
+                data?.List?.ForEach(x =>
+                {
+                    list.Add(new BaseDic { Code = x.DCode, Name = x.DName });
+
+                });
+            }
+            return list;
+        }
 
         /// <summary>
         /// 数据字典
@@ -64,7 +90,7 @@ namespace HotelBase.Service
         }
 
         /// <summary>
-        /// 数据字典
+        /// 获取Code数据字典
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>

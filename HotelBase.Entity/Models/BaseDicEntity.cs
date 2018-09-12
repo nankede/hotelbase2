@@ -13,4 +13,12 @@ namespace HotelBase.Entity.Models
         public int Code { get; set; }
         public string Name { get; set; }
     }
+    /// <summary>
+    /// 字典
+    /// </summary>
+    public class BaseDic
+    {
+        public int Code { get; set; }
+        public string Name { get; set; }
+    }
 }
