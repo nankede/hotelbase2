@@ -31,12 +31,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper.Extension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Extension.1.0.0.1\lib\net45\Dapper.Extension.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.12\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,13 +69,26 @@
     <Compile Include="Models\SupplierEntity.cs" />
     <Compile Include="Models\UserEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tables\HO_HotelOrder.cs" />
+    <Compile Include="Tables\HO_HotelOrderConfirmModel.cs" />
+    <Compile Include="Tables\HO_HotelOrderLogModel.cs" />
+    <Compile Include="Tables\HO_HotelOrderModel.cs" />
+    <Compile Include="Tables\H_HotelFacilitiesModel.cs" />
+    <Compile Include="Tables\H_HotelInfoModel.cs" />
+    <Compile Include="Tables\H_HotelPictureModel.cs" />
+    <Compile Include="Tables\H_HotelRoomModel.cs" />
+    <Compile Include="Tables\H_HotelRoomRuleModel.cs" />
+    <Compile Include="Tables\H_HoteRulePriceModel.cs" />
+    <Compile Include="Tables\H_ResourceLogModel.cs" />
     <Compile Include="Tables\H_SupplierModel.cs" />
-    <Compile Include="Tables\Sys_AreaInfoModel.cs" />
-    <Compile Include="Tables\Sys_BaseDictionary.cs" />
     <Compile Include="Tables\Sys_BaseDictionaryModel.cs" />
-    <Compile Include="Tables\Sys_DepartInfo.cs" />
+    <Compile Include="Tables\Sys_DepartInfoModel.cs" />
+    <Compile Include="Tables\Sys_LogModel.cs" />
     <Compile Include="Tables\Sys_UserInfoModel.cs" />
+    <Compile Include="MapAttribute\ColumnAttribute.cs" />
+    <Compile Include="MapAttribute\KeyAttribute.cs" />
+    <Compile Include="MapAttribute\KeyTypeEnum.cs" />
+    <Compile Include="MapAttribute\TableAttribute.cs" />
+    <Compile Include="Tables\Sys_AreaInfoModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
