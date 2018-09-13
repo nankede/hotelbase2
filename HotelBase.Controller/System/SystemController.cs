@@ -182,5 +182,6 @@ namespace HotelBase.Web.Controller.System
         }
 
         #endregion
+
     }
 }
