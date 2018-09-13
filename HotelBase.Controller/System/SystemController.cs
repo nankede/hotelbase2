@@ -63,6 +63,7 @@ namespace HotelBase.Web.Controller.System
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
         #region 部门
 
         /// <summary>
