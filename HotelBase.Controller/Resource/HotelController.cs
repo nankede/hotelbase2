@@ -25,6 +25,17 @@ namespace HotelBase.Web.Controller.System
             return View();
         }
 
+        /// <summary>
+        /// 酒店列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetList(HotelSearchRequest request)
+        {
+            var response = HotelBll.GetList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+
         #endregion
     }
 }

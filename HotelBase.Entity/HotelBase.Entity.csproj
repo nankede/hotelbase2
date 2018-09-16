@@ -66,6 +66,7 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Models\AreaInfoEntity.cs" />
     <Compile Include="Models\BaseDicEntity.cs" />
+    <Compile Include="Models\HotelEntity.cs" />
     <Compile Include="Models\SupplierEntity.cs" />
     <Compile Include="Models\UserEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

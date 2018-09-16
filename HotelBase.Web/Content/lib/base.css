@@ -372,7 +372,7 @@ h3.cont-title {
     font-size: 1em;
     line-height: 1.4;
     outline: none;
-    min-width:140px;
+    min-width: 140px;
 }
 
     .lay-select > option {
@@ -425,6 +425,8 @@ h3.cont-title {
     cursor: not-allowed;
 }
 
+
+
 .lay-btn-cancel,
 .lay-btn-secondary {
     color: #4eb900;
@@ -446,6 +448,8 @@ h3.cont-title {
         background-color: #f8f9f8;
     }
 
+
+
 .lay-btn-edit {
     color: #4eb900;
     border-color: transparent;
@@ -465,6 +469,16 @@ h3.cont-title {
         color: #cccccc;
         background-color: transparent;
         border-color: transparent;
+    }
+
+.lay-btn-edit-cancel {
+    color: #ca2e2e;
+    border-color: transparent;
+    background-color: transparent;
+}
+    .lay-btn-edit-cancel:hover {
+        border-color: transparent;
+        background-color: transparent;
     }
 
 .lay-btn-sort {
