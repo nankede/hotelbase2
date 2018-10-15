@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using HotelBase.Common;
+using HotelBase.Entity.Models;
 
 namespace HotelBase.Web.Controllers
 {
@@ -13,6 +14,26 @@ namespace HotelBase.Web.Controllers
     /// </summary>
     public class BaseController : System.Web.Mvc.Controller
     {
+        private UserModel _CurrtUser;
+        public UserModel CurrtUser
+        {
+            get
+            {
+                return new UserModel
+                {
+                    Id = 1,
+                    Name = "测试",
+                    DepartId = 1,
+                    DepartName = "测试"
+
+                };
+            }
+            set { _CurrtUser = value; }
+        }
+        public BaseController()
+        {
+
+        }
 
     }
 

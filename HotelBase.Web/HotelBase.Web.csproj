@@ -178,6 +178,7 @@
     <Content Include="Content\lib\base.js" />
     <Content Include="Content\lib\bootstrap.min.js" />
     <Content Include="Content\lib\contabs.min.js" />
+    <Content Include="Content\lib\Untitl.js" />
     <Content Include="Content\lib\hplus.min.js" />
     <Content Include="Content\lib\jquery.min.js" />
     <Content Include="Content\lib\laydate.css" />
@@ -239,6 +240,7 @@
     <Content Include="Views\Order\Book.cshtml" />
     <Content Include="Views\Supplier\Detail.cshtml" />
     <Content Include="Content\fonts\iconfont.woff" />
+    <Content Include="Views\Hotel\Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -89,14 +89,16 @@ namespace HotelBase.DataAccess.Resource
         /// <param name="id"></param>
         /// <param name="valid"></param>
         /// <returns></returns>
-        public static int SetValid(int id, int valid)
+        public static int SetValid(int id, int valid, string name)
         {
             var sql = new StringBuilder();
-            sql.Append(@" UPDATE `h_hotelinfo` SET `HIIsValid` = @Valid ");
+            sql.Append(@" UPDATE `h_hotelinfo` SET `HIIsValid` = @Valid  , `HIUpdateName`=@HIUpdateName, `HIUpdateTime`=@HIUpdateTime ");
             sql.Append(" WHERE  `Id` = @Id   Limit 1; ");
             var para = new DynamicParameters();
             para.Add("@Id", id);
             para.Add("@Valid", valid == 1 ? 1 : 0);
+            para.Add("@HIUpdateName", name);
+            para.Add("@HIUpdateTime", DateTime.Now);
             var c = MysqlHelper.Update(sql.ToString(), para);
             return c;
         }
@@ -116,7 +118,7 @@ namespace HotelBase.DataAccess.Resource
             , `HICountyId`=@HICountyId, `HICounty`=@HICounty, `HIAddress`=@HIAddress, `HIShoppingAreaId`=@HIShoppingAreaId
             , `HIShoppingArea`=@HIShoppingArea, `HIFacilities`=@HIFacilities, `HICheckIn`=@HICheckIn, `HICheckOut`=@HICheckOut
             , `HIChildRemark`=@HIChildRemark, `HIPetRemark`=@HIPetRemark, `HIHotelIntroduction` =@HIHotelIntroduction
-            , `HIIsValid` =@HIIsValid, `HIUpdateName`=@HIUpdateName, `HIUpdateTime`=@HIUpdateTime  ");
+            , `HIUpdateName`=@HIUpdateName, `HIUpdateTime`=@HIUpdateTime ,`HILinkPhone`=@HILinkPhone ");
             sql.Append(" WHERE  `Id` =@Id   Limit 1;  ");
 
             var para = new DynamicParameters();
@@ -137,9 +139,9 @@ namespace HotelBase.DataAccess.Resource
             para.Add("@HIChildRemark", model.HIChildRemark ?? string.Empty);
             para.Add("@HIPetRemark", model.HIPetRemark ?? string.Empty);
             para.Add("@HIHotelIntroduction", model.HIHotelIntroduction ?? string.Empty);
-            para.Add("@HIIsValid", model.HIIsValid);
             para.Add("@HIUpdateName", model.HIUpdateName ?? string.Empty);
             para.Add("@HIUpdateTime", model.HIUpdateTime);
+            para.Add("@HILinkPhone", model.HILinkPhone);
             var c = MysqlHelper.Update(sql.ToString(), para);
             return c;
         }
@@ -158,14 +160,14 @@ namespace HotelBase.DataAccess.Resource
             , `HICountyId`, `HICounty`, `HIAddress`, `HIShoppingAreaId`
             , `HIShoppingArea`, `HIFacilities`, `HICheckIn`, `HICheckOut`
             , `HIChildRemark`, `HIPetRemark`, `HIHotelIntroduction`
-            , `HIIsValid`, `HIAddName`, `HIUpdateName`
-            , `HIAddTime`, `HIUpdateTime`) 
+            , `HIIsValid`, `HIAddName`,`HILinkPhone`
+            ) 
               VALUES  
             (  @HIName,@HIProvinceId,@HIProvince,@HICityId,@HICity
             ,@HICountyId,@HICounty,@HIAddress,@HIShoppingAreaId
             ,@HIShoppingArea,@HIFacilities,@HICheckIn,@HICheckOut
             ,@HIChildRemark,@HIPetRemark,@HIHotelIntroduction
-            ,@HIIsValid,@HIAddName)   ");
+            ,1,@HIAddName,@HILinkPhone)   ");
 
             var para = new DynamicParameters();
             para.Add("@HIName", model.HIName ?? string.Empty);
@@ -184,10 +186,29 @@ namespace HotelBase.DataAccess.Resource
             para.Add("@HIChildRemark", model.HIChildRemark ?? string.Empty);
             para.Add("@HIPetRemark", model.HIPetRemark ?? string.Empty);
             para.Add("@HIHotelIntroduction", model.HIHotelIntroduction ?? string.Empty);
-            para.Add("@HIIsValid", model.HIIsValid);
             para.Add("@HIAddName", model.HIAddName ?? string.Empty);
+            para.Add("@HILinkPhone", model.HILinkPhone ?? string.Empty);
             var id = MysqlHelper.Insert(sql.ToString(), para);
             return id;
         }
+
+        /// <summary>
+        /// 查询详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static H_HotelInfoModel GetModel(int id)
+        {
+            if (id <= 0)
+            {
+                return null;
+            }
+            var para = new DynamicParameters();
+            var sql = "SELECT * FROM h_hotelinfo  WHERE  id=@id  LIMIT 1;   ";
+            para.Add("@id", id);
+            var data = MysqlHelper.GetModel<H_HotelInfoModel>(sql, para);
+            return data;
+        }
+
     }
 }
