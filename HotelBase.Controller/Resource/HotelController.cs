@@ -87,5 +87,99 @@ namespace HotelBase.Web.Controller.System
         }
 
         #endregion
+
+
+        #region 图片
+        /// <summary>
+        /// 图片
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PicList()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region 房型
+        /// <summary>
+        /// 房型
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Room()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 酒店房型列表
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <returns></returns>
+        public JsonResult GetHotelRoom(int hotelId)
+        {
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        ///  新增 修改房型
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <returns></returns>
+        public JsonResult SaveRoom(int hotelId)
+        {
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 设置有效性
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SetRoomValid(int id, int valid)
+        {
+            var model = HotelBll.SetValid(id, valid, CurrtUser.Name);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+
+        #region 房型政策
+        /// <summary>
+        /// 房型政策
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RoomRule()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region 库存日历
+        /// <summary>
+        /// 库存日历
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult StoreList()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region 价格日历
+        /// <summary>
+        /// 价格日历
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PriceList()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }
