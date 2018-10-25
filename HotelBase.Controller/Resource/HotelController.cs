@@ -116,10 +116,10 @@ namespace HotelBase.Web.Controller.System
         /// </summary>
         /// <param name="hotelId"></param>
         /// <returns></returns>
-        public JsonResult GetHotelRoom(int hotelId)
+        public JsonResult GetHotelRoom(HotelRoomSearchRequest request)
         {
-
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var data = HotelRoomBll.GetList(request);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

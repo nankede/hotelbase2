@@ -20,32 +20,24 @@ namespace HotelBase.Service
         /// 酒店查询
         /// </summary>
         /// <param name="request"></param>
-        public static BasePageResponse<HotelSearchResponse> GetList(HotelSearchRequest request)
+        public static BasePageResponse<H_HotelRoomModel> GetList(HotelRoomSearchRequest request)
         {
-            var data = H_HotelInfoAccess.GetList(request);
-            var response = new BasePageResponse<HotelSearchResponse>()
+            var db = new H_HotelRoomAccess();
+            var query = db.Query().Where(x => x.HIId == request.HotelId);
+            if (request.IsValiad == 1)
             {
-                IsSuccess = data.IsSuccess,
-                Total = data.Total,
-                List = new List<HotelSearchResponse>()
+                query.Where(x => x.HRIsValid == 1);
+            }
+            var list = query.ToList();
+
+
+            var response = new BasePageResponse<H_HotelRoomModel>()
+            {
+                IsSuccess = 1,
+                Total = list?.Count ?? 0,
+                List = list
             };
-            data?.List?.ForEach(x =>
-            {
-                response.List.Add(new HotelSearchResponse
-                {
-                    Id = x.Id,
-                    Name = x.HIName,
-                    //SourceId = x.SSourceId,
-                    //Source = Sys_BaseDictionaryAccess.GetDicModel(0, x.SSourceId)?.DName ?? string.Empty,
-                    CityId = x.HICityId,
-                    CityName = x.HICity,
-                    ProvName = x.HIProvince,
-                    ProvId = x.HIProvinceId,
-                    Valid = x.HIIsValid,
-                    SupplierName = string.Empty,
-                    Source = string.Empty
-                });
-            });
+
             return response;
         }
 
