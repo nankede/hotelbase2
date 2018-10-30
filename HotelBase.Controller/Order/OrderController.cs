@@ -25,6 +25,17 @@ namespace HotelBase.Web.Controller.System
             return View();
         }
 
+        /// <summary>
+        /// 订单查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public JsonResult GetDicList(OrderSearchRequset request)
+        {
+            var response = OrderBll.GetOrderList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         #region 手动录单

@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="HotelRoomBll.cs" />
     <Compile Include="HotelBll.cs" />
+    <Compile Include="OrderBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SupplierBll.cs" />
     <Compile Include="SystemBll.cs" />

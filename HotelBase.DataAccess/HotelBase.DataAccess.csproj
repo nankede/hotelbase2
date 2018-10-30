@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Order\Ho_HotelOrderAccess.cs" />
     <Compile Include="Resource\H_HotelRoomAccess.cs" />
     <Compile Include="Resource\H_HotelInfoAccess.cs" />
     <Compile Include="Resource\H_SupplierAccess.cs" />

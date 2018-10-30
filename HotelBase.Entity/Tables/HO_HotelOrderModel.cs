@@ -63,10 +63,24 @@ namespace HotelBase.Entity.Tables
 			set { _hIId = value; }
 		}
 
-		/// <summary>
-		/// 数据库字段：HRId
+        /// <summary>
+		/// 数据库字段：HName
 		/// </summary>
-		private int _hRId = 0;
+		private string _hName = string.Empty;
+        /// <summary>
+		/// 酒店名称
+		/// </summary>
+		[Column("HName")]
+        public string HName
+        {
+            get { return _hName; }
+            set { _hName = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HRId
+        /// </summary>
+        private int _hRId = 0;
 
 		/// <summary>
 		/// 房型Id
