@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace HotelBase.Entity.Models
 {
+    #region 酒店
+
     /// <summary>
     /// 酒店查询
     /// </summary>
@@ -53,6 +55,20 @@ namespace HotelBase.Entity.Models
         /// <summary>供应商名称</summary>
         public string SupplierName { get; set; }
 
+    }
+    #endregion
+
+    #region 酒店房型
+
+    /// <summary>
+    /// 酒店查询
+    /// </summary>
+    public class HotelRoomSearchRequest : BaseRequest
+    {
+        public int HotelId { get; set; }
+        public int IsValiad { get; set; }
 
     }
+
+    #endregion
 }

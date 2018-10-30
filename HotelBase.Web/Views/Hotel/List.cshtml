@@ -87,7 +87,7 @@
                 <td>
                     <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit" value="上传图片" ng-click="detail(h.Id)" />
-                    <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.Valid==1?'无效':'有效'}}" ng-click="detail(h.Id)" />
+                    <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.Valid==1?'无效':'有效'}}" ng-click="setValid(h.Id,h.Valid)" />
                 </td>
             </tr>
 
@@ -123,6 +123,7 @@
                 sourceUrl: "/system/getdiclistbypcode/?pCode=101",
                 areaUrl: "/system/GetAreaList/?pid=",
                 listUrl: "/hotel/getlist/",
+                validUrl: "/hotel/setvalid/",
                 ValidSource: [{ Code: -1, Name: "全部" }, { Code: 1, Name: "有效" }, { Code: 0, Name: "无效" }]
             }
             //页面初始化
@@ -234,11 +235,38 @@
 
             //详情
             $scope.detail = function (id) {
-                var url = "/supplier/detail?id=" + id;
+                var url = "/hotel/detail?id=" + id;
                 $('#ifm_detail').prop('src', url);
                 $("#dialogDetail").eDialog('show');
             }
+            //设置有效性
+            $scope.setValid = function (id, valid) {
+                var msg = "确定设置为" + valid == 1 ? "无效？" : "有效？请谨慎操作！！";
+                eMsg({
+                    timer: 2000,
+                    text: msg
+                });
+                valid = valid == 1 ? 0 : 1;
+                var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
+                Untitl.Get(url, {}, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功，正在刷新页面！'
+                        });
+                        //刷新页面
+                        $scope.search(1);
+                    }
+                    else {
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
+                        });
+                    }
+                });
 
+            }
             $scope.detailClear = function (id) {
                 $('#ifm_detail').prop('src', '');
                 $("#dialogDetail").eDialog('hide');

@@ -12,68 +12,60 @@ using System.Threading.Tasks;
 namespace HotelBase.Service
 {
     /// <summary>
-    /// 酒店业务逻辑
+    /// 酒店 房型业务逻辑
     /// </summary>
-    public static class HotelBll
+    public static class HotelRoomBll
     {
         /// <summary>
         /// 酒店查询
         /// </summary>
         /// <param name="request"></param>
-        public static BasePageResponse<HotelSearchResponse> GetList(HotelSearchRequest request)
+        public static BasePageResponse<H_HotelRoomModel> GetList(HotelRoomSearchRequest request)
         {
-            var data = H_HotelInfoAccess.GetList(request);
-            var response = new BasePageResponse<HotelSearchResponse>()
+            var db = new H_HotelRoomAccess();
+            var query = db.Query().Where(x => x.HIId == request.HotelId);
+            if (request.IsValiad == 1)
             {
-                IsSuccess = data.IsSuccess,
-                Total = data.Total,
-                List = new List<HotelSearchResponse>()
+                query.Where(x => x.HRIsValid == 1);
+            }
+            var list = query.ToList();
+
+
+            var response = new BasePageResponse<H_HotelRoomModel>()
+            {
+                IsSuccess = 1,
+                Total = list?.Count ?? 0,
+                List = list
             };
-            data?.List?.ForEach(x =>
-            {
-                response.List.Add(new HotelSearchResponse
-                {
-                    Id = x.Id,
-                    Name = x.HIName,
-                    //SourceId = x.SSourceId,
-                    //Source = Sys_BaseDictionaryAccess.GetDicModel(0, x.SSourceId)?.DName ?? string.Empty,
-                    CityId = x.HICityId,
-                    CityName = x.HICity,
-                    ProvName = x.HIProvince,
-                    ProvId = x.HIProvinceId,
-                    Valid = x.HIIsValid,
-                    SupplierName = string.Empty,
-                    Source = string.Empty
-                });
-            });
+
             return response;
         }
 
         /// <summary>
-        /// 查询酒店详情
+        /// 查询酒店房型详情
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static H_HotelInfoModel GetDetail(int id)
+        public static H_HotelRoomModel GetDetail(int id)
         {
-            var model = H_HotelInfoAccess.GetModel(id);
+            var model = new H_HotelRoomAccess().Query().FirstOrDefault(x => x.Id == id);
             return model;
         }
 
         /// <summary>
-        /// 新增供酒店详情
+        /// 新增酒店房型详情
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static BaseResponse Insert(H_HotelInfoModel model)
+        public static BaseResponse Insert(H_HotelRoomModel model)
         {
             var res = new BaseResponse();
-            if (string.IsNullOrEmpty(model.HIName))
+            if (string.IsNullOrEmpty(model.HRName))
             {
-                res.Msg = "酒店名称不能为空";
+                res.Msg = "房型名称不能为空";
                 return res;
             }
-            var id = H_HotelInfoAccess.Insert(model);
+            var id = new H_HotelRoomAccess().Add(model);
             if (id <= 0)
             {
                 res.Msg = "新增失败";
@@ -91,11 +83,11 @@ namespace HotelBase.Service
         }
 
         /// <summary>
-        /// 修改酒店详情
+        /// 修改酒店房型详情
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static BaseResponse Update(H_HotelInfoModel model)
+        public static BaseResponse Update(H_HotelRoomModel model)
         {
             var res = new BaseResponse();
             if (model.Id <= 0)
@@ -103,16 +95,16 @@ namespace HotelBase.Service
                 res.Msg = "无效的酒店";
                 return res;
             }
-            if (string.IsNullOrEmpty(model.HIName))
+            if (string.IsNullOrEmpty(model.HRName))
             {
                 res.Msg = "酒店名称不能为空";
                 return res;
             }
-            var i = H_HotelInfoAccess.Update(model);
+            var i = new H_HotelRoomAccess().Update(model);
             res = new BaseResponse
             {
-                IsSuccess = i > 0 ? 1 : 0,
-                Msg = i > 0 ? string.Empty : "更新失败",
+                IsSuccess = i ? 1 : 0,
+                Msg = i ? string.Empty : "更新失败",
             };
             return res;
         }
@@ -126,7 +118,9 @@ namespace HotelBase.Service
         /// <returns></returns>
         public static BaseResponse SetValid(int id, int valid, string name)
         {
-            var i = H_HotelInfoAccess.SetValid(id, valid, name);
+            var i = new H_HotelRoomAccess().Update().Where(x => x.Id == id)
+                .Set(x => x.HRIsValid == valid && x.HRUpdateName == name && x.HRUpdateTime == DateTime.Now)
+                .Execute();
             var res = new BaseResponse
             {
                 IsSuccess = i > 0 ? 1 : 0,
