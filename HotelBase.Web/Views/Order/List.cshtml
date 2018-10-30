@@ -1,6 +1,167 @@
-﻿<div>
-    <h1> 订单列表页面 </h1>
+﻿@{
+    ViewBag.PageTitle = "订单列表";
+}
+<div class="lay-form" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    @*<div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>订单号</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="Search.Name" placeholder="请输入名称" />
+        </div>
+        <div class="lay-form-item-caption ">
+            <label>Code</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="Search.Code" placeholder="请输入Code" />
+        </div>
+        <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
+        <input type="button" class="lay-btn lay-btn-primary none" value="新增" ng-click="Add(0)">
+    </div>*@
+    <div>
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <table class="lay-table">
+        <thead>
+            <tr>
+                @*<th width="5%">排序</th>
+                <th width="15%">名称</th>
+                <th width="10%">Code</th>
+                <th width="10%">Value</th>
+                <th width="15%">上级名称</th>
+                <th>描述</th>
+                <th width="10%">状态</th>
+                <th width="10%">操作</th>*@
+                <th width="5%">订单号</th>
+                <th width="15%">渠道</th>
+                <th width="10%">酒店名称</th>
+                <th width="10%">入住时间</th>
+                <th width="15%">离店时间</th>
+                <th width="15%">预订人</th>
+                <th width="15%">订单状态</th>
+                <th width="15%">总金额</th>
+                <th width="10%">结算价</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="d in dicList">
+                <td ng-bind="d.DSort"></td>
+                <td ng-bind="d.DName"></td>
+                <td ng-bind="d.DCode"></td>
+                <td ng-bind="d.DValue"></td>
+                <td ng-bind="d.DParentName"></td>
+                <td ng-bind="d.DRemark"></td>
+                <td ng-bind-template="{{d.DIsValid==1?'有效':'无效'}}"></td>
+                <td>
+                    <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(d.Id)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="新增子级" ng-click="Add(d.Id)" />
+                </td>
+            </tr>
 
-    <h1> 加油！！！</h1>
-
+            <tr ng-hide="dicList!=null &&dicList.length > 0">
+                <td colspan="8" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="pager"></div>
 </div>
+
+<div class="lay-dialog" id="dialogDetail">
+    <div class="lay-dialog-mask"></div>
+    <div class="lay-dialog-cont" style="width:760px;height:530px;">
+        <div class="lay-dialog-hd">
+            <h3>字典信息</h3>
+            <button class="lay-dialog-btn-close"></button>
+        </div>
+        <div class="lay-dialog-bd">
+            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
+        </div>
+    </div>
+</div>
+
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                listUrl: "/system/getdiclist/",
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                $scope.Search = { PageIndex: 1, Code: '', Name: '' };
+                $scope.search(1);
+            }
+            //查询
+            $scope.search = function (index) {
+                $("#dialogDetail").eDialog('hide');
+                $scope.Search.PageIndex = index;
+                var para = $scope.Search;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.listUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        var msg = "";
+                        $scope.dicList = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.dicList = data.List;
+                            $scope.pagerInit(index, data.Total);
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                };
+                pager.render();
+            }
+            $scope.detail = function (id) {
+                var url = "/system/dicdetail?pid=0&id=" + id;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
+            $scope.Add = function (id) {
+                var url = "/system/dicdetail?id=0&pid=" + id || 0;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+        });
+
+
+    </script>
+}
