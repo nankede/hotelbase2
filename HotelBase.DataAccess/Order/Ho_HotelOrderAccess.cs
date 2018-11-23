@@ -1,5 +1,7 @@
-﻿using HotelBase.Entity;
+﻿using Dapper;
+using HotelBase.Entity;
 using HotelBase.Entity.Models;
+using HotelBase.Entity.Tables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,6 +106,25 @@ namespace HotelBase.DataAccess.Order
                 response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
             }
             return response;
+        }
+
+
+        /// <summary>
+        /// 订单详情
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
+        public static HO_HotelOrderModel GetModel(int orderid)
+        {
+            if (orderid <= 0)
+            {
+                return null;
+            }
+            var para = new DynamicParameters();
+            var sql = "SELECT * FROM ho_hotelorder  WHERE  id=@id  LIMIT 1;   ";
+            para.Add("@id", orderid);
+            var data = MysqlHelper.GetModel<HO_HotelOrderModel>(sql, para);
+            return data;
         }
     }
 }
