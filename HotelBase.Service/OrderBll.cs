@@ -21,10 +21,25 @@ namespace HotelBase.Service
         {
             return Ho_HotelOrderAccess.GetOrderList(request);
         }
-
+        
+        /// <summary>
+        /// 获取订单详情
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
         public static HO_HotelOrderModel GetModel(int orderid)
         {
             return Ho_HotelOrderAccess.GetModel(orderid);
+        }
+
+        /// <summary>
+        /// 预定资源查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BasePageResponse<BookSearchResponse> GetHotelRuleList(BookSearchRequest request)
+        {
+            return Ho_HotelOrderAccess.GetHotelRuleList(request);
         }
     }
 }

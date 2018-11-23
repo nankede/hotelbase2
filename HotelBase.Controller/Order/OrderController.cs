@@ -60,6 +60,26 @@ namespace HotelBase.Web.Controller.System
             return View();
         }
 
+        /// <summary>
+        /// 资源查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public ActionResult GetResource(BookSearchRequest request)
+        {
+            var response = OrderBll.GetHotelRuleList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 新增订单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AddOrder()
+        {
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }
