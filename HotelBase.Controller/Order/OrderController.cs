@@ -60,6 +60,16 @@ namespace HotelBase.Web.Controller.System
             return View();
         }
 
+
+        /// <summary>
+        /// 手动录单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult OrderResourceList()
+        {
+            return View();
+        }
+
         /// <summary>
         /// 资源查询
         /// </summary>

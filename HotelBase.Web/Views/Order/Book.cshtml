@@ -1,6 +1,429 @@
-﻿<div>
-    <h1> 手动录单页面 </h1>
-
-    <h1> 加油！！！</h1>
-
+﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div>
+        <h3 class="cont-title">酒店信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>酒店名称</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>酒店ID</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>供应商名称</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>供应商ID</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>预定房型</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>房型ID</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>确认方式</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>传真号/邮箱</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="cont-title">订单信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>入住人</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>入住人手机号</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>入住/离店</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>最晚到店时间</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>成人</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>儿童</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>房型政策</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>早餐政策</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>房间数</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>总间夜</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>酒店卖价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>酒店结算价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>订单总价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>结算总价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>客人特殊要求</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>第三方订单号</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>预定联系人</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>联系人手机号</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>来单渠道</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>来单渠道</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lay-form-foot">
+        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+    </div>
 </div>
+<input id="hfId" type="hidden" value="@ViewBag.Id" />
+@section foot{
+    <script>
+
+        var mobileReg = /^1(3|4|5|7|8|9)\d{9}$/;
+        var telReg = /^(\d{3,4}-?)?\d{7,9}$/;
+        var emailReg = /\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.Source = [{ Code: 0, Name: '请选择' }];
+            $scope.config = {
+                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
+                areaUrl: "/system/GetAreaList/?pid=",
+                detailUrl: "/hotel/getdateil/",
+                saveUrl: "/hotel/save/",
+            };
+            $scope.Id = $('#hfId').val();
+            $(function () {
+                $scope.pageInit();
+            });
+            //初始化
+            $scope.pageInit = function () {
+                laydate.render({
+                    elem: '#txtDate',
+                    range: '~'
+                })
+                $scope.getArea(0);
+                $scope.dicInit();
+                if ($scope.Id > 0) {
+                    $scope.getDetail();
+                }
+            }
+            //字典初始化
+            $scope.dicInit = function () {
+                //ShopAreaData 商圈
+                Untitl.GetDicList(101, function (data) {
+                    $scope.ShopAreaData = data;
+                    $scope.$apply();
+                });
+                //CheckInData 入住时间
+                Untitl.GetDicList(101, function (data) {
+                    $scope.CheckInData = data;
+                    $scope.$apply();
+                });
+
+                //CheckOutData 离店时间
+                Untitl.GetDicList(101, function (data) {
+                    $scope.CheckOutData = data;
+                    $scope.$apply();
+                });
+
+                //FacilitiyData 设施
+                Untitl.GetDicList(101, function (data) {
+                    $scope.FacilitiyData = data;
+                    $scope.$apply();
+                });
+
+            }
+
+            //获取省市查询
+            $scope.getArea = function (type) {
+                var pId = type == 0 ? 1 : $scope.m.HIProvinceId;
+                if (!pId || pId <= 0) return;
+                var url = $scope.config.areaUrl + pId;
+                Untitl.Get(url, {}, function (data) {
+                    if (type == 0) {
+                        $scope.ProvList = data;
+                        $scope.ProvList.unshift({ Id: 0, Name: "请选择省份" });
+                        $scope.CityList = [{ Id: 0, Name: "请选择城市" }];
+                        $scope.m.HICityId = 0;
+                    }
+                    else {
+                        $scope.CityList = data;
+                        $scope.CityList.unshift({ Id: 0, Name: "请选择城市" });
+                    }
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getArea");
+                })
+            }
+
+            //详情
+            $scope.getDetail = function () {
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                            if ($scope.m && $scope.m.HIProvinceId > 0) {
+                                $scope.getArea(1);
+                            }
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //保存
+            $scope.Save = function () {
+                var c = $scope.checkData();
+                if (!c) return;
+                eLoading.show();
+                Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        $scope.m.Id = data.AddId;
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功，正在自动关闭页面！'
+                        });
+                        //关闭页面
+                        setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                    }
+                    else {
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
+                        });
+                    }
+                    $scope.$apply();
+                },
+                    function () {
+                        eLoading.hide();
+                    });
+            }
+
+            //数据验证
+            $scope.checkData = function () {
+                if ($scope.m.HIName.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '酒店名称不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.m.HILinkPhone.length > 0 && !mobileReg.test($scope.m.HILinkPhone) && !telReg.test($scope.m.HILinkPhone)) {
+                    eMsg({
+                        timer: 2000,
+                        text: '请输入正确的联系电话！'
+                    });
+                    return false;
+                }
+                //省份 城市赋值
+
+
+                return true;
+            }
+        });
+</script>
+}

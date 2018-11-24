@@ -139,27 +139,27 @@ namespace HotelBase.DataAccess.Order
             var response = new BasePageResponse<BookSearchResponse>();
             StringBuilder sb = new StringBuilder();
             sb.Append(@"SELECT
-	                    b.HIName,
-	                    b.HIAddress,
-	                    b.HILinkPhone,
-	                    r.HRName,
-	                    r.HRBedType,
-	                    rr.HRRBreakfastRule,
-	                    rr.HRRCancelRule,
-	                    rp.HRPContractPrice,
-	                    rp.HRPSellPrice
-                    FROM
-	                    h_hotelinfo b
-                    INNER JOIN h_hotelroom r ON r.HIId = b.Id
-                    INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
-                    INNER JOIN h_hoteruleprice rp ON rr.Id = rp.HRRId
-                    WHERE
-	                    b.HIIsValid = 1
-                    AND r.HRIsValid = 1
-                    AND rr.HRRIsValid = 1
-                    AND rp.HRPIsValid = 1
-                    WHERE
-                        1 = 1");
+	                        b.Id AS HotelId,
+	                        r.Id AS HotelRoomId,
+	                        rr.Id AS HotelRoomRuleId,
+	                        b.HIName AS HotelName,
+	                        b.HIAddress AS HotelAddress,
+	                        b.HILinkPhone AS HotelTel,
+	                        r.HRName AS HotelRoomName,
+	                        r.HRBedType AS HotelRoomBedType,
+	                        rr.HRRBreakfastRule AS HotelRoomBreakfastRule,
+	                        rr.HRRCancelRule AS HotelRoomCancelRule,
+	                        rp.HRPSellPrice AS HoteRoomRuleSellPrice
+                        FROM
+	                        h_hotelinfo b
+                        INNER JOIN h_hotelroom r ON r.HIId = b.Id
+                        INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
+                        INNER JOIN h_hoteruleprice rp ON rr.Id = rp.HRRId
+                        WHERE
+	                        b.HIIsValid = 1
+                        AND r.HRIsValid = 1
+                        AND rr.HRRIsValid = 1
+                        AND rp.HRPIsValid = 1");
             //订单号
             if (!string.IsNullOrWhiteSpace(request.HotelName))
             {
