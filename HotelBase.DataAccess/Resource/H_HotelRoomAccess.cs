@@ -20,4 +20,24 @@ namespace HotelBase.DataAccess.Resource
         {
         }
     }
+
+    /// <summary>
+    /// 酒店房型 价格政策查询
+    /// </summary>
+    public class H_HotelRoomRuleAccess : BaseAccess<H_HotelRoomRuleModel>
+    {
+        public H_HotelRoomRuleAccess() : base(MysqlHelper.Db_HotelBase)
+        {
+        }
+    }
+
+    /// <summary>
+    /// 酒店房型 价格政策查询
+    /// </summary>
+    public class H_HoteRulePriceAccess : BaseAccess<H_HoteRulePriceModel>
+    {
+        public H_HoteRulePriceAccess() : base(MysqlHelper.Db_HotelBase)
+        {
+        }
+    }
 }

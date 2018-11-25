@@ -71,4 +71,28 @@ namespace HotelBase.Entity.Models
     }
 
     #endregion
+
+    #region 酒店房型
+
+    /// <summary>
+    /// 酒店查询
+    /// </summary>
+    public class HotelRoomRuleSearchRequest : BaseRequest
+    {
+        /// <summary>
+        /// 酒店Id
+        /// </summary>
+        public int HotelId { get; set; }
+        /// <summary>
+        /// 房型
+        /// </summary>
+        public int RoomId { get; set; }
+        /// <summary>
+        /// 有效性
+        /// </summary>
+        public int IsValiad { get; set; }
+
+    }
+
+    #endregion
 }

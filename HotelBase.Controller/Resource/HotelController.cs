@@ -170,6 +170,7 @@ namespace HotelBase.Web.Controller.System
 
 
         #region 房型政策
+
         /// <summary>
         /// 房型政策
         /// </summary>
@@ -177,6 +178,16 @@ namespace HotelBase.Web.Controller.System
         public ActionResult RoomRule()
         {
             return View();
+        }
+
+        /// <summary>
+        /// 房型政策
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetRoomRuleList(HotelRoomRuleSearchRequest request)
+        {
+            var data = HotelRoomRuleBll.GetList(request);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

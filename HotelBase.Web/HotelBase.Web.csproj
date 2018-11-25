@@ -260,6 +260,7 @@
     <Content Include="Views\Hotel\RoomList.cshtml" />
     <Content Include="Views\Order\OrderDetail.cshtml" />
     <Content Include="Views\Order\OrderResourceList.cshtml" />
+    <Content Include="Views\Hotel\RoomRuleList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
