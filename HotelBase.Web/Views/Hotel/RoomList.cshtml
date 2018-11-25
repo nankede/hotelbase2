@@ -76,7 +76,7 @@
             $scope.getList = function () {
                 eLoading.show();
                 $.ajax({
-                    url: $scope.config.searchUrl + "?HIId=" + $('#hfHotelId').val(),
+                    url: $scope.config.searchUrl + "?HotelId=" + $('#hfHotelId').val(),
                     type: 'get',
                     dataType: "json",
                     timeout: 20000,
@@ -95,7 +95,7 @@
                         $scope.$apply();
                     },
                     error: function () {
-                        console.log("err-getDetail");
+                        console.log("err-getList");
                     },
                     complete: function () {
                         eLoading.hide();

@@ -150,10 +150,20 @@ namespace HotelBase.Web.Controller.System
         /// </summary>
         /// <param name="hotelId"></param>
         /// <returns></returns>
-        public JsonResult SaveRoom(int hotelId)
+        public JsonResult SaveRoom(H_HotelRoomModel request)
         {
-
-            return Json(null, JsonRequestBehavior.AllowGet);
+            if (request.Id > 0)
+            {
+                request.HRUpdateName = CurrtUser.Name;
+                var response = HotelRoomBll.Update(request);
+                return Json(response);
+            }
+            else
+            {
+                request.HRAddName = CurrtUser.Name;
+                var response = HotelRoomBll.Insert(request);
+                return Json(response);
+            }
         }
 
         /// <summary>
@@ -172,11 +182,25 @@ namespace HotelBase.Web.Controller.System
         #region 房型政策
 
         /// <summary>
-        /// 房型政策
+        /// 房型政策-列表
         /// </summary>
         /// <returns></returns>
-        public ActionResult RoomRule()
+        public ActionResult RoomRuleList(int hotelId, int roomId)
         {
+            ViewBag.HotelId = hotelId;
+            ViewBag.RoomId = roomId;
+            return View();
+        }
+
+        /// <summary>
+        /// 房型政策-详情
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RoomRule(int hotelId, int roomId, int id)
+        {
+            ViewBag.HotelId = hotelId;
+            ViewBag.RoomId = roomId;
+            ViewBag.Id = id;
             return View();
         }
 
@@ -189,7 +213,46 @@ namespace HotelBase.Web.Controller.System
             var data = HotelRoomRuleBll.GetList(request);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 酒店房型列表
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <returns></returns>
+        public JsonResult GetRoomRuleDetail(int id)
+        {
+            var data = HotelRoomRuleBll.GetDetail(id);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
+        /// <summary>
+        ///  新增 修改房型
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <returns></returns>
+        public JsonResult SaveRoomRule(H_HotelRoomRuleModel request)
+        {
+            if (request.Id > 0)
+            {
+                request.HRRUpdateName = CurrtUser.Name;
+                var response = HotelRoomRuleBll.Update(request);
+                return Json(response);
+            }
+            else
+            {
+                request.HRRAddName = CurrtUser.Name;
+                var response = HotelRoomRuleBll.Insert(request);
+                return Json(response);
+            }
+        }
+        /// <summary>
+        /// 房型政策
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SetRoomRuleValid(int id, int valid)
+        {
+            var data = HotelRoomRuleBll.SetValid(id, valid, CurrtUser.Name);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region 库存日历
@@ -209,11 +272,21 @@ namespace HotelBase.Web.Controller.System
         /// 价格日历
         /// </summary>
         /// <returns></returns>
-        public ActionResult PriceList()
+        public ActionResult PriceList(int ruleId,int hotelId,int roomId)
         {
+            ViewBag.RuleId = ruleId;
+            ViewBag.RoomId = roomId;
+            ViewBag.HotelId = hotelId;
             return View();
         }
-
+        /// <summary>
+        /// 价格日历
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetPriceList(HotelPriceSearchRequest request)
+        {
+            return null;
+        }
         #endregion
     }
 }

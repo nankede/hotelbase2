@@ -52,12 +52,14 @@
 </div>
 
 <input id="hfRoomId" type="hidden" value="@ViewBag.RoomId" />
+<input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
 @section foot{
     <script>
         var app = angular.module('myApp', []);
         app.controller('myCtrl', function ($scope) {
             $scope.config = {
-                searchUrl: "/hotel/GetRoomRuleList/"
+                searchUrl: "/hotel/GetRoomRuleList/",
+                validUrl: "/hotel/SetRoomRuleValid/",
             };
             $(function () {
                 $scope.pageInit();
@@ -71,7 +73,7 @@
             $scope.getList = function () {
                 eLoading.show();
                 $.ajax({
-                    url: $scope.config.searchUrl + "?HRId=" + $('#hfHotelId').val(),
+                    url: $scope.config.searchUrl + "?RoomId=" + $('#hfRoomId').val(),
                     type: 'get',
                     dataType: "json",
                     timeout: 20000,
@@ -90,7 +92,7 @@
                         $scope.$apply();
                     },
                     error: function () {
-                        console.log("err-getDetail");
+                        console.log("err-getList");
                     },
                     complete: function () {
                         eLoading.hide();
@@ -112,7 +114,7 @@
 
             //详情
             $scope.detail = function (id) {
-                var url = "/hotel/room?roomid=" + $('#hfRoomId').val() + "&id=" + id;
+                var url = "/hotel/roomrule?roomid=" + $('#hfRoomId').val() + "&id=" + id + "&hotelid=" + $('#hfHotelId').val();
                 $('#ifm_detail').prop('src', url);
                 $("#dialogDetail").eDialog('show');
             }

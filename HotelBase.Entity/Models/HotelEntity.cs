@@ -72,7 +72,7 @@ namespace HotelBase.Entity.Models
 
     #endregion
 
-    #region 酒店房型
+    #region 酒店房型-政策
 
     /// <summary>
     /// 酒店查询
@@ -87,6 +87,34 @@ namespace HotelBase.Entity.Models
         /// 房型
         /// </summary>
         public int RoomId { get; set; }
+        /// <summary>
+        /// 有效性
+        /// </summary>
+        public int IsValiad { get; set; }
+
+    }
+
+    #endregion
+
+    #region 酒店房型-价格
+
+    /// <summary>
+    /// 酒店查询
+    /// </summary>
+    public class HotelPriceSearchRequest : BaseRequest
+    {
+        /// <summary>
+        /// 酒店Id
+        /// </summary>
+        public int HotelId { get; set; }
+        /// <summary>
+        /// 房型
+        /// </summary>
+        public int RoomId { get; set; }
+        /// <summary>
+        /// 政策
+        /// </summary>
+        public int RuleId { get; set; }
         /// <summary>
         /// 有效性
         /// </summary>
