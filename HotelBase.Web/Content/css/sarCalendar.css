@@ -1,0 +1,331 @@
+body,html,legend {
+    color: #333
+}
+
+html {
+    background: #fff
+}
+
+blockquote,body,button,caption,dd,dl,fieldset,form,h1,h2,h3,h4,h5,h6,html,input,legend,ol,p,pre,select,td,textarea,th,ul {
+    margin: 0;
+    padding: 0
+}
+
+body {
+    font: normal normal normal 12px/20px "微软雅黑"
+}
+
+button,input,select,textarea {
+    vertical-align: middle;
+    font-size: 100%;
+    font: normal normal normal 12px/20px "微软雅黑";
+    outline: 0
+}
+
+select::-ms-expand {
+    display: none
+}
+
+b,h1,h2,h3,h4,h5,h6,strong,th {
+    font-weight: 400
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-size: 14px;
+    line-height: 24px
+}
+
+li {
+    list-style: none
+}
+
+table {
+    border-spacing: 0
+}
+
+caption,th {
+    text-align: left
+}
+
+fieldset,img {
+    border: 0
+}
+
+address,cite,dfn,em,i,var {
+    font-style: normal
+}
+
+code,dfn,kbd,pre,samp,tt,var {
+    font-family: monospace
+}
+
+del,ins,s {
+    text-decoration: none
+}
+
+a {
+    color: #005bb5;
+    text-decoration: none;
+    outline: 0
+}
+
+a:hover {
+    color: #f60
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+.clear_float {
+    clear: both;
+    font-size: 1px;
+    height: 0;
+    width: 0;
+    line-height: 1;
+    overflow: hidden
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0
+}
+
+* html .clearfix {
+    zoom:1}
+
+.none {
+    display: none
+}
+
+.hidden {
+    visibility: hidden
+}
+
+.calendar_contain{
+	width: 630px;
+}
+
+.sarCalendar_head {
+	width: 100%;
+	overflow: hidden
+}
+
+.sarCalendar_head .sarCalendar_yearText {
+	float: left;
+	font-size: 20px;
+	color: #666;
+	width: 110px;
+	height: 48px;
+	line-height: 48px;
+	text-align: center
+}
+
+.sarCalendar_month {
+	float: right;
+	width: 518px;
+	position: relative
+}
+
+.sarCalendar_month_bar {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0 30px;
+	overflow: hidden
+}
+
+.sarCalendar_month_ul {
+	overflow: hidden;
+	width: 960px;
+	position: relative
+}
+
+.sarCalendar_month_ul li {
+	float: left;
+	width: 80px;
+	height: 48px;
+	line-height: 48px;
+	color: #666;
+	color: 18px;
+	text-align: center;
+	cursor: pointer;
+	font-size: 16px
+}
+
+.sarCalendar_month_ul li.active {
+	color: #41c493
+}
+
+.sarCalendar_month_prev {
+	display: inline-block;
+	width: 9px;
+	height: 15px;
+	background: url(//img1.40017.cn/cn/s/2018/selftrip_pc/detail/icon_dropleft.png) no-repeat;
+	background-size: 9px 15px;
+	position: absolute;
+	top: 15px;
+	left: 10px;
+	cursor: pointer
+}
+
+.sarCalendar_month_next {
+	display: inline-block;
+	width: 9px;
+	height: 15px;
+	background: url(//img1.40017.cn/cn/s/2018/selftrip_pc/detail/icon_dropright.png) no-repeat;
+	background-size: 9px 15px;
+	position: absolute;
+	top: 15px;
+	right: 10px;
+	cursor: pointer
+}
+
+.sarCalendar_week_ul {
+	overflow: hidden;
+	background: #f6f6f6
+}
+
+.sarCalendar_week_ul li {
+	float: left;
+	width: 89px;
+	height: 28px;
+	line-height: 28px;
+	color: #999;
+	text-align: center;
+	background: #f6f6f6
+}
+
+.sarCalendar_week_ul li.weekend_li {
+	color: #ff5346
+}
+
+.sarCalendar_date_ul {
+	overflow: hidden;
+	background: #f6f6f6;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 0 0 9px 9px
+}
+
+.sarCalendar_date_ul li {
+	float: left;
+	width: 87px;
+	height: 59px;
+	background: #fff;
+	border-right: 1px solid #e4e4e4;
+	border-bottom: 1px solid #e4e4e4;
+	padding: 10px 0 0 10px;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	color: #bcbcbc
+}
+
+.sarCalendar_date_ul li.choose_date {
+	color: #333
+}
+
+.sarCalendar_date_ul li.choose_date:hover {
+	cursor: pointer
+}
+
+.sarCalendar_date_ul li .em_date {
+	display: block
+}
+
+.sarCalendar_date_ul li .festival {
+	color: #ff5346
+}
+
+.sarCalendar_date_ul li .em_date .i_festival {
+	font-size: 10px;
+	margin: 0 0 0 2px;
+	color: #ff5346
+}
+
+.sarCalendar_date_ul li .em_price {
+	display: block;
+	color: #ff5346;
+	font-size: 12px
+}
+
+.sarCalendar_date_ul li:nth-child(7n) {
+	border-right: none
+}
+
+.sarCalendar_date_ul li:nth-last-child(1) {
+	border-bottom: none
+}
+
+.sarCalendar_date_ul li:nth-last-child(2) {
+	border-bottom: none
+}
+
+.sarCalendar_date_ul li:nth-last-child(3) {
+	border-bottom: none
+}
+
+.sarCalendar_date_ul li:nth-last-child(4) {
+	border-bottom: none
+}
+
+.sarCalendar_date_ul li:nth-last-child(5) {
+	border-bottom: none
+}
+
+.sarCalendar_date_ul li:nth-last-child(6) {
+	border-bottom: none
+}
+
+.sarCalendar_date_ul li:nth-last-child(7) {
+	border-bottom: none
+}
+
+.sarCalendar_date_ul li.calendar_active {
+	border: 2px #00c776 solid
+}
+
+.sarCalendar_date_ul li.calendar_active .em_price {
+	color: #00c776
+}
+
+.gift-tag {
+	margin-left: 10px;
+	display: inline-block;
+	position: relative;
+	font-size: 12px
+}
+
+.gift-tag .tag {
+	padding: 0 2px;
+	font-size: 12px;
+	color: #ff5346;
+	border: 1px solid #ff5346
+}
+
+.gift-tag .tag:hover {
+	cursor: pointer
+}
+
+.gift-tag .gift-pop {
+	position: absolute;
+	top: 22px;
+	left: 0;
+	width: 300px;
+	background: #fff;
+	z-index: 99999999;
+	border: 1px solid #ccc;
+	padding: 15px
+}
+
+.gift-tag .gift-room {
+	margin-bottom: 5px
+}
+
+.gift-tag .gift-room p.hotel-name {
+	font-weight: 700;
+	margin-bottom: 0
+}
