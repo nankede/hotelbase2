@@ -92,10 +92,25 @@ namespace HotelBase.Entity.Tables
 			set { _hRId = value; }
 		}
 
-		/// <summary>
-		/// 数据库字段：HRRId
+        /// <summary>
+		/// 数据库字段：HRName
 		/// </summary>
-		private int _hRRId = 0;
+		private string _hRName = string.Empty;
+
+        /// <summary>
+		/// 房型名称
+		/// </summary>
+		[Column("HName")]
+        public string HRName
+        {
+            get { return _hRName; }
+            set { _hRName = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HRRId
+        /// </summary>
+        private int _hRRId = 0;
 
 		/// <summary>
 		/// 政策Id
@@ -107,10 +122,25 @@ namespace HotelBase.Entity.Tables
 			set { _hRRId = value; }
 		}
 
-		/// <summary>
-		/// 数据库字段：HOSupplierId
+        /// <summary>
+		/// 数据库字段：HRRName
 		/// </summary>
-		private int _hOSupplierId = 0;
+		private string _hRRName = string.Empty;
+
+        /// <summary>
+		/// 政策名称
+		/// </summary>
+		[Column("HRRName")]
+        public string HRRName
+        {
+            get { return _hRRName; }
+            set { _hRRName = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HOSupplierId
+        /// </summary>
+        private int _hOSupplierId = 0;
 
 		/// <summary>
 		/// 供应商Id
@@ -122,10 +152,25 @@ namespace HotelBase.Entity.Tables
 			set { _hOSupplierId = value; }
 		}
 
-		/// <summary>
-		/// 数据库字段：HOSupplierSourceId
+        /// <summary>
+		/// 数据库字段：HOSupperlierName
 		/// </summary>
-		private int _hOSupplierSourceId = 0;
+		private string _hOSupperlierName = string.Empty;
+
+        /// <summary>
+		/// 供应商名称
+		/// </summary>
+		[Column("HOSupperlierName")]
+        public string HOSupperlierName
+        {
+            get { return _hOSupperlierName; }
+            set { _hOSupperlierName = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HOSupplierSourceId
+        /// </summary>
+        private int _hOSupplierSourceId = 0;
 
 		/// <summary>
 		/// 供应商来源
@@ -137,10 +182,25 @@ namespace HotelBase.Entity.Tables
 			set { _hOSupplierSourceId = value; }
 		}
 
-		/// <summary>
-		/// 数据库字段：HOOutSerialId
+        /// <summary>
+		/// 数据库字段：HOSupplierSourceName
 		/// </summary>
-		private string _hOOutSerialId = string.Empty;
+		private string _hOSupplierSourceName = string.Empty;
+
+        /// <summary>
+		/// 供应商来源名称
+		/// </summary>
+		[Column("HOSupplierSourceName")]
+        public string HOSupplierSourceName
+        {
+            get { return _hOSupplierSourceName; }
+            set { _hOSupplierSourceName = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HOOutSerialId
+        /// </summary>
+        private string _hOOutSerialId = string.Empty;
 
 		/// <summary>
 		/// 第三方订单号

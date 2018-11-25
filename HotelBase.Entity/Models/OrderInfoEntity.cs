@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelBase.Entity.Tables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -121,6 +122,12 @@ namespace HotelBase.Entity.Models
         /// 结算价
         /// </summary>
         public decimal HOContractPrice { get; set; }
+
+    }
+
+
+    public class OrdrModel : HO_HotelOrderModel
+    {
 
     }
 }

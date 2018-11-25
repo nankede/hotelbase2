@@ -23,12 +23,12 @@ namespace HotelBase.DataAccess.System
         {
             get
             {
-                if (_DicList == null || _DicList.Count == 0)
-                {
+                //if (_DicList == null || _DicList.Count == 0)
+                //{
                     var sql = "SELECT * FROM Sys_BaseDictionary   ";
                     _DicList = MysqlHelper.GetList<Sys_BaseDictionaryModel>(sql);
 
-                }
+                //}
                 return _DicList ?? new List<Sys_BaseDictionaryModel>();
             }
         }
