@@ -23,7 +23,7 @@ namespace HotelBase.Service
         public static BasePageResponse<H_HotelRoomModel> GetList(HotelRoomSearchRequest request)
         {
             var db = new H_HotelRoomAccess();
-            var query = db.Query().Where(x => x.HIId == request.HotelId);
+            var query = db.Query().Where(x => x.HIId == request.HotelId).OrderByDescending(x => x.Id);
             if (request.IsValiad == 1)
             {
                 query.Where(x => x.HRIsValid == 1);

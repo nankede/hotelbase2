@@ -1,0 +1,191 @@
+﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-row">
+        <input type="button" class="lay-btn lay-btn-primary" value="新增房型" ng-click="detail(0)">
+    </div>
+    <table class="lay-table">
+        <thead>
+            <tr>
+                <th width="10%">房型ID</th>
+                <th>房型名称</th>
+                <th width="10%">区域床型</th>
+                <th width="8%">是否有窗</th>
+                <th width="8%">房间大小</th>
+                <th width="8%">可住人数</th>
+                <th width="8%">楼层</th>
+                <th width="8%">是否有效</th>
+                <th width="20%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="h in list">
+                <td ng-bind="h.Id"></td>
+                <td ng-bind="h.HRName"></td>
+                <td>{{DicValueInit(h.HRBedType,BedTypeList)}}{{DicValueInit(h.HRBedSize,BedSizeList)}}</td>
+                <td>{{DicValueInit(h.HRWindowsType,WindowsTypeList)}}</td>
+                <td ng-bind="h.HRRoomSIze"></td>
+                <td>{{DicValueInit(h.HRPersonCount,PersonCountList)}}</td>
+                <td ng-bind="h.HRFloor"></td>
+                <td ng-bind-template="{{h.HRIsValid==1?'有效':'无效'}}"></td>
+                <td>
+                    <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(h.Id)" />
+                    <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.Valid==1?'无效':'有效'}}" ng-click="setValid(h.Id,h.Valid)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="新增政策" ng-click="Ruledetail(h.Id)" />
+                </td>
+            </tr>
+
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="9" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="pager"></div>
+</div>
+
+<div class="lay-dialog" id="dialogDetail">
+    <div class="lay-dialog-mask"></div>
+    <div class="lay-dialog-cont" style="width:920px;height:720px;">
+        <div class="lay-dialog-hd">
+            <h3>房型信息</h3>
+            <button class="lay-dialog-btn-close"></button>
+        </div>
+        <div class="lay-dialog-bd">
+            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
+        </div>
+    </div>
+</div>
+
+<input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.config = {
+                searchUrl: "/hotel/GetRoomList/",
+                dicUrl: "/system/getdiclistbypcode/?pCode=",
+            };
+            $(function () {
+                $scope.dicInit();
+                $scope.pageInit();
+            });
+            //初始化
+            $scope.pageInit = function () {
+                $scope.getList();
+            }
+
+            //列表
+            $scope.getList = function () {
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.searchUrl + "?HIId=" + $('#hfHotelId').val(),
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.list = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.list = data.List;
+                            $scope.pagerInit(index, data.Total);
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                };
+                pager.render();
+            }
+
+            //获取字典数据
+            $scope.dicInit = function () {
+                //床型
+                Untitl.GetDicList(101, function (data) {
+                    $scope.BedTypeList = data;
+                    $scope.$apply();
+                });
+                Untitl.GetDicList(101, function (data) {
+                    $scope.BedSizeList = data;
+                    $scope.$apply();
+                });
+                //窗户
+                Untitl.GetDicList(101, function (data) {
+                    $scope.WindowsTypeList = data;
+                    $scope.$apply();
+                });
+                //人数
+                Untitl.GetDicList(101, function (data) {
+                    $scope.PersonCountList = data;
+                    $scope.$apply();
+                });
+            }
+            //赋值
+            $scope.DicValueInit = function (id, list) {
+                var name = "--";
+                if (list) {
+                    $.each(list, function (index, item) {
+                        if (item.id == id)
+                            name = item.name;
+                    });
+                }
+                return name;
+            }
+            //详情
+            $scope.detail = function (id) {
+                var url = "/hotel/room?hotelid=" + $('#hfHotelId').val() + "&id=" + id;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+            //设置有效性
+            $scope.setValid = function (id, valid) {
+                var msg = "确定设置为" + valid == 1 ? "无效？" : "有效？请谨慎操作！！";
+                eMsg({
+                    timer: 2000,
+                    text: msg
+                });
+                valid = valid == 1 ? 0 : 1;
+                var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
+                Untitl.Get(url, {}, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功，正在刷新页面！'
+                        });
+                        //刷新页面
+                        $scope.search(1);
+                    }
+                    else {
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
+                        });
+                    }
+                });
+
+            }
+            $scope.detailClear = function (id) {
+                $('#ifm_detail').prop('src', '');
+                $("#dialogDetail").eDialog('hide');
+            }
+        });
+    </script>
+}

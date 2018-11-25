@@ -16,9 +16,8 @@ namespace HotelBase.DataAccess.Resource
     /// </summary>
     public class H_HotelRoomAccess : BaseAccess<H_HotelRoomModel>
     {
-        public H_HotelRoomAccess(): base("")
+        public H_HotelRoomAccess() : base(MysqlHelper.Db_HotelBase)
         {
-
         }
     }
 }

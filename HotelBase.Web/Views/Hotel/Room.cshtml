@@ -1,115 +1,70 @@
 ﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div>
-        <h3 class="cont-title">基础信息</h3>
         <div class="lay-row">
             <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
-                    <label>酒店名称</label>
+                    <label>房型名称</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HRName" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-6 lay-must">
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-8">
                 <div class="lay-form-item-caption ">
-                    <label>区域</label>
+                    <label>床型</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择省份" ng-model="m.HIProvinceId" ng-init="m.HIProvinceId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
-                    <select class="lay-select select-area" placeholder="请选择城市" ng-model="m.HICityId" ng-init="m.HICityId=0" ng-options="item.Id as item. Name for item in CityList"></select>
+                    <select class="lay-select select-area" placeholder="请选择床型" ng-model="m.HRBedType" ng-init="m.HRBedType=0" ng-options="item.Code as item. Name for item in BedTypeList"></select>
+                    <select class="lay-select select-area" placeholder="请选择大小" ng-model="m.HRBedSize" ng-init="m.HRBedSize=0" ng-options="item.Code as item. Name for item in BedSizeList"></select>
                 </div>
             </div>
         </div>
         <div class="lay-row">
             <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
-                    <label>商圈</label>
+                    <label>是否有窗</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择商圈" ng-model="m.HIShoppingAreaId" ng-init="m.HIShoppingAreaId=0" ng-options="item.Code as item. Name for item in ShopAreaData"></select>
+                    <select class="lay-select select-area" placeholder="请选择是否有窗" ng-model="m.HRWindowsType" ng-init="m.HRWindowsType=0" ng-options="item.Code as item. Name for item in WindowsTypeList"></select>
                 </div>
             </div>
             <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
-                    <label>酒店地址</label>
+                    <label>房间大小</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input long-input" ng-model="m.HIAddress" />
+                    <input class="lay-input" ng-model="m.HRRoomSIze" /> 
                 </div>
             </div>
         </div>
         <div class="lay-row">
             <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
-                    <label>联系电话</label>
+                    <label>可住人数</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HILinkPhone" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>办理入住时间</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择办理入住时间" ng-model="m.HICheckIn" ng-init="m.HICheckIn=0" ng-options="item.Code as item. Name for item in CheckInData"></select>
+                    <select class="lay-select select-area" placeholder="请选择可住人数" ng-model="m.HRPersonCount" ng-init="m.HRPersonCount=0" ng-options="item.Code as item. Name for item in PersonCountList"></select>
                 </div>
             </div>
             <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
-                    <label>办理离店时间</label>
+                    <label>所在楼层</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择办理离店时间" ng-model="m.HICheckOut" ng-init="m.HICheckOut=0" ng-options="item.Code as item. Name for item in CheckOutData"></select>
+                    <input class="lay-input" ng-model="m.HRFloor" />
                 </div>
             </div>
         </div>
+    </div>
 
-    </div>
-    <div>
-        <h3 class="cont-title">酒店设施</h3>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label></label>
-            </div>
-            <div class="lay-form-item-control">
-            </div>
-        </div>
-    </div>
-    <div>
-        <h3 class="cont-title">酒店政策</h3>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>儿童政策</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIChildRemark"></textarea>
-            </div>
-        </div>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>宠物政策政策</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIPetRemark"></textarea>
-            </div>
-        </div>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>酒店介绍</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIHotelIntroduction"></textarea>
-            </div>
-        </div>
-    </div>
     <div class="lay-form-foot">
         <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
     </div>
 </div>
 <input id="hfId" type="hidden" value="@ViewBag.Id" />
+<input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
 @section foot{
     <script>
 
@@ -120,22 +75,17 @@
         app.controller('myCtrl', function ($scope) {
             $scope.Source = [{ Code: 0, Name: '请选择' }];
             $scope.config = {
-                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
-                areaUrl: "/system/GetAreaList/?pid=",
-                detailUrl: "/hotel/getdateil/",
-                saveUrl: "/hotel/save/",
+                detailUrl: "/hotel/getdroomdetail/",
+                saveUrl: "/hotel/saveroom/",
             };
             $scope.Id = $('#hfId').val();
+            $scope.HotelId = $('#hfHotelId').val();
             $(function () {
                 $scope.pageInit();
             });
             //初始化
             $scope.pageInit = function () {
-                laydate.render({
-                    elem: '#txtDate',
-                    range: '~'
-                })
-                $scope.getArea(0);
+                $scope.m = { HIId: $scope.HotelId };
                 $scope.dicInit();
                 if ($scope.Id > 0) {
                     $scope.getDetail();
@@ -143,51 +93,25 @@
             }
             //字典初始化
             $scope.dicInit = function () {
-                //ShopAreaData 商圈
+                //床型
                 Untitl.GetDicList(101, function (data) {
-                    $scope.ShopAreaData = data;
+                    $scope.BedTypeList = data;
                     $scope.$apply();
                 });
-                //CheckInData 入住时间
                 Untitl.GetDicList(101, function (data) {
-                    $scope.CheckInData = data;
+                    $scope.BedSizeList = data;
                     $scope.$apply();
                 });
-
-                //CheckOutData 离店时间
+                //窗户
                 Untitl.GetDicList(101, function (data) {
-                    $scope.CheckOutData = data;
+                    $scope.WindowsTypeList = data;
                     $scope.$apply();
                 });
-
-                //FacilitiyData 设施
+                //人数
                 Untitl.GetDicList(101, function (data) {
-                    $scope.FacilitiyData = data;
+                    $scope.PersonCountList = data;
                     $scope.$apply();
                 });
-
-            }
-
-            //获取省市查询
-            $scope.getArea = function (type) {
-                var pId = type == 0 ? 1 : $scope.m.HIProvinceId;
-                if (!pId || pId <= 0) return;
-                var url = $scope.config.areaUrl + pId;
-                Untitl.Get(url, {}, function (data) {
-                    if (type == 0) {
-                        $scope.ProvList = data;
-                        $scope.ProvList.unshift({ Id: 0, Name: "请选择省份" });
-                        $scope.CityList = [{ Id: 0, Name: "请选择城市" }];
-                        $scope.m.HICityId = 0;
-                    }
-                    else {
-                        $scope.CityList = data;
-                        $scope.CityList.unshift({ Id: 0, Name: "请选择城市" });
-                    }
-                    $scope.$apply();
-                }, function () {
-                    console.log("err-getArea");
-                })
             }
 
             //详情
@@ -253,23 +177,14 @@
 
             //数据验证
             $scope.checkData = function () {
-                if ($scope.m.HIName.length <= 0) {
+
+                if ($scope.m.HRName.length <= 0) {
                     eMsg({
                         timer: 2000,
-                        text: '酒店名称不能为空！'
+                        text: '房型名称不能为空！'
                     });
                     return false;
                 }
-                if ($scope.m.HILinkPhone.length > 0 && !mobileReg.test($scope.m.HILinkPhone) && !telReg.test($scope.m.HILinkPhone)) {
-                    eMsg({
-                        timer: 2000,
-                        text: '请输入正确的联系电话！'
-                    });
-                    return false;
-                }
-                //省份 城市赋值
-
-
                 return true;
             }
         });

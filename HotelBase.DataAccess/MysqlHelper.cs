@@ -12,6 +12,8 @@ namespace HotelBase.DataAccess
 {
     public static class MysqlHelper
     {
+        public const string Db_HotelBase = "hotelbase";
+
         /// <summary>
         /// 数据库连接
         /// </summary>

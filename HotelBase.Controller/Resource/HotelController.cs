@@ -102,12 +102,35 @@ namespace HotelBase.Web.Controller.System
         #endregion
 
         #region 房型
+
         /// <summary>
         /// 房型
         /// </summary>
         /// <returns></returns>
-        public ActionResult Room()
+        public ActionResult RoomList(int hotelId)
         {
+            ViewBag.HotelId = hotelId;
+            return View();
+        }
+
+        /// <summary>
+        /// 房型
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetRoomList(HotelRoomSearchRequest request)
+        {
+            var data = HotelRoomBll.GetList(request);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 房型
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Room(int hotelId, int id)
+        {
+            ViewBag.HotelId = hotelId;
+            ViewBag.Id = id;
             return View();
         }
 
@@ -116,9 +139,9 @@ namespace HotelBase.Web.Controller.System
         /// </summary>
         /// <param name="hotelId"></param>
         /// <returns></returns>
-        public JsonResult GetHotelRoom(HotelRoomSearchRequest request)
+        public JsonResult GetRoomDetail(int id)
         {
-            var data = HotelRoomBll.GetList(request);
+            var data = HotelRoomBll.GetDetail(id);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
