@@ -193,6 +193,62 @@ namespace HotelBase.DataAccess.Order
 
 
         /// <summary>
+        /// 录单详情页酒店信息查询
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <param name="roomid"></param>
+        /// <param name="ruleid"></param>
+        /// <returns></returns>
+        public static BookSearchResponse GetHotelRuleDetial(int hid, int roomid, int ruleid)
+        {
+            var response = new BookSearchResponse();
+            StringBuilder sb = new StringBuilder();
+            sb.Append(@"SELECT
+	                        b.Id AS HotelId,
+	                        r.Id AS HotelRoomId,
+	                        rr.Id AS HotelRoomRuleId,
+	                        b.HIName AS HotelName,
+	                        b.HIAddress AS HotelAddress,
+	                        b.HILinkPhone AS HotelTel,
+	                        r.HRName AS HotelRoomName,
+	                        r.HRBedType AS HotelRoomBedType,
+	                        rr.HRRBreakfastRule AS HotelRoomBreakfastRule,
+	                        rr.HRRCancelRule AS HotelRoomCancelRule,
+	                        rp.HRPSellPrice AS HoteRoomRuleSellPrice
+                        FROM
+	                        h_hotelinfo b
+                        INNER JOIN h_hotelroom r ON r.HIId = b.Id
+                        INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
+                        INNER JOIN h_hoteruleprice rp ON rr.Id = rp.HRRId
+                        WHERE
+	                        b.HIIsValid = 1
+                        AND r.HRIsValid = 1
+                        AND rr.HRRIsValid = 1
+                        AND rp.HRPIsValid = 1");
+            //酒店id
+            if (hid > 0)
+            {
+                sb.AppendFormat(" AND  b.Id = {0}", hid);
+            }
+            //房间id
+            if (roomid > 0)
+            {
+                sb.AppendFormat(" AND  r.Id = {0}", roomid);
+            }
+            //房型id
+            if (ruleid > 0)
+            {
+                sb.AppendFormat(" AND  rr.Id = {0}", ruleid);
+            }
+            var list = MysqlHelper.GetList<BookSearchResponse>(sb.ToString());
+            if (list != null && list.Any())
+            {
+                response = list.FirstOrDefault();
+            }
+            return response;
+        }
+
+        /// <summary>
         /// 新增订单
         /// </summary>
         /// <param name="request"></param>

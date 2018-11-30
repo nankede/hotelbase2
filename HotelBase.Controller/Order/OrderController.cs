@@ -55,8 +55,11 @@ namespace HotelBase.Web.Controller.System
         /// 手动录单
         /// </summary>
         /// <returns></returns>
-        public ActionResult Book()
+        public ActionResult Book(string hotelId,string roomId, string ruleId)
         {
+            ViewBag.HotelId = hotelId;
+            ViewBag.RoomId = roomId;
+            ViewBag.RuleId = ruleId;
             return View();
         }
 

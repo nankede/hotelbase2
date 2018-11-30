@@ -47,7 +47,7 @@
                 <td ng-bind="d.HotelRoomCancelRule"></td>
                 <td ng-bind="d.HoteRoomRuleSellPrice"></td>
                 <td>
-                    <input type="button" class="lay-btn lay-btn-edit" value="预定" ng-click="detail(d.Id)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="预定" ng-click="detail(d.HotelId,d.HotelRoomId,d.HotelRoomRuleId)" />
                 </td>
             </tr>
 
@@ -158,8 +158,8 @@
                 };
                 pager.render();
             }
-            $scope.detail = function (id) {
-                var url = "/order/book";
+            $scope.detail = function (hid, roomid, ruleid) {
+                var url = "/order/book?hotelId=" + hid + "&roomId=" + roomid + "&ruleid=" + ruleid;
                 $('#ifm_detail').prop('src', url);
                 $("#dialogDetail").eDialog('show');
             }

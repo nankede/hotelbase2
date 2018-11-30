@@ -7,7 +7,7 @@
                     <label>酒店名称</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelName" disabled/>
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -15,7 +15,7 @@
                     <label>酒店ID</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelId" disabled/>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
                     <label>供应商名称</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelName" disabled/>
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -33,7 +33,7 @@
                     <label>供应商ID</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelId" disabled/>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                     <label>预定房型</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelRoomName" disabled/>
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -51,7 +51,7 @@
                     <label>房型ID</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelRoomId" disabled/>
                 </div>
             </div>
         </div>
@@ -261,7 +261,9 @@
         <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
     </div>
 </div>
-<input id="hfId" type="hidden" value="@ViewBag.Id" />
+<input id="hid" type="hidden" value="@ViewBag.HotelId" />
+<input id="hroomid" type="hidden" value="@ViewBag.RoomId" />
+<input id="hruleid" type="hidden" value="@ViewBag.RuleId" />
 @section foot{
     <script>
 
@@ -274,25 +276,25 @@
             $scope.config = {
                 sourceUrl: "/system/getdiclistbypcode/?pCode=101",
                 areaUrl: "/system/GetAreaList/?pid=",
-                detailUrl: "/hotel/getdateil/",
+                detailUrl: "/hotel/getorderneedinfo/",
                 saveUrl: "/hotel/save/",
             };
-            $scope.Id = $('#hfId').val();
+            $scope.id = $('#hid').val();
+            $scope.roomid = $('#hroomid').val();
+            $scope.ruleid = $('#hruleid').val();
             $(function () {
                 $scope.pageInit();
             });
             //初始化
             $scope.pageInit = function () {
+                $scope.getHotel($scope.id, $scope.roomid, $scope.ruleid)
                 laydate.render({
                     elem: '#txtDate',
                     range: '~'
                 })
-                $scope.getArea(0);
-                $scope.dicInit();
-                if ($scope.Id > 0) {
-                    $scope.getDetail();
-                }
             }
+
+
             //字典初始化
             $scope.dicInit = function () {
                 //ShopAreaData 商圈
@@ -318,6 +320,29 @@
                     $scope.$apply();
                 });
 
+            }
+
+            //获取酒店详情
+            $scope.getHotel = function (hid,roomid,ruleid) {
+                if (!hid || hid <= 0 && !roomid || roomid <= 0 && !ruleid || ruleid <= 0) return;
+                $.ajax({
+                    url: $scope.config.detailUrl + "?hotelid=" + hid + "&roomid=" + roomid + "&rooleid=" + ruleid,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.HotelId > 0) {
+                            $scope.m = data;
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
             }
 
             //获取省市查询

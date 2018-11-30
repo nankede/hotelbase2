@@ -178,7 +178,6 @@ namespace HotelBase.Web.Controller.System
 
         #endregion
 
-
         #region 房型政策
 
         /// <summary>
@@ -287,6 +286,22 @@ namespace HotelBase.Web.Controller.System
         {
             return null;
         }
+        #endregion
+
+        #region 获取订单所需酒店详情
+        /// <summary>
+        /// 获取订单所需酒店详情
+        /// </summary>
+        /// <param name="hotelid"></param>
+        /// <param name="roomid"></param>
+        /// <param name="rooleid"></param>
+        /// <returns></returns>
+        public JsonResult GetOrderNeedInfo(int hotelid, int roomid, int rooleid)
+        {
+            var model = OrderBll.GetHotelRuleDetial(hotelid, roomid, rooleid);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }
