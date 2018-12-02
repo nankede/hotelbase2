@@ -94,21 +94,21 @@
             //字典初始化
             $scope.dicInit = function () {
                 //床型
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(501, function (data) {
                     $scope.BedTypeList = data;
                     $scope.$apply();
                 });
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(502, function (data) {
                     $scope.BedSizeList = data;
                     $scope.$apply();
                 });
                 //窗户
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(503, function (data) {
                     $scope.WindowsTypeList = data;
                     $scope.$apply();
                 });
                 //人数
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(504, function (data) {
                     $scope.PersonCountList = data;
                     $scope.$apply();
                 });
