@@ -119,6 +119,10 @@ namespace HotelBase.Entity.Models
         /// 有效性
         /// </summary>
         public int IsValiad { get; set; }
+        /// <summary>
+        /// 月份
+        /// </summary>
+        public int Month { get; set; }
 
     }
 
