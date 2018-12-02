@@ -1,6 +1,7 @@
 ﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div class="lay-row">
-        <input type="button" class="lay-btn lay-btn-primary" value="新增房型" ng-click="detail(0)">
+
+        <input type="button" class="lay-btn lay-btn-primary" value="新增政策" ng-click="detail(0)">
     </div>
     <table class="lay-table">
         <thead>
@@ -62,6 +63,7 @@
                 validUrl: "/hotel/SetRoomRuleValid/",
             };
             $(function () {
+                $scope.Search = { PageIndex: 1, RoomId: 0, IsValiad: -1 };
                 $scope.pageInit();
             });
             //初始化
@@ -70,12 +72,18 @@
             }
 
             //列表
-            $scope.getList = function () {
+            $scope.getList = function (index) {
+                $scope.detailClear();
+                $scope.Search.PageIndex = index || 1;
+                $scope.Search.HotelId = $('#hfHotelId').val();
+                $scope.Search.RoomId = $('#hfRoomId').val();
+                var para = $scope.Search;
                 eLoading.show();
                 $.ajax({
-                    url: $scope.config.searchUrl + "?RoomId=" + $('#hfRoomId').val(),
-                    type: 'get',
+                    url: $scope.config.searchUrl ,
+                    type: 'post',
                     dataType: "json",
+                    data: para,
                     timeout: 20000,
                     success: function (data) {
                         $scope.list = [];

@@ -4,10 +4,9 @@
 //    作者：代码生成工具 自动生成
 //    功能：H_Hotelroom表实体
 //-----------------------------------------------------------------------
+using Component.Access.MapAttribute;
 using System;
 using System.Text;
-using HotelBase.Entity.MapAttribute;
-
 
 namespace HotelBase.Entity.Tables
 {

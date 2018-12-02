@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Component.Access;
 using Dapper;
 using HotelBase.Entity;
 using HotelBase.Entity.Models;
@@ -13,8 +14,13 @@ namespace HotelBase.DataAccess.Resource
     /// <summary>
     /// 供应商-Access
     /// </summary>
-    public static class H_SupplierAccess
+    public  class H_SupplierAccess : BaseAccess<H_SupplierModel>
     {
+
+        public H_SupplierAccess() : base(MysqlHelper.Db_HotelBase)
+        {
+        }
+
         /// <summary>
         /// 新增供应商
         /// </summary>

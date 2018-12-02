@@ -1,7 +1,7 @@
 ﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-6 lay-must">
+            <div class="lay-form-item lay-must">
                 <div class="lay-form-item-caption">
                     <label>政策名称</label>
                 </div>
@@ -11,7 +11,18 @@
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-8">
+            <div class="lay-form-item ">
+                <div class="lay-form-item-caption ">
+                    <label>选择供应商</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <select class="lay-select select-area" placeholder="请选择来源" ng-model="m.HRRSourceId" ng-init="m.HRRSourceId=0" ng-options="item.Code as item. Name for item in SourceList"></select>
+                    <select class="lay-select select-area" placeholder="请选择供应商" ng-model="m.HRRSupplierId" ng-init="m.HRRSupplierId=0" ng-options="item.Code as item. Name for item in SupplierList"></select>
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item ">
                 <div class="lay-form-item-caption ">
                     <label>早餐政策</label>
                 </div>
@@ -21,21 +32,12 @@
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item ">
                 <div class="lay-form-item-caption ">
                     <label>取消政策</label>
                 </div>
                 <div class="lay-form-item-control">
                     <select class="lay-select select-area" placeholder="请选择取消政策" ng-model="m.HRRCancelRule" ng-init="m.HRRCancelRule=0" ng-options="item.Code as item. Name for item in CancelList"></select>
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>选择供应商</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择来源" ng-model="m.HRRSourceId" ng-init="m.HRRSourceId=0" ng-options="item.Code as item. Name for item in SourceList"></select>
-                    <select class="lay-select select-area" placeholder="请选择供应商" ng-model="m.HRRSupplierId" ng-init="m.HRRSupplierId=0" ng-options="item.Code as item. Name for item in SupplierList"></select>
                 </div>
             </div>
         </div>
@@ -60,6 +62,8 @@
             $scope.config = {
                 detailUrl: "/hotel/getdroomruledetail/",
                 saveUrl: "/hotel/saveroomrule/",
+                supplierUrl: "/Supplier/GetSupplierList/",
+                //sourceId = 10101 & name=A
             };
             $scope.Id = $('#hfId').val();
             $scope.HotelId = $('#hfHotelId').val();
@@ -69,21 +73,30 @@
             });
             //初始化
             $scope.pageInit = function () {
-                $scope.m = { HIId: $scope.HotelId };
                 $scope.dicInit();
                 if ($scope.Id > 0) {
                     $scope.getDetail();
+                }
+                else {
+                    $scope.m = {
+                        HIId: $scope.HotelId,
+                        HRId: $scope.RoomId,
+                        HRRBreakfastRuleName: '',
+                        HRRCancelRuleName: '',
+                        HRRSourceName: '',
+                        HRRSupplierName: ''
+                    };
                 }
             }
             //字典初始化
             $scope.dicInit = function () {
                 //早餐
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(301, function (data) {
                     $scope.BreakfastList = data;
                     $scope.$apply();
                 });
                 //取消
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(302, function (data) {
                     $scope.CancelList = data;
                     $scope.$apply();
                 });
@@ -92,6 +105,40 @@
                     $scope.SourceList = data;
                     $scope.$apply();
                 });
+            }
+
+            //查询供应商
+            $scope.getSupplierList = function (name) {
+                $.ajax({
+                    url: $scope.config.supplierUrl + "?sourceId=" + $scope.m.HRRSourceId + "&name=",
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+
+                    }
+                });
+            }
+
+            //赋值
+            $scope.DicValueInit = function (id, list) {
+                var name = "--";
+                if (list) {
+                    $.each(list, function (index, item) {
+                        if (item.Code == id)
+                            name = item.Name;
+                    });
+                }
+                return name;
             }
 
             //详情
@@ -126,6 +173,11 @@
             //保存
             $scope.Save = function () {
                 var c = $scope.checkData();
+                $scope.m.HRRBreakfastRuleName = $scope.DicValueInit($scope.m.HRRBreakfastRule, $scope.BreakfastList);
+                $scope.m.HRRCancelRuleName = $scope.DicValueInit($scope.m.HRRCancelRule, $scope.CancelList);
+                $scope.m.HRRSourceName = $scope.DicValueInit($scope.m.HRRSourceId, $scope.SourceList);
+                $scope.m.HRRSupplierName = $scope.DicValueInit($scope.m.HRRSupplierId, $scope.SupplierList);
+
                 if (!c) return;
                 eLoading.show();
                 Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
@@ -154,8 +206,7 @@
 
             //数据验证
             $scope.checkData = function () {
-
-                if ($scope.m.HRName.length <= 0) {
+                if ($scope.m.HRRName.length <= 0) {
                     eMsg({
                         timer: 2000,
                         text: '名称不能为空！'
