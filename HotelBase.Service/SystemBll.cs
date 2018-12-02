@@ -135,7 +135,7 @@ namespace HotelBase.Service
             {
                 res = new BaseResponse
                 {
-                    AddId = id,
+                    AddId = (int)id,
                     IsSuccess = 1
                 };
             }

@@ -22,9 +22,10 @@ namespace HotelBase.Service
         public static BasePageResponse<H_HoteRulePriceModel> GetList(HotelPriceSearchRequest request)
         {
             var db = new H_HoteRulePriceAccess();
-            var query = db.Query().Where(x => x.HRRId == request.RuleId).OrderByDescending(x => x.Id);
+            var query = db.Query().Where(x => x.HRRId == request.RuleId)
+                .Where(x => x.HRPDateInt > request.Month * 100 && x.HRPDateInt < (request.Month + 1)*100)
+                .OrderByDescending(x => x.Id);
             var list = query.ToList();
-
 
             var response = new BasePageResponse<H_HoteRulePriceModel>()
             {
@@ -66,7 +67,7 @@ namespace HotelBase.Service
             {
                 res = new BaseResponse
                 {
-                    AddId = id,
+                    AddId = (int)id,
                     IsSuccess = 1
                 };
             }

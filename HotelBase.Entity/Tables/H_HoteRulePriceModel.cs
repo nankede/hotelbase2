@@ -93,10 +93,25 @@ namespace HotelBase.Entity.Tables
 			set { _hRPDate = value; }
 		}
 
-		/// <summary>
-		/// 数据库字段：HRPContractPrice
-		/// </summary>
-		private decimal _hRPContractPrice = 0.00M;
+        /// <summary>
+        /// 数据库字段：HRPDateInt
+        /// </summary>
+        private int _hRPDateInt = 0;
+
+        /// <summary>
+        /// 日期
+        /// </summary>
+        [Column("HRPDateInt")]
+        public int HRPDateInt
+        {
+            get { return _hRPDateInt; }
+            set { _hRPDateInt = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HRPContractPrice
+        /// </summary>
+        private decimal _hRPContractPrice = 0.00M;
 
 		/// <summary>
 		/// 结算价
