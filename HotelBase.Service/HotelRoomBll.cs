@@ -24,9 +24,9 @@ namespace HotelBase.Service
         {
             var db = new H_HotelRoomAccess();
             var query = db.Query().Where(x => x.HIId == request.HotelId).OrderByDescending(x => x.Id);
-            if (request.IsValiad == 1)
+            if (request.IsValiad >= 0)
             {
-                query.Where(x => x.HRIsValid == 1);
+                query.Where(x => x.HRIsValid == request.IsValiad);
             }
             var list = query.ToList();
 
