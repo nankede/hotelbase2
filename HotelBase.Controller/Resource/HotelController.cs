@@ -287,7 +287,8 @@ namespace HotelBase.Web.Controller.System
         /// <returns></returns>
         public JsonResult GetPriceList(HotelPriceSearchRequest request)
         {
-            return null;
+            var list = HotelPriceBll.GetList(request);
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

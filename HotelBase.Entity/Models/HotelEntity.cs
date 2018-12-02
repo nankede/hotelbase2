@@ -126,5 +126,15 @@ namespace HotelBase.Entity.Models
 
     }
 
+    public class HotelPriceModel
+    {
+        public int Id { get; set; }
+        public string PriceDate { get; set; }
+        public decimal SellPrice { get; set; }
+        public decimal ContractPrice { get; set; }
+        public int Count { get; set; }
+        public int RetainCount { get; set; }
+    }
+
     #endregion
 }

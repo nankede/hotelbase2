@@ -225,7 +225,8 @@ var canlendarMainFn = {
             for (var i = 0; i < length; i++) {
                 if ($(t).eq(i).attr('data-date')) {
                     if (v.PriceDate.split(' ')[0] == $(t).eq(i).attr('data-date')) {
-                        $(t).eq(i).children('.em_price').text('￥' + Math.floor(v.MinSalePrice));
+                        $(t).eq(i).children('.em_price').text('￥' + Math.floor(v.SellPrice));
+                        $(t).eq(i).children('.em_price').text('￥' + Math.floor(v.ContractPrice));
                         $(t).eq(i).addClass('choose_date');
                     }
                 }

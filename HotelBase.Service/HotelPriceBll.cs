@@ -19,21 +19,24 @@ namespace HotelBase.Service
         /// 价格查询
         /// </summary>
         /// <param name="request"></param>
-        public static BasePageResponse<H_HoteRulePriceModel> GetList(HotelPriceSearchRequest request)
+        public static List<HotelPriceModel> GetList(HotelPriceSearchRequest request)
         {
             var db = new H_HoteRulePriceAccess();
             var query = db.Query().Where(x => x.HRRId == request.RuleId)
-                .Where(x => x.HRPDateInt > request.Month * 100 && x.HRPDateInt < (request.Month + 1)*100)
+                .Where(x => x.HRPDateInt > request.Month * 100 && x.HRPDateInt < (request.Month + 1) * 100)
                 .OrderByDescending(x => x.Id);
             var list = query.ToList();
 
-            var response = new BasePageResponse<H_HoteRulePriceModel>()
+            var response = list?.Select(x => new HotelPriceModel
             {
-                IsSuccess = 1,
-                Total = list?.Count ?? 0,
-                List = list
-            };
+                Id = x.Id,
+                ContractPrice = x.HRPContractPrice,
+                Count = x.HRPCount,
+                PriceDate = x.HRPDate.ToString("yyyy-MM-dd"),
+                RetainCount = x.HRPRetainCount,
+                SellPrice = x.HRPSellPrice
 
+            })?.ToList();
             return response;
         }
 
