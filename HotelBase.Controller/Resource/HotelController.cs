@@ -70,6 +70,7 @@ namespace HotelBase.Web.Controller.System
             }
             else
             {
+                request.HIIsValid = 1;
                 request.HIAddName = CurrtUser.Name;
                 var response = HotelBll.Insert(request);
                 return Json(response);
@@ -160,6 +161,7 @@ namespace HotelBase.Web.Controller.System
             }
             else
             {
+                request.HRIsValid = 1;
                 request.HRAddName = CurrtUser.Name;
                 var response = HotelRoomBll.Insert(request);
                 return Json(response);
@@ -238,6 +240,7 @@ namespace HotelBase.Web.Controller.System
             }
             else
             {
+                request.HRRIsValid = 1;
                 request.HRRAddName = CurrtUser.Name;
                 var response = HotelRoomRuleBll.Insert(request);
                 return Json(response);
@@ -271,7 +274,7 @@ namespace HotelBase.Web.Controller.System
         /// 价格日历
         /// </summary>
         /// <returns></returns>
-        public ActionResult PriceList(int ruleId,int hotelId,int roomId)
+        public ActionResult PriceList(int ruleId, int hotelId, int roomId)
         {
             ViewBag.RuleId = ruleId;
             ViewBag.RoomId = roomId;
@@ -284,7 +287,8 @@ namespace HotelBase.Web.Controller.System
         /// <returns></returns>
         public JsonResult GetPriceList(HotelPriceSearchRequest request)
         {
-            return null;
+            var list = HotelPriceBll.GetList(request);
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

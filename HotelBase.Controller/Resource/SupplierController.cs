@@ -53,11 +53,14 @@ namespace HotelBase.Web.Controller.System
         {
             if (request.Id > 0)
             {
+                request.SUpdateName = CurrtUser.Name;
                 var response = SupplierBll.Update(request);
                 return Json(response);
             }
             else
             {
+                request.SIsValid = 1;
+                request.SAddName = CurrtUser.Name;
                 var response = SupplierBll.Insert(request);
                 return Json(response);
             }
@@ -71,6 +74,18 @@ namespace HotelBase.Web.Controller.System
         {
             var model = SupplierBll.GetDetail(id);
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 查询供应商-模糊查询
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetSupplierList(int sourceId, string name)
+        {
+            if (string.IsNullOrEmpty(name)) return Json("", JsonRequestBehavior.AllowGet);
+            var list = SupplierBll.GetSupplierList(sourceId, name);
+            var rtn = list?.Select(x => new { Code = x.Id, Name = x.SName });
+            return Json(rtn, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

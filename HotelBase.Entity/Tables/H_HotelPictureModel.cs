@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Text;
-using HotelBase.Entity.MapAttribute;
+using Component.Access.MapAttribute;
 
 
 namespace HotelBase.Entity.Tables

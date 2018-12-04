@@ -1,111 +1,5 @@
 ﻿<link href="~/Content/css/sarCalendar.css" rel="stylesheet" />
 <div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
-    <div>
-        <h3 class="cont-title">基础信息</h3>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6 lay-must">
-                <div class="lay-form-item-caption">
-                    <label>酒店名称</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-6 lay-must">
-                <div class="lay-form-item-caption ">
-                    <label>区域</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择省份" ng-model="m.HIProvinceId" ng-init="m.HIProvinceId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
-                    <select class="lay-select select-area" placeholder="请选择城市" ng-model="m.HICityId" ng-init="m.HICityId=0" ng-options="item.Id as item. Name for item in CityList"></select>
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>商圈</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择商圈" ng-model="m.HIShoppingAreaId" ng-init="m.HIShoppingAreaId=0" ng-options="item.Code as item. Name for item in ShopAreaData"></select>
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>酒店地址</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input long-input" ng-model="m.HIAddress" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>联系电话</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HILinkPhone" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>办理入住时间</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择办理入住时间" ng-model="m.HICheckIn" ng-init="m.HICheckIn=0" ng-options="item.Code as item. Name for item in CheckInData"></select>
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>办理离店时间</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择办理离店时间" ng-model="m.HICheckOut" ng-init="m.HICheckOut=0" ng-options="item.Code as item. Name for item in CheckOutData"></select>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div>
-        <h3 class="cont-title">酒店设施</h3>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label></label>
-            </div>
-            <div class="lay-form-item-control">
-            </div>
-        </div>
-    </div>
-    <div>
-        <h3 class="cont-title">酒店政策</h3>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>儿童政策</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIChildRemark"></textarea>
-            </div>
-        </div>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>宠物政策政策</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIPetRemark"></textarea>
-            </div>
-        </div>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>酒店介绍</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIHotelIntroduction"></textarea>
-            </div>
-        </div>
-    </div>
     <div class="lay-form-foot">
         <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
     </div>
@@ -113,7 +7,9 @@
     <div id="calendar_contain" class="calendar_contain"></div>
     <!-- 日历 end -->
 </div>
-<input id="hfId" type="hidden" value="@ViewBag.Id" />
+<input id="hfRuleId" type="hidden" value="@ViewBag.RuleId" />
+<input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
+<input id="hfRoomId" type="hidden" value="@ViewBag.RoomId" />
 @section foot{
     <script src="~/Content/js/sarCalendar.js" type="text/javascript"></script>
     <script>
@@ -125,262 +21,52 @@
         app.controller('myCtrl', function ($scope) {
             $scope.Source = [{ Code: 0, Name: '请选择' }];
             $scope.config = {
-                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
-                areaUrl: "/system/GetAreaList/?pid=",
-                detailUrl: "/hotel/getdateil/",
+                searchUrl: "/hotel/getpricelist/",
                 saveUrl: "/hotel/save/",
             };
             $scope.Id = $('#hfId').val();
             $(function () {
-                $scope.pageInit();
-                canlendarMainFn.pCalendarList = [
-                    {
-                        "MinSalePrice": 459,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-11-25 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 499,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-11-26 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 499,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-11-27 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 499,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-11-28 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 459,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-11-29 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 499,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-11-30 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-01 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-02 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-03 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-04 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-05 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-06 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-07 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-08 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-09 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-10 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-11 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-12 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-13 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-14 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-15 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-16 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-17 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-18 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-19 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-20 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-21 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-22 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-23 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-24 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-25 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-26 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-27 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-28 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-29 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-30 00:00:00.000"
-                    },
-                    {
-                        "MinSalePrice": 479,
-                        "MinInventroyCount": 0,
-                        "PriceDate": "2018-12-31 00:00:00.000"
-                    }
-                ];
-                canlendarMainFn.init('calendar_contain');
+                //canlendarMainFn.pCalendarList = [
+                //    {
+                //        "MinSalePrice": 459,
+                //        "MinInventroyCount": 0,
+                //        "PriceDate": "2018-11-25 00:00:00.000"
+                //    },
+                //    {
+                //        "MinSalePrice": 499,
+                //        "MinInventroyCount": 0,
+                //        "PriceDate": "2018-11-26 00:00:00.000"
+                //    },
+                //    {
+                //        "MinSalePrice": 499,
+                //        "MinInventroyCount": 0,
+                //        "PriceDate": "2018-11-27 00:00:00.000"
+                //    }
+                //];
+                //canlendarMainFn.init('calendar_contain');
+                $scope.getList();
             });
-            //初始化
-            $scope.pageInit = function () {
-                laydate.render({
-                    elem: '#txtDate',
-                    range: '~'
-                })
-                $scope.getArea(0);
-                $scope.dicInit();
-                if ($scope.Id > 0) {
-                    $scope.getDetail();
-                }
-            }
-            //字典初始化
-            $scope.dicInit = function () {
-                //ShopAreaData 商圈
-                Untitl.GetDicList(101, function (data) {
-                    $scope.ShopAreaData = data;
-                    $scope.$apply();
-                });
-                //CheckInData 入住时间
-                Untitl.GetDicList(101, function (data) {
-                    $scope.CheckInData = data;
-                    $scope.$apply();
-                });
 
-                //CheckOutData 离店时间
-                Untitl.GetDicList(101, function (data) {
-                    $scope.CheckOutData = data;
-                    $scope.$apply();
-                });
-
-                //FacilitiyData 设施
-                Untitl.GetDicList(101, function (data) {
-                    $scope.FacilitiyData = data;
-                    $scope.$apply();
-                });
-
-            }
-
-            //获取省市查询
-            $scope.getArea = function (type) {
-                var pId = type == 0 ? 1 : $scope.m.HIProvinceId;
-                if (!pId || pId <= 0) return;
-                var url = $scope.config.areaUrl + pId;
-                Untitl.Get(url, {}, function (data) {
-                    if (type == 0) {
-                        $scope.ProvList = data;
-                        $scope.ProvList.unshift({ Id: 0, Name: "请选择省份" });
-                        $scope.CityList = [{ Id: 0, Name: "请选择城市" }];
-                        $scope.m.HICityId = 0;
+            //列表
+            $scope.getList = function () {
+                var Month = "201811";
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.searchUrl + "?RuleId=" + $('#hfRuleId').val() + "&Month=" + Month,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        canlendarMainFn.pCalendarList = data;
+                        canlendarMainFn.init('calendar_contain');
+                    },
+                    error: function () {
+                        console.log("err-getList");
+                    },
+                    complete: function () {
+                        eLoading.hide();
                     }
-                    else {
-                        $scope.CityList = data;
-                        $scope.CityList.unshift({ Id: 0, Name: "请选择城市" });
-                    }
-                    $scope.$apply();
-                }, function () {
-                    console.log("err-getArea");
-                })
+                });
             }
 
             //详情

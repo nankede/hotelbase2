@@ -2,59 +2,61 @@
     <div>
         <h3 class="cont-title">基础信息</h3>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-4 lay-must">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
                     <label>供应商名称</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="m.SName" />
+                    <input class="lay-input long-input" ng-model="m.SName" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-4 lay-must">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
                     <label>供应商来源</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select  lay-input" ng-model="m.SSourceId" ng-init="m.SSourceId=0" ng-options="item.Code as item. Name for item in Source"></select>
+                    <select class="lay-select lay-input" ng-model="m.SSourceId" ng-init="m.SSourceId=0" ng-options="item.Code as item. Name for item in Source"></select>
                 </div>
             </div>
-            <div class="lay-form-item lay-col-4">
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>联系人</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="m.SLinker" />
+                    <input class="lay-input long-input" ng-model="m.SLinker" />
                 </div>
             </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-4">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>联系电话</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="m.SLinkPhone" />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>QQ/微信</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="m.SLinkQQ" />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>邮箱</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="m.SLinkMail" />
+                    <input class="lay-input long-input" ng-model="m.SLinkPhone" />
                 </div>
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>QQ/微信</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SLinkQQ" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>邮箱</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SLinkMail" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>公司地址</label>
                 </div>
@@ -62,7 +64,7 @@
                     <input class="lay-input long-input" ng-model="m.SAddress" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>公司全称</label>
                 </div>
@@ -72,7 +74,7 @@
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>合作时间</label>
                 </div>
@@ -85,20 +87,20 @@
     <div>
         <h3 class="cont-title">财务信息</h3>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-4">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption  lay-must">
                     <label>财务对接人</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="m.SFinanceLinker" />
+                    <input class="lay-input long-input" ng-model="m.SFinanceLinker" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-4">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption lay-must">
                     <label>财务电话</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="m.SFinancePhone" />
+                    <input class="lay-input long-input" ng-model="m.SFinancePhone" />
                 </div>
             </div>
         </div>
@@ -106,7 +108,7 @@
     <div>
         <h3 class="cont-title">打款信息</h3>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption  lay-must">
                     <label>开户行</label>
                 </div>
@@ -114,7 +116,7 @@
                     <input class="lay-input long-input" ng-model="m.SFinanceBankName" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption lay-must">
                     <label>账号</label>
                 </div>
@@ -124,7 +126,7 @@
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>户名</label>
                 </div>
@@ -137,7 +139,7 @@
     <div>
         <h3 class="cont-title">开票信息</h3>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption  lay-must">
                     <label>开票抬头</label>
                 </div>
@@ -145,7 +147,7 @@
                     <input class="lay-input long-input" ng-model="m.SInvoiceTitle" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption lay-must">
                     <label>税号</label>
                 </div>
@@ -155,7 +157,7 @@
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>项目</label>
                 </div>
@@ -163,7 +165,7 @@
                     <input class="lay-input long-input" ng-model="m.SInvoiceItem" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-5">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>发票类型</label>
                 </div>

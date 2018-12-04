@@ -7,7 +7,7 @@
             <tr>
                 <th width="10%">房型ID</th>
                 <th>房型名称</th>
-                <th width="10%">区域床型</th>
+                <th width="10%">床型</th>
                 <th width="8%">是否有窗</th>
                 <th width="8%">房间大小</th>
                 <th width="8%">可住人数</th>
@@ -29,7 +29,7 @@
                 <td>
                     <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.HRIsValid==1?'无效':'有效'}}" ng-click="setValid(h.Id,h.Valid)" />
-                    <input type="button" class="lay-btn lay-btn-edit" value="新增政策" ng-click="Ruledetail(h.Id)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="新增政策" ng-click="ruledetail(h.Id)" />
                 </td>
             </tr>
 
@@ -43,7 +43,7 @@
 
 <div class="lay-dialog" id="dialogDetail">
     <div class="lay-dialog-mask"></div>
-    <div class="lay-dialog-cont" style="width:920px;height:720px;">
+    <div class="lay-dialog-cont" style="width:96%;height:96%;">
         <div class="lay-dialog-hd">
             <h3>房型信息</h3>
             <button class="lay-dialog-btn-close"></button>
@@ -64,6 +64,7 @@
                 dicUrl: "/system/getdiclistbypcode/?pCode=",
             };
             $(function () {
+                $scope.Search = { PageIndex: 1, HotelId: 0, IsValiad:-1};
                 $scope.dicInit();
                 $scope.pageInit();
             });
@@ -73,12 +74,17 @@
             }
 
             //列表
-            $scope.getList = function () {
+            $scope.getList = function (index) {
+                $scope.detailClear();
+                $scope.Search.PageIndex = index || 1;
+                $scope.Search.HotelId = $('#hfHotelId').val();
+                var para = $scope.Search;
                 eLoading.show();
                 $.ajax({
-                    url: $scope.config.searchUrl + "?HotelId=" + $('#hfHotelId').val(),
-                    type: 'get',
+                    url: $scope.config.searchUrl,
+                    type: 'post',
                     dataType: "json",
+                    data: para,
                     timeout: 20000,
                     success: function (data) {
                         $scope.list = [];
@@ -118,21 +124,21 @@
             //获取字典数据
             $scope.dicInit = function () {
                 //床型
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(501, function (data) {
                     $scope.BedTypeList = data;
                     $scope.$apply();
                 });
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(502, function (data) {
                     $scope.BedSizeList = data;
                     $scope.$apply();
                 });
                 //窗户
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(503, function (data) {
                     $scope.WindowsTypeList = data;
                     $scope.$apply();
                 });
                 //人数
-                Untitl.GetDicList(101, function (data) {
+                Untitl.GetDicList(504, function (data) {
                     $scope.PersonCountList = data;
                     $scope.$apply();
                 });
@@ -142,12 +148,19 @@
                 var name = "--";
                 if (list) {
                     $.each(list, function (index, item) {
-                        if (item.id == id)
-                            name = item.name;
+                        if (item.Code == id)
+                            name = item.Name;
                     });
                 }
                 return name;
             }
+            //详情
+            $scope.ruledetail = function (id) {
+                var url = "/hotel/roomrulelist?hotelid=" + $('#hfHotelId').val() + "&roomid=" + id;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
             //详情
             $scope.detail = function (id) {
                 var url = "/hotel/room?hotelid=" + $('#hfHotelId').val() + "&id=" + id;
