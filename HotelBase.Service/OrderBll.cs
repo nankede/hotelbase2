@@ -49,9 +49,46 @@ namespace HotelBase.Service
         /// <param name="roomid"></param>
         /// <param name="rooleid"></param>
         /// <returns></returns>
-        public static BookSearchResponse GetHotelRuleDetial(int hotelid, int roomid, int rooleid)
+        public static BookSearchResponse GetHotelRuleDetial(int hotelid, int roomid, int rooleid,int supplierid)
         {
-            return Ho_HotelOrderAccess.GetHotelRuleDetial(hotelid,roomid,rooleid);
+            return Ho_HotelOrderAccess.GetHotelRuleDetial(hotelid,roomid,rooleid, supplierid);
+        }
+
+        /// <summary>
+        /// 新增订单
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BaseResponse AddOrderModel(HO_HotelOrderModel model)
+        {
+            var res = new BaseResponse();
+            var id = 0;
+            id = Ho_HotelOrderAccess.AddOrderModel(model);
+            if (id <= 0)
+            {
+                res.Msg = "新增失败";
+                return res;
+            }
+            else
+            {
+                res = new BaseResponse
+                {
+                    AddId = id,
+                    IsSuccess = 1
+                };
+            }
+            return res;
+        }
+
+
+        /// <summary>
+        /// 获取订单日志
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BasePageResponse<HO_HotelOrderLogModel> GetOrderLogList(OrderLogSearchRequset request)
+        {
+            return Ho_HotelOrderAccess.GetOrderLogList(request);
         }
     }
 }

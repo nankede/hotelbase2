@@ -76,12 +76,22 @@ namespace HotelBase.Entity.Models
 
     public class OrderSearchResponse : BaseResponse
     {
+        /// <summary>
+        /// 订单id
+        /// </summary>
+        public int Id { get; set; }
+
         public string HOCustomerSerialId { get; set; }
 
         /// <summary>
         /// 供应商来源id
         /// </summary>
         public string HOSupplierSourceId { get; set; }
+
+        /// <summary>
+        /// 供应商来源
+        /// </summary>
+        public string HOSupplierSourceName { get; set; }
 
         /// <summary>
         /// 酒店Id
@@ -96,12 +106,12 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 入住时间
         /// </summary>
-        public DateTime HOCheckInDate { get; set; }
+        public string HOCheckInDate { get; set; }
 
         /// <summary>
         /// 离店时间
         /// </summary>
-        public DateTime HOCheckOutDate { get; set; }
+        public string HOCheckOutDate { get; set; }
 
         /// <summary>
         /// 预订人
@@ -129,5 +139,13 @@ namespace HotelBase.Entity.Models
     public class OrdrModel : HO_HotelOrderModel
     {
 
+    }
+
+    public class OrderLogSearchRequset : BaseRequest
+    {
+        /// <summary>
+        /// 订单号
+        /// </summary>
+        public string CustomerSerialId { get; set; }
     }
 }

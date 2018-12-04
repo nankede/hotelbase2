@@ -295,10 +295,11 @@ namespace HotelBase.Web.Controller.System
         /// <param name="hotelid"></param>
         /// <param name="roomid"></param>
         /// <param name="rooleid"></param>
+        /// <param name="supplierid"></param>
         /// <returns></returns>
-        public JsonResult GetOrderNeedInfo(int hotelid, int roomid, int rooleid)
+        public JsonResult GetOrderNeedInfo(int hotelid, int roomid, int rooleid,int supplierid)
         {
-            var model = OrderBll.GetHotelRuleDetial(hotelid, roomid, rooleid);
+            var model = OrderBll.GetHotelRuleDetial(hotelid, roomid, rooleid, supplierid);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 

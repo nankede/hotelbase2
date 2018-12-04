@@ -1,13 +1,16 @@
 ﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div>
         <h3 class="cont-title">酒店信息</h3>
+        <input type="hidden" ng-model="m.HotelSupplierSourceId" disabled />
+        <input type="hidden" ng-model="m.HotelSupplierSourceName" disabled />
+        <input type="hidden" ng-model="m.HotelRoomRuleName" disabled />
         <div class="lay-row">
             <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
                     <label>酒店名称</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HotelName" disabled/>
+                    <input class="lay-input  long-input" ng-model="m.HotelName" disabled />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -15,7 +18,7 @@
                     <label>酒店ID</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HotelId" disabled/>
+                    <input class="lay-input  long-input" ng-model="m.HotelId" disabled />
                 </div>
             </div>
         </div>
@@ -25,7 +28,7 @@
                     <label>供应商名称</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HotelName" disabled/>
+                    <input class="lay-input  long-input" ng-model="m.HotelSupplierName" disabled />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -33,7 +36,7 @@
                     <label>供应商ID</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HotelId" disabled/>
+                    <input class="lay-input  long-input" ng-model="m.HotelSupplierId" disabled />
                 </div>
             </div>
         </div>
@@ -43,7 +46,7 @@
                     <label>预定房型</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HotelRoomName" disabled/>
+                    <input class="lay-input  long-input" ng-model="m.HotelRoomName" disabled />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -51,7 +54,7 @@
                     <label>房型ID</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HotelRoomId" disabled/>
+                    <input class="lay-input  long-input" ng-model="m.HotelRoomId" disabled />
                 </div>
             </div>
         </div>
@@ -61,7 +64,7 @@
                     <label>确认方式</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelSupplierSubWay" disabled />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -69,7 +72,7 @@
                     <label>传真号/邮箱</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelSupplierLinkMail" disabled />
                 </div>
             </div>
         </div>
@@ -82,7 +85,7 @@
                     <label>入住人</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOCustomerName" />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -90,7 +93,7 @@
                     <label>入住人手机号</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOCustomerMobile" />
                 </div>
             </div>
         </div>
@@ -100,7 +103,7 @@
                     <label>入住/离店</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOCheckInDate" />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -108,7 +111,7 @@
                     <label>最晚到店时间</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOLastCheckInTime" />
                 </div>
             </div>
         </div>
@@ -118,7 +121,7 @@
                     <label>成人</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" type="number" ng-model="o.HOAdult" />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -126,7 +129,7 @@
                     <label>儿童</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" type="number" ng-model="o.HOChild" />
                 </div>
             </div>
         </div>
@@ -136,7 +139,7 @@
                     <label>房型政策</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelRoomName" disabled />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -144,7 +147,7 @@
                     <label>早餐政策</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="m.HotelRoomBreakfastRuleName" disabled />
                 </div>
             </div>
         </div>
@@ -154,7 +157,7 @@
                     <label>房间数</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input id="num" class="lay-input  long-input" ng-model="o.HORoomCount" />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -162,7 +165,7 @@
                     <label>总间夜</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input id="yetnum" class="lay-input  long-input" ng-model="o.NightCount" disabled />
                 </div>
             </div>
         </div>
@@ -172,7 +175,7 @@
                     <label>酒店卖价</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input id="sellprice" class="lay-input  long-input" ng-model="m.HoteRoomRuleSellPrice" disabled />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -180,7 +183,7 @@
                     <label>酒店结算价</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input id="contractprice" class="lay-input  long-input" ng-model="m.HoteRoomRuleContractPrice" disabled />
                 </div>
             </div>
         </div>
@@ -190,7 +193,7 @@
                     <label>订单总价</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input id="totalsell" class="lay-input  long-input" ng-model="o.HOSellPrice" disabled />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -198,25 +201,25 @@
                     <label>结算总价</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input id="totalcontract" class="lay-input  long-input" ng-model="o.HOContractPrice" disabled />
                 </div>
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-6 lay-must">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
                     <label>客人特殊要求</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HORemark" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-6 lay-must">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
                     <label>第三方订单号</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOOutSerialId" />
                 </div>
             </div>
         </div>
@@ -226,7 +229,7 @@
                     <label>预定联系人</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOLinkerName" />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -234,25 +237,25 @@
                     <label>联系人手机号</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOLinkerMobile" />
                 </div>
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-6 lay-must">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
                     <label>来单渠道</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOPlat1" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-6 lay-must">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
                     <label>来单渠道</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
+                    <input class="lay-input  long-input" ng-model="o.HOPlat2" />
                 </div>
             </div>
         </div>
@@ -264,6 +267,7 @@
 <input id="hid" type="hidden" value="@ViewBag.HotelId" />
 <input id="hroomid" type="hidden" value="@ViewBag.RoomId" />
 <input id="hruleid" type="hidden" value="@ViewBag.RuleId" />
+<input id="hsupplierid" type="hidden" value="@ViewBag.SupplierId" />
 @section foot{
     <script>
 
@@ -274,59 +278,39 @@
         app.controller('myCtrl', function ($scope) {
             $scope.Source = [{ Code: 0, Name: '请选择' }];
             $scope.config = {
-                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
-                areaUrl: "/system/GetAreaList/?pid=",
                 detailUrl: "/hotel/getorderneedinfo/",
-                saveUrl: "/hotel/save/",
+                saveUrl: "/order/save/",
             };
             $scope.id = $('#hid').val();
             $scope.roomid = $('#hroomid').val();
             $scope.ruleid = $('#hruleid').val();
+            $scope.supplierid = $('#hsupplierid').val();
             $(function () {
                 $scope.pageInit();
+
             });
             //初始化
             $scope.pageInit = function () {
-                $scope.getHotel($scope.id, $scope.roomid, $scope.ruleid)
+                $scope.getHotel($scope.id, $scope.roomid, $scope.ruleid, $scope.supplierid)
                 laydate.render({
                     elem: '#txtDate',
                     range: '~'
                 })
+                $("#num").bind("input propertychange", function () {
+                    $("#yetnum").val($("#num").val());
+                    var totalsell = $("#sellprice").val() * $("#num").val()
+                    var totalcontract = $("#contractprice").val() * $("#num").val()
+                    $("#totalcontract").val(totalcontract.toFixed(2));
+                    $("#totalsell").val(totalsell.toFixed(2));
+                    $scope.o.HOContractPrice = $("#totalcontract").val();
+                    $scope.o.HOSellPrice = $("#totalsell").val();
+                });
             }
-
-
-            //字典初始化
-            $scope.dicInit = function () {
-                //ShopAreaData 商圈
-                Untitl.GetDicList(101, function (data) {
-                    $scope.ShopAreaData = data;
-                    $scope.$apply();
-                });
-                //CheckInData 入住时间
-                Untitl.GetDicList(101, function (data) {
-                    $scope.CheckInData = data;
-                    $scope.$apply();
-                });
-
-                //CheckOutData 离店时间
-                Untitl.GetDicList(101, function (data) {
-                    $scope.CheckOutData = data;
-                    $scope.$apply();
-                });
-
-                //FacilitiyData 设施
-                Untitl.GetDicList(101, function (data) {
-                    $scope.FacilitiyData = data;
-                    $scope.$apply();
-                });
-
-            }
-
             //获取酒店详情
-            $scope.getHotel = function (hid,roomid,ruleid) {
-                if (!hid || hid <= 0 && !roomid || roomid <= 0 && !ruleid || ruleid <= 0) return;
+            $scope.getHotel = function (hid, roomid, ruleid, supplierid) {
+                if (!hid || hid <= 0 && !roomid || roomid <= 0 && !ruleid || ruleid <= 0 && !supplierid || supplierid <= 0) return;
                 $.ajax({
-                    url: $scope.config.detailUrl + "?hotelid=" + hid + "&roomid=" + roomid + "&rooleid=" + ruleid,
+                    url: $scope.config.detailUrl + "?hotelid=" + hid + "&roomid=" + roomid + "&rooleid=" + ruleid + "&supplierid=" + supplierid,
                     type: 'get',
                     dataType: "json",
                     timeout: 20000,
@@ -344,54 +328,38 @@
                     }
                 });
             }
-
-            //获取省市查询
-            $scope.getArea = function (type) {
-                var pId = type == 0 ? 1 : $scope.m.HIProvinceId;
-                if (!pId || pId <= 0) return;
-                var url = $scope.config.areaUrl + pId;
-                Untitl.Get(url, {}, function (data) {
-                    if (type == 0) {
-                        $scope.ProvList = data;
-                        $scope.ProvList.unshift({ Id: 0, Name: "请选择省份" });
-                        $scope.CityList = [{ Id: 0, Name: "请选择城市" }];
-                        $scope.m.HICityId = 0;
-                    }
-                    else {
-                        $scope.CityList = data;
-                        $scope.CityList.unshift({ Id: 0, Name: "请选择城市" });
-                    }
-                    $scope.$apply();
-                }, function () {
-                    console.log("err-getArea");
-                })
-            }
-
-            //详情
-            $scope.getDetail = function () {
-                eLoading.show();
+            //保存
+            $scope.Save = function () {
+                //var c = $scope.checkData();
+                //if (!c) return;
+                //eLoading.show();
                 $.ajax({
-                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
-                    type: 'get',
+                    url: $scope.config.saveUrl,
+                    type: 'post',
                     dataType: "json",
+                    data: { "hotelmodel": $scope.m, "ordermodel": $scope.o },
                     timeout: 20000,
                     success: function (data) {
-                        if (data != null && data.Id > 0) {
-                            $scope.m = data;
-                            if ($scope.m && $scope.m.HIProvinceId > 0) {
-                                $scope.getArea(1);
-                            }
-                        }
-                        else {
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.m.Id = data.AddId;
                             eMsg({
                                 timer: 2000,
-                                text: '查询失败，请稍后重试！'
+                                text: '操作成功，正在自动关闭页面！'
+                            });
+                            //关闭页面
+                            setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                        }
+                        else {
+                            var msg = data ? data.Msg : "";
+                            eMsg({
+                                timer: 2000,
+                                text: '操作失败,' + msg
                             });
                         }
                         $scope.$apply();
                     },
                     error: function () {
-                        console.log("err-getDetail");
+                        console.log("err-save");
                     },
                     complete: function () {
                         eLoading.hide();
@@ -399,56 +367,73 @@
                 });
             }
 
-            //保存
-            $scope.Save = function () {
-                var c = $scope.checkData();
-                if (!c) return;
-                eLoading.show();
-                Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
-                    if (data != null && data.IsSuccess > 0) {
-                        $scope.m.Id = data.AddId;
-                        eMsg({
-                            timer: 2000,
-                            text: '操作成功，正在自动关闭页面！'
-                        });
-                        //关闭页面
-                        setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
-                    }
-                    else {
-                        var msg = data ? data.Msg : "";
-                        eMsg({
-                            timer: 2000,
-                            text: '操作失败,' + msg
-                        });
-                    }
-                    $scope.$apply();
-                },
-                    function () {
-                        eLoading.hide();
-                    });
-            }
-
             //数据验证
             $scope.checkData = function () {
-                if ($scope.m.HIName.length <= 0) {
+                if ($scope.o.HOCustomerName.length <= 0) {
                     eMsg({
                         timer: 2000,
-                        text: '酒店名称不能为空！'
+                        text: '入住人姓名不能为空！'
                     });
                     return false;
                 }
-                if ($scope.m.HILinkPhone.length > 0 && !mobileReg.test($scope.m.HILinkPhone) && !telReg.test($scope.m.HILinkPhone)) {
+                if ($scope.o.HOLinkerName.length <= 0) {
                     eMsg({
                         timer: 2000,
-                        text: '请输入正确的联系电话！'
+                        text: '联系人姓名不能为空！'
                     });
                     return false;
                 }
-                //省份 城市赋值
-
-
+                if ($scope.o.HOCheckInDate.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '入住/离店时间不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.o.HOLastCheckInTime.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '最晚到店时间不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.o.HOChild < 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '成人数不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.o.HOChild < 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '儿童数不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.o.HORoomCount <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '房间数不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.o.HOCustomerMobile.length > 0 && !mobileReg.test($scope.o.HOCustomerMobile) && !telReg.test($scope.o.HOCustomerMobile)) {
+                    eMsg({
+                        timer: 2000,
+                        text: '入住人手机号格式不正确！'
+                    });
+                    return false;
+                }
+                if ($scope.o.HOLinkerMobile.length > 0 && !mobileReg.test($scope.o.HOLinkerMobile) && !telReg.test($scope.o.HOLinkerMobile)) {
+                    eMsg({
+                        timer: 2000,
+                        text: '联系人手机号格式不正确！'
+                    });
+                    return false;
+                }
                 return true;
             }
         });
-</script>
+    </script>
 }

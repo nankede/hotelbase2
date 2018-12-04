@@ -1,6 +1,254 @@
-﻿<div>
-    <h1> 订单详情页面 </h1>
+﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-14" >
+            <div class="lay-form-item-control lay-col-6 "style="padding-right:15px;">
+                <h3 class="cont-title">金额信息</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">客人实付金额:</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
+                        <td class="lay-table td">预定人数：</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">应付供应商：</td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">订单佣金：</td>
+                        <td class="lay-table td"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">供应商订单号：</td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">第三方订单号：</td>
+                        <td class="lay-table td"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">外部订单号：</td>
+                        <td class="lay-table td"  colspan="3">
+                            <input class="lay-input  long-input" ng-model="m.HOCustomerMobile" />
+                            <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="lay-form-item-control lay-col-6">
+                <h3 class="cont-title">酒店信息</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">酒店名称:</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
+                        <td class="lay-table td">供应商名称：</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">酒店ID：</td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">供应商ID：</td>
+                        <td class="lay-table td"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">预定房型：</td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">房型ID：</td>
+                        <td class="lay-table td"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-12">
+            <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
+                <h3 class="cont-title">订单信息</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">入住人:</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
+                        <td class="lay-table td">入住/离店：</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">早餐：</td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">最晚到店时间：</td>
+                        <td class="lay-table td"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">房型政策：</td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">房间数：</td>
+                        <td class="lay-table td"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">供应商确认号：</td>
+                        <td class="lay-table td" colspan="3">
+                            <input class="lay-input  long-input" ng-model="m.HOCustomerMobile" />
+                            <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">客人特殊要求：</td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">入住人手机号：</td>
+                        <td class="lay-table td"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="lay-form-item-control lay-col-6">
+                <h3 class="cont-title">操作日志</h3>
+                <input type="button" class="lay-btn lay-btn-primary" value="填写日志" ng-click="Save()">
+                <table class="lay-table">
+                    <thead>
+                        <tr>
+                            <th class="lay-table td" width="5%">操作部门</th>
+                            <th class="lay-table td" width="15%">操作人</th>
+                            <th class="lay-table td" width="5%">操作内容</th>
+                            <th class="lay-table td" width="5%">操作时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in list">
+                            <td class="lay-table td" ng-bind="d.HOLAddDepartName"></td>
+                            <td class="lay-table td" ng-bind="d.HOLAddName"></td>
+                            <td class="lay-table td" ng-bind="d.HOLRemark"></td>
+                            <td class="lay-table td" ng-bind="d.HOLAddTime"></td>
+                        </tr>
 
-    <h1> 加油！！！</h1>
-
+                        <tr ng-hide="list!=null &&list.length > 0">
+                            <td colspan="8" class="lay-table-empty">暂无数据显示</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
 </div>
+<input id="horderid" type="hidden" value="@ViewBag.OrderId" />
+<input id="hserialid" type="hidden" value="@ViewBag.CustomerSerialId" />
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.config = {
+                detailUrl: "/order/getdetial",
+                logUrl: "/order/getorderloglist"
+                //saveUrl: "/order/save/",
+            };
+            $scope.id = $('#horderid').val();
+            $(function () {
+                $scope.pageInit();
+                $scope.Search = { PageIndex: 1 };
+                $scope.search(1);
+            });
+            //初始化
+            $scope.pageInit = function () {
+                $scope.getdetail($scope.id)
+            }
+            //获取订单详情
+            $scope.getdetail = function (orderid) {
+                if (!orderid || orderid <= 0) return;
+                $.ajax({
+                    url: $scope.config.detailUrl + "?orderid=" + orderid,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+            //查询
+            $scope.search = function (index) {
+                //$scope.detailClear();
+                $scope.Search.PageIndex = index;
+                $scope.Search.CustomerSerialId = $('#hserialid').val();
+                var para = $scope.Search;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.logUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.list = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.list = data.List;
+                            $scope.pagerInit(index, data.Total);
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                };
+                pager.render();
+            }
+
+            //保存
+            $scope.Save = function () {
+                $.ajax({
+                    url: $scope.config.saveUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: { "hotelmodel": $scope.m, "ordermodel": $scope.o },
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.m.Id = data.AddId;
+                            eMsg({
+                                timer: 2000,
+                                text: '操作成功，正在自动关闭页面！'
+                            });
+                            //关闭页面
+                            setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                        }
+                        else {
+                            var msg = data ? data.Msg : "";
+                            eMsg({
+                                timer: 2000,
+                                text: '操作失败,' + msg
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-save");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+        });
+    </script>
+}

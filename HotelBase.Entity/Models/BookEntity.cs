@@ -70,6 +70,11 @@ namespace HotelBase.Entity.Models
         public string HotelRoomName { get; set; }
 
         /// <summary>
+        /// 政策名称
+        /// </summary>
+        public string  HotelRoomRuleName { get; set; }
+
+        /// <summary>
         /// 床型名称
         /// </summary>
         public string HotelRoomBedType { get; set; }
@@ -80,13 +85,59 @@ namespace HotelBase.Entity.Models
         public string HotelRoomBreakfastRule { get; set; }
 
         /// <summary>
+        /// 早餐规则名称
+        /// </summary>
+        public string HotelRoomBreakfastRuleName { get; set; }
+
+        /// <summary>
         /// 取消规则
         /// </summary>
         public string HotelRoomCancelRule { get; set; }
+
+
+        /// <summary>
+        /// 取消规则名称
+        /// </summary>
+        public string HotelRoomCancelRuleName { get; set; }
 
         /// <summary>
         /// 售卖价
         /// </summary>
         public decimal HoteRoomRuleSellPrice { get; set; }
+
+        /// <summary>
+        /// 结算价
+        /// </summary>
+        public decimal HoteRoomRuleContractPrice { get; set; }
+
+        /// <summary>
+        /// 供应商名称
+        /// </summary>
+        public string HotelSupplierName { get; set; }
+
+        /// <summary>
+        ///  供应商ID
+        /// </summary>
+        public int HotelSupplierId { get; set; }
+
+        /// <summary>
+        /// 供应商来源id
+        /// </summary>
+        public int HotelSupplierSourceId { get; set; }
+
+        /// <summary>
+        /// 供应商来源名称
+        /// </summary>
+        public string HotelSupplierSourceName { get; set; }
+
+        /// <summary>
+        /// 供应商确认方式
+        /// </summary>
+        public string HotelSupplierSubWay { get; set; }
+
+        /// <summary>
+        /// 供应商邮箱
+        /// </summary>
+        public string HotelSupplierLinkMail { get; set; }
     }
 }

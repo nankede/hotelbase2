@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Enum\ModuleType.cs" />
     <Compile Include="Extension\ExtDateTime.cs" />
+    <Compile Include="Extension\ExtOrderNum.cs" />
     <Compile Include="Extension\ExtString.cs" />
     <Compile Include="File\Configs.cs" />
     <Compile Include="File\FileUtil.cs" />

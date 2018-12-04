@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Component.Access;
+using Dapper;
 using HotelBase.Entity;
 using HotelBase.Entity.Models;
 using HotelBase.Entity.Tables;
@@ -10,9 +11,13 @@ using System.Threading.Tasks;
 
 namespace HotelBase.DataAccess.Order
 {
-    public class Ho_HotelOrderAccess
+    public class Ho_HotelOrderAccess : BaseAccess<HO_HotelOrderModel>
     {
-        private static List<OrderSearchResponse> _DicList = new List<OrderSearchResponse>();
+        public Ho_HotelOrderAccess() : base(MysqlHelper.Db_HotelBase)
+        {
+
+        }
+        //private static List<OrderSearchResponse> List = new List<OrderSearchResponse>();
 
         /// <summary>
         /// 订单列表
@@ -22,8 +27,9 @@ namespace HotelBase.DataAccess.Order
             var response = new BasePageResponse<OrderSearchResponse>();
             StringBuilder sb = new StringBuilder();
             sb.Append(@"SELECT
+                        Id,
                         HOCustomerSerialId,
-                        HOSupplierSourceId,
+                        HOSupplierSourceName,
                         HIId,
                         HName,
                         HOCheckInDate,
@@ -142,13 +148,16 @@ namespace HotelBase.DataAccess.Order
 	                        b.Id AS HotelId,
 	                        r.Id AS HotelRoomId,
 	                        rr.Id AS HotelRoomRuleId,
+                            rr.HRRSupplierId AS HotelSupplierId,
 	                        b.HIName AS HotelName,
 	                        b.HIAddress AS HotelAddress,
 	                        b.HILinkPhone AS HotelTel,
 	                        r.HRName AS HotelRoomName,
 	                        r.HRBedType AS HotelRoomBedType,
 	                        rr.HRRBreakfastRule AS HotelRoomBreakfastRule,
+                            rr.HRRBreakfastRuleName AS HotelRoomBreakfastRuleName,
 	                        rr.HRRCancelRule AS HotelRoomCancelRule,
+	                        rr.HRRCancelRuleName AS HotelRoomCancelRuleName,
 	                        rp.HRPSellPrice AS HoteRoomRuleSellPrice
                         FROM
 	                        h_hotelinfo b
@@ -198,33 +207,45 @@ namespace HotelBase.DataAccess.Order
         /// <param name="hid"></param>
         /// <param name="roomid"></param>
         /// <param name="ruleid"></param>
+        /// <param name="supplierid"></param>
         /// <returns></returns>
-        public static BookSearchResponse GetHotelRuleDetial(int hid, int roomid, int ruleid)
+        public static BookSearchResponse GetHotelRuleDetial(int hid, int roomid, int ruleid, int supplierid)
         {
             var response = new BookSearchResponse();
             StringBuilder sb = new StringBuilder();
             sb.Append(@"SELECT
-	                        b.Id AS HotelId,
-	                        r.Id AS HotelRoomId,
-	                        rr.Id AS HotelRoomRuleId,
-	                        b.HIName AS HotelName,
-	                        b.HIAddress AS HotelAddress,
-	                        b.HILinkPhone AS HotelTel,
-	                        r.HRName AS HotelRoomName,
-	                        r.HRBedType AS HotelRoomBedType,
-	                        rr.HRRBreakfastRule AS HotelRoomBreakfastRule,
-	                        rr.HRRCancelRule AS HotelRoomCancelRule,
-	                        rp.HRPSellPrice AS HoteRoomRuleSellPrice
-                        FROM
-	                        h_hotelinfo b
-                        INNER JOIN h_hotelroom r ON r.HIId = b.Id
-                        INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
-                        INNER JOIN h_hoteruleprice rp ON rr.Id = rp.HRRId
-                        WHERE
-	                        b.HIIsValid = 1
-                        AND r.HRIsValid = 1
-                        AND rr.HRRIsValid = 1
-                        AND rp.HRPIsValid = 1");
+	                            b.Id AS HotelId,
+	                            r.Id AS HotelRoomId,
+	                            rr.Id AS HotelRoomRuleId,
+	                            b.HIName AS HotelName,
+	                            b.HIAddress AS HotelAddress,
+	                            b.HILinkPhone AS HotelTel,
+	                            r.HRName AS HotelRoomName,
+                                rr.HRRName AS HotelRoomRuleName,
+	                            r.HRBedType AS HotelRoomBedType,
+	                            rr.HRRBreakfastRuleName AS HotelRoomBreakfastRuleName,
+	                            rr.HRRCancelRule AS HotelRoomCancelRule,
+	                            rr.HRRCancelRuleName AS HotelRoomCancelRuleName,
+	                            rr.HRRSourceId AS HotelSupplierSourceId,
+	                            rr.HRRSourceName AS HotelSupplierSourceName,
+	                            rr.HRRSupplierId AS HotelSupplierId,
+	                            rr.HRRSupplierName AS HotelSupplierName,
+	                            rp.HRPSellPrice AS HoteRoomRuleSellPrice,
+	                            rp.HRPContractPrice AS HoteRoomRuleContractPrice,
+	                            s.SSubWay AS HotelSupplierSubWay,
+	                            s.SLinkMail AS HotelSupplierLinkMail
+                            FROM
+	                            h_hotelinfo b
+                            INNER JOIN h_hotelroom r ON r.HIId = b.Id
+                            INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
+                            INNER JOIN h_hoteruleprice rp ON rr.Id = rp.HRRId
+                            INNER JOIN h_supplier s ON s.Id = rr.HRRSupplierId
+                            WHERE
+	                            b.HIIsValid = 1
+                            AND r.HRIsValid = 1
+                            AND rr.HRRIsValid = 1
+                            AND rp.HRPIsValid = 1
+                            AND s.SIsValid = 1");
             //酒店id
             if (hid > 0)
             {
@@ -239,6 +260,11 @@ namespace HotelBase.DataAccess.Order
             if (ruleid > 0)
             {
                 sb.AppendFormat(" AND  rr.Id = {0}", ruleid);
+            }
+            //供应商id
+            if (ruleid > 0)
+            {
+                sb.AppendFormat(" AND  s.Id = {0}", supplierid);
             }
             var list = MysqlHelper.GetList<BookSearchResponse>(sb.ToString());
             if (list != null && list.Any())
@@ -257,7 +283,7 @@ namespace HotelBase.DataAccess.Order
         {
             var sql = new StringBuilder();
             sql.Append(" INSERT INTO `ho_hotelorder` (`HOCustomerSerialId`, `HIId`, `HName`, `HRId`, `HRName`, `HRRId`, `HRRName`, `HOSupplierId`, `HOSupperlierName`, `HOSupplierSourceId`, `HOSupplierSourceName`, `HOOutSerialId`, `HOSupplierSerialId`, `HOStatus`, `HOPayStatus`, `HORoomCount`, `HOChild`, `HOAdult`, `HoPlat1`, `HoPlat2`, `HOContractPrice`, `HOSellPrice`, `HOCustomerName`, `HOCustomerMobile`, `HOLinkerName`, `HOLinkerMobile`, `HORemark`, `HOCheckInDate`, `HOCheckOutDate`, `HOLastCheckInTime`, `HOAddId`, `HOAddName`, `HOAddDepartId`, `HOAddDepartName`, `HOAddTime`, `HOUpdateId`, `HOUpdateName`, `HOUpdateTime`) VALUES ");
-            sql.Append("( @HOCustomerSerialId, @HIId, @HName, @HRId, @HRName, @HRRId, @HRRName, @HOSupplierId, @HOSupperlierName, @HOSupplierSourceId, @HOSupplierSourceName, @HOOutSerialId, @HOSupplierSerialId, @HOStatus, @HOPayStatus, @HORoomCount, @HOChild, @HOAdult, @HoPlat1, @HoPlat2, @HOContractPrice, @HOSellPrice, @HOCustomerName, @HOCustomerMobile, @HOLinkerName, @HOLinkerMobile, @HORemark, @HOCheckInDate, @HOCheckOutDate, @HOLastCheckInTime, @HOAddId, @HOAddName, @HOAddDepartId, @HOAddDepartName, @HOAddTime, @OUpdateId, @HOUpdateName, @HOUpdateTime)");
+            sql.Append("( @HOCustomerSerialId, @HIId, @HName, @HRId, @HRName, @HRRId, @HRRName, @HOSupplierId, @HOSupperlierName, @HOSupplierSourceId, @HOSupplierSourceName, @HOOutSerialId, @HOSupplierSerialId, @HOStatus, @HOPayStatus, @HORoomCount, @HOChild, @HOAdult, @HoPlat1, @HoPlat2, @HOContractPrice, @HOSellPrice, @HOCustomerName, @HOCustomerMobile, @HOLinkerName, @HOLinkerMobile, @HORemark, @HOCheckInDate, @HOCheckOutDate, @HOLastCheckInTime, @HOAddId, @HOAddName, @HOAddDepartId, @HOAddDepartName, @HOAddTime, @HOUpdateId, @HOUpdateName, @HOUpdateTime)");
             var para = new DynamicParameters();
             para.Add("@HOCustomerSerialId", model.HOCustomerSerialId);
             para.Add("@HIId", model.HIId);
@@ -331,6 +357,27 @@ namespace HotelBase.DataAccess.Order
             sql.Append(" WHERE  `Id` =@Id   Limit 1;  ");
             var c = MysqlHelper.Update(sql.ToString());
             return c;
+        }
+
+        /// <summary>
+        /// 获取订单日志
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
+        public static BasePageResponse<HO_HotelOrderLogModel> GetOrderLogList(OrderLogSearchRequset request)
+        {
+            var response = new BasePageResponse<HO_HotelOrderLogModel>();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(@"SELECT * FROM ho_hotelorderlog  WHERE  HOLOrderId='{0}'  LIMIT 1;", request.CustomerSerialId);
+            var list = MysqlHelper.GetList<HO_HotelOrderLogModel>(sb.ToString());
+            var total = list?.Count ?? 0;
+            if (total > 0)
+            {
+                response.IsSuccess = 1;
+                response.Total = total;
+                response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
+            }
+            return response;
         }
     }
 }

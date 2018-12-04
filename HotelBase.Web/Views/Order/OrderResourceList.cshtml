@@ -43,11 +43,11 @@
             <tr ng-repeat="d in list">
                 <td ng-bind="d.HotelRoomName"></td>
                 <td ng-bind="d.HotelRoomBedType"></td>
-                <td ng-bind="d.HotelRoomBreakfastRule"></td>
-                <td ng-bind="d.HotelRoomCancelRule"></td>
+                <td ng-bind="d.HotelRoomBreakfastRuleName"></td>
+                <td ng-bind="d.HotelRoomCancelRuleName"></td>
                 <td ng-bind="d.HoteRoomRuleSellPrice"></td>
                 <td>
-                    <input type="button" class="lay-btn lay-btn-edit" value="预定" ng-click="detail(d.HotelId,d.HotelRoomId,d.HotelRoomRuleId)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="预定" ng-click="detail(d.HotelId,d.HotelRoomId,d.HotelRoomRuleId,d.HotelSupplierId)" />
                 </td>
             </tr>
 
@@ -158,8 +158,8 @@
                 };
                 pager.render();
             }
-            $scope.detail = function (hid, roomid, ruleid) {
-                var url = "/order/book?hotelId=" + hid + "&roomId=" + roomid + "&ruleid=" + ruleid;
+            $scope.detail = function (hid, roomid, ruleid,supplierid) {
+                var url = "/order/book?hotelId=" + hid + "&roomId=" + roomid + "&ruleid=" + ruleid + "&supplierid=" + supplierid;
                 $('#ifm_detail').prop('src', url);
                 $("#dialogDetail").eDialog('show');
             }

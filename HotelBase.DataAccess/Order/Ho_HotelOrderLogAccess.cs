@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Component.Access;
+using Dapper;
 using HotelBase.Entity.Tables;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,14 @@ using System.Threading.Tasks;
 
 namespace HotelBase.DataAccess.Order
 {
-    public class Ho_HotelOrderLogAccess
+    public class Ho_HotelOrderLogAccess : BaseAccess<HO_HotelOrderLogModel>
     {
+
+        public Ho_HotelOrderLogAccess() : base(MysqlHelper.Db_HotelBase)
+        {
+
+        }
+
         /// <summary>
         /// 新增订单日志
         /// </summary>
@@ -18,7 +25,7 @@ namespace HotelBase.DataAccess.Order
         public static int AddOrderLogModel(HO_HotelOrderLogModel model)
         {
             var sql = new StringBuilder();
-            sql.Append(" INSERT INTO `sys_basedictionary` (`HOLOrderId`, `HOLLogType`, `HOLRemark`, `HOLAddId`, `HOLAddName`, `HOLAddDepartId`, `HOLAddDepartName`, `HOLAddTime`) VALUES ");
+            sql.Append(" INSERT INTO `ho_hotelorderlog` (`HOLOrderId`, `HOLLogType`, `HOLRemark`, `HOLAddId`, `HOLAddName`, `HOLAddDepartId`, `HOLAddDepartName`, `HOLAddTime`) VALUES ");
             sql.Append("( @HOLOrderId, @HOLLogType, @HOLRemark, @HOLAddId, @HOLAddName, @HOLAddDepartId, @HOLAddDepartName, @HOLAddTime)");
             var para = new DynamicParameters();
             para.Add("@HOLOrderId", model.HOLOrderId);

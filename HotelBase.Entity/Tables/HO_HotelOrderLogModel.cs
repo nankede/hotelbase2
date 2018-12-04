@@ -34,21 +34,6 @@ namespace HotelBase.Entity.Tables
         }
 
         /// <summary>
-        /// 数据库字段：HOLOrderId
-        /// </summary>
-        private int _hOLOrderId = 0;
-
-        /// <summary>
-        /// 外部Id
-        /// </summary>
-        [Column("HOLOrderId")]
-        public int HOLOrderId
-        {
-            get { return _hOLOrderId; }
-            set { _hOLOrderId = value; }
-        }
-
-        /// <summary>
         /// 数据库字段：HOLLogType
         /// </summary>
         private int _hOLLogType = 0;
@@ -106,6 +91,21 @@ namespace HotelBase.Entity.Tables
         {
             get { return _hOLAddName; }
             set { _hOLAddName = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HOLOrderId
+        /// </summary>
+        private string _hOLOrderId = string.Empty;
+
+        /// <summary>
+        /// 关联id
+        /// </summary>
+        [Column("HOLOrderId")]
+        public string HOLOrderId
+        {
+            get { return _hOLOrderId; }
+            set { _hOLOrderId = value; }
         }
 
         /// <summary>
