@@ -161,6 +161,22 @@ namespace HotelBase.Web.Controller.System
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
+
+        /// <summary>
+        /// 更新订单
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SetOrder(int id, int type, int state, string serialid, HO_HotelOrderLogModel logmodel)
+        {
+            //日志
+            logmodel.HOLAddId = CurrtUser.Id;
+            logmodel.HOLAddDepartId = CurrtUser.DepartId;
+            logmodel.HOLAddTime = DateTime.Now;
+            OrderLogBll.AddOrderModel(logmodel);
+            var model = OrderBll.SetOrder(id, type, state, serialid);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         #region 日志

@@ -345,13 +345,22 @@ namespace HotelBase.DataAccess.Order
             switch (type)
             {
                 case 0:
-                    sql.AppendFormat(" `HOStatus` = {0}  ", state);
+                    if (state > 0)
+                    {
+                        sql.AppendFormat(" `HOStatus` = {0}  ", state);
+                    }
                     break;
                 case 1:
-                    sql.AppendFormat(" `HOOutSerialId` = {0}  ", serialid);
+                    if (!string.IsNullOrWhiteSpace(serialid))
+                    {
+                        sql.AppendFormat(" `HOOutSerialId` = {0}  ", serialid);
+                    }
                     break;
                 case 2:
-                    sql.AppendFormat(" `HOSupplierSerialId` = {0}  ", serialid);
+                    if (!string.IsNullOrWhiteSpace(serialid))
+                    {
+                        sql.AppendFormat(" `HOSupplierSerialId` = {0}  ", serialid);
+                    } 
                     break;
             }
             sql.Append(" WHERE  `Id` =@Id   Limit 1;  ");
