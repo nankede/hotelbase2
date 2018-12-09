@@ -67,6 +67,7 @@
     <Compile Include="HotelRoomRuleBll.cs" />
     <Compile Include="OrderBll.cs" />
     <Compile Include="OrderLogBll.cs" />
+    <Compile Include="OrderStaticBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SupplierBll.cs" />
     <Compile Include="SystemBll.cs" />

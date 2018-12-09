@@ -25,6 +25,9 @@ namespace HotelBase.Web.Controller.System
             return View();
         }
 
+
+        //public ActionResult GetOrderStatics()
+
         #endregion
     }
 }

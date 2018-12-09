@@ -388,5 +388,22 @@ namespace HotelBase.DataAccess.Order
             }
             return response;
         }
+
+
+        public static BasePageResponse<OrderStaticResponse> GetOrderStaticList(OrderStaticRequest request)
+        {
+            var response = new BasePageResponse<OrderStaticResponse>();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(@"SELECT * FROM ho_hotelorderlog  WHERE  HOLOrderId='{0}'  LIMIT 1;", request.CityId);
+            var list = MysqlHelper.GetList<OrderStaticResponse>(sb.ToString());
+            var total = list?.Count ?? 0;
+            if (total > 0)
+            {
+                response.IsSuccess = 1;
+                response.Total = total;
+                response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
+            }
+            return response;
+        }
     }
 }
