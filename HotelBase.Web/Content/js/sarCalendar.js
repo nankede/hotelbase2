@@ -1,12 +1,13 @@
-
 var canlendarMainFn = {
-    defaultDate: new Date(), //初始化默认加载当前年月下的日历
-    defaultYear: new Date().getFullYear(), //当前年份
-    defaultMonth: new Date().getMonth(), //当前月份
+    defaultDate: new Date('2018-01-01'), //初始化默认加载当前年月下的日历
+    defaultYear: new Date('2018-01-01').getFullYear(), //当前年份
+    defaultMonth: new Date('2018-01-01').getMonth(), //当前月份
     chooseDate: '', //点击选择日历选择的日期，头部日历
     calendarDate: '', //弹出框日历，选则的时间
     packageIds: [], // 获取资源的价格日历框需要传入选中的资源id集合
-    pCalendarList:[],
+    pCalendarList:[],//价格日历列表实体
+    calendarType:1, //1:价格日历 2:库存日历
+    yearArray:[2018,2019,2020,2021,2022], //可选年份列表
     /**
      * 获取星期
      */
@@ -103,12 +104,13 @@ var canlendarMainFn = {
     },
 
     /**
-     * 创建月份列表，跟线上同步，渲染10个月
+     * 创建月份列表，跟线上同步，渲染12个月
      */
-    createMonthUl: function createMonthUl(id) {
+    createMonthUl: function createMonthUl(id,year) {
         var monthArr = [];
+        var yearStr = year + '-01-01';
         for (var i = 0; i < 12; i++) {
-            var start = new Date(new Date().setDate(1));
+            var start = new Date(new Date(yearStr).setDate(1));
             var next = new Date(start.setMonth(start.getMonth() + i));
             monthArr.push(this.dateformat(next, 'yyyy-MM-dd'));
         }
@@ -193,7 +195,7 @@ var canlendarMainFn = {
                 festivalStr = me.getFestivalInfoNS(nextMonth.toString() + j) ? '<i class="i_festival">' + me.getFestivalInfoNS(nextMonth.toString() + j) + '</i>' : "";
             }
             var festivalClass = festivalStr ? 'festival' : '';
-            dateStr += '<li data-date= ' + year + '-' + Currentmonth + '-' + today + '>' + '<em class="em_date ' + festivalClass + '">' + j + festivalStr + '</em><em class="em_price"></em></li>';
+            dateStr += '<li data-date= ' + year + '-' + Currentmonth + '-' + today + '>' + '<em class="em_date ' + festivalClass + '">' + j + festivalStr + '</em><em class="em_price_sell em_price"></em><em class="em_price_close em_price"></em></li>';
         }
         //输出最后一天之后的空格
         var lastEmpty = 42 - (weekDay + days);
@@ -225,8 +227,9 @@ var canlendarMainFn = {
             for (var i = 0; i < length; i++) {
                 if ($(t).eq(i).attr('data-date')) {
                     if (v.PriceDate.split(' ')[0] == $(t).eq(i).attr('data-date')) {
-                        $(t).eq(i).children('.em_price').text('￥' + Math.floor(v.SellPrice));
-                        $(t).eq(i).children('.em_price').text('￥' + Math.floor(v.ContractPrice));
+                        $(t).eq(i).attr('data-obj',JSON.stringify(v));
+                        $(t).eq(i).children('.em_price_sell').text('售卖:￥' + Math.floor(v.SellPrice));
+                        $(t).eq(i).children('.em_price_close').text('结算:￥' + Math.floor(v.ContractPrice));
                         $(t).eq(i).addClass('choose_date');
                     }
                 }
@@ -246,7 +249,7 @@ var canlendarMainFn = {
             $(t).removeClass("active");
             $(this).addClass("active");
             var selectYear = new Date($(this).data('date').replace(/-/g, '/')).getFullYear();
-            $(".sarCalendar_yearText").html(selectYear + '\u5E74');
+            // $(".sarCalendar_yearText").html(selectYear + '\u5E74');
             var selectMonth = $(this).attr("data-month");
             me.createDateUl(selectYear, selectMonth, '', id);
             //更改选择日期
@@ -277,9 +280,13 @@ var canlendarMainFn = {
      */
     initCalendarHtml: function initCalendarHtml(id) {
         var selfObj = this;
+        var yearSelectHtml = '';
+        selfObj.yearArray.forEach(function(item){
+            yearSelectHtml += '<option>'+ item +'</option>';
+        });
         var calendarHtml = '<div id="sarCalendar">\
             <div class="sarCalendar_head">\
-                <span class="sarCalendar_yearText"></span>\
+                <select class="sarCalendar_yearText">'+ yearSelectHtml +'</select>\
                 <div class="sarCalendar_month">\
                     <em class="sarCalendar_month_prev"></em>\
                     <div class="sarCalendar_month_bar">\
@@ -303,7 +310,6 @@ var canlendarMainFn = {
         </div>';
         $("#" + id).html(calendarHtml);
         var t = '#' + id + ' ' + '.sarCalendar_yearText';
-        $(t).text(selfObj.defaultYear + '年');
         $(t).attr('data-year', selfObj.defaultYear);
     },
 
@@ -325,45 +331,48 @@ var canlendarMainFn = {
     /**
     * 点击日历方法
     */
-    clickDate: function clickDate(id) {
-
+    clickDate: function clickDate() {
         $('.sarCalendar_date_ul li').on('click', function () {
             if ($(this).hasClass('choose_date')) {
-                var selfObj = canlendarMainFn;
-                if ($(this).parents('#calendar_contain').length) {
-                    //如果是头部日历
-                    selfObj.chooseDate = $(this).attr('data-date'); //将当前选择的日期存起来
-                    // me.getLinePackagetoResources($(this).attr('data-date'));
-                    $(this).addClass('calendar_active').siblings().removeClass('calendar_active');
-                }
-
-                if ($(this).parents('#calendar_contain_dialog').length) {
-                    //如果是套餐弹窗框，选择完日历，让弹窗框消失,且套餐弹出框出现
-                    selfObj.calendarDate = $(this).attr('data-date');
-                    $('.calender_dialog').css('display', 'none');
-                    // me.getDialogContent(selfObj.calendarDate);
-                }
+                $(this).addClass('calendar_active');
+                var selectDateInfo = $(this).attr('data-obj');
             }
-            window._tcTraObj && window._tcTraObj._tcTrackEvent('tczbypc', 'tczbypc_order_details', 'price_calendar', '^' + $('.lineID_span em').data('lineid') + '^\u4EF7\u683C\u65E5\u5386\u6846^' + $(this).data('date') + '^');
+
         });
-        $('.calender_dialog').on('click', function () {
-            $(this).hide();
-        });
-        $('.calender_dialog_content').on('click', function (e) {
-            e.stopPropagation();
+    },
+
+    /**
+     * 更改年份
+     */
+    yearChangeFn: function (id) {
+        var that = this;
+        $('.sarCalendar_yearText').on('change',function(e){
+            that.defaultYear = $(this).val().toString();
+            that.defaultDate = 1;
+            that.createMonthUl(id, $(this).val());
+            that.createDateUl(canlendarMainFn.defaultYear, canlendarMainFn.defaultMonth, ' ', id);
+            that.changeMonth(id);
+            that.slideMonthPanel(id);
+            that.clickDate();
         });
     },
 
     /**
      * 初始化
      * id 日历容器ID
+     * calendarType 日历类型 1：价格日历 2：库存日历
+     * pCalendarList 日历信息列表
      */
-    init: function init(id) {
+    init: function init(id,calendarType,pCalendarList) {
+        canlendarMainFn.pCalendarList = pCalendarList; //获取日历信息列表
+        canlendarMainFn.calendarType = calendarType; //确认日历类型
         canlendarMainFn.initCalendarHtml(id);
-        canlendarMainFn.createMonthUl(id);
+        canlendarMainFn.createMonthUl(id,canlendarMainFn.defaultYear);
         canlendarMainFn.createDateUl(canlendarMainFn.defaultYear, canlendarMainFn.defaultMonth, ' ', id);
         canlendarMainFn.changeMonth(id);
         canlendarMainFn.slideMonthPanel(id);
-        canlendarMainFn.clickDate();
+        
+        canlendarMainFn.clickDate()
+        canlendarMainFn.yearChangeFn(id);
     }
 };
