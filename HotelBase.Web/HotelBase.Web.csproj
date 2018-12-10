@@ -121,6 +121,7 @@
     <Content Include="Content\css\patterns\header-profile.png" />
     <Content Include="Content\css\patterns\shattered.png" />
     <Content Include="Content\css\sarCalendar.css" />
+    <Content Include="Content\css\login.css" />
     <Content Include="Content\css\style.min862f.css" />
     <Content Include="Content\fonts\fontawesome-webfont93e3.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -263,6 +264,7 @@
     <Content Include="Views\Order\OrderDetail.cshtml" />
     <Content Include="Views\Order\OrderResourceList.cshtml" />
     <Content Include="Views\Hotel\RoomRuleList.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

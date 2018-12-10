@@ -33,6 +33,7 @@ namespace HotelBase.Service
         public static UserModelResponse GetUserModel(int id, string account)
         {
             var model = Sys_UserInfoAccess.GetUserModel(id, account);
+            model.Pwd = string.Empty;
             var response = new UserModelResponse
             {
                 IsSuccess = model?.Id > 0 ? 1 : 0,
@@ -40,6 +41,36 @@ namespace HotelBase.Service
             };
             return response;
         }
+
+        /// <summary>
+        /// 登陆
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public static UserModel Login(string account, string pwd)
+        {
+            var user = Sys_UserInfoAccess.GetUserModel(0, account);
+            if (user == null || user.Pwd != pwd)
+            {
+                return null;
+            }
+            user.Pwd = string.Empty;
+            return user;
+        }
+        #endregion
+
+        #region 部门列表
+
+        /// <summary>
+        /// 获取部门列表
+        /// </summary>
+        /// <returns></returns>
+        public static BasePageResponse<Sys_DepartInfoModel> GetDepartList(DepartistRequest request)
+        {
+            return Sys_DepartInfoAccess.GetDepartList(request);
+        }
+
         #endregion
 
         #region 数字字典
@@ -52,7 +83,7 @@ namespace HotelBase.Service
         {
             return Sys_BaseDictionaryAccess.GetDicList(request);
         }
-        
+
         /// <summary>
         /// 根据父Code查数据字典列表
         /// </summary>

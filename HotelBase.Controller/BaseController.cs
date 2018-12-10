@@ -14,27 +14,54 @@ namespace HotelBase.Web.Controllers
     /// </summary>
     public class BaseController : System.Web.Mvc.Controller
     {
+        public string loginCookie = "hotel_login";
         private UserModel _CurrtUser;
         public UserModel CurrtUser
         {
             get
             {
-                return new UserModel
+                if (_CurrtUser == null || _CurrtUser.Id <= 0)
                 {
-                    Id = 1,
-                    Name = "测试",
-                    DepartId = 1,
-                    DepartName = "测试"
+                    var cookie = CookieHelpers.Get(loginCookie);
+                    if (!string.IsNullOrEmpty(cookie))
+                    {
+                        var user = cookie.ToObject<UserModel>();
+                        if (user != null)
+                        {
+                            user.DepartName = HttpUtility.UrlDecode(user.DepartName);
+                            user.Name = HttpUtility.UrlDecode(user.Name);
+                            user.Responsibility = HttpUtility.UrlDecode(user.Responsibility);
+                            _CurrtUser = user;
+                        }
+                        else
+                        {
+                            //_CurrtUser = new UserModel
+                            //{
+                            //    Id = 1,
+                            //    Name = "测试",
+                            //    DepartId = 1,
+                            //    DepartName = "测试"
 
-                };
+                            //};
+
+                        }
+                    }
+                }
+                return _CurrtUser;
             }
-            set { _CurrtUser = value; }
+            set
+            {
+                _CurrtUser = value;
+            }
         }
+
         public BaseController()
         {
-
+            if (CurrtUser == null || CurrtUser.Id <= 0)
+            {
+                Redirect("/login/");
+            }
         }
-
     }
 
     /// <summary>

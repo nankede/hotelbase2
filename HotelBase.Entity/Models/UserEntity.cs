@@ -10,6 +10,12 @@ namespace HotelBase.Entity.Models
     {
 
     }
+
+    public class DepartistRequest : BaseRequest
+    {
+
+    }
+
     public class UserModelResponse : BaseResponse
     {
         public UserModel Model { get; set; }
@@ -31,6 +37,8 @@ namespace HotelBase.Entity.Models
         public int R { get; set; }
         /// <summary> 职责 </summary>
         public string Responsibility { get; set; }
+        /// <summary> 密码 </summary>
+        public string Pwd { get; set; }
         /// <summary> 是否有效 </summary>
         public int IsValid { get; set; }
     }

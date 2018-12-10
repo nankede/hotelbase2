@@ -1,0 +1,92 @@
+﻿@{
+    Layout = null;
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>酒店管理系统</title>
+    <meta name="keywords" content="酒店通用管理系统轻量级解决方案">
+    <meta name="description" content="一款基于Web的酒店管理系统轻量级解决方案">
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+    <link rel="bookmark" type="image/ico" href="/favicon.ico" />
+    <link href="~/Content/lib/base.css" rel="stylesheet" />
+    <link href="~/Content/css/login.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="product-box animated fadeInUp">
+
+    </div>
+    <div class="login-box animated fadeInRight">
+        <div class="login-header">酒店管理系统</div>
+        <div class="login-body">
+            <form class="lay-form">
+                <div class="lay-form-item">
+                    <label class="login-icon"><i class="lay-icon">&#xe612;</i></label>
+                    <input id="txtAccount" type="text" name="username" lay-verify="required" autocomplete="off" placeholder="登录账号" class="lay-input">
+                </div>
+                <div class="lay-form-item">
+                    <label class="login-icon">
+                        <i class="lay-icon">&#xe642;</i>
+                    </label>
+                    <input type="password" id="txtPwd" name="password" lay-verify="required" autocomplete="off" placeholder="登陆密码" class="lay-input">
+                </div>
+                <div class="lay-form-item" style="display:none;">
+                    <div class="login-code-box">
+                        <label class="login-icon"><i class="lay-icon">&#xe62d;</i></label>
+                        <input type="text" id="txtCode" name="verifycode" lay-verify="required" autocomplete="off" placeholder="验证码" class="lay-input">
+                        @*<img id="verifyCode" src="/Account/VerifyCode" title="点击更换验证码">*@
+                    </div>
+                    <input class="pull-right" type="checkbox" lay-skin="primary" name="isSaveAccount" value="true" title="记住账号" />
+                </div>
+                <div class="lay-form-item">
+                    <button class="lay-btn btn-submit lay-btn-primary" lay-submit lay-filter="login">立即登录</button>
+                </div>
+            </form>
+        </div>
+        <div class="login-fooder"></div>
+    </div>
+</body>
+</html>
+<script src="~/Content/lib/jquery.min.js" type="text/javascript"></script>
+<script src="~/Content/lib/base.js" type="text/javascript"></script>
+<script src="~/Content/lib/Untitl.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        //var $ = lay.jquery;
+        $('.btn-submit').on('click', function () {
+            //data.field.password = $.md5(data.field.password);
+            var data = { account: $('#txtAccount').val(), pwd: $('#txtPwd').val(), code: $('#txtCode').val() }
+            $(".btn-submit").html("正在登录...");
+            $(".btn-submit").attr('disabled', true).addClass('lay-disabled');
+            $.ajax({
+                url: "/home/getlogin",
+                data: data,
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.isLogin == true) {
+                        window.location.href = "/";
+                        $(".btn-submit").html("登录成功，跳转中...");
+                    } else {
+                        $(".btn-submit").html("立即登录");
+                        $(".btn-submit").attr('disabled', false).removeClass('lay-disabled');
+                        //$("#verifyCode").trigger('click');
+                        eMsg({
+                            timer: 2000,
+                            text: result.Message || '登陆失败，请稍后重试！'
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+        //$("#verifyCode").click(function () {
+        //    $(this).attr("src", "/Account/VerifyCode?r=" + Math.random());
+        //});
+    });
+</script>
+
