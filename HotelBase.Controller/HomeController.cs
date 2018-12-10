@@ -16,6 +16,10 @@ namespace HotelBase.Web.Controllers
     {
         public ActionResult Index()
         {
+            if (CurrtUser == null)
+            {
+                return Redirect("/home/login/");
+            }
             ViewBag.UserName = CurrtUser.Name;
             ViewBag.DepartName = CurrtUser.DepartName;
             ViewBag.UserId = CurrtUser.Id;
@@ -33,6 +37,12 @@ namespace HotelBase.Web.Controllers
 
 
         //登陆
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="go"></param>
+        /// <returns></returns>
+        [LoginChecked(false)]
         public ActionResult Login(string go = "")
         {
             ViewBag.GoUrl = string.IsNullOrEmpty(go) ? "/" : go;
@@ -47,6 +57,7 @@ namespace HotelBase.Web.Controllers
         /// <param name="mobile"></param>
         /// <param name="code"></param>
         /// <returns></returns>
+        [LoginChecked(false)]
         public JsonResult GetLogin(string account, string pwd, string code)
         {
             var isLogin = false;
@@ -55,14 +66,15 @@ namespace HotelBase.Web.Controllers
             if (user != null && user.Id > 0)
             {
                 isLogin = true;
-                CurrtUser = user;
-                if (CurrtUser != null && CurrtUser.Id > 0)
-                {
-                    CurrtUser.DepartName = HttpUtility.UrlEncode(CurrtUser.DepartName);
-                    CurrtUser.Name = HttpUtility.UrlEncode(CurrtUser.Name);
-                    CurrtUser.Responsibility = HttpUtility.UrlEncode(CurrtUser.Responsibility);
-                    CookieHelpers.Add(loginCookie, CurrtUser.ToJson(), DateTime.Now.AddDays(1));
-                }
+                OperatorProvider.Instance.Current = user;
+                //CurrtUser = user;
+                //if (CurrtUser != null && CurrtUser.Id > 0)
+                //{
+                //    CurrtUser.DepartName = HttpUtility.UrlEncode(CurrtUser.DepartName);
+                //    CurrtUser.Name = HttpUtility.UrlEncode(CurrtUser.Name);
+                //    CurrtUser.Responsibility = HttpUtility.UrlEncode(CurrtUser.Responsibility);
+                //    CookieHelpers.Add(loginCookie, CurrtUser.ToJson(), DateTime.Now.AddDays(1));
+                //}
             }
             else
             {
@@ -79,9 +91,10 @@ namespace HotelBase.Web.Controllers
         /// <param name="mobile"></param>
         /// <param name="code"></param>
         /// <returns></returns>
+        [LoginChecked(false)]
         public ActionResult Logout()
         {
-            CookieHelpers.Delete(loginCookie);
+            OperatorProvider.Instance.Remove();
             return Redirect("/home/login/");
 
         }

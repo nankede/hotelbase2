@@ -20,47 +20,13 @@ namespace HotelBase.Web.Controllers
         {
             get
             {
-                if (_CurrtUser == null || _CurrtUser.Id <= 0)
-                {
-                    var cookie = CookieHelpers.Get(loginCookie);
-                    if (!string.IsNullOrEmpty(cookie))
-                    {
-                        var user = cookie.ToObject<UserModel>();
-                        if (user != null)
-                        {
-                            user.DepartName = HttpUtility.UrlDecode(user.DepartName);
-                            user.Name = HttpUtility.UrlDecode(user.Name);
-                            user.Responsibility = HttpUtility.UrlDecode(user.Responsibility);
-                            _CurrtUser = user;
-                        }
-                        else
-                        {
-                            //_CurrtUser = new UserModel
-                            //{
-                            //    Id = 1,
-                            //    Name = "测试",
-                            //    DepartId = 1,
-                            //    DepartName = "测试"
-
-                            //};
-
-                        }
-                    }
-                }
-                return _CurrtUser;
-            }
-            set
-            {
-                _CurrtUser = value;
+                return OperatorProvider.Instance.Current;
             }
         }
 
         public BaseController()
         {
-            if (CurrtUser == null || CurrtUser.Id <= 0)
-            {
-                Redirect("/login/");
-            }
+
         }
     }
 
@@ -85,7 +51,7 @@ namespace HotelBase.Web.Controllers
             {
                 return;
             };
-            var userId = OperatorProvider.Instance.Current.UserId;
+            var userId = OperatorProvider.Instance.Current.Id;
             var action = HttpContext.Current.Request.ServerVariables["SCRIPT_NAME"].ToString();
             var title = string.Empty;
             //bool hasPermission = PermissionService.ActionValidate(userId, action, out title);
@@ -118,10 +84,13 @@ namespace HotelBase.Web.Controllers
             {
                 return;
             }
-            //if (OperatorProvider.Instance.Current == null)
-            //{
-            //    filterContext.HttpContext.Response.Write("<script>top.location.href = '/Account/Login'</script>");
-            //}
+            if (OperatorProvider.Instance.Current == null)
+            {
+                string fromUrl = filterContext.HttpContext.Request.Url.AbsolutePath;
+                string loginUrl = $"/home/login?go={fromUrl}";
+
+                filterContext.HttpContext.Response.Write($"<script>top.location.href = '{loginUrl}'</script>");
+            }
         }
     }
 

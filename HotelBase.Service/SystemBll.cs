@@ -1,5 +1,6 @@
 ﻿using HotelBase.DataAccess;
 using HotelBase.DataAccess.System;
+using HotelBase.Common;
 using HotelBase.Entity;
 using HotelBase.Entity.Models;
 using HotelBase.Entity.Tables;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace HotelBase.Service
 {

@@ -9,7 +9,8 @@ namespace HotelBase.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new ErrorCheckedAttribute());  
+            filters.Add(new ErrorCheckedAttribute());
+            filters.Add(new LoginCheckedAttribute());//登录验证
         }
     }
 }

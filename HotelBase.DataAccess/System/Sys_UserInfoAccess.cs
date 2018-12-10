@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HotelBase.Entity.Models;
 using HotelBase.Entity;
+using HotelBase.Common;
 
 namespace HotelBase.DataAccess
 {
