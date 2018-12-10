@@ -120,6 +120,7 @@
     <Content Include="Content\css\patterns\header-profile-skin-3.png" />
     <Content Include="Content\css\patterns\header-profile.png" />
     <Content Include="Content\css\patterns\shattered.png" />
+    <Content Include="Content\css\sarCalendar.css" />
     <Content Include="Content\css\style.min862f.css" />
     <Content Include="Content\fonts\fontawesome-webfont93e3.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -184,6 +185,7 @@
     <Content Include="Content\js\plugins\metisMenu\jquery.metisMenu.js" />
     <Content Include="Content\js\plugins\pace\pace.min.js" />
     <Content Include="Content\js\plugins\slimscroll\jquery.slimscroll.min.js" />
+    <Content Include="Content\js\sarCalendar.js" />
     <Content Include="Content\lib\angular.min.js" />
     <Content Include="Content\lib\base.css" />
     <Content Include="Content\lib\base.js" />
