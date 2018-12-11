@@ -18,73 +18,42 @@ namespace HotelBase.Common
     public static class JsonHelper
     {
         /// <summary>
-        /// 对象序列化成JSON字符串。
+        /// 将JOSN字符串转成T对象
         /// </summary>
-        /// <param name="obj">序列化对象</param>
-        /// <param name="ignoreProperties">设置需要忽略的属性</param>
-        /// <returns></returns>
-        public static string ToJson(this object obj, params string[] ignoreProperties)
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.Formatting = Formatting.Indented;
-            settings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
-            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            settings.ContractResolver = new JsonPropertyContractResolver(ignoreProperties);
-            return JsonConvert.SerializeObject(obj, settings);
-        }
-
-        /// <summary>
-        /// JSON字符串序列化成对象。
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="json">JSON字符串</param>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
         /// <returns></returns>
         public static T ToObject<T>(this string json)
         {
-            return json == null ? default(T) : JsonConvert.DeserializeObject<T>(json);
+            try
+            {
+                return string.IsNullOrEmpty(json) ? default(T) : JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"ToObject发生异常，Json：{json}，异常内容：{ex.ToString()}";
+                LogHelper.Error(msg);
+                return default(T);
+            }
         }
 
         /// <summary>
-        /// JSON字符串序列化成集合。
+        /// 将对象转成JSON字符串
         /// </summary>
-        /// <typeparam name="T">集合类型</typeparam>
-        /// <param name="json">JSON字符串</param>
+        /// <param name="obj"></param>
         /// <returns></returns>
-        public static List<T> ToList<T>(this string json)
+        public static string ToJson(this object obj)
         {
-            return json == null ? null : JsonConvert.DeserializeObject<List<T>>(json);
-        }
-
-        /// <summary>
-        /// JSON字符串序列化成DataTable。
-        /// </summary>
-        /// <param name="json">JSON字符串</param>
-        /// <returns></returns>
-        public static DataTable ToTable(this string json)
-        {
-            return json == null ? null : JsonConvert.DeserializeObject<DataTable>(json);
-        }
-    }
-
-    /// <summary>
-    /// JSON分解器-设置。
-    /// </summary>
-    public class JsonPropertyContractResolver : DefaultContractResolver
-    {
-        /// <summary>
-        /// 需要排除的属性。
-        /// </summary>
-        private IEnumerable<string> _listExclude;
-
-        public JsonPropertyContractResolver(params string[] ignoreProperties)
-        {
-            this._listExclude = ignoreProperties;
-        }
-
-        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-        {
-            //设置需要输出的属性。
-            return base.CreateProperties(type, memberSerialization).ToList().FindAll(p => !_listExclude.Contains(p.PropertyName));
+            try
+            {
+                return JsonConvert.SerializeObject(obj);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"ToJson发生异常，异常内容：{ex.ToString()}";
+                LogHelper.Error(msg);
+                return null;
+            }
         }
     }
 }

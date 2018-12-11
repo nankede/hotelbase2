@@ -29,12 +29,8 @@ namespace HotelBase.Web.Controller.System
         /// 人员列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetUserList(int index)
+        public JsonResult GetUserList(UserListRequest request)
         {
-            var request = new UserListRequest
-            {
-                PageIndex = index
-            };
             var response = SystemBll.GetUserList(request);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
@@ -76,14 +72,13 @@ namespace HotelBase.Web.Controller.System
         }
 
         /// <summary>
-        /// 人员列表
+        /// 部门列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetDepartList()
+        public JsonResult GetDepartList(DepartistRequest request)
         {
-            //var lsit = SystemBll.GetUserList();
-            //return Json(lsit, JsonRequestBehavior.AllowGet);
-            return Json(new { });
+            var response = SystemBll.GetDepartList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

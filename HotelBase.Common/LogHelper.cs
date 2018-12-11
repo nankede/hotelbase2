@@ -110,7 +110,7 @@ namespace HotelBase.Common
         public static void Error(string message)
         {
             var current = OperatorProvider.Instance.Current;
-            Write(Level.Error, "程序异常", message, current?.UserId ?? 0, current?.RealName ?? string.Empty);
+            Write(Level.Error, "程序异常", message, current?.Id ?? 0, current?.Name ?? string.Empty);
         }
         /// <summary>
         /// 错误信息。
@@ -120,7 +120,7 @@ namespace HotelBase.Common
         {
             var log = $"{message},异常堆栈：{ex?.ToString()}";
             var current = OperatorProvider.Instance.Current;
-            Write(Level.Error, "程序异常", log, current?.UserId ?? 0, current?.RealName ?? string.Empty);
+            Write(Level.Error, "程序异常", log, current?.Id ?? 0, current?.Name ?? string.Empty);
         }
 
 

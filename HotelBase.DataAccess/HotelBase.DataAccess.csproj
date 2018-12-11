@@ -65,6 +65,7 @@
     <Compile Include="Resource\H_SupplierAccess.cs" />
     <Compile Include="System\Sys_AreaInfoAccess.cs" />
     <Compile Include="System\Sys_BaseDictionaryAccess.cs" />
+    <Compile Include="System\Sys_DepartInfoAccess.cs" />
     <Compile Include="System\Sys_UserInfoAccess.cs" />
     <Compile Include="MysqlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

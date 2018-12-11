@@ -56,7 +56,7 @@
             //查询
             $scope.search = function (index) {
                 index = !index || index <= 0 ? 1 : index;
-                var para = { index: index };
+                var para = { PageIndex: index };
                 eLoading.show();
                 $.ajax({
                     url: $scope.config.listUrl,

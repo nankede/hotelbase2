@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HotelBase.Entity.Models;
 using HotelBase.Entity;
+using HotelBase.Common;
 
 namespace HotelBase.DataAccess
 {
@@ -56,7 +57,19 @@ namespace HotelBase.DataAccess
         /// <returns></returns>
         public static string GetResponsibility(int r)
         {
-            return r == 100 ? "超级管理员" : "未知职责";
+            switch (r)
+            {
+                case 1:
+                    return "资源维护";
+                case 2:
+                    return "订单维护";
+                case 4:
+                    return "订单统计";
+                case 100:
+                    return "超级管理员";
+                default:
+                    return "未设定";
+            }
         }
 
         /// <summary>
@@ -97,7 +110,8 @@ namespace HotelBase.DataAccess
                     IsValid = data.UIIsValid,
                     Name = data.UIName,
                     R = data.UIResponsibility,
-                    Responsibility = GetResponsibility(data.UIResponsibility)
+                    Responsibility = GetResponsibility(data.UIResponsibility),
+                    Pwd = data.UIPassWord
                 };
                 return model;
             }

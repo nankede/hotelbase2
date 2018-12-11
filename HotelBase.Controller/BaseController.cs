@@ -14,27 +14,20 @@ namespace HotelBase.Web.Controllers
     /// </summary>
     public class BaseController : System.Web.Mvc.Controller
     {
+        public string loginCookie = "hotel_login";
         private UserModel _CurrtUser;
         public UserModel CurrtUser
         {
             get
             {
-                return new UserModel
-                {
-                    Id = 1,
-                    Name = "测试",
-                    DepartId = 1,
-                    DepartName = "测试"
-
-                };
+                return OperatorProvider.Instance.Current;
             }
-            set { _CurrtUser = value; }
         }
+
         public BaseController()
         {
 
         }
-
     }
 
     /// <summary>
@@ -58,7 +51,7 @@ namespace HotelBase.Web.Controllers
             {
                 return;
             };
-            var userId = OperatorProvider.Instance.Current.UserId;
+            var userId = OperatorProvider.Instance.Current.Id;
             var action = HttpContext.Current.Request.ServerVariables["SCRIPT_NAME"].ToString();
             var title = string.Empty;
             //bool hasPermission = PermissionService.ActionValidate(userId, action, out title);
@@ -91,10 +84,13 @@ namespace HotelBase.Web.Controllers
             {
                 return;
             }
-            //if (OperatorProvider.Instance.Current == null)
-            //{
-            //    filterContext.HttpContext.Response.Write("<script>top.location.href = '/Account/Login'</script>");
-            //}
+            if (OperatorProvider.Instance.Current == null)
+            {
+                string fromUrl = filterContext.HttpContext.Request.Url.AbsolutePath;
+                string loginUrl = $"/home/login?go={fromUrl}";
+
+                filterContext.HttpContext.Response.Write($"<script>top.location.href = '{loginUrl}'</script>");
+            }
         }
     }
 

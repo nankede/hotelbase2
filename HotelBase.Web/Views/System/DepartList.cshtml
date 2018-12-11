@@ -2,24 +2,24 @@
     <table class="lay-table">
         <thead>
             <tr>
-                <th width="20%">姓名</th>
-                <th width="20%">归属部门</th>
-                <th>职责</th>
-                <th width="20%">操作</th>
+                <th width="40%">部门名称</th>
+                <th width="40%">上级部门</th>
+                <th>负责人</th>
+                @*<th width="20%">操作</th>*@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="u in userList">
-                <td ng-bind="u.UIName"></td>
-                <td ng-bind="u.UIDepartName"></td>
-                <td ng-bind="u.UIResponsibility"></td>
-                <td>
-                    <input type="button" class="lay-btn lay-btn-edit" value="详情" ng-click="detail(u.Id)" />
-                </td>
+            <tr ng-repeat="d in list">
+                <td ng-bind="d.DIName"></td>
+                <td ng-bind="d.DIParentName"></td>
+                <td ng-bind="d.DILeaderName"></td>
+                @*<td>
+                        <input type="button" class="lay-btn lay-btn-edit" value="详情" ng-click="detail(d.Id)" />
+                    </td>*@
             </tr>
 
-            <tr ng-hide="userList!=null &&userList.length > 0">
-                <td colspan="4" class="lay-table-empty">暂无数据显示</td>
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="3" class="lay-table-empty">暂无数据显示</td>
             </tr>
         </tbody>
     </table>
@@ -34,7 +34,7 @@
                 $scope.pageInit();
             });
             $scope.config = {
-                listUrl: "GetUserList",
+                listUrl: "/system/GetDepartList",
             }
             //页面初始化
             $scope.pageInit = function () {
@@ -43,7 +43,7 @@
             //查询
             $scope.search = function (index) {
                 index = !index || index <= 0 ? 1 : index;
-                var para = {};
+                var para = { PageIndex: index };
                 eLoading.show();
                 $.ajax({
                     url: $scope.config.listUrl,
@@ -53,10 +53,10 @@
                     timeout: 20000,
                     success: function (data) {
                         var msg = "";
-                        $scope.userList = [];
-                        if (data != null && data.length > 0) {
-                            $scope.userList = data;
-                            $scope.pagerInit(index, data.length);
+                        $scope.list = [];
+                        if (data != null && data.List != null && data.List.length > 0) {
+                            $scope.list = data.List;
+                            $scope.pagerInit(index, data.Total);
                         }
                         else {
                             eMsg({
@@ -88,7 +88,7 @@
                 pager.render();
             }
             $scope.detail = function (id) {
-                alert("打开详情页面，id:" + id);
+
             }
         });
     </script>

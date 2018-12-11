@@ -16,11 +16,13 @@ namespace HotelBase.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult Default()
-        {
+            if (CurrtUser == null)
+            {
+                return Redirect("/home/login/");
+            }
+            ViewBag.UserName = CurrtUser.Name;
+            ViewBag.DepartName = CurrtUser.DepartName;
+            ViewBag.UserId = CurrtUser.Id;
             return View();
         }
 
@@ -31,6 +33,70 @@ namespace HotelBase.Web.Controllers
         public ActionResult WorkList()
         {
             return View();
+        }
+
+
+        //登陆
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="go"></param>
+        /// <returns></returns>
+        [LoginChecked(false)]
+        public ActionResult Login(string go = "")
+        {
+            ViewBag.GoUrl = string.IsNullOrEmpty(go) ? "/" : go;
+            return View();
+        }
+
+
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [LoginChecked(false)]
+        public JsonResult GetLogin(string account, string pwd, string code)
+        {
+            var isLogin = false;
+            var Message = string.Empty;
+            var user = SystemBll.Login(account, pwd);
+            if (user != null && user.Id > 0)
+            {
+                isLogin = true;
+                OperatorProvider.Instance.Current = user;
+                //CurrtUser = user;
+                //if (CurrtUser != null && CurrtUser.Id > 0)
+                //{
+                //    CurrtUser.DepartName = HttpUtility.UrlEncode(CurrtUser.DepartName);
+                //    CurrtUser.Name = HttpUtility.UrlEncode(CurrtUser.Name);
+                //    CurrtUser.Responsibility = HttpUtility.UrlEncode(CurrtUser.Responsibility);
+                //    CookieHelpers.Add(loginCookie, CurrtUser.ToJson(), DateTime.Now.AddDays(1));
+                //}
+            }
+            else
+            {
+                Message = "用户名或密码错误！";
+            }
+
+            return Json(new { isLogin, Message });
+        }
+
+
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [LoginChecked(false)]
+        public ActionResult Logout()
+        {
+            OperatorProvider.Instance.Remove();
+            return Redirect("/home/login/");
+
         }
 
     }

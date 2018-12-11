@@ -1,10 +1,164 @@
 ﻿<link href="~/Content/css/sarCalendar.css" rel="stylesheet" />
 <div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
-    <div class="lay-form-foot">
-        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+    <div>
+        <h3 class="cont-title">房型政策信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>房型名称</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="room.HRName" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>床型</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRBedType,BedTypeList)}}{{DicValueInit(room.HRBedSize,BedSizeList)}}" readonly />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>是否有窗</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRWindowsType,WindowsTypeList)}}" readonly />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>房间大小</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="room.HRRoomSIze" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>可住人数</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRPersonCount,PersonCountList)}}" readonly />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>所在楼层</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="room.HRFloor" />
+                </div>
+            </div>
+        </div>
+
+        <div class="lay-row">
+            <div class="lay-form-item  lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>政策名称</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="rule.HRRName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item ">
+                <div class="lay-form-item-caption  lay-col-4">
+                    <label>供应商来源</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="rule.HRRSourceName" readonly />
+                </div>
+            </div>
+            <div class="lay-form-item  lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>供应商名称</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="rule.HRRSourceName" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item  lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>早餐政策</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="rule.HRRBreakfastRuleName" readonly />
+                </div>
+            </div>
+            <div class="lay-form-item  lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>取消政策</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="rule.HRRCancelRuleName" readonly />
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- 日历 start -->
-    <div id="calendar_contain" class="calendar_contain"></div>
+    <div class="lay-row">
+        <div class="lay-col-8">
+            <!-- 日历 start -->
+            <div id="calendar_contain" class="calendar_contain"></div>
+        </div>
+        <div class="lay-col-4">
+            <div class="lay-form-item">
+                <div class="lay-form-item-caption ">
+                    <label>选择月份</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <div id="ems_Month"></div>
+                    @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Month" ng-init="price.Month=0" ng-options="item.Code as item. Name for item in MonthList"></select>*@
+                </div>
+            </div>
+            <div class="lay-form-item">
+                <div class="lay-form-item-caption ">
+                    <label>选择时间</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <div id="ems_Week"></div>
+                    @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Week" ng-init="price.Week=0" ng-options="item.Code as item. Name for item in WeekList"></select>*@
+                </div>
+            </div>
+            <div class="lay-form-item">
+                <div class="lay-form-item-caption ">
+                    <label>选择日期</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <select class="lay-select select-area" placeholder="请选择开始日期" ng-model="price.Day1" ng-init="price.Day1=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                    <select class="lay-select select-area" placeholder="请选择结束日期" ng-model="price.Day2" ng-init="price.Day2=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                </div>
+            </div>
+            <div class="lay-form-item">
+                <div class="lay-form-item-caption ">
+                    <label>结算价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="price.SellPrice" />
+                </div>
+            </div>
+            <div class="lay-form-item">
+                <div class="lay-form-item-caption ">
+                    <label>售卖价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="price.SellPrice" />
+                </div>
+            </div>
+            <div class="lay-form-foot">
+                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+            </div>
+        </div>
+    </div>
+
     <!-- 日历 end -->
 </div>
 <input id="hfRuleId" type="hidden" value="@ViewBag.RuleId" />
@@ -22,43 +176,98 @@
             $scope.Source = [{ Code: 0, Name: '请选择' }];
             $scope.config = {
                 searchUrl: "/hotel/getpricelist/",
+                roomUrl: "/hotel/getroomdetail/",
+                ruleUrl: "/hotel/getroomruledetail/",
                 saveUrl: "/hotel/save/",
             };
             $scope.Id = $('#hfId').val();
             $(function () {
-                //canlendarMainFn.pCalendarList = [
-                //    {
-                //        "MinSalePrice": 459,
-                //        "MinInventroyCount": 0,
-                //        "PriceDate": "2018-11-25 00:00:00.000"
-                //    },
-                //    {
-                //        "MinSalePrice": 499,
-                //        "MinInventroyCount": 0,
-                //        "PriceDate": "2018-11-26 00:00:00.000"
-                //    },
-                //    {
-                //        "MinSalePrice": 499,
-                //        "MinInventroyCount": 0,
-                //        "PriceDate": "2018-11-27 00:00:00.000"
-                //    }
-                //];
-                //canlendarMainFn.init('calendar_contain');
+                $scope.pageInit();
+                $scope.selectInit();
+                $scope.getRoomDetail();
+                $scope.getRuleDetail();
                 $scope.getList();
             });
+            $scope.pageInit = function () {
+                $scope.MonthList = [];
+                $scope.WeekList = [];
+                $scope.DateList = [{ Code: 0, Name: "请选择日期" }];
+                for (var i = 1; i < 32; i++) {
+                    $scope.DateList.push({ Code: i, Name: i + "日" });
+                }
+                var week = ['', '日', '一', '二', '三', '四', '五', '六'];
+                for (var i = 1; i < 8; i++) {
+                    $scope.WeekList.push({ Code: i, Name: "周" + week[i] });
+                }
+                var d = new Date();
+                for (var i = 1; i < 13; i++) {
+                    var year = d.getFullYear();
+                    var month = d.getMonth() + 1;
+                    $scope.MonthList.push({ Code: year * 100 + month, Name: year + "-" + (month < 10 ? '0' + month : month) });
+                    if (month == 12) {
+                        month = 0;
+                        year += 1;
+                    }
+                    d = new Date(year, month, 1);
+                }
+                $scope.$apply();
+            };
+            $scope.selectInit = function () {
+                $('#ems_Month').eMultiSelect({
+                    placeholder: '请选择月份',
+                    source: $scope.MonthList,
+                    resultItem: {
+                        value: 'Code',
+                        text: 'Name',
+                        other: ''
+                    },
+                    onConfirm: function () {
+                        console.log(this);
+                    }
+                });
 
+
+                $('#ems_Week').eMultiSelect({
+                    placeholder: '请选择时间',
+                    source: $scope.WeekList,
+                    resultItem: {
+                        value: 'Code',
+                        text: 'Name',
+                        other: ''
+                    },
+                    onConfirm: function () {
+                        console.log(this);
+                    }
+                });
+            };
             //列表
-            $scope.getList = function () {
-                var Month = "201811";
+            $scope.getList = function (m) {
+                if (!m || m <= 0) {
+                    var d = new Date();
+                    var year = d.getFullYear();
+                    var month = d.getMonth() + 1;
+                    m = year * 100 + month
+                }
                 eLoading.show();
                 $.ajax({
-                    url: $scope.config.searchUrl + "?RuleId=" + $('#hfRuleId').val() + "&Month=" + Month,
+                    url: $scope.config.searchUrl + "?RuleId=" + $('#hfRuleId').val() + "&Month=" + m,
                     type: 'get',
                     dataType: "json",
                     timeout: 20000,
                     success: function (data) {
-                        canlendarMainFn.pCalendarList = data;
-                        canlendarMainFn.init('calendar_contain');
+                        var dd = new Date();
+                        $.sarCalenderInit({
+                            container: 'calendar_contain',//日历容器名称
+                            setPos: 'body',//插入的位置
+                            calendarType: 1,//日历类型 1：价格日历 2：库存日历
+                            calendarList: data,//日历数据实体
+                            defaultYear: dd.getFullYear(),//默认年份
+                            defaultMonth: dd.getMonth(),//默认月份
+                            callBack: function (selectDateInfo) {
+                                console.log(selectDateInfo);
+                            }
+                        });
+                        //canlendarMainFn.init('calendar_contain', 1, data);
                     },
                     error: function () {
                         console.log("err-getList");
@@ -68,6 +277,65 @@
                     }
                 });
             }
+            //房型信息
+            $scope.getRoomDetail = function () {
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.roomUrl + "?id=" + $('#hfRoomId').val(),
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.room = data;
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询房型失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //政策信息
+            $scope.getRuleDetail = function () {
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.ruleUrl + "?id=" + $('#hfRuleId').val(),
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.rule = data;
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询房型政策失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+
 
             //详情
             $scope.getDetail = function () {
@@ -103,6 +371,15 @@
 
             //保存
             $scope.Save = function () {
+                //设置日期
+                $scope.price.MonthList = $('#ems_Month').eMultiSelect.getValue('#ems_Month');
+                $scope.price.WeekList = $('#ems_Week').eMultiSelect.getValue('#ems_Week');
+                $scope.price.DateList = [];
+                if ($scope.price.Day1 > 0 && $scope.price.Day2 > 0) {
+                    $scope.price.DateList.push($scope.price.Day1);
+                    $scope.price.DateList.push($scope.price.Day2);
+                }
+
                 var c = $scope.checkData();
                 if (!c) return;
                 eLoading.show();
@@ -132,22 +409,27 @@
 
             //数据验证
             $scope.checkData = function () {
-                if ($scope.m.HIName.length <= 0) {
+                if ($scope.price.ContractPrice.length <= 0 || $scope.price.ContractPrice <= 0) {
                     eMsg({
                         timer: 2000,
-                        text: '酒店名称不能为空！'
+                        text: '结算价不能为空！'
                     });
                     return false;
                 }
-                if ($scope.m.HILinkPhone.length > 0 && !mobileReg.test($scope.m.HILinkPhone) && !telReg.test($scope.m.HILinkPhone)) {
+                if ($scope.price.SellPrice.length <= 0 || $scope.price.SellPrice <= 0) {
                     eMsg({
                         timer: 2000,
-                        text: '请输入正确的联系电话！'
+                        text: '销售价不能为空！'
                     });
                     return false;
                 }
-                //省份 城市赋值
-
+                if (!$scope.price.DateList || $scope.price.DateList.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '未选择日期！'
+                    });
+                    return false;
+                }
 
                 return true;
             }

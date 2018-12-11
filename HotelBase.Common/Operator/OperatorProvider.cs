@@ -13,7 +13,7 @@ namespace HotelBase.Common
         /// <summary>
         /// Session/Cookie键。
         /// </summary>
-        private const string LOGIN_USER_KEY = "LoginUser";
+        private const string LOGIN_USER_KEY = "hotel_login";
 
         private OperatorProvider() { }
 
@@ -39,7 +39,7 @@ namespace HotelBase.Common
         /// <summary>
         /// 从配置文件读取登陆提供者模式(Session/Cookie)。
         /// </summary>
-        private string LoginProvider = Configs.GetValue("LoginProvider");
+        private string LoginProvider ="Cookie";
 
         /// <summary>
         /// 从配置文件读取登陆用户信息保存时间。
@@ -50,18 +50,18 @@ namespace HotelBase.Common
         /// 从Session/Cookie获取或设置用户操作模型。
         /// </summary>
         /// <returns></returns>
-        public Operator Current
+        public UserModel Current
         {
             get
             {
-                Operator operatorModel = new Operator();
+                UserModel operatorModel = new UserModel();
                 if (LoginProvider == "Cookie")
                 {
-                    operatorModel = WebHelper.GetCookie(LOGIN_USER_KEY).DESDecrypt().ToObject<Operator>();
+                    operatorModel = WebHelper.GetCookie(LOGIN_USER_KEY).DESDecrypt().ToObject<UserModel>();
                 }
                 else
                 {
-                    operatorModel = WebHelper.GetSession(LOGIN_USER_KEY).DESDecrypt().ToObject<Operator>();
+                    operatorModel = WebHelper.GetSession(LOGIN_USER_KEY).DESDecrypt().ToObject<UserModel>();
                 }
                 return operatorModel;
             }
@@ -95,58 +95,25 @@ namespace HotelBase.Common
 
     }
 
-    /// <summary>
-    /// 操作模型，保存登陆用户必要信息。
-    /// </summary>
-    public class Operator
+    public class UserModel
     {
-        /// <summary>
-        /// 用户ID
-        /// </summary>
-        public int UserId { get; set; }
-        /// <summary>
-        /// 账户
-        /// </summary>
+        /// <summary> Id </summary>
+        public int Id { get; set; }
+        /// <summary> 登陆账户 </summary>
         public string Account { get; set; }
-        /// <summary>
-        /// 真实姓名
-        /// </summary>
-        public string RealName { get; set; }
-        /// <summary>
-        /// 头像
-        /// </summary>
-        public string Avatar { get; set; }
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password { get; set; }
-        /// <summary>
-        /// 公司ID
-        /// </summary>
-        public int CompanyId { get; set; }
-        /// <summary>
-        /// 部门ID
-        /// </summary>
-        public int DepartmentId { get; set; }
-        /// <summary>
-        /// 角色
-        /// </summary>
-        public List<string> RoleId { get; set; }
-        /// <summary>
-        /// Token
-        /// </summary>
-        public string Token { get; set; }
-        /// <summary>
-        /// 登录时间
-        /// </summary>
-        public DateTime LoginTime { get; set; }
-        /// <summary>
-        /// 登录次数
-        /// </summary>
-        public int LoginCount { get; set; }
-        /// <summary>
-        /// 消息数
-        /// </summary>
-        public int MessageCount { get; set; }
+        /// <summary> 姓名 </summary>
+        public string Name { get; set; }
+        /// <summary> 部门Id </summary>
+        public int DepartId { get; set; }
+        /// <summary> 部门名称 </summary>
+        public string DepartName { get; set; }
+        /// <summary> 职责 </summary>
+        public int R { get; set; }
+        /// <summary> 职责 </summary>
+        public string Responsibility { get; set; }
+        /// <summary> 密码 </summary>
+        public string Pwd { get; set; }
+        /// <summary> 是否有效 </summary>
+        public int IsValid { get; set; }
     }
 }
