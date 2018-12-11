@@ -25,8 +25,17 @@ namespace HotelBase.Web.Controller.System
             return View();
         }
 
-
-        //public ActionResult GetOrderStatics()
+        /// <summary>
+        /// 订单统计列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public JsonResult GetOrderStatics(OrderStaticRequest request)
+        {
+            //GetOrderList
+            var response = OrderStaticBll.GetOrderStaticList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
     }

@@ -389,12 +389,107 @@ namespace HotelBase.DataAccess.Order
             return response;
         }
 
-
+        /// <summary>
+        /// 统计订单
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public static BasePageResponse<OrderStaticResponse> GetOrderStaticList(OrderStaticRequest request)
         {
             var response = new BasePageResponse<OrderStaticResponse>();
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat(@"SELECT * FROM ho_hotelorderlog  WHERE  HOLOrderId='{0}'  LIMIT 1;", request.CityId);
+            StringBuilder sbwhere = new StringBuilder();
+            if (request.Type == 1 && request.TimeType != 0)
+            {
+                if (request.TimeType == 1)
+                {
+                    sbwhere.AppendFormat(" AND ho.HOAddTime>= '{0}'", request.StartTime);
+                    sbwhere.AppendFormat(" AND ho.HOAddTime< '{0}'", request.EndTime);
+                }
+                else
+                {
+                    sbwhere.AppendFormat(" AND ho.HOCheckOutDate>= '{0}'", request.StartTime);
+                    sbwhere.AppendFormat(" AND ho.HOCheckOutDate< '{0}'", request.EndTime);
+                }
+            }
+            if (request.PrivoceId > 0)
+            {
+                sbwhere.AppendFormat(" AND hb.HIProvinceId= {0}", request.PrivoceId);
+            }
+            if (request.CityId > 0)
+            {
+                sbwhere.AppendFormat(" AND hb.HICityId= {0}", request.CityId);
+            }
+            if (request.Part1 > 0)
+            {
+                sbwhere.AppendFormat(" AND ho.HoPlat1= {0}", request.Part1);
+            }
+            if (request.Part2 > 0)
+            {
+                sbwhere.AppendFormat(" AND hb.HoPlat2= {0}", request.Part2);
+            }
+            if (!string.IsNullOrWhiteSpace(request.HotelName))
+            {
+                sbwhere.AppendFormat(" AND ho.HName IN ({0})", request.HotelName);
+            }
+            if (!string.IsNullOrWhiteSpace(request.HotelId))
+            {
+                sbwhere.AppendFormat(" AND ho.HId IN ({0})", request.HotelId);
+            }
+            if (!string.IsNullOrWhiteSpace(request.SupplierName))
+            {
+                sbwhere.AppendFormat(" AND ho.HOSupperlierName Like '%{0}%'", request.SupplierName);
+            }
+            if (request.SupplierSource > 0)
+            {
+                sbwhere.AppendFormat(" AND ho.HOSupplierSourceId ={0}", request.SupplierSource);
+            }
+            sb.AppendFormat(@"SELECT
+	                                DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d') AS CreateTime,
+	                                DATE_FORMAT(
+		                                ho.HOCheckOutDate,
+		                                '%Y-%m-%d'
+	                                ) AS CheckOutDate,
+	                                hb.HIProvinceId AS ProvinceId,
+	                                hb.HIProvince AS ProvinceName,
+	                                hb.HICityId AS CityId,
+	                                hb.HICity AS CityName,
+	                                ho.HName AS HotelName,
+	                                ho.HIId AS HotelId,
+	                                ho.HOSupperlierName AS SupperlierName,
+	                                ho.HOSupplierId AS SupperlierId,
+	                                count(ho.Id) AS TotalCreate,
+	                                count(
+		                                CASE
+		                                WHEN ho.HOStatus = 1 THEN
+			                                1
+		                                END
+	                                ) AS TotalSuccess,
+	                                sum(ho.HOSellPrice) AS TotalSell,
+	                                sum(ho.HOContractPrice) AS TotalContract,
+	                                sum(
+		                                ho.HOSellPrice - ho.HOContractPrice
+	                                ) AS TotalRevenue
+                                FROM
+	                                ho_hotelorder ho
+                                INNER JOIN h_hotelinfo hb ON hb.Id = ho.HIId
+                                WHERE
+	                                1 = 1
+                                    {0}
+                                GROUP BY
+	                                DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d'),
+	                                DATE_FORMAT(
+		                                ho.HOCheckOutDate,
+		                                '%Y-%m-%d'
+	                                ),
+	                                hb.HIProvinceId,
+	                                hb.HIProvince,
+	                                hb.HICityId,
+	                                hb.HICity,
+	                                ho.HName,
+	                                ho.HIId,
+	                                ho.HOSupperlierName,
+	                                ho.HOSupplierId", sbwhere.ToString());
             var list = MysqlHelper.GetList<OrderStaticResponse>(sb.ToString());
             var total = list?.Count ?? 0;
             if (total > 0)

@@ -27,6 +27,16 @@ namespace HotelBase.Entity.Models
         public int TimeType { get; set; }
 
         /// <summary>
+        /// 开始时间
+        /// </summary>
+        public string StartTime { get; set; }
+
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public string EndTime { get; set; }
+
+        /// <summary>
         /// 省份id
         /// </summary>
         public int PrivoceId { get; set; }
@@ -73,12 +83,27 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 统计时间
         /// </summary>
-        public string StaticDate { get; set; }
+        public string CreateTime { get; set; }
+
+        /// <summary>
+        /// 统计时间
+        /// </summary>
+        public string CheckOutDate { get; set; }
+
+        /// <summary>
+        /// 省份
+        /// </summary>
+        public string ProviceId { get; set; }
 
         /// <summary>
         /// 省份
         /// </summary>
         public string ProviceName { get; set; }
+
+        /// <summary>
+        /// 城市
+        /// </summary>
+        public string CityId { get; set; }
 
         /// <summary>
         /// 城市
@@ -98,12 +123,12 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 创建订单
         /// </summary>
-        public string CreateOrder { get; set; }
+        public string TotalCreate { get; set; }
 
         /// <summary>
         /// 成功订单
         /// </summary>
-        public string SuccessOrder { get; set; }
+        public string TotalSuccess { get; set; }
 
         /// <summary>
         /// 销售额
