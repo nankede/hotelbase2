@@ -17,12 +17,27 @@
         </div>
     </div>
     <div class="lay-form-item">
-
         <div class="lay-form-item-caption ">
             <label>登陆账户</label>
         </div>
         <div class="lay-form-item-control">
             <input class="lay-input" ng-model="User.Account" placeholder="请输入登陆账户" />
+        </div>
+    </div>
+    <div class="lay-form-item" ng-show="$scope.Id == 0">
+        <div class="lay-form-item-caption ">
+            <label>登陆密码</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="User.Account" placeholder="请输入登陆密码" />
+        </div>
+    </div>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>归属部门</label>
+        </div>
+        <div class="lay-form-item-control">
+            <div id="esDepart"></div>
         </div>
     </div>
     <div class="lay-form-item">
@@ -31,7 +46,7 @@
         </div>
         <div class="lay-form-item-control">
             <input ng-repeat-start="x in config.resList" type="radio" class="lay-radio-variant"
-                   name="rdo-res" id="rdo-res-{{$index}}" ng-model="User.R" value="{{x.value}}" />
+                   name="rdo-res" id="rdo-res-{{$index}}" ng-model="User.R" ng-init="User.R=0" value="{{x.value}}" />
             <label for="rdo-res-{{$index}}">
                 <span ng-bind="x.name"></span>
             </label>
@@ -53,6 +68,8 @@
             });
             $scope.config = {
                 detailUrl: "/system/getuserdetail",
+                saveUrl: "/system/saveuser",
+                searchDepartUrl: "/system/getdepartsearch",
                 resList: [
                     { value: 0, name: "未设定" },
                     { value: 1, name: "资源维护" },
@@ -63,7 +80,10 @@
             }
             //页面初始化
             $scope.pageInit = function () {
-                $scope.getDetail();
+                $scope.initSelect();
+                if ($scope.Id > 0) {
+                    $scope.getDetail();
+                }
             }
             //查询
             $scope.getDetail = function () {
@@ -101,9 +121,92 @@
                 });
             }
 
+            //初始化
+            $scope.initSelect = function () {
+                $('#esDepart').eSearch2({
+                    placeholder: '请输入部门名称查询',
+                    searchSource: $scope.searchDepartUrl,
+                    searchKey: 'name',
+                    resultItem: {
+                        value: 'Code',
+                        text: 'Name'
+                    },
+                    onBeforeSend: function (ajaxSendData) {
+                        //这里的departmentId就是动态变化的
+                        ajaxSendData.name = encodeURIComponent(ajaxSendData.name);
+                        return ajaxSendData;
+                    },
+                    onSelected: function () {
+                        console.log(`我是选中的value:${this.value},我是选中的text:${this.text}`);
+                        //所有的回调里面的this值都放了很多有用的东西
+                        //比如 你选中的 value值，选中的 text值
+                        //alert(`我是选中的value:${this.value},我是选中的text:${this.text}`)
+                    }
+                });
+
+            }
+
             //保存
             $scope.Save = function () {
-                alert("保存用户数据");
+                var c = $scope.checkData();
+                if (!c) return;
+                eLoading.show();
+                Untitl.Post($scope.config.saveUrl, $scope.User, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        $scope.User.Id = data.AddId;
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功，正在自动关闭页面！'
+                        });
+                        //关闭页面
+                        setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                    }
+                    else {
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
+                        });
+                    }
+                    $scope.$apply();
+                },
+                    function () {
+                        eLoading.hide();
+                    });
+            }
+
+            //数据验证
+            $scope.checkData = function () {
+                if ($scope.User.UIAccount.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '登陆账户不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.User.UIName.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '登陆账户不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.User.UIDepartId <= 0 || $scope.User.UIDepartName.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '未选择归属部门！'
+                    });
+                    return false;
+                }
+                if ($scope.Id == 0 && $scope.User.UIPassWord.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '登陆密码不能为空！'
+                    });
+                    return false;
+                }
+
+                return true;
             }
         });
     </script>

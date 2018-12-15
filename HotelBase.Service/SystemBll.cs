@@ -60,6 +60,49 @@ namespace HotelBase.Service
             user.Pwd = string.Empty;
             return user;
         }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static BaseResponse UpdateUser(Sys_UserInfoModel model)
+        {
+            var db = new Sys_UserInfoAccess();
+            var d = db.Update().Where(x => x.Id == model.Id).
+                  Set(x => x.UIName == model.UIName
+                  && x.UIDepartName == model.UIDepartName
+                  && x.UIDepartId == model.UIDepartId
+                  && x.UIUpdateName == model.UIUpdateName
+                  && x.UIUpdateTime == model.UIUpdateTime).Top(1).Execute();
+            var res = new BaseResponse
+            {
+                IsSuccess = d > 0 ? 1 : 0,
+                Msg = d > 0 ? string.Empty : "更新失败",
+            };
+            return res;
+        }
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+
+        public static BaseResponse InsertUser(Sys_UserInfoModel model)
+        {
+            var db = new Sys_UserInfoAccess();
+            var id = db.Add(model);
+            var res = new BaseResponse
+            {
+                AddId = id,
+                IsSuccess = id > 0 ? 1 : 0,
+                Msg = id > 0 ? string.Empty : "新增失败",
+            };
+            return res;
+        }
+
+
         #endregion
 
         #region 部门列表
@@ -85,6 +128,7 @@ namespace HotelBase.Service
         {
             return Sys_BaseDictionaryAccess.GetDicList(request);
         }
+
 
         /// <summary>
         /// 根据父Code查数据字典列表

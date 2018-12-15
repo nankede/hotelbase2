@@ -58,6 +58,43 @@ namespace HotelBase.Web.Controller.System
             var response = SystemBll.GetUserModel(id, string.Empty);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 新增人员
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SaveUser(UserModel request)
+        {
+            var model = new Sys_UserInfoModel
+            {
+                Id = request.Id,
+                UIAccount = request.Account,
+                UIName = request.Name,
+                UIPassWord = request.Id == 0 ? request.Pwd : string.Empty,
+                UIDepartId = request.DepartId,
+                UIDepartName = request.DepartName,
+                UIResponsibility = request.R,
+
+            };
+            if (request.Id > 0)
+            {
+                model.UIUpdateTime = DateTime.Now;
+                model.UIUpdateName = CurrtUser.Name;
+                var response = SystemBll.UpdateUser(model);
+                return Json(response);
+            }
+            else
+            {
+                model.UIIsValid = 1;
+                model.UIAddName = CurrtUser.Name;
+                model.UIAddTime = DateTime.Now;
+                ;
+                var response = SystemBll.InsertUser(model);
+                return Json(response);
+            }
+        }
+
+
         #endregion
 
         #region 部门
@@ -80,6 +117,37 @@ namespace HotelBase.Web.Controller.System
             var response = SystemBll.GetDepartList(request);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 部门模糊搜索
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public JsonResult GetDepartSearch(string name)
+        {
+            var request = new DepartistRequest
+            {
+                IsValid = 1,
+                Name = name,
+                PageIndex = 1,
+                PageSize = 20
+
+            };
+            var list = new List<BaseDic>();
+            var response = SystemBll.GetDepartList(request);
+            if (response != null && response.List != null && response.List.Count > 0)
+            {
+                list.AddRange(response.List.Select(x => new BaseDic
+                {
+                    Code = x.Id,
+                    Name = x.DIName
+
+                }));
+            }
+            return Json(list, JsonRequestBehavior.AllowGet);
+
+        }
+
         #endregion
 
         #region 字典

@@ -1,0 +1,110 @@
+﻿@section head{
+    <style>
+        body {
+            min-width: unset !important;
+            height: unset !important;
+        }
+    </style>
+}
+
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>姓名</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="User.Name" placeholder="请输入姓名" />
+        </div>
+    </div>
+    <div class="lay-form-item">
+
+        <div class="lay-form-item-caption ">
+            <label>登陆账户</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="User.Account" placeholder="请输入登陆账户" />
+        </div>
+    </div>
+    <div class="lay-form-item">
+        <div class="lay-form-item-caption ">
+            <label>职责</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input ng-repeat-start="x in config.resList" type="radio" class="lay-radio-variant"
+                   name="rdo-res" id="rdo-res-{{$index}}" ng-model="User.R" value="{{x.value}}" />
+            <label for="rdo-res-{{$index}}">
+                <span ng-bind="x.name"></span>
+            </label>
+            <i ng-repeat-end class="none"></i>
+        </div>
+    </div>
+    <div class="lay-form-foot">
+        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+    </div>
+</div>
+<input id="hfId" type="hidden" value="@ViewBag.Id" />
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.Id = $('#hfId').val();
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                detailUrl: "/system/getuserdetail",
+                resList: [
+                    { value: 0, name: "未设定" },
+                    { value: 1, name: "资源维护" },
+                    { value: 2, name: "订单维护" },
+                    { value: 4, name: "订单统计" },
+                    { value: 100, name: "超级管理" },
+                ]
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                $scope.getDetail();
+            }
+            //查询
+            $scope.getDetail = function () {
+                var para = { id: $scope.Id };
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.detailUrl,
+                    type: 'get',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        var msg = "";
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.User = data.Model;
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //保存
+            $scope.Save = function () {
+                alert("保存用户数据");
+            }
+        });
+    </script>
+}
