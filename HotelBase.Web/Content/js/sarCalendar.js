@@ -59,7 +59,7 @@
             var that = this;
             var ajaxUrl = this.settings.ajaxUrl;
             var ajaxOptions = this.settings.ajaxOptions;
-            ajaxOptions.Month = opYear * 100 + (opMonth + 1)
+            ajaxOptions.Month = opYear * 100 + (parseInt(opMonth) + 1)
             $.ajax({
                 // url: ajaxUrl + "?RuleId=" + ajaxOptions.RuleId + "&Month=" + ajaxOptions.Month,
                 url: ajaxUrl,
