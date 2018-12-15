@@ -429,10 +429,11 @@
                 // if ($(this).hasClass('choose_date')) {
                 $('.sarCalendar_date_ul li').removeClass('calendar_active');
                 $(this).addClass('calendar_active');
-                var selectDateInfo = JSON.parse($(this).attr('data-obj'));
-                if (!selectDateInfo) {
-                    selectDateInfo = { "Id": 0, "PriceDate": $(this).attr('data-date'), "SellPrice": 0, "ContractPrice": 0, "Count": 0, "RetainCount": 0 }
-                }
+                var selectDateInfo;
+                selectDateInfo = $(this).attr('data-obj') ? JSON.parse($(this).attr('data-obj')) : { "Id": 0, "PriceDate": $(this).attr('data-date'), "SellPrice": 0, "ContractPrice": 0, "Count": 0, "RetainCount": 0 };
+                // if (!selectDateInfo) {
+                //     selectDateInfo = { "Id": 0, "PriceDate": $(this).attr('data-date'), "SellPrice": 0, "ContractPrice": 0, "Count": 0, "RetainCount": 0 }
+                // }
                 if ($.isFunction(that.settings.callBack)) {
                     that.settings.callBack(selectDateInfo);
                 }
