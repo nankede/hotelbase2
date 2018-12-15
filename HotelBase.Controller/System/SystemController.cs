@@ -128,7 +128,7 @@ namespace HotelBase.Web.Controller.System
             var request = new DepartistRequest
             {
                 IsValid = 1,
-                Name = name,
+                Name = HttpUtility.UrlDecode(name),
                 PageIndex = 1,
                 PageSize = 20
 

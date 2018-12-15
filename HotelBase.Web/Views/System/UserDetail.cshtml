@@ -24,7 +24,7 @@
             <input class="lay-input" ng-model="User.Account" placeholder="请输入登陆账户" />
         </div>
     </div>
-    <div class="lay-form-item" ng-show="$scope.Id == 0">
+    <div class="lay-form-item" ng-show="$scope.Id==0">
         <div class="lay-form-item-caption ">
             <label>登陆密码</label>
         </div>
@@ -125,7 +125,7 @@
             $scope.initSelect = function () {
                 $('#esDepart').eSearch2({
                     placeholder: '请输入部门名称查询',
-                    searchSource: $scope.searchDepartUrl,
+                    searchSource: $scope.config.searchDepartUrl,
                     searchKey: 'name',
                     resultItem: {
                         value: 'Code',
@@ -133,7 +133,10 @@
                     },
                     onBeforeSend: function (ajaxSendData) {
                         //这里的departmentId就是动态变化的
-                        ajaxSendData.name = encodeURIComponent(ajaxSendData.name);
+                        //ajaxSendData.name = encodeURIComponent(ajaxSendData.name);
+                        if (!ajaxSendData.name || ajaxSendData.name.length <= 0) {
+                            return false;
+                        }
                         return ajaxSendData;
                     },
                     onSelected: function () {

@@ -40,13 +40,13 @@ namespace HotelBase.DataAccess
                 whereSql += $" AND  DIName  Like '%{request.Name.Replace("'", string.Empty).Replace(" ", string.Empty).Trim()}%' ";
             }
 
-            var totalSql = $" SELECT Count(1) FROM Sys_DepartInfo  {whereSql}; ";
+            var totalSql = $" SELECT Count(1) FROM Sys_DepartInfo WHERE 1=1   {whereSql}; ";
             var total = MysqlHelper.GetScalar<int>(totalSql);
             if (total > 0)
             {
                 response.IsSuccess = 1;
                 response.Total = total;
-                var sql = $" SELECT * FROM Sys_DepartInfo   {whereSql} ";
+                var sql = $" SELECT * FROM Sys_DepartInfo   WHERE 1=1  {whereSql} ";
 
 
                 sql += MysqlHelper.GetPageSql(request.PageIndex, request.PageSize);
