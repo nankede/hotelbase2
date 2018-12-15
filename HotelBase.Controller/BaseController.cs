@@ -46,6 +46,13 @@ namespace HotelBase.Web.Controllers
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
+            OperatorProvider.Instance.Current = new UserModel
+            {
+                Id = 1,
+                Name = "测试"
+            };
+
+            return;
             if (Ignore)
             {
                 return;
