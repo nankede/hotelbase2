@@ -69,7 +69,7 @@
                 timeout: 20000,
                 success: function (data) {
                     if (data && data.length > 0) {
-                        ththatis.settings.calendarList = data;
+                        that.settings.calendarList = data;
                         that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, ' ', ththatis.settings.container);
                     }
                 },
