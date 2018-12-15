@@ -15,7 +15,6 @@ namespace HotelBase.Web.Controllers
     public class BaseController : System.Web.Mvc.Controller
     {
         public string loginCookie = "hotel_login";
-        private UserModel _CurrtUser;
         public UserModel CurrtUser
         {
             get

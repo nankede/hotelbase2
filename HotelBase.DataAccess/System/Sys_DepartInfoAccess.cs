@@ -30,13 +30,25 @@ namespace HotelBase.DataAccess
         public static BasePageResponse<Sys_DepartInfoModel> GetDepartList(DepartistRequest request)
         {
             var response = new BasePageResponse<Sys_DepartInfoModel>();
-            var totalSql = "SELECT Count(1) FROM Sys_DepartInfo ; ";
+            var whereSql = string.Empty;
+            if (request.IsValid >= 0)
+            {
+                whereSql += $" AND  DIIsValid = {request.IsValid}";
+            }
+            if (!String.IsNullOrEmpty(request.Name))
+            {
+                whereSql += $" AND  DIName  Like '%{request.Name.Replace("'", string.Empty).Replace(" ", string.Empty).Trim()}%' ";
+            }
+
+            var totalSql = $" SELECT Count(1) FROM Sys_DepartInfo  {whereSql}; ";
             var total = MysqlHelper.GetScalar<int>(totalSql);
             if (total > 0)
             {
                 response.IsSuccess = 1;
                 response.Total = total;
-                var sql = "SELECT * FROM Sys_DepartInfo   ";
+                var sql = $" SELECT * FROM Sys_DepartInfo   {whereSql} ";
+
+
                 sql += MysqlHelper.GetPageSql(request.PageIndex, request.PageSize);
                 response.List = MysqlHelper.GetList<Sys_DepartInfoModel>(sql) ?? new List<Sys_DepartInfoModel>();
             }

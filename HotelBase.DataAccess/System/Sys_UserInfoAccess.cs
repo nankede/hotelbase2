@@ -10,11 +10,15 @@ using System.Threading.Tasks;
 using HotelBase.Entity.Models;
 using HotelBase.Entity;
 using HotelBase.Common;
+using Component.Access;
 
 namespace HotelBase.DataAccess
 {
-    public class Sys_UserInfoAccess
+    public class Sys_UserInfoAccess : BaseAccess<Sys_UserInfoModel>
     {
+        public Sys_UserInfoAccess() : base(MysqlHelper.Db_HotelBase)
+        {
+        }
         /// <summary>
         /// 用户列表
         /// </summary>
