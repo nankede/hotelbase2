@@ -103,62 +103,74 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="lay-row">
-        <div class="lay-col-8">
-            <!-- 日历 start -->
-            <div id="calendar_contain" class="calendar_contain"></div>
+        <div class="lay-form-foot">
+            <input type="button" class="lay-btn lay-btn-primary" value="批量处理" ng-click="batcList()">
         </div>
-        <div class="lay-col-4">
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>选择月份</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <div id="ems_Month"></div>
-                    @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Month" ng-init="price.Month=0" ng-options="item.Code as item. Name for item in MonthList"></select>*@
-                </div>
+    </div>
+    <div class="lay-row" style="margin-top:20px;">
+        <!-- 日历 start -->
+        <div id="calendar_contain" class="calendar_contain"></div>
+        <!-- 日历 end -->
+    </div>
+    <!-- 批量保存 -->
+    <div class="lay-dialog" id="dialogBatch">
+        <div class="lay-dialog-mask"></div>
+        <div class="lay-dialog-cont" style="width:460px;height:400px;">
+            <div class="lay-dialog-hd">
+                <h3>修改价格</h3>
+                <button class="lay-dialog-btn-close"></button>
             </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>选择时间</label>
+            <div class="lay-dialog-bd">
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>选择月份</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <div id="ems_Month"></div>
+                        @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Month" ng-init="price.Month=0" ng-options="item.Code as item. Name for item in MonthList"></select>*@
+                    </div>
                 </div>
-                <div class="lay-form-item-control">
-                    <div id="ems_Week"></div>
-                    @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Week" ng-init="price.Week=0" ng-options="item.Code as item. Name for item in WeekList"></select>*@
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>选择时间</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <div id="ems_Week"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>选择日期</label>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>选择日期</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <select class="lay-select select-area" placeholder="请选择开始日期" ng-model="price.Day1" ng-init="price.Day1=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                        <select class="lay-select select-area" placeholder="请选择结束日期" ng-model="price.Day2" ng-init="price.Day2=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                    </div>
                 </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择开始日期" ng-model="price.Day1" ng-init="price.Day1=0" ng-options="item.Code as item. Name for item in DateList"></select>
-                    <select class="lay-select select-area" placeholder="请选择结束日期" ng-model="price.Day2" ng-init="price.Day2=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>售卖价</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="price.SellPrice" />
+                    </div>
                 </div>
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>售卖价</label>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>结算价</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="price.ContractPrice" />
+                    </div>
                 </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="price.SellPrice" />
+                <div class="lay-form-foot">
+                    <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="saveBatch()">
                 </div>
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>结算价</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="price.ContractPrice" />
-                </div>
-            </div>
-            <div class="lay-form-foot">
-                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveDetail()">
             </div>
         </div>
     </div>
 
+    <!-- 单日期保存 -->
     <div class="lay-dialog" id="dialogDetail">
         <div class="lay-dialog-mask"></div>
         <div class="lay-dialog-cont" style="width:460px;height:400px;">
@@ -194,7 +206,6 @@
         </div>
     </div>
 
-    <!-- 日历 end -->
 </div>
 <input id="hfRuleId" type="hidden" value="@ViewBag.RuleId" />
 <input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
@@ -213,7 +224,7 @@
                 searchUrl: "/hotel/getpricelist/",
                 roomUrl: "/hotel/getroomdetail/",
                 ruleUrl: "/hotel/getroomruledetail/",
-                saveUrl: "/hotel/save/",
+                saveUrl: "/hotel/savepricebatch/",
                 saveDetailUrl: "/hotel/savepricedetail/",
             };
             $scope.Id = $('#hfId').val();
@@ -423,7 +434,7 @@
                     if (data != null && data.IsSuccess > 0) {
                         eMsg({
                             timer: 2000,
-                            text: '操作成功，正在自动关闭页面！'
+                            text: '操作成功！'
                         });
                         $("#dialogDetail").eDialog('hide');
                         $scope.getList();
@@ -442,8 +453,12 @@
                     });
             }
 
+            //batcList 批量处理
+            $scope.batcList = function () {
+                $("#dialogBatch").eDialog('show');
+            }
             //保存
-            $scope.Save = function () {
+            $scope.saveBatch = function () {
                 //设置日期
                 $scope.price.MonthList = $('#ems_Month').eMultiSelect.getValue('#ems_Month');
                 $scope.price.WeekList = $('#ems_Week').eMultiSelect.getValue('#ems_Week');
