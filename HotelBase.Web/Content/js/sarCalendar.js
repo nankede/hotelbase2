@@ -311,8 +311,14 @@
                     if ($(t).eq(i).attr('data-date')) {
                         if (v.PriceDate.split(' ')[0] == $(t).eq(i).attr('data-date')) {
                             $(t).eq(i).attr('data-obj', JSON.stringify(v));
-                            $(t).eq(i).children('.em_price_sell').text('售卖:￥' + Math.floor(v.SellPrice));
-                            $(t).eq(i).children('.em_price_close').text('结算:￥' + Math.floor(v.ContractPrice));
+                            if (me.settings.calendarType == 1) {
+                                $(t).eq(i).children('.em_price_sell').text('售卖:￥' + Math.floor(v.SellPrice));
+                                $(t).eq(i).children('.em_price_close').text('结算:￥' + Math.floor(v.ContractPrice));
+                            } else if (me.settings.calendarType == 2) {
+                                $(t).eq(i).children('.em_price_sell').text('库存:￥' + Math.floor(v.Count));
+                                $(t).eq(i).children('.em_price_close').text('保留:￥' + Math.floor(v.RetainCount));
+                            }
+
                             $(t).eq(i).addClass('choose_date');
                         }
                     }
@@ -420,13 +426,15 @@
         clickDate: function clickDate() {
             var that = this;
             $('#' + that.settings.container).on('click', '.sarCalendar_date_ul li', function () {
-                if ($(this).hasClass('choose_date')) {
-                    $('.sarCalendar_date_ul li').removeClass('calendar_active');
-                    $(this).addClass('calendar_active');
-                    var selectDateInfo = JSON.parse($(this).attr('data-obj'));
-                    if ($.isFunction(that.settings.callBack)) {
-                        that.settings.callBack(selectDateInfo);
-                    }
+                // if ($(this).hasClass('choose_date')) {
+                $('.sarCalendar_date_ul li').removeClass('calendar_active');
+                $(this).addClass('calendar_active');
+                var selectDateInfo = JSON.parse($(this).attr('data-obj'));
+                if (!selectDateInfo) {
+                    selectDateInfo = { "Id": 0, "PriceDate": $(this).attr('data-date'), "SellPrice": 0, "ContractPrice": 0, "Count": 0, "RetainCount": 0 }
+                }
+                if ($.isFunction(that.settings.callBack)) {
+                    that.settings.callBack(selectDateInfo);
                 }
 
             });
