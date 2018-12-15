@@ -23,7 +23,7 @@
 
             this.slideMonthPanel(this.settings.container);
             // this.createDateUl(this.settings.defaultYear, this.settings.defaultMonth, ' ', this.settings.container);
-            this.getDateListAjaxFn();
+            this.getDateListAjaxFn(this.settings.defaultYear, this.settings.defaultMonth);
             this.clickDate()
             // this.create();
         },
@@ -55,11 +55,11 @@
         /**
          * 获取日历数据接口
          */
-        getDateListAjaxFn: function () {
+        getDateListAjaxFn: function (opYear, opMonth) {
             var that = this;
             var ajaxUrl = this.settings.ajaxUrl;
             var ajaxOptions = this.settings.ajaxOptions;
-            ajaxOptions.Month = this.settings.defaultYear * 100 + (this.settings.defaultMonth + 1)
+            ajaxOptions.Month = opYear * 100 + (opMonth + 1)
             $.ajax({
                 // url: ajaxUrl + "?RuleId=" + ajaxOptions.RuleId + "&Month=" + ajaxOptions.Month,
                 url: ajaxUrl,
@@ -191,7 +191,7 @@
             var monthStr = '';
             for (var _i = 0; _i < monthArr.length; _i++) {
                 var item = monthArr[_i];
-                var classStr = !_i ? "active" : "";
+                var classStr = _i == that.settings.defaultMonth ? "active" : "";
                 var month = new Date(item.replace(/-/g, '/')).getMonth();
                 monthStr += '<li class="' + classStr + '" data-date="' + item + '" data-month="' + month + '">' + (month + 1) + '\u6708</li>';
             }
@@ -200,6 +200,12 @@
             var t = '#' + id + ' ' + ".sarCalendar_month_ul";
 
             $(t).html(monthStr);
+            if (that.settings.defaultMonth >= 6) {
+                var slideMonthPanel_id = '#' + id + ' ' + ".sarCalendar_month_ul";
+                $(slideMonthPanel_id).animate({
+                    left: '-490px'
+                });
+            }
             that.changeMonth(that.settings.container);
         },
         /**
@@ -331,7 +337,7 @@
                 // $(".sarCalendar_yearText").html(selectYear + '\u5E74');
                 var selectMonth = $(this).attr("data-month");
                 // me.createDateUl(selectYear, selectMonth, '', id);
-                me.getDateListAjaxFn();
+                me.getDateListAjaxFn(selectYear, selectMonth);
             });
 
         },
@@ -436,7 +442,7 @@
                 // that.defaultDate = 1;
                 that.createMonthUl(id, $(this).val());
                 // that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, '', that.settings.container);
-                that.getDateListAjaxFn();
+                that.getDateListAjaxFn(that.settings.defaultYear, that.settings.defaultMonth);
             });
         },
     };
