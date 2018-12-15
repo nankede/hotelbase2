@@ -87,7 +87,7 @@
                 <td>
                     <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit" value="查看房型" ng-click="roomList(h.Id)" />
-                    <input type="button" class="lay-btn lay-btn-edit" value="上传图片" ng-click="detail(h.Id)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="上传图片" ng-click="piclist(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.Valid==1?'无效':'有效'}}" ng-click="setValid(h.Id,h.Valid)" />
                 </td>
             </tr>
@@ -202,6 +202,8 @@
                     }
                 });
             }
+
+
             //获取省市查询
             $scope.getArea = function (type) {
                 var pId = type == 0 ? 1 : $scope.Search.ProvId;
@@ -236,6 +238,16 @@
             $scope.roomList = function (id) {
                 $scope.detailName = "酒店房型列表";
                 var url = "/hotel/roomList?hotelid=" + id;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
+            
+
+            //图片上传
+            $scope.piclist = function (id) {
+                $scope.detailName = "酒店图片";
+                var url = "/hotel/PicList?id=" + id;
                 $('#ifm_detail').prop('src', url);
                 $("#dialogDetail").eDialog('show');
             }

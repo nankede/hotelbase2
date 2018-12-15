@@ -126,6 +126,21 @@
                 $('#ifm_detail').prop('src', url);
                 $("#dialogDetail").eDialog('show');
             }
+
+            //价格设置
+            $scope.Pricedetail = function (id) {
+                var url = "/hotel/PriceList?roomid=" + $('#hfRoomId').val() + "&ruleId=" + id + "&hotelid=" + $('#hfHotelId').val();
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
+            //库存设置
+            $scope.Storedetail = function (id) {
+                var url = "/hotel/StoreList?roomid=" + $('#hfRoomId').val() + "&ruleId=" + id + "&hotelid=" + $('#hfHotelId').val();
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
             //设置有效性
             $scope.setValid = function (id, valid) {
                 var msg = "确定设置为" + valid == 1 ? "无效？" : "有效？请谨慎操作！！";

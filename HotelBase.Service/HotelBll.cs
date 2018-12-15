@@ -135,5 +135,24 @@ namespace HotelBase.Service
             return res;
         }
 
+        #region 酒店图片
+
+        /// <summary>
+        /// 酒店图片
+        /// </summary>
+        /// <param name="request"></param>
+        public static List<H_HotelPictureModel> GetPicList(HotelPicSearchRequest request)
+        {
+            var db = new H_HotelPictureAccess();
+
+            return db.Query().Where(x => x.HIId == request.HotelId)?.ToList();
+
+            //  return db.GetList(request);
+        }
+
+        #endregion
+
     }
+
+
 }

@@ -137,4 +137,18 @@ namespace HotelBase.Entity.Models
     }
 
     #endregion
+
+    #region 酒店图片
+
+
+    /// <summary>
+    /// 酒店查询
+    /// </summary>
+    public class HotelPicSearchRequest : BaseRequest
+    {
+        /// <summary>酒店Id</summary>
+        public int HotelId { get; set; }
+    }
+
+    #endregion
 }

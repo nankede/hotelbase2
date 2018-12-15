@@ -95,9 +95,26 @@ namespace HotelBase.Web.Controller.System
         /// 图片
         /// </summary>
         /// <returns></returns>
-        public ActionResult PicList()
+        public ActionResult PicList(int id)
         {
+            ViewBag.HotelId = id;
             return View();
+        }
+
+        /// <summary>
+        /// 图片
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetPicList(int id, int index)
+        {
+            var request = new HotelPicSearchRequest
+            {
+                HotelId = id,
+                PageIndex = index
+            };
+            var List = HotelBll.GetPicList(request);
+
+            return Json(List, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -301,7 +318,7 @@ namespace HotelBase.Web.Controller.System
         /// <param name="rooleid"></param>
         /// <param name="supplierid"></param>
         /// <returns></returns>
-        public JsonResult GetOrderNeedInfo(int hotelid, int roomid, int rooleid,int supplierid)
+        public JsonResult GetOrderNeedInfo(int hotelid, int roomid, int rooleid, int supplierid)
         {
             var model = OrderBll.GetHotelRuleDetial(hotelid, roomid, rooleid, supplierid);
             return Json(model, JsonRequestBehavior.AllowGet);
