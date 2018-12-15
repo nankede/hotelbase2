@@ -156,6 +156,19 @@ namespace HotelBase.Entity.Models
         /// 操作人
         /// </summary>
         public string OperateName { get; set; }
+
+        /// <summary>
+        /// 月份
+        /// </summary>
+        public string MonthList { get; set; }
+        /// <summary>
+        /// 星期
+        /// </summary>
+        public string WeekList { get; set; }
+        /// <summary>
+        /// 日期
+        /// </summary>
+        public string DateList { get; set; }
     }
 
     #endregion

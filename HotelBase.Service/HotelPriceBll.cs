@@ -121,12 +121,95 @@ namespace HotelBase.Service
         }
 
         /// <summary>
-        /// 酒店详情
+        /// 单日价格、库存
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public static BaseResponse SavePriceDetail(SaveHotelPriceModel request)
         {
+            //验证对于日期是否存在
+            var db = new H_HoteRulePriceAccess();
+            var model = new H_HoteRulePriceModel();
+            var date = ConvertHelper.ToDateTime(request.PriceDate, new DateTime(1900, 1, 1));
+            var dateInt = ConvertHelper.ToInt32(date.ToString("yyyyMMdd"), 0);
+            if (date.Year < 2000)
+            {
+                return new BaseResponse { Msg = "日期错误" };
+            }
+
+            model = db.Query().Where(x => x.HRPDateInt == dateInt).FirstOrDefault();
+            if (model != null && model.Id > 0)
+            {
+                if (model.Id != request.Id)
+                {
+                    return new BaseResponse { Msg = "数据有问题" };
+                }
+                model.HRPUpdateName = request.OperateName;
+                model.HRPUpdateTime = DateTime.Now;
+            }
+            else
+            {
+                model = new H_HoteRulePriceModel
+                {
+                    HRPDate = date,
+                    HRPDateInt = dateInt,
+                    HRPAddName = request.OperateName,
+                    HIId = request.HotelId,
+                    HRId = request.RoomId,
+                    HRRId = request.RuleId,
+                    HRPAddTime = DateTime.Now,
+                    HRPStatus = 1,
+                };
+            }
+
+            if (request.Type == 1)
+            {//价格
+                model.HRPSellPrice = request.SellPrice;
+                model.HRPContractPrice = request.ContractPrice;
+            }
+            if (request.Type == 2)
+            {// 库存
+                model.HRPCount = request.Count;
+                model.HRPRetainCount = request.RetainCount;
+            }
+            if (model.Id > 0)
+            {
+                return Update(model);
+            }
+            else
+            {
+                return Insert(model);
+            }
+        }
+
+
+        /// <summary>
+        /// 批评处理价格、库存
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BaseResponse SavePriceBatch(SaveHotelPriceModel request)
+        {
+            var dateList = new List<int>();
+            if (request.MonthList != null)
+            {
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //验证对于日期是否存在
             var db = new H_HoteRulePriceAccess();
             var model = new H_HoteRulePriceModel();
