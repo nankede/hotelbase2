@@ -70,7 +70,7 @@
                 success: function (data) {
                     if (data && data.length > 0) {
                         that.settings.calendarList = data;
-                        that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, ' ', ththatis.settings.container);
+                        that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, ' ', that.settings.container);
                     }
                 },
                 error: function () {
