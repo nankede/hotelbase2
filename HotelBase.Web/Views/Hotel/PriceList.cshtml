@@ -249,31 +249,50 @@
                     m = year * 100 + month
                 }
                 eLoading.show();
-                $.ajax({
-                    url: $scope.config.searchUrl + "?RuleId=" + $('#hfRuleId').val() + "&Month=" + m,
-                    type: 'get',
-                    dataType: "json",
-                    timeout: 20000,
-                    success: function (data) {
-                        var dd = new Date();
-                        $.sarCalenderInit({
-                            container: 'calendar_contain',//日历容器名称
-                            setPos: 'body',//插入的位置
-                            calendarType: 1,//日历类型 1：价格日历 2：库存日历
-                            calendarList: data,//日历数据实体
-                            defaultYear: dd.getFullYear(),//默认年份
-                            defaultMonth: dd.getMonth(),//默认月份
-                            callBack: function (selectDateInfo) {
-                                console.log(selectDateInfo);
-                            }
-                        });
-                        //canlendarMainFn.init('calendar_contain', 1, data);
-                    },
-                    error: function () {
-                        console.log("err-getList");
-                    },
-                    complete: function () {
-                        eLoading.hide();
+                //$.ajax({
+                //    url: $scope.config.searchUrl + "?RuleId=" + $('#hfRuleId').val() + "&Month=" + m,
+                //    type: 'get',
+                //    dataType: "json",
+                //    timeout: 20000,
+                //    success: function (data) {
+                //        var dd = new Date();
+                //        $.sarCalenderInit({
+                //            container: 'calendar_contain',//日历容器名称
+                //            setPos: 'body',//插入的位置
+                //            calendarType: 1,//日历类型 1：价格日历 2：库存日历
+                //            calendarList: data,//日历数据实体
+                //            defaultYear: dd.getFullYear(),//默认年份
+                //            defaultMonth: dd.getMonth(),//默认月份
+                //            callBack: function (selectDateInfo) {
+                //                console.log(selectDateInfo);
+                //            }
+                //        });
+                //        //canlendarMainFn.init('calendar_contain', 1, data);
+                //    },
+                //    error: function () {
+                //        console.log("err-getList");
+                //    },
+                //    complete: function () {
+                //        eLoading.hide();
+                //    }
+                //});
+                eLoading.hide();
+                var dd = new Date();
+                $.sarCalenderInit({
+                    container: 'calendar_contain',//日历容器名称
+                    setPos: 'body',//插入的位置
+                    calendarType: 1,//日历类型 1：价格日历 2：库存日历
+                    calendarList: [],//日历数据实体
+                    yearArray: [2018, 2019, 2020, 2021, 2022], //可选年份列表
+                    defaultYear: dd.getFullYear(),//默认年份
+                    defaultMonth: dd.getMonth(),//默认月份
+                    ajaxUrl: $scope.config.searchUrl,//日历异步URL
+                    ajaxOptions: {
+                        RuleId: $('#hfRuleId').val(),
+                        Month: dd.getMonth()
+                    },//日历参数
+                    callBack: function (selectDateInfo) {
+                        console.log(selectDateInfo);
                     }
                 });
             }
