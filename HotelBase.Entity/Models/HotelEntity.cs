@@ -128,12 +128,34 @@ namespace HotelBase.Entity.Models
 
     public class HotelPriceModel
     {
+        public int Type { get; set; }
         public int Id { get; set; }
         public string PriceDate { get; set; }
         public decimal SellPrice { get; set; }
         public decimal ContractPrice { get; set; }
         public int Count { get; set; }
         public int RetainCount { get; set; }
+
+    }
+
+    public class SaveHotelPriceModel : HotelPriceModel
+    {
+        /// <summary>
+        /// 酒店Id
+        /// </summary>
+        public int HotelId { get; set; }
+        /// <summary>
+        /// 房型
+        /// </summary>
+        public int RoomId { get; set; }
+        /// <summary>
+        /// 政策
+        /// </summary>
+        public int RuleId { get; set; }
+        /// <summary>
+        /// 操作人
+        /// </summary>
+        public string OperateName { get; set; }
     }
 
     #endregion

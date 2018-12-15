@@ -307,6 +307,18 @@ namespace HotelBase.Web.Controller.System
             var list = HotelPriceBll.GetList(request);
             return Json(list, JsonRequestBehavior.AllowGet);
         }
+
+        //
+        /// <summary>
+        /// 价格日历
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SavePriceDetail(SaveHotelPriceModel request)
+        {
+            request.OperateName = CurrtUser.Name;
+            var rtn = HotelPriceBll.SavePriceDetail(request);
+            return Json(rtn, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region 获取订单所需酒店详情

@@ -139,22 +139,22 @@
             </div>
             <div class="lay-form-item">
                 <div class="lay-form-item-caption ">
-                    <label>结算价</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="price.ContractPrice" />
-                </div>
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
                     <label>售卖价</label>
                 </div>
                 <div class="lay-form-item-control">
                     <input class="lay-input" ng-model="price.SellPrice" />
                 </div>
             </div>
+            <div class="lay-form-item">
+                <div class="lay-form-item-caption ">
+                    <label>结算价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-model="price.ContractPrice" />
+                </div>
+            </div>
             <div class="lay-form-foot">
-                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveDetail()">
             </div>
         </div>
     </div>
@@ -171,20 +171,21 @@
                     <h3 class="cont-title">{{show.PriceDate}}</h3>
                     <div class="lay-form-item">
                         <div class="lay-form-item-caption ">
-                            <label>结算价</label>
+                            <label>售卖价</label>
                         </div>
                         <div class="lay-form-item-control">
-                            <input class="lay-input" ng-bind="show.ContractPrice" />
+                            <input class="lay-input" ng-model="show.SellPrice" />
                         </div>
                     </div>
                     <div class="lay-form-item">
                         <div class="lay-form-item-caption ">
-                            <label>销售价</label>
+                            <label>结算价</label>
                         </div>
                         <div class="lay-form-item-control">
-                            <input class="lay-input" ng-bind="show.SellPrice" />
+                            <input class="lay-input" ng-model="show.ContractPrice" />
                         </div>
                     </div>
+
                 </div>
                 <div class="lay-form-foot">
                     <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveDetail()">
@@ -213,6 +214,7 @@
                 roomUrl: "/hotel/getroomdetail/",
                 ruleUrl: "/hotel/getroomruledetail/",
                 saveUrl: "/hotel/save/",
+                saveDetailUrl: "/hotel/savepricedetail/",
             };
             $scope.Id = $('#hfId').val();
             $(function () {
@@ -390,41 +392,56 @@
 
             //日历明细
             $scope.showDetail = function (data) {
+                console.log(data);
                 $scope.show = data;
+                console.log($scope.show);
+                $scope.$apply();
                 $("#dialogDetail").eDialog('show');
             }
 
-
-            //详情
-            $scope.getDetail = function () {
+            //保存详情
+            $scope.SaveDetail = function () {
+                if ($scope.show.ContractPrice <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '结算价不能为空！'
+                    });
+                }
+                if ($scope.show.SellPrice <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '销售价不能为空！'
+                    });
+                }
+                var baseModel = {
+                    Type: 1,
+                    HotelId: $('#hfHotelId').val(),
+                    RoomId: $('#hfRoomId').val(),
+                    RuleId: $('#hfRuleId').val()
+                };
+                Object.assign($scope.show, $scope.show, baseModel);
                 eLoading.show();
-                $.ajax({
-                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
-                    type: 'get',
-                    dataType: "json",
-                    timeout: 20000,
-                    success: function (data) {
-                        if (data != null && data.Id > 0) {
-                            $scope.m = data;
-                            if ($scope.m && $scope.m.HIProvinceId > 0) {
-                                $scope.getArea(1);
-                            }
-                        }
-                        else {
-                            eMsg({
-                                timer: 2000,
-                                text: '查询失败，请稍后重试！'
-                            });
-                        }
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-getDetail");
-                    },
-                    complete: function () {
-                        eLoading.hide();
+                Untitl.Post($scope.config.saveDetailUrl, $scope.show, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功，正在自动关闭页面！'
+                        });
+                        $("#dialogDetail").eDialog('hide');
+                        $scope.getList();
                     }
-                });
+                    else {
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
+                        });
+                    }
+                    $scope.$apply();
+                },
+                    function () {
+                        eLoading.hide();
+                    });
             }
 
             //保存
