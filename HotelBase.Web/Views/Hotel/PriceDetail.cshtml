@@ -255,10 +255,9 @@
                 //设置日期
                 $scope.price.MonthList = $('#ems_Month').eMultiSelect.getValue('#ems_Month');
                 $scope.price.WeekList = $('#ems_Week').eMultiSelect.getValue('#ems_Week');
-                $scope.price.DateList = [];
+                $scope.price.DateList = '';
                 if ($scope.price.Day1 > 0 && $scope.price.Day2 > 0) {
-                    $scope.price.DateList.push($scope.price.Day1);
-                    $scope.price.DateList.push($scope.price.Day2);
+                    $scope.price.DateList = `${$scope.price.Day1},${$scope.price.Day2},`;
                 }
 
                 var c = $scope.checkData();
@@ -304,14 +303,20 @@
                     });
                     return false;
                 }
-                if (!$scope.price.DateList || $scope.price.DateList.length <= 0) {
+                if (!$scope.price.MonthList || $scope.price.MonthList.length <= 0) {
                     eMsg({
                         timer: 2000,
-                        text: '未选择日期！'
+                        text: '未选择月份！'
                     });
                     return false;
                 }
-
+                if (!$scope.price.WeekList || $scope.price.WeekList.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '未选择星期！'
+                    });
+                    return false;
+                }
                 return true;
             }
         });

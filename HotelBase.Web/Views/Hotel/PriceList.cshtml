@@ -115,7 +115,7 @@
     <!-- 批量保存 -->
     <div class="lay-dialog" id="dialogBatch">
         <div class="lay-dialog-mask"></div>
-        <div class="lay-dialog-cont" style="width:460px;height:400px;">
+        <div class="lay-dialog-cont" style="width:520px;height:460px;">
             <div class="lay-dialog-hd">
                 <h3>修改价格</h3>
                 <button class="lay-dialog-btn-close"></button>
@@ -242,15 +242,15 @@
                 for (var i = 1; i < 32; i++) {
                     $scope.DateList.push({ Code: i, Name: i + "日" });
                 }
-                var week = ['', '日', '一', '二', '三', '四', '五', '六'];
-                for (var i = 1; i < 8; i++) {
+                var week = ['日', '一', '二', '三', '四', '五', '六'];
+                for (var i = 0; i < 7; i++) {
                     $scope.WeekList.push({ Code: i, Name: "周" + week[i] });
                 }
                 var d = new Date();
                 for (var i = 1; i < 13; i++) {
                     var year = d.getFullYear();
                     var month = d.getMonth() + 1;
-                    $scope.MonthList.push({ Code: year * 100 + month, Name: year + "-" + (month < 10 ? '0' + month : month) });
+                    $scope.MonthList.push({ Code: year + "-" + (month < 10 ? '0' + month : month), Name: year + "-" + (month < 10 ? '0' + month : month) });
                     if (month == 12) {
                         month = 0;
                         year += 1;
@@ -436,7 +436,7 @@
                             timer: 2000,
                             text: '操作成功！'
                         });
-                        $("#dialogDetail").eDialog('hide');
+                        setTimeout(function () { $("#dialogDetail").eDialog('hide'); }, 1000);
                         $scope.getList();
                     }
                     else {
@@ -464,22 +464,29 @@
                 $scope.price.WeekList = $('#ems_Week').eMultiSelect.getValue('#ems_Week');
                 $scope.price.DateList = [];
                 if ($scope.price.Day1 > 0 && $scope.price.Day2 > 0) {
-                    $scope.price.DateList.push($scope.price.Day1);
-                    $scope.price.DateList.push($scope.price.Day2);
+                    $scope.price.DateList = `${$scope.price.Day1},${$scope.price.Day2},`;
                 }
 
                 var c = $scope.checkData();
                 if (!c) return;
+                var baseModel = {
+                    Type: 1,
+                    HotelId: $('#hfHotelId').val(),
+                    RoomId: $('#hfRoomId').val(),
+                    RuleId: $('#hfRuleId').val()
+                };
+                Object.assign($scope.price, $scope.price, baseModel);
+
                 eLoading.show();
-                Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
+                Untitl.Post($scope.config.saveUrl, $scope.price, function (data) {
                     if (data != null && data.IsSuccess > 0) {
-                        $scope.m.Id = data.AddId;
                         eMsg({
                             timer: 2000,
                             text: '操作成功，正在自动关闭页面！'
                         });
                         //关闭页面
-                        setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                        setTimeout(function () { $("#dialogBatch").eDialog('hide'); }, 1000);
+                        $scope.getList();
                     }
                     else {
                         var msg = data ? data.Msg : "";
@@ -511,10 +518,17 @@
                     });
                     return false;
                 }
-                if (!$scope.price.DateList || $scope.price.DateList.length <= 0) {
+                if (!$scope.price.MonthList || $scope.price.MonthList.length <= 0) {
                     eMsg({
                         timer: 2000,
-                        text: '未选择日期！'
+                        text: '未选择月份！'
+                    });
+                    return false;
+                }
+                if (!$scope.price.WeekList || $scope.price.WeekList.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '未选择星期！'
                     });
                     return false;
                 }

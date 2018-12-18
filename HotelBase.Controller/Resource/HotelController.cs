@@ -326,7 +326,7 @@ namespace HotelBase.Web.Controller.System
         public JsonResult SavePriceBatch(SaveHotelPriceModel request)
         {
             request.OperateName = CurrtUser.Name;
-            var rtn = HotelPriceBll.SavePriceDetail(request);
+            var rtn = HotelPriceBll.SavePriceBatch(request);
             return Json(rtn, JsonRequestBehavior.AllowGet);
         }
 
