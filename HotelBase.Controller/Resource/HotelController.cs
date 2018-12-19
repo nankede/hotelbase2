@@ -279,8 +279,11 @@ namespace HotelBase.Web.Controller.System
         /// 库存日历
         /// </summary>
         /// <returns></returns>
-        public ActionResult StoreList()
+        public ActionResult StoreList(int ruleId, int hotelId, int roomId)
         {
+            ViewBag.RuleId = ruleId;
+            ViewBag.RoomId = roomId;
+            ViewBag.HotelId = hotelId;
             return View();
         }
 

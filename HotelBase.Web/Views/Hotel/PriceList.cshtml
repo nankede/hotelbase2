@@ -1,115 +1,25 @@
-﻿<link href="~/Content/css/sarCalendar.css" rel="stylesheet" />
+﻿@section head{
+    <link href="~/Content/css/sarCalendar.css" rel="stylesheet" />
+    <style>
+        .tip-title {
+            font-size: 14px;
+            margin: 4px;
+            padding: 4px;
+            display: inline-block;
+        }
+    </style>
+}
 <div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
-    <div>
-        <h3 class="cont-title">房型政策信息</h3>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption">
-                    <label>房型名称</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="room.HRName" readonly />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>床型</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRBedType,BedTypeList)}}{{DicValueInit(room.HRBedSize,BedSizeList)}}" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>是否有窗</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRWindowsType,WindowsTypeList)}}" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>房间大小</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="room.HRRoomSIze" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>可住人数</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRPersonCount,PersonCountList)}}" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>所在楼层</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="room.HRFloor" />
-                </div>
-            </div>
-        </div>
-
-        <div class="lay-row">
-            <div class="lay-form-item  lay-col-6">
-                <div class="lay-form-item-caption">
-                    <label>政策名称</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input long-input" ng-model="rule.HRRName" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item ">
-                <div class="lay-form-item-caption  lay-col-4">
-                    <label>供应商来源</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="rule.HRRSourceName" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item  lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>供应商名称</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="rule.HRRSourceName" readonly />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item  lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>早餐政策</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="rule.HRRBreakfastRuleName" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item  lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>取消政策</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="rule.HRRCancelRuleName" readonly />
-                </div>
-            </div>
-        </div>
-        <div class="lay-form-foot">
+    <div style="width:630px;margin:0 auto;">
+        <label style="font-size: 14px;">房型政策：</label><span class="tip-title" ng-bind="room.HRName"></span><span class="tip-title" ng-bind="rule.HRRName"></span><br />
+        <label style="font-size: 14px;">供应商：</label><span class="tip-title" ng-bind="rule.HRRSourceName"></span>
+        <div style="float:right;margin-right:12px;">
             <input type="button" class="lay-btn lay-btn-primary" value="批量处理" ng-click="batcList()">
         </div>
     </div>
     <div class="lay-row" style="margin-top:20px;">
         <!-- 日历 start -->
-        <div id="calendar_contain" class="calendar_contain"></div>
+        <div id="calendar_contain" style="width:630px;margin:0 auto;" class="calendar_contain"></div>
         <!-- 日历 end -->
     </div>
     <!-- 批量保存 -->
@@ -415,12 +325,14 @@
                         timer: 2000,
                         text: '结算价不能为空！'
                     });
+                    return;
                 }
                 if ($scope.show.SellPrice <= 0) {
                     eMsg({
                         timer: 2000,
                         text: '销售价不能为空！'
                     });
+                    return;
                 }
                 var baseModel = {
                     Type: 1,

@@ -261,26 +261,31 @@ namespace HotelBase.Service
             {
                 return new BaseResponse { IsSuccess = 0, Msg = "日期数据异常" };
             }
-
+            var newDateList = new List<DateTime>();
             //星期
-            if (!string.IsNullOrEmpty(request.WeekList))
+            if (!string.IsNullOrEmpty(request.WeekList) && request.WeekList != "-1")
             {
                 var w1 = request.WeekList.Split(',').Select(x => ConvertHelper.ToInt32(x, -1)).ToList();
-                for (var i = 0; i < dateList.Count; i++)
+                var c = dateList.Count;
+                for (var i = 0; i < c; i++)
                 {
                     var d = dateList[i];
-                    if (!w1.Contains(d.DayOfWeek.GetHashCode()))
+                    if (w1.Contains(d.DayOfWeek.GetHashCode()))
                     {
-                        dateList.Remove(d);
+                        newDateList.Add(d);
                     }
                 }
             }
-            if (dateList == null || dateList.Count <= 0)
+            else
+            {
+                newDateList = dateList;
+            }
+            if (newDateList == null || newDateList.Count <= 0)
             {
                 return new BaseResponse { IsSuccess = 0, Msg = "日期数据异常" };
             }
             var list = new List<BaseResponse>();
-            dateList.ForEach(d =>
+            newDateList.ForEach(d =>
             {
                 var sigleRequest = new SaveHotelPriceModel
                 {

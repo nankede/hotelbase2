@@ -1,164 +1,126 @@
-﻿<link href="~/Content/css/sarCalendar.css" rel="stylesheet" />
-<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
-    <div>
-        <h3 class="cont-title">房型政策信息</h3>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption">
-                    <label>房型名称</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="room.HRName" readonly />
-                </div>
+﻿@section head{
+    <link href="~/Content/css/sarCalendar.css" rel="stylesheet" />
+    <style>
+        .div_content {
+            width: 630px;
+            margin: 0 auto;
+        }
+        .tip-title {
+            font-size: 14px;
+            margin: 4px;
+            padding: 4px;
+            display: inline-block;
+        }
+    </style>
+}
+    <div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+        <div class="div_content">
+            <label style="font-size: 14px;">房型政策：</label><span class="tip-title" ng-bind="room.HRName"></span><span class="tip-title" ng-bind="rule.HRRName"></span><br />
+            <label style="font-size: 14px;">供应商：</label><span class="tip-title" ng-bind="rule.HRRSourceName"></span>
+            <div style="float:right;margin-right:12px;">
+                <input type="button" class="lay-btn lay-btn-primary" value="批量处理" ng-click="batcList()">
             </div>
         </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>床型</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRBedType,BedTypeList)}}{{DicValueInit(room.HRBedSize,BedSizeList)}}" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>是否有窗</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRWindowsType,WindowsTypeList)}}" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>房间大小</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="room.HRRoomSIze" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>可住人数</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-bind-template="{{DicValueInit(room.HRPersonCount,PersonCountList)}}" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>所在楼层</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="room.HRFloor" />
-                </div>
-            </div>
-        </div>
-
-        <div class="lay-row">
-            <div class="lay-form-item  lay-col-6">
-                <div class="lay-form-item-caption">
-                    <label>政策名称</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input long-input" ng-model="rule.HRRName" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item ">
-                <div class="lay-form-item-caption  lay-col-4">
-                    <label>供应商来源</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="rule.HRRSourceName" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item  lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>供应商名称</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="rule.HRRSourceName" readonly />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item  lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>早餐政策</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="rule.HRRBreakfastRuleName" readonly />
-                </div>
-            </div>
-            <div class="lay-form-item  lay-col-4">
-                <div class="lay-form-item-caption ">
-                    <label>取消政策</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="rule.HRRCancelRuleName" readonly />
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="lay-row">
-        <div class="lay-col-8">
+        <div class="lay-row" style="margin-top:20px;">
             <!-- 日历 start -->
-            <div id="calendar_contain" class="calendar_contain"></div>
+            <div id="calendar_contain" class="calendar_contain div_content"></div>
+            <!-- 日历 end -->
         </div>
-        <div class="lay-col-4">
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>选择月份</label>
+        <!-- 批量保存 -->
+        <div class="lay-dialog" id="dialogBatch">
+            <div class="lay-dialog-mask"></div>
+            <div class="lay-dialog-cont" style="width:520px;height:460px;">
+                <div class="lay-dialog-hd">
+                    <h3>批量修改库存</h3>
+                    <button class="lay-dialog-btn-close"></button>
                 </div>
-                <div class="lay-form-item-control">
-                    <div id="ems_Month"></div>
+                <div class="lay-dialog-bd">
+                    <div class="lay-form-item">
+                        <div class="lay-form-item-caption ">
+                            <label>选择月份</label>
+                        </div>
+                        <div class="lay-form-item-control">
+                            <div id="ems_Month"></div>
+                            @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Month" ng-init="price.Month=0" ng-options="item.Code as item. Name for item in MonthList"></select>*@
+                        </div>
+                    </div>
+                    <div class="lay-form-item">
+                        <div class="lay-form-item-caption ">
+                            <label>选择时间</label>
+                        </div>
+                        <div class="lay-form-item-control">
+                            <div id="ems_Week"></div>
+                        </div>
+                    </div>
+                    <div class="lay-form-item">
+                        <div class="lay-form-item-caption ">
+                            <label>选择日期</label>
+                        </div>
+                        <div class="lay-form-item-control">
+                            <select class="lay-select select-area" placeholder="请选择开始日期" ng-model="store.Day1" ng-init="price.Day1=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                            <select class="lay-select select-area" placeholder="请选择结束日期" ng-model="store.Day2" ng-init="price.Day2=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                        </div>
+                    </div>
+                    <div class="lay-form-item">
+                        <div class="lay-form-item-caption ">
+                            <label>库存数量</label>
+                        </div>
+                        <div class="lay-form-item-control">
+                            <input class="lay-input" ng-model="store.Count" />
+                        </div>
+                    </div>
+                    <div class="lay-form-item">
+                        <div class="lay-form-item-caption ">
+                            <label>保留数量</label>
+                        </div>
+                        <div class="lay-form-item-control">
+                            <input class="lay-input" ng-model="store.RetainCount" />
+                        </div>
+                    </div>
+                    <div class="lay-form-foot">
+                        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="saveBatch()">
+                    </div>
                 </div>
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>选择时间</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <div id="ems_Week"></div>
-                </div>
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>选择日期</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择开始日期" ng-model="store.Day1" ng-init="store.Day1=0" ng-options="item.Code as item. Name for item in DateList"></select>
-                    <select class="lay-select select-area" placeholder="请选择结束日期" ng-model="store.Day2" ng-init="store.Day2=0" ng-options="item.Code as item. Name for item in DateList"></select>
-                </div>
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>库存数量</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="store.Count" />
-                </div>
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>保留数量</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="store.RetainCount" />
-                </div>
-            </div>
-            <div class="lay-form-foot">
-                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
             </div>
         </div>
-    </div>
 
-    <!-- 日历 end -->
-</div>
+        <!-- 单日期保存 -->
+        <div class="lay-dialog" id="dialogDetail">
+            <div class="lay-dialog-mask"></div>
+            <div class="lay-dialog-cont" style="width:460px;height:400px;">
+                <div class="lay-dialog-hd">
+                    <h3>批量修改库存</h3>
+                    <button class="lay-dialog-btn-close"></button>
+                </div>
+                <div class="lay-dialog-bd">
+                    <div>
+                        <h3 class="cont-title">{{show.PriceDate}}</h3>
+                        <div class="lay-form-item">
+                            <div class="lay-form-item-caption ">
+                                <label>库存数量</label>
+                            </div>
+                            <div class="lay-form-item-control">
+                                <input class="lay-input" ng-model="show.Count" />
+                            </div>
+                        </div>
+                        <div class="lay-form-item">
+                            <div class="lay-form-item-caption ">
+                                <label>保留数量</label>
+                            </div>
+                            <div class="lay-form-item-control">
+                                <input class="lay-input" ng-model="show.RetainCount" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="lay-form-foot">
+                        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveDetail()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 <input id="hfRuleId" type="hidden" value="@ViewBag.RuleId" />
 <input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
 <input id="hfRoomId" type="hidden" value="@ViewBag.RoomId" />
@@ -176,7 +138,8 @@
                 searchUrl: "/hotel/getpricelist/",
                 roomUrl: "/hotel/getroomdetail/",
                 ruleUrl: "/hotel/getroomruledetail/",
-                saveUrl: "/hotel/save/",
+                saveUrl: "/hotel/savepricebatch/",
+                saveDetailUrl: "/hotel/savepricedetail/",
             };
             $scope.Id = $('#hfId').val();
             $(function () {
@@ -193,15 +156,15 @@
                 for (var i = 1; i < 32; i++) {
                     $scope.DateList.push({ Code: i, Name: i + "日" });
                 }
-                var week = ['', '日', '一', '二', '三', '四', '五', '六'];
-                for (var i = 1; i < 8; i++) {
+                var week = ['日', '一', '二', '三', '四', '五', '六'];
+                for (var i = 0; i < 7; i++) {
                     $scope.WeekList.push({ Code: i, Name: "周" + week[i] });
                 }
                 var d = new Date();
                 for (var i = 1; i < 13; i++) {
                     var year = d.getFullYear();
                     var month = d.getMonth() + 1;
-                    $scope.MonthList.push({ Code: year * 100 + month, Name: year + "-" + (month < 10 ? '0' + month : month) });
+                    $scope.MonthList.push({ Code: year + "-" + (month < 10 ? '0' + month : month), Name: year + "-" + (month < 10 ? '0' + month : month) });
                     if (month == 12) {
                         month = 0;
                         year += 1;
@@ -246,21 +209,51 @@
                     var month = d.getMonth() + 1;
                     m = year * 100 + month
                 }
-
                 eLoading.show();
-                $.ajax({
-                    url: $scope.config.searchUrl + "?RuleId=" + $('#hfRuleId').val() + "&Month=" + m,
-                    type: 'get',
-                    dataType: "json",
-                    timeout: 20000,
-                    success: function (data) {
-                        canlendarMainFn.init('calendar_contain', 2, data);
-                    },
-                    error: function () {
-                        console.log("err-getList");
-                    },
-                    complete: function () {
-                        eLoading.hide();
+                //$.ajax({
+                //    url: $scope.config.searchUrl + "?RuleId=" + $('#hfRuleId').val() + "&Month=" + m,
+                //    type: 'get',
+                //    dataType: "json",
+                //    timeout: 20000,
+                //    success: function (data) {
+                //        var dd = new Date();
+                //        $.sarCalenderInit({
+                //            container: 'calendar_contain',//日历容器名称
+                //            setPos: 'body',//插入的位置
+                //            calendarType: 1,//日历类型 1：价格日历 2：库存日历
+                //            calendarList: data,//日历数据实体
+                //            defaultYear: dd.getFullYear(),//默认年份
+                //            defaultMonth: dd.getMonth(),//默认月份
+                //            callBack: function (selectDateInfo) {
+                //                console.log(selectDateInfo);
+                //            }
+                //        });
+                //        //canlendarMainFn.init('calendar_contain', 1, data);
+                //    },
+                //    error: function () {
+                //        console.log("err-getList");
+                //    },
+                //    complete: function () {
+                //        eLoading.hide();
+                //    }
+                //});
+                eLoading.hide();
+                var dd = new Date();
+                $.sarCalenderInit({
+                    container: 'calendar_contain',//日历容器名称
+                    setPos: 'body',//插入的位置
+                    calendarType: 2,//日历类型 1：价格日历 2：库存日历
+                    calendarList: [],//日历数据实体
+                    yearArray: [2018, 2019, 2020, 2021, 2022], //可选年份列表
+                    defaultYear: dd.getFullYear(),//默认年份
+                    defaultMonth: dd.getMonth(),//默认月份
+                    ajaxUrl: $scope.config.searchUrl,//日历异步URL
+                    ajaxOptions: {
+                        RuleId: $('#hfRuleId').val(),
+                        Month: dd.getMonth()
+                    },//日历参数
+                    callBack: function (selectDateInfo) {
+                        $scope.showDetail(selectDateInfo);
                     }
                 });
             }
@@ -322,63 +315,94 @@
                 });
             }
 
-
-
-            //详情
-            $scope.getDetail = function () {
-                eLoading.show();
-                $.ajax({
-                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
-                    type: 'get',
-                    dataType: "json",
-                    timeout: 20000,
-                    success: function (data) {
-                        if (data != null && data.Id > 0) {
-                            $scope.m = data;
-                            if ($scope.m && $scope.m.HIProvinceId > 0) {
-                                $scope.getArea(1);
-                            }
-                        }
-                        else {
-                            eMsg({
-                                timer: 2000,
-                                text: '查询失败，请稍后重试！'
-                            });
-                        }
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-getDetail");
-                    },
-                    complete: function () {
-                        eLoading.hide();
-                    }
-                });
+            //日历明细
+            $scope.showDetail = function (data) {
+                $scope.show = data;
+                $scope.$apply();
+                $("#dialogDetail").eDialog('show');
             }
 
+            //保存详情
+            $scope.SaveDetail = function () {
+                if ($scope.show.Count <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '库存数量不能为空！'
+                    });
+                    return;
+                }
+                if ($scope.show.Count < $scope.show.RetainCount) {
+                    eMsg({
+                        timer: 2000,
+                        text: '库存数量不能小于保留数量！'
+                    });
+                    return;
+                }
+                var baseModel = {
+                    Type: 2,
+                    HotelId: $('#hfHotelId').val(),
+                    RoomId: $('#hfRoomId').val(),
+                    RuleId: $('#hfRuleId').val()
+                };
+                Object.assign($scope.show, $scope.show, baseModel);
+                eLoading.show();
+                Untitl.Post($scope.config.saveDetailUrl, $scope.show, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功！'
+                        });
+                        setTimeout(function () { $("#dialogDetail").eDialog('hide'); }, 1000);
+                        $scope.getList();
+                    }
+                    else {
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
+                        });
+                    }
+                    $scope.$apply();
+                },
+                    function () {
+                        eLoading.hide();
+                    });
+            }
+
+            //batcList 批量处理
+            $scope.batcList = function () {
+                $("#dialogBatch").eDialog('show');
+            }
             //保存
-            $scope.Save = function () {
+            $scope.saveBatch = function () {
                 //设置日期
                 $scope.store.MonthList = $('#ems_Month').eMultiSelect.getValue('#ems_Month');
                 $scope.store.WeekList = $('#ems_Week').eMultiSelect.getValue('#ems_Week');
                 $scope.store.DateList = [];
                 if ($scope.store.Day1 > 0 && $scope.store.Day2 > 0) {
-                    $scope.store.DateList.push($scope.store.Day1);
-                    $scope.store.DateList.push($scope.store.Day2);
+                    $scope.store.DateList = `${$scope.price.Day1},${$scope.store.Day2},`;
                 }
 
                 var c = $scope.checkData();
                 if (!c) return;
+                var baseModel = {
+                    Type: 2,
+                    HotelId: $('#hfHotelId').val(),
+                    RoomId: $('#hfRoomId').val(),
+                    RuleId: $('#hfRuleId').val()
+                };
+                Object.assign($scope.store, $scope.store, baseModel);
+
                 eLoading.show();
-                Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
+                Untitl.Post($scope.config.saveUrl, $scope.store, function (data) {
                     if (data != null && data.IsSuccess > 0) {
-                        $scope.m.Id = data.AddId;
                         eMsg({
                             timer: 2000,
                             text: '操作成功，正在自动关闭页面！'
                         });
                         //关闭页面
-                        setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                        setTimeout(function () { $("#dialogBatch").eDialog('hide'); }, 1000);
+                        $scope.getList();
                     }
                     else {
                         var msg = data ? data.Msg : "";
@@ -399,15 +423,27 @@
                 if ($scope.store.Count.length <= 0 || $scope.store.Count <= 0) {
                     eMsg({
                         timer: 2000,
-                        text: '结算价不能为空！'
+                        text: '库存数量不能为空！'
                     });
                     return false;
                 }
-
-                if (!$scope.store.DateList || $scope.store.DateList.length <= 0) {
+                if ($scope.store.Count < $scope.store.RetainCount) {
                     eMsg({
                         timer: 2000,
-                        text: '未选择日期！'
+                        text: '库存数量不能小于保留数量！'
+                    });
+                }
+                if (!$scope.store.MonthList || $scope.store.MonthList.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '未选择月份！'
+                    });
+                    return false;
+                }
+                if (!$scope.store.WeekList || $scope.store.WeekList.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '未选择星期！'
                     });
                     return false;
                 }
