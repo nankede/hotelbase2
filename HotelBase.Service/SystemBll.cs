@@ -135,10 +135,13 @@ namespace HotelBase.Service
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static List<BaseDic> GetDicListByPCode(int pCode)
+        public static List<BaseDic> GetDicListByPCode(int pCode, int isDefault)
         {
             var list = new List<BaseDic>();
-            list.Add(new BaseDic { Code = 0, Name = "请选择" });
+            if (isDefault == 1)
+            {
+                list.Add(new BaseDic { Code = 0, Name = "请选择" });
+            }
             var pId = GetDicModel(0, pCode)?.Id ?? 0;
             if (pId > 0)
             {

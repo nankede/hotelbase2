@@ -83,6 +83,7 @@ namespace HotelBase.Web.Controller.System
         public JsonResult GetSupplierList(int sourceId, string name)
         {
             if (string.IsNullOrEmpty(name)) return Json("", JsonRequestBehavior.AllowGet);
+            name = HttpUtility.UrlDecode(name);
             var list = SupplierBll.GetSupplierList(sourceId, name);
             var rtn = list?.Select(x => new { Code = x.Id, Name = x.SName });
             return Json(rtn, JsonRequestBehavior.AllowGet);

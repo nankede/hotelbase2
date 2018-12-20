@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Component.Access;
+using Dapper;
 using HotelBase.Entity;
 using HotelBase.Entity.Models;
 using HotelBase.Entity.Tables;
@@ -13,8 +14,12 @@ namespace HotelBase.DataAccess.Resource
     /// <summary>
     /// 酒店查询
     /// </summary>
-    public static class H_HotelInfoAccess
+    public class H_HotelInfoAccess : BaseAccess<H_HotelInfoModel>
     {
+        public H_HotelInfoAccess() : base(MysqlHelper.Db_HotelBase)
+        {
+        }
+
         /// <summary>
         /// 酒店查询
         /// </summary>
@@ -61,7 +66,7 @@ namespace HotelBase.DataAccess.Resource
             }
             if (!string.IsNullOrEmpty(request.Name))
             {
-                sqlWhere.Append(" AND SName Like @Name ");
+                sqlWhere.Append(" AND HIName Like @Name ");
                 para.Add("@Name", $"%{request.Name}%");
             }
 
@@ -101,95 +106,6 @@ namespace HotelBase.DataAccess.Resource
             para.Add("@HIUpdateTime", DateTime.Now);
             var c = MysqlHelper.Update(sql.ToString(), para);
             return c;
-        }
-
-
-        /// <summary>
-        /// 修改酒店
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Update(H_HotelInfoModel model)
-        {
-            var sql = new StringBuilder();
-
-            sql.Append(@" UPDATE `h_hotelinfo` SET
-             `HIName` =@HIName, `HIProvinceId`=@HIProvinceId, `HIProvince`=@HIProvince, `HICityId`=@HICityId, `HICity`=@HICity
-            , `HICountyId`=@HICountyId, `HICounty`=@HICounty, `HIAddress`=@HIAddress, `HIShoppingAreaId`=@HIShoppingAreaId
-            , `HIShoppingArea`=@HIShoppingArea, `HIFacilities`=@HIFacilities, `HICheckIn`=@HICheckIn, `HICheckOut`=@HICheckOut
-            , `HIChildRemark`=@HIChildRemark, `HIPetRemark`=@HIPetRemark, `HIHotelIntroduction` =@HIHotelIntroduction
-            , `HIUpdateName`=@HIUpdateName, `HIUpdateTime`=@HIUpdateTime ,`HILinkPhone`=@HILinkPhone ");
-            sql.Append(" WHERE  `Id` =@Id   Limit 1;  ");
-
-            var para = new DynamicParameters();
-            para.Add("@Id", model.Id);
-            para.Add("@HIName", model.HIName ?? string.Empty);
-            para.Add("@HIProvinceId", model.HIProvinceId);
-            para.Add("@HIProvince", model.HIProvince ?? string.Empty);
-            para.Add("@HICityId", model.HICityId);
-            para.Add("@HICity", model.HICity ?? string.Empty);
-            para.Add("@HICountyId", model.HICountyId);
-            para.Add("@HICounty", model.HICounty ?? string.Empty);
-            para.Add("@HIAddress", model.HIAddress ?? string.Empty);
-            para.Add("@HIShoppingAreaId", model.HIShoppingAreaId);
-            para.Add("@HIShoppingArea", model.HIShoppingArea ?? string.Empty);
-            para.Add("@HIFacilities", model.HIFacilities ?? string.Empty);
-            para.Add("@HICheckIn", model.HICheckIn);
-            para.Add("@HICheckOut", model.HICheckOut);
-            para.Add("@HIChildRemark", model.HIChildRemark ?? string.Empty);
-            para.Add("@HIPetRemark", model.HIPetRemark ?? string.Empty);
-            para.Add("@HIHotelIntroduction", model.HIHotelIntroduction ?? string.Empty);
-            para.Add("@HIUpdateName", model.HIUpdateName ?? string.Empty);
-            para.Add("@HIUpdateTime", model.HIUpdateTime);
-            para.Add("@HILinkPhone", model.HILinkPhone);
-            var c = MysqlHelper.Update(sql.ToString(), para);
-            return c;
-        }
-
-        /// <summary>
-        /// 新增酒店
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Insert(H_HotelInfoModel model)
-        {
-            var sql = new StringBuilder();
-
-            sql.Append(@" INSERT INTO `h_hotelinfo` 
-            ( `HIName`, `HIProvinceId`, `HIProvince`, `HICityId`, `HICity`
-            , `HICountyId`, `HICounty`, `HIAddress`, `HIShoppingAreaId`
-            , `HIShoppingArea`, `HIFacilities`, `HICheckIn`, `HICheckOut`
-            , `HIChildRemark`, `HIPetRemark`, `HIHotelIntroduction`
-            , `HIIsValid`, `HIAddName`,`HILinkPhone`
-            ) 
-              VALUES  
-            (  @HIName,@HIProvinceId,@HIProvince,@HICityId,@HICity
-            ,@HICountyId,@HICounty,@HIAddress,@HIShoppingAreaId
-            ,@HIShoppingArea,@HIFacilities,@HICheckIn,@HICheckOut
-            ,@HIChildRemark,@HIPetRemark,@HIHotelIntroduction
-            ,1,@HIAddName,@HILinkPhone)   ");
-
-            var para = new DynamicParameters();
-            para.Add("@HIName", model.HIName ?? string.Empty);
-            para.Add("@HIProvinceId", model.HIProvinceId);
-            para.Add("@HIProvince", model.HIProvince ?? string.Empty);
-            para.Add("@HICityId", model.HICityId);
-            para.Add("@HICity", model.HICity ?? string.Empty);
-            para.Add("@HICountyId", model.HICountyId);
-            para.Add("@HICounty", model.HICounty ?? string.Empty);
-            para.Add("@HIAddress", model.HIAddress ?? string.Empty);
-            para.Add("@HIShoppingAreaId", model.HIShoppingAreaId);
-            para.Add("@HIShoppingArea", model.HIShoppingArea ?? string.Empty);
-            para.Add("@HIFacilities", model.HIFacilities ?? string.Empty);
-            para.Add("@HICheckIn", model.HICheckIn);
-            para.Add("@HICheckOut", model.HICheckOut);
-            para.Add("@HIChildRemark", model.HIChildRemark ?? string.Empty);
-            para.Add("@HIPetRemark", model.HIPetRemark ?? string.Empty);
-            para.Add("@HIHotelIntroduction", model.HIHotelIntroduction ?? string.Empty);
-            para.Add("@HIAddName", model.HIAddName ?? string.Empty);
-            para.Add("@HILinkPhone", model.HILinkPhone ?? string.Empty);
-            var id = MysqlHelper.Insert(sql.ToString(), para);
-            return id;
         }
 
         /// <summary>

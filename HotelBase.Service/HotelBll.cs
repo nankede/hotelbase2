@@ -1,4 +1,5 @@
-﻿using HotelBase.DataAccess.Resource;
+﻿using HotelBase.Common;
+using HotelBase.DataAccess.Resource;
 using HotelBase.DataAccess.System;
 using HotelBase.Entity;
 using HotelBase.Entity.Models;
@@ -73,7 +74,7 @@ namespace HotelBase.Service
                 res.Msg = "酒店名称不能为空";
                 return res;
             }
-            var id = H_HotelInfoAccess.Insert(model);
+            var id = new H_HotelInfoAccess().Add(model);
             if (id <= 0)
             {
                 res.Msg = "新增失败";
@@ -108,11 +109,14 @@ namespace HotelBase.Service
                 res.Msg = "酒店名称不能为空";
                 return res;
             }
-            var i = H_HotelInfoAccess.Update(model);
+
+            model = CommonHelper.CheckPropertiesNull(model);
+
+            var i = new H_HotelInfoAccess().Update(model);
             res = new BaseResponse
             {
-                IsSuccess = i > 0 ? 1 : 0,
-                Msg = i > 0 ? string.Empty : "更新失败",
+                IsSuccess = i ? 1 : 0,
+                Msg = i ? string.Empty : "更新失败",
             };
             return res;
         }

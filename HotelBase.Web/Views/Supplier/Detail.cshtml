@@ -82,6 +82,14 @@
                     <input class="lay-input long-input" id="txtDate" ng-model="CooperationDate" />
                 </div>
             </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>产品经理</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" ng-model="m.SPMName" />
+                </div>
+            </div>
         </div>
     </div>
     <div>
@@ -322,7 +330,7 @@
                     });
                     return false;
                 }
-                if ($scope.m.SLinkPhone.length > 0 && !mobileReg.test($scope.m.SLinkPhone) && !telReg.test($scope.m.SLinkPhone)) {
+                if ($scope.m.SLinkPhone && $scope.m.SLinkPhone.length > 0 && !mobileReg.test($scope.m.SLinkPhone) && !telReg.test($scope.m.SLinkPhone)) {
                     eMsg({
                         timer: 2000,
                         text: '请输入正确的联系电话！'

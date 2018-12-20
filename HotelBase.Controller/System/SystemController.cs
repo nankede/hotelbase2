@@ -225,9 +225,9 @@ namespace HotelBase.Web.Controller.System
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public JsonResult GetDicListByPCode(int pCode)
+        public JsonResult GetDicListByPCode(int pCode, int isDefault = 1)
         {
-            var response = SystemBll.GetDicListByPCode(pCode);
+            var response = SystemBll.GetDicListByPCode(pCode, isDefault);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -244,6 +244,22 @@ namespace HotelBase.Web.Controller.System
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 查询区域列表
+        /// pid =1 省份
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetAreaList2(int pId)
+        {
+            var list = SystemBll.GetAreaList(pId);
+            var rtnList = list?.Select(x => new BaseDic
+            {
+                Code = x.Id,
+                Name = x.Name
+            })?.ToList();
+            return Json(rtnList, JsonRequestBehavior.AllowGet);
+        }
+        //
         #endregion
     }
 }

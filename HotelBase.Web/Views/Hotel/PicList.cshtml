@@ -260,7 +260,7 @@
                     });
                     return false;
                 }
-                if ($scope.m.HILinkPhone.length > 0 && !mobileReg.test($scope.m.HILinkPhone) && !telReg.test($scope.m.HILinkPhone)) {
+                if ($scope.m.HILinkPhone && $scope.m.HILinkPhone.length > 0 && !mobileReg.test($scope.m.HILinkPhone) && !telReg.test($scope.m.HILinkPhone)) {
                     eMsg({
                         timer: 2000,
                         text: '请输入正确的联系电话！'

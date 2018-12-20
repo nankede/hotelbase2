@@ -74,10 +74,11 @@ var Untitl = {
             }
         });
     },
+
     //获取字典
-    GetDicList: function (pId, succFun) {
+    GetDicList2: function (pId, isDefault, succFun, failFun) {
         $.ajax({
-            url: '/system/getdiclistbypcode/?pCode=' + pId,
+            url: '/system/getdiclistbypcode/?pCode=' + pId + '&isDefault=' + isDefault,
             type: 'get',
             dataType: "json",
             timeout: 20000,
@@ -96,6 +97,11 @@ var Untitl = {
                 eLoading.hide();
             }
         });
-    }
+    },
+
+    //获取字典
+    GetDicList: function (pId, succFun) {
+        Untitl.GetDicList2(pId, 1, succFun);
+    },
 
 };

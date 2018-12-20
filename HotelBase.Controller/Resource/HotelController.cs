@@ -89,7 +89,6 @@ namespace HotelBase.Web.Controller.System
 
         #endregion
 
-
         #region 图片
         /// <summary>
         /// 图片

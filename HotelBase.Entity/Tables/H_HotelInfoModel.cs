@@ -217,13 +217,13 @@ namespace HotelBase.Entity.Tables
         /// <summary>
         /// 数据库字段：HICheckIn
         /// </summary>
-        private int _hICheckIn = 0;
+        private string _hICheckIn = string.Empty;
 
         /// <summary>
         /// 入住时间
         /// </summary>
         [Column("HICheckIn")]
-        public int HICheckIn
+        public string HICheckIn
         {
             get { return _hICheckIn; }
             set { _hICheckIn = value; }
@@ -232,13 +232,13 @@ namespace HotelBase.Entity.Tables
         /// <summary>
         /// 数据库字段：HICheckOut
         /// </summary>
-        private int _hICheckOut = 0;
+        private string _hICheckOut = string.Empty;
 
         /// <summary>
         /// 离店时间
         /// </summary>
         [Column("HICheckOut")]
-        public int HICheckOut
+        public string HICheckOut
         {
             get { return _hICheckOut; }
             set { _hICheckOut = value; }
