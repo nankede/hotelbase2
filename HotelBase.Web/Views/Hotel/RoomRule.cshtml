@@ -46,7 +46,8 @@
                     <label>取消政策</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择取消政策" ng-model="m.HRRCancelRule" ng-init="m.HRRCancelRule=0" ng-options="item.Code as item. Name for item in CancelList"></select>
+                    <select class="lay-select select-area" placeholder="请选择取消政策" ng-model="m.HRRCancelRule" ng-init="m.HRRCancelRule=0" ng-options="item.Code as item. Name for item in CancelList" ></select>
+                    <input class="lay-input  long-input" ng-show="m.HRRCancelRule==30202" ng-model="m.HRRCancelRuleNameExtend" />
                 </div>
             </div>
         </div>
@@ -93,6 +94,7 @@
                         HRId: $scope.RoomId,
                         HRRBreakfastRuleName: '',
                         HRRCancelRuleName: '',
+                        HRRCancelRuleNameExtend: '',
                         HRRSourceName: '',
                         HRRSupplierName: ''
                     };
@@ -199,6 +201,7 @@
                     success: function (data) {
                         if (data != null && data.Id > 0) {
                             $scope.m = data;
+                            Object.assign($scope.m, { HRRCancelRuleNameExtend: $scope.m.HRRCancelRuleName });
                         }
                         else {
                             eMsg({
@@ -223,7 +226,9 @@
                 $scope.m.HRRBreakfastRuleName = $scope.DicValueInit($scope.m.HRRBreakfastRule, $scope.BreakfastList);
                 $scope.m.HRRCancelRuleName = $scope.DicValueInit($scope.m.HRRCancelRule, $scope.CancelList);
                 $scope.m.HRRSourceName = $scope.DicValueInit($scope.m.HRRSourceId, $scope.SourceList);
-
+                if ($scope.m.HRRCancelRule == 30202) {
+                    $scope.m.HRRCancelRuleName = $scope.m.HRRCancelRuleNameExtend;
+                }
                 if (!c) return;
                 eLoading.show();
                 Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
