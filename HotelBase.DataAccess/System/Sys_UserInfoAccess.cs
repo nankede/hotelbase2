@@ -27,14 +27,27 @@ namespace HotelBase.DataAccess
         public static BasePageResponse<UserModel> GetUserList(UserListRequest request)
         {
             var response = new BasePageResponse<UserModel>();
-            var totalSql = "SELECT Count(1) FROM Sys_UserInfo ; ";
+            var whereSql = new StringBuilder();
+            if (request.IsValid == 1)
+            {
+                whereSql.Append($" AND UIIsValid = 1 ");
+            }
+            if (!string.IsNullOrEmpty(request.Name))
+            {
+                whereSql.Append($" AND UIName Like '%{request.Name}%' ");
+            }
+
+
+            var totalSql = $"SELECT Count(1) FROM Sys_UserInfo WHERE  1=1  {whereSql.ToString()} ; ";
+
+
             var total = MysqlHelper.GetScalar<int>(totalSql);
             if (total > 0)
             {
                 response.IsSuccess = 1;
                 response.Total = total;
                 response.List = new List<UserModel>();
-                var sql = "SELECT * FROM Sys_UserInfo   ";
+                var sql = $"SELECT * FROM Sys_UserInfo  WHERE  1=1  {whereSql.ToString()}   ";
                 sql += MysqlHelper.GetPageSql(request.PageIndex, request.PageSize);
                 var list = MysqlHelper.GetList<Sys_UserInfoModel>(sql);
                 list?.ForEach(x =>
