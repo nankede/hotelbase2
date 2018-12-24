@@ -99,10 +99,10 @@
                         var msg = "";
                         if (data != null && data.IsSuccess > 0) {
                             $scope.User = data.Model;
-                            if ($scope.User. )
-                                if ($scope.m.UIDepartId && $scope.m.UIDepartId > 0) {
-                                    $('#esDepart').eSearch2.setDefaults('#esDepart', { Code: $scope.m.UIDepartId, Name: $scope.m.UIDepartName });
-                                }
+
+                            if ($scope.User.DepartId && $scope.User.DepartId > 0) {
+                                $('#esDepart').eSearch2.setDefaults('#esDepart', [{ 'value': $scope.User.DepartId, 'text': $scope.User.DepartName }]);
+                            }
                         }
                         else {
                             eMsg({

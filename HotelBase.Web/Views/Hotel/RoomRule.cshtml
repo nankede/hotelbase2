@@ -6,7 +6,7 @@
                     <label>政策名称</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HRRName" />
+                    <input class="lay-input long-input" ng-model="m.HRRName" />
                 </div>
             </div>
         </div>
@@ -16,7 +16,7 @@
                     <label>选择来源</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择来源" ng-init="m.HRRSourceId=0" ng-model="m.HRRSourceId"  ng-options="item.Code as item. Name for item in SourceList"></select>
+                    <select class="lay-select select-area" placeholder="请选择来源" ng-init="m.HRRSourceId=0" ng-model="m.HRRSourceId" ng-options="item.Code as item. Name for item in SourceList"></select>
                 </div>
             </div>
         </div>
@@ -46,8 +46,8 @@
                     <label>取消政策</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择取消政策" ng-model="m.HRRCancelRule" ng-init="m.HRRCancelRule=0" ng-options="item.Code as item. Name for item in CancelList" ></select>
-                    <input class="lay-input  long-input" ng-show="m.HRRCancelRule==30202" ng-model="m.HRRCancelRuleNameExtend" />
+                    <select class="lay-select select-area" placeholder="请选择取消政策" ng-model="m.HRRCancelRule" ng-init="m.HRRCancelRule=0" ng-options="item.Code as item. Name for item in CancelList"></select>
+                    <input class="lay-input" ng-show="m.HRRCancelRule==30202" ng-model="m.HRRCancelRuleNameExtend" />
                 </div>
             </div>
         </div>
@@ -202,6 +202,7 @@
                         if (data != null && data.Id > 0) {
                             $scope.m = data;
                             Object.assign($scope.m, { HRRCancelRuleNameExtend: $scope.m.HRRCancelRuleName });
+                            $('#esSupplier').eSearch2.setDefaults('#esSupplier', [{ 'value': $scope.m.HRRSupplierId, 'text': $scope.m.HRRSupplierName}]);
                         }
                         else {
                             eMsg({
