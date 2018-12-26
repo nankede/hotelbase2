@@ -5,36 +5,48 @@ ViewBag.PageTitle = "订单列表";
     <div class="topContain_sar">
         <div class="searchInputContain_sar">
             <div class="lay-form-item">
-                <div class="lay-form-item-caption ">
-                    <label>订单号</label>
+                <div class="lay-form-item lay-col-4">
+                    <div class="lay-form-item-caption ">
+                        <label>订单号</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="Search.HOCustomerSerialId" placeholder="请输入名称" />
+                    </div>
                 </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="Search.HOCustomerSerialId" placeholder="请输入名称" />
+                <div class="lay-form-item lay-col-4">
+                    <div>
+                        <select class="lay-select  lay-input" placeholder="请选择" ng-model="Search.CustomerType" ng-options="item.Type as item. Name for item in config.TypeSource"></select>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="Search.PeopleName" placeholder="请输入姓名" />
+                    </div>
                 </div>
-                <div>
-                    <select class="lay-select  lay-input" placeholder="请选择" ng-model="Search.CustomerType" ng-options="item.Type as item. Name for item in config.TypeSource"></select>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="Search.PeopleName" placeholder="请输入姓名" />
-                </div>
-                <div class="lay-form-item-caption ">
-                    <label>手机号</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="请输入手机号" />
+                <div class="lay-form-item lay-col-4">
+                    <div class="lay-form-item-caption ">
+                        <label>手机号</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="请输入手机号" />
+                    </div>
                 </div>
                 @*<input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
                 <input type="button" class="lay-btn lay-btn-primary none" value="新增" ng-click="Add(0)">*@
             </div>
             <div class="lay-form-item">
-                <div>
-                    <select class="lay-select  lay-input" ng-model="Search.TimeType" ng-options="item.Type as item. Name for item in config.TimeType"></select>
+                <div class="lay-form-item">
+                    <div>
+                        <select class="lay-select  lay-input" ng-model="Search.TimeType" ng-options="item.Type as item. Name for item in config.TimeType"></select>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input long-input" id="txtbeginDate" ng-model="Search.StartTime" />——
+                        <input class="lay-input long-input" id="txtendDate" ng-model="Search.EndTime" />
+                    </div>
                 </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input long-input" id="txtbeginDate" ng-model="Search.StartTime" />——
-                    <input class="lay-input long-input" id="txtendDate" ng-model="Search.EndTime" />
-                </div>
-                <div class="lay-form-item lay-col-3">
+                @*<input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
+                <input type="button" class="lay-btn lay-btn-primary none" value="新增" ng-click="Add(0)">*@
+            </div>
+            <div class="lay-form-item hide">
+                <div class="lay-form-item lay-col-4">
                     <div class="lay-form-item-caption ">
                         <label>供应商来源</label>
                     </div>
@@ -43,12 +55,7 @@ ViewBag.PageTitle = "订单列表";
                             ng-options="item.Code as item. Name for item in Source"></select>
                     </div>
                 </div>
-                
-                @*<input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
-                <input type="button" class="lay-btn lay-btn-primary none" value="新增" ng-click="Add(0)">*@
-            </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item lay-col-3">
+                <div class="lay-form-item lay-col-4">
                     <div class="lay-form-item-caption ">
                         <label>供应商订单号</label>
                     </div>
@@ -56,7 +63,9 @@ ViewBag.PageTitle = "订单列表";
                         <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="请输入供应商订单号" />
                     </div>
                 </div>
-                <div class="lay-form-item lay-col-3">
+            </div>
+            <div class="lay-form-item hide">
+                <div class="lay-form-item lay-col-4">
                     <div class="lay-form-item-caption ">
                         <label>酒店Id</label>
                     </div>
@@ -64,7 +73,7 @@ ViewBag.PageTitle = "订单列表";
                         <input class="lay-input" type="number" ng-model="Search.HIId" placeholder="请输入酒店Id" />
                     </div>
                 </div>
-                <div class="lay-form-item lay-col-3">
+                <div class="lay-form-item lay-col-4">
                     <div class="lay-form-item-caption ">
                         <label>酒店名称</label>
                     </div>
@@ -72,7 +81,9 @@ ViewBag.PageTitle = "订单列表";
                         <input class="lay-input" ng-model="Search.HotelName" placeholder="请输入酒店名称" />
                     </div>
                 </div>
-                <div class="lay-form-item lay-col-3">
+            </div>
+            <div class="lay-form-item hide">
+                <div class="lay-form-item lay-col-4">
                     <div class="lay-form-item-caption ">
                         <label>第三方订单号</label>
                     </div>
@@ -81,27 +92,28 @@ ViewBag.PageTitle = "订单列表";
                     </div>
                 </div>
             </div>
-            <div class="lay-form-item">
-                <div class="lay-form-item lay-col-3">
+            <div class="lay-form-item hide">
+                <div class="lay-form-item lay-col-4">
                     <div class="lay-form-item-caption ">
                         <label>订单状态</label>
                     </div>
                     <div class="lay-form-item-caption ">
                         @*<label><input name="States" type="checkbox" value="0" />待处理 </label>*@
                         <input class="lay-checkbox-variant" id="checkbox-1" name="States" type="checkbox" value="0" /><label
-                            for="checkbox-1">待处理</label>
+                            for="checkbox-1" class="txt_center">待处理</label>
                         @*<label><input name="States" type="checkbox" value="1" />确认成功 </label>*@
                         <input class="lay-checkbox-variant" id="checkbox-2" name="States" type="checkbox" value="1" /><label
-                            for="checkbox-2">确认成功</label>
+                            for="checkbox-2" class="txt_center">确认成功</label>
                         @*<label><input name="States" type="checkbox" value="2" />确认失败 </label>*@
                         <input class="lay-checkbox-variant" id="checkbox-3" name="States" type="checkbox" value="2" /><label
-                            for="checkbox-3">确认失败</label>
+                            for="checkbox-3" class="txt_center">确认失败</label>
                         @*<label><input name="States" type="checkbox" value="3" />取消 </label>*@
                         <input class="lay-checkbox-variant" id="checkbox-4" name="States" type="checkbox" value="3" /><label
-                            for="checkbox-4">取消</label>
+                            for="checkbox-4" class="txt_center">取消</label>
                     </div>
                 </div>
             </div>
+            <div class="operate_contain" data-state='0'>展开 ▼</div>
         </div>
         <div class="btnContain_sar">
             <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
@@ -173,12 +185,44 @@ ViewBag.PageTitle = "订单列表";
     display:flex;
     align-items: flex-end;
 }
+.flex_grow_1{
+    flex-grow: 1;
+}
+.txt_center{
+    text-align: center;
+}
+.hide{
+    display: none;
+}
+.operate_contain{
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #4eb900;
+    padding: 10px 0 0 0;
+    cursor: pointer;
+}
+
+
 </style>
 <script>
     var app = angular.module('myApp', []);
     app.controller('myCtrl', function ($scope) {
         $(function () {
             $scope.pageInit();
+            $(".operate_contain").on("click",function(){
+                if($(this).attr("data-state") == 0){
+                    $(this).attr("data-state",1);
+                    $(this).html('收起 ▲');
+                    $('.searchInputContain_sar .hide').css('display','flex');
+                }else{
+                    $(this).attr("data-state",0);
+                    $(this).html('展开 ▼');
+                    $('.searchInputContain_sar .hide').css('display','none');
+                }
+            })
         });
         $scope.config = {
             listUrl: "/order/getorderlist/",
