@@ -125,15 +125,6 @@
     <Content Include="Content\css\style.min862f.css" />
     <Content Include="Content\fonts\fontawesome-webfont93e3.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\img\a1.jpg" />
-    <Content Include="Content\img\a2.jpg" />
-    <Content Include="Content\img\a3.jpg" />
-    <Content Include="Content\img\a4.jpg" />
-    <Content Include="Content\img\a5.jpg" />
-    <Content Include="Content\img\a6.jpg" />
-    <Content Include="Content\img\a7.jpg" />
-    <Content Include="Content\img\a8.jpg" />
-    <Content Include="Content\img\a9.jpg" />
     <Content Include="Content\img\bg.png" />
     <Content Include="Content\img\iconfont-logo.png" />
     <Content Include="Content\img\icons.png" />
@@ -142,6 +133,7 @@
     <Content Include="Content\img\loading-upload.gif" />
     <Content Include="Content\img\locked.png" />
     <Content Include="Content\img\login-background.jpg" />
+    <Content Include="Content\img\loginbg.jpg" />
     <Content Include="Content\img\p1.jpg" />
     <Content Include="Content\img\p2.jpg" />
     <Content Include="Content\img\p3.jpg" />
@@ -265,6 +257,7 @@
     <Content Include="Views\Order\OrderResourceList.cshtml" />
     <Content Include="Views\Hotel\RoomRuleList.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <None Include="Properties\PublishProfiles\Custom.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -274,7 +267,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HotelBase.Common\HotelBase.Common.csproj">
