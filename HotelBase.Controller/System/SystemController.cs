@@ -58,6 +58,73 @@ namespace HotelBase.Web.Controller.System
             var response = SystemBll.GetUserModel(id, string.Empty);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 新增人员
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SaveUser(UserModel request)
+        {
+            var model = new Sys_UserInfoModel
+            {
+                Id = request.Id,
+                UIAccount = request.Account,
+                UIName = request.Name,
+                UIPassWord = request.Id == 0 ? request.Pwd : string.Empty,
+                UIDepartId = request.DepartId,
+                UIDepartName = request.DepartName,
+                UIResponsibility = request.R,
+
+            };
+            if (request.Id > 0)
+            {
+                model.UIUpdateTime = DateTime.Now;
+                model.UIUpdateName = CurrtUser.Name;
+                var response = SystemBll.UpdateUser(model);
+                return Json(response);
+            }
+            else
+            {
+                model.UIIsValid = 1;
+                model.UIAddName = CurrtUser.Name;
+                model.UIAddTime = DateTime.Now;
+                ;
+                var response = SystemBll.InsertUser(model);
+                return Json(response);
+            }
+        }
+
+        /// <summary>
+        /// 人员模糊搜索
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public JsonResult GetUserSearch(string name)
+        {
+            var request = new UserListRequest
+            {
+                IsValid = 1,
+                Name = HttpUtility.UrlDecode(name),
+                PageIndex = 1,
+                PageSize = 20
+
+            };
+            var list = new List<BaseDic>();
+            var response = SystemBll.GetUserList(request);
+            if (response != null && response.List != null && response.List.Count > 0)
+            {
+                list.AddRange(response.List.Select(x => new BaseDic
+                {
+                    Code = x.Id,
+                    Name = x.Name
+
+                }));
+            }
+            return Json(list, JsonRequestBehavior.AllowGet);
+
+        }
+
+
         #endregion
 
         #region 部门
@@ -80,6 +147,68 @@ namespace HotelBase.Web.Controller.System
             var response = SystemBll.GetDepartList(request);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 部门模糊搜索
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public JsonResult GetDepartSearch(string name)
+        {
+            var request = new DepartistRequest
+            {
+                IsValid = 1,
+                Name = HttpUtility.UrlDecode(name),
+                PageIndex = 1,
+                PageSize = 20
+
+            };
+            var list = new List<BaseDic>();
+            var response = SystemBll.GetDepartList(request);
+            if (response != null && response.List != null && response.List.Count > 0)
+            {
+                list.AddRange(response.List.Select(x => new BaseDic
+                {
+                    Code = x.Id,
+                    Name = x.DIName
+
+                }));
+            }
+            return Json(list, JsonRequestBehavior.AllowGet);
+
+        }
+
+        /// <summary>
+        /// 部门详情
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DepartDetail(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        /// <summary>
+        /// 部门详情
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SaveDepart(DepartModel model)
+        {
+            var response = SystemBll.SaveDepart(model, CurrtUser.Name);
+            return Json(response);
+        }
+
+        /// <summary>
+        /// 部门详情
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetDepartDetail(int id)
+        {
+            var response = SystemBll.GetDepart(id);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+
         #endregion
 
         #region 字典
@@ -157,9 +286,9 @@ namespace HotelBase.Web.Controller.System
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public JsonResult GetDicListByPCode(int pCode)
+        public JsonResult GetDicListByPCode(int pCode, int isDefault = 1)
         {
-            var response = SystemBll.GetDicListByPCode(pCode);
+            var response = SystemBll.GetDicListByPCode(pCode, isDefault);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -176,6 +305,22 @@ namespace HotelBase.Web.Controller.System
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 查询区域列表
+        /// pid =1 省份
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetAreaList2(int pId)
+        {
+            var list = SystemBll.GetAreaList(pId);
+            var rtnList = list?.Select(x => new BaseDic
+            {
+                Code = x.Id,
+                Name = x.Name
+            })?.ToList();
+            return Json(rtnList, JsonRequestBehavior.AllowGet);
+        }
+        //
         #endregion
     }
 }

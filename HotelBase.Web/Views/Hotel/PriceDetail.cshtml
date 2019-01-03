@@ -1,132 +1,38 @@
-﻿@section head{
-    <link href="~/Content/css/sarCalendar.css" rel="stylesheet" />
-    <style>
-        .tip-title {
-            font-size: 14px;
-            margin: 4px;
-            padding: 4px;
-            display: inline-block;
-        }
-    </style>
-}
+﻿<link href="~/Content/css/sarCalendar.css" rel="stylesheet" />
 <div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
-    <div style="width:630px;margin:0 auto;">
-        <label style="font-size: 14px;">房型政策：</label><span class="tip-title" ng-bind="room.HRName"></span><span class="tip-title" ng-bind="rule.HRRName"></span><br />
-        <label style="font-size: 14px;">供应商：</label><span class="tip-title" ng-bind="rule.HRRSourceName"></span>
-        <div style="float:right;margin-right:12px;">
-            <input type="button" class="lay-btn lay-btn-primary" value="批量处理" ng-click="batcList()">
-        </div>
-    </div>
-    <div class="lay-row" style="margin-top:20px;">
-        <!-- 日历 start -->
-        <div id="calendar_contain" style="width:630px;margin:0 auto;" class="calendar_contain"></div>
-        <!-- 日历 end -->
-    </div>
-    <!-- 批量保存 -->
-    <div class="lay-dialog" id="dialogBatch">
-        <div class="lay-dialog-mask"></div>
-        <div class="lay-dialog-cont" style="width:520px;height:460px;">
-            <div class="lay-dialog-hd">
-                <h3>批量修改价格</h3>
-                <button class="lay-dialog-btn-close"></button>
+    <div>
+        <h3 class="cont-title">{{showDate}}</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>结算价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input" ng-bind="show.ContractPrice"  />
+                </div>
             </div>
-            <div class="lay-dialog-bd">
-                <div class="lay-form-item">
-                    <div class="lay-form-item-caption ">
-                        <label>选择月份</label>
-                    </div>
-                    <div class="lay-form-item-control">
-                        <div id="ems_Month"></div>
-                        @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Month" ng-init="price.Month=0" ng-options="item.Code as item. Name for item in MonthList"></select>*@
-                    </div>
+            <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item-caption ">
+                    <label>销售价</label>
                 </div>
-                <div class="lay-form-item">
-                    <div class="lay-form-item-caption ">
-                        <label>选择时间</label>
-                    </div>
-                    <div class="lay-form-item-control">
-                        <div id="ems_Week"></div>
-                    </div>
-                </div>
-                <div class="lay-form-item">
-                    <div class="lay-form-item-caption ">
-                        <label>选择日期</label>
-                    </div>
-                    <div class="lay-form-item-control">
-                        <select class="lay-select select-area" placeholder="请选择开始日期" ng-model="price.Day1" ng-init="price.Day1=0" ng-options="item.Code as item. Name for item in DateList"></select>
-                        <select class="lay-select select-area" placeholder="请选择结束日期" ng-model="price.Day2" ng-init="price.Day2=0" ng-options="item.Code as item. Name for item in DateList"></select>
-                    </div>
-                </div>
-                <div class="lay-form-item">
-                    <div class="lay-form-item-caption ">
-                        <label>售卖价</label>
-                    </div>
-                    <div class="lay-form-item-control">
-                        <input class="lay-input" ng-model="price.SellPrice" />
-                    </div>
-                </div>
-                <div class="lay-form-item">
-                    <div class="lay-form-item-caption ">
-                        <label>结算价</label>
-                    </div>
-                    <div class="lay-form-item-control">
-                        <input class="lay-input" ng-model="price.ContractPrice" />
-                    </div>
-                </div>
-                <div class="lay-form-foot">
-                    <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="saveBatch()">
+                <div class="lay-form-item-control">
+                    <input class="lay-input"  ng-bind="show.SellPrice" />
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- 单日期保存 -->
-    <div class="lay-dialog" id="dialogDetail">
-        <div class="lay-dialog-mask"></div>
-        <div class="lay-dialog-cont" style="width:460px;height:400px;">
-            <div class="lay-dialog-hd">
-                <h3>修改价格</h3>
-                <button class="lay-dialog-btn-close"></button>
-            </div>
-            <div class="lay-dialog-bd">
-                <div>
-                    <h3 class="cont-title">{{show.PriceDate}}</h3>
-                    <div class="lay-form-item">
-                        <div class="lay-form-item-caption ">
-                            <label>售卖价</label>
-                        </div>
-                        <div class="lay-form-item-control">
-                            <input class="lay-input" ng-model="show.SellPrice" />
-                        </div>
-                    </div>
-                    <div class="lay-form-item">
-                        <div class="lay-form-item-caption ">
-                            <label>结算价</label>
-                        </div>
-                        <div class="lay-form-item-control">
-                            <input class="lay-input" ng-model="show.ContractPrice" />
-                        </div>
-                    </div>
-
-                </div>
-                <div class="lay-form-foot">
-                    <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveDetail()">
-                </div>
-            </div>
+        <div class="lay-form-foot">
+            <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveDetail()">
         </div>
     </div>
 
+    <!-- 日历 end -->
 </div>
 <input id="hfRuleId" type="hidden" value="@ViewBag.RuleId" />
 <input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
 <input id="hfRoomId" type="hidden" value="@ViewBag.RoomId" />
+<input id="hfDate" type="hidden" value="@ViewBag.DateInt" />
 @section foot{
-    <script src="~/Content/js/sarCalendar.js" type="text/javascript"></script>
     <script>
-
-        var mobileReg = /^1(3|4|5|7|8|9)\d{9}$/;
-        var telReg = /^(\d{3,4}-?)?\d{7,9}$/;
-        var emailReg = /\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
         var app = angular.module('myApp', []);
         app.controller('myCtrl', function ($scope) {
             $scope.Source = [{ Code: 0, Name: '请选择' }];
@@ -134,8 +40,7 @@
                 searchUrl: "/hotel/getpricelist/",
                 roomUrl: "/hotel/getroomdetail/",
                 ruleUrl: "/hotel/getroomruledetail/",
-                saveUrl: "/hotel/savepricebatch/",
-                saveDetailUrl: "/hotel/savepricedetail/",
+                saveUrl: "/hotel/saveprice/",
             };
             $scope.Id = $('#hfId').val();
             $(function () {
@@ -152,15 +57,15 @@
                 for (var i = 1; i < 32; i++) {
                     $scope.DateList.push({ Code: i, Name: i + "日" });
                 }
-                var week = ['日', '一', '二', '三', '四', '五', '六'];
-                for (var i = 0; i < 7; i++) {
+                var week = ['', '日', '一', '二', '三', '四', '五', '六'];
+                for (var i = 1; i < 8; i++) {
                     $scope.WeekList.push({ Code: i, Name: "周" + week[i] });
                 }
                 var d = new Date();
                 for (var i = 1; i < 13; i++) {
                     var year = d.getFullYear();
                     var month = d.getMonth() + 1;
-                    $scope.MonthList.push({ Code: year + "-" + (month < 10 ? '0' + month : month), Name: year + "-" + (month < 10 ? '0' + month : month) });
+                    $scope.MonthList.push({ Code: year * 100 + month, Name: year + "-" + (month < 10 ? '0' + month : month) });
                     if (month == 12) {
                         month = 0;
                         year += 1;
@@ -249,7 +154,7 @@
                         Month: dd.getMonth()
                     },//日历参数
                     callBack: function (selectDateInfo) {
-                        $scope.showDetail(selectDateInfo);
+                        console.log(selectDateInfo);
                     }
                 });
             }
@@ -311,94 +216,62 @@
                 });
             }
 
-            //日历明细
-            $scope.showDetail = function (data) {
-                $scope.show = data;
-                $scope.$apply();
-                $("#dialogDetail").eDialog('show');
-            }
 
-            //保存详情
-            $scope.SaveDetail = function () {
-                if ($scope.show.ContractPrice <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '结算价不能为空！'
-                    });
-                    return;
-                }
-                if ($scope.show.SellPrice <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '销售价不能为空！'
-                    });
-                    return;
-                }
-                var baseModel = {
-                    Type: 1,
-                    HotelId: $('#hfHotelId').val(),
-                    RoomId: $('#hfRoomId').val(),
-                    RuleId: $('#hfRuleId').val()
-                };
-                Object.assign($scope.show, $scope.show, baseModel);
+
+            //详情
+            $scope.getDetail = function () {
                 eLoading.show();
-                Untitl.Post($scope.config.saveDetailUrl, $scope.show, function (data) {
-                    if (data != null && data.IsSuccess > 0) {
-                        eMsg({
-                            timer: 2000,
-                            text: '操作成功！'
-                        });
-                        setTimeout(function () { $("#dialogDetail").eDialog('hide'); }, 1000);
-                        $scope.getList();
-                    }
-                    else {
-                        var msg = data ? data.Msg : "";
-                        eMsg({
-                            timer: 2000,
-                            text: '操作失败,' + msg
-                        });
-                    }
-                    $scope.$apply();
-                },
-                    function () {
+                $.ajax({
+                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                            if ($scope.m && $scope.m.HIProvinceId > 0) {
+                                $scope.getArea(1);
+                            }
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
                         eLoading.hide();
-                    });
+                    }
+                });
             }
 
-            //batcList 批量处理
-            $scope.batcList = function () {
-                $("#dialogBatch").eDialog('show');
-            }
             //保存
-            $scope.saveBatch = function () {
+            $scope.Save = function () {
                 //设置日期
                 $scope.price.MonthList = $('#ems_Month').eMultiSelect.getValue('#ems_Month');
                 $scope.price.WeekList = $('#ems_Week').eMultiSelect.getValue('#ems_Week');
-                $scope.price.DateList = [];
+                $scope.price.DateList = '';
                 if ($scope.price.Day1 > 0 && $scope.price.Day2 > 0) {
                     $scope.price.DateList = `${$scope.price.Day1},${$scope.price.Day2},`;
                 }
 
                 var c = $scope.checkData();
                 if (!c) return;
-                var baseModel = {
-                    Type: 1,
-                    HotelId: $('#hfHotelId').val(),
-                    RoomId: $('#hfRoomId').val(),
-                    RuleId: $('#hfRuleId').val()
-                };
-                Object.assign($scope.price, $scope.price, baseModel);
-
                 eLoading.show();
-                Untitl.Post($scope.config.saveUrl, $scope.price, function (data) {
+                Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
                     if (data != null && data.IsSuccess > 0) {
+                        $scope.m.Id = data.AddId;
                         eMsg({
                             timer: 2000,
                             text: '操作成功，正在自动关闭页面！'
                         });
                         //关闭页面
-                        setTimeout(function () { $("#dialogBatch").eDialog('hide'); }, 1000);
-                        $scope.getList();
+                        setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
                     }
                     else {
                         var msg = data ? data.Msg : "";
@@ -444,7 +317,6 @@
                     });
                     return false;
                 }
-
                 return true;
             }
         });

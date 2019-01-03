@@ -1922,7 +1922,6 @@ es.searchFromAjax = function(opts, $eSearch2) {
     var ajaxSendData = {};
     var inputVal = $eSearch2.find('.lay-search2-input .lay-input').val().trim();
     ajaxSendData[opts.searchKey] = encodeURIComponent(inputVal);
-
     //发送异步前的回调，必须要return ajaxSendData
     if ($.isFunction(opts.onBeforeSend)) {
         var cbThis = { $eSearch2: $eSearch2 };

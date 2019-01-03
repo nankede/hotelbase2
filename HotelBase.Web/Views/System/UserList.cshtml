@@ -1,4 +1,8 @@
 ﻿<div class="lay-form" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div style="text-align:right">
+        <input id="btnSearch" type="button" class="lay-btn lay-btn-primary none" value="新增" ng-click="search(1)">
+        <input type="button" class="lay-btn lay-btn-primary" value="新增" ng-click="detail(0)">
+    </div>
     <table class="lay-table">
         <thead>
             <tr>
@@ -55,6 +59,7 @@
             }
             //查询
             $scope.search = function (index) {
+                $scope.detailClear();
                 index = !index || index <= 0 ? 1 : index;
                 var para = { PageIndex: index };
                 eLoading.show();
@@ -106,6 +111,11 @@
                 var url = "/system/userdetail?id=" + id;
                 $('#ifm_detail').prop('src', url);
                 $("#dialogDetail").eDialog('show');
+            }
+
+            $scope.detailClear = function (id) {
+                $('#ifm_detail').prop('src', '');
+                $("#dialogDetail").eDialog('hide');
             }
         });
     </script>

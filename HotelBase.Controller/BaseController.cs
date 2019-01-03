@@ -15,7 +15,6 @@ namespace HotelBase.Web.Controllers
     public class BaseController : System.Web.Mvc.Controller
     {
         public string loginCookie = "hotel_login";
-        private UserModel _CurrtUser;
         public UserModel CurrtUser
         {
             get
@@ -28,42 +27,6 @@ namespace HotelBase.Web.Controllers
         {
 
         }
-    }
-
-    /// <summary>
-    /// 表示一个特性，该特性用于标识用户是否有访问权限。
-    /// </summary>
-    public class AuthorizeCheckedAttribute : AuthorizeAttribute
-    {
-        /// <summary>
-        /// 是否忽略权限检查。
-        /// </summary>
-        public bool Ignore { get; set; }
-
-        public AuthorizeCheckedAttribute(bool ignore = false)
-        {
-            this.Ignore = ignore;
-        }
-
-        public override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            if (Ignore)
-            {
-                return;
-            };
-            var userId = OperatorProvider.Instance.Current.Id;
-            var action = HttpContext.Current.Request.ServerVariables["SCRIPT_NAME"].ToString();
-            var title = string.Empty;
-            //bool hasPermission = PermissionService.ActionValidate(userId, action, out title);
-            //if (!hasPermission)
-            //{
-            //    StringBuilder script = new StringBuilder();
-            //    script.Append("<script>alert('对不起，您没有权限访问当前页面。');</script>");
-            //    filterContext.Result = new ContentResult() { Content = script.ToString() };
-            //}
-        }
-
-
     }
 
     /// <summary>
@@ -80,6 +43,14 @@ namespace HotelBase.Web.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            OperatorProvider.Instance.Current = new UserModel
+            {
+                Id = 1,
+                Name = "测试"
+            };
+
+            return;
+
             if (!Ignore)
             {
                 return;

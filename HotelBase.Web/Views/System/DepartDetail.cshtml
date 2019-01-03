@@ -10,31 +10,15 @@
 <div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div class="lay-form-item">
         <div class="lay-form-item-caption ">
-            <label>姓名</label>
+            <label>部门名称</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="User.Name" placeholder="请输入姓名" />
+            <input class="lay-input" ng-model="m.Name" placeholder="请输入部门名称" />
         </div>
     </div>
     <div class="lay-form-item">
         <div class="lay-form-item-caption ">
-            <label>登陆账户</label>
-        </div>
-        <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="User.Account" placeholder="请输入登陆账户" />
-        </div>
-    </div>
-    <div class="lay-form-item" ng-show="$scope.Id==0">
-        <div class="lay-form-item-caption ">
-            <label>登陆密码</label>
-        </div>
-        <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="User.Account" placeholder="请输入登陆密码" />
-        </div>
-    </div>
-    <div class="lay-form-item">
-        <div class="lay-form-item-caption ">
-            <label>归属部门</label>
+            <label>上级部门</label>
         </div>
         <div class="lay-form-item-control">
             <div id="esDepart"></div>
@@ -42,15 +26,10 @@
     </div>
     <div class="lay-form-item">
         <div class="lay-form-item-caption ">
-            <label>职责</label>
+            <label>负责人</label>
         </div>
         <div class="lay-form-item-control">
-            <input ng-repeat-start="x in config.resList" type="radio" class="lay-radio-variant"
-                   name="rdo-res" id="rdo-res-{{$index}}" ng-model="User.R" ng-init="User.R=0" value="{{x.value}}" />
-            <label for="rdo-res-{{$index}}">
-                <span ng-bind="x.name"></span>
-            </label>
-            <i ng-repeat-end class="none"></i>
+            <div id="esLeader"></div>
         </div>
     </div>
     <div class="lay-form-foot">
@@ -67,16 +46,10 @@
                 $scope.pageInit();
             });
             $scope.config = {
-                detailUrl: "/system/getuserdetail",
-                saveUrl: "/system/saveuser",
+                detailUrl: "/system/getdepartdetail",
+                saveUrl: "/system/savedepart",
                 searchDepartUrl: "/system/getdepartsearch",
-                resList: [
-                    { value: 0, name: "未设定" },
-                    { value: 1, name: "资源维护" },
-                    { value: 2, name: "订单维护" },
-                    { value: 4, name: "订单统计" },
-                    { value: 100, name: "超级管理" },
-                ]
+                searchUserUrl: "/system/getusersearch",
             }
             //页面初始化
             $scope.pageInit = function () {
@@ -98,10 +71,12 @@
                     success: function (data) {
                         var msg = "";
                         if (data != null && data.IsSuccess > 0) {
-                            $scope.User = data.Model;
-
-                            if ($scope.User.DepartId && $scope.User.DepartId > 0) {
-                                $('#esDepart').eSearch2.setDefaults('#esDepart', [{ 'value': $scope.User.DepartId, 'text': $scope.User.DepartName }]);
+                            $scope.m = data.Model;
+                            if ($scope.m.DepartId && $scope.m.DepartId > 0) {
+                                $('#esDepart').eSearch2.setDefaults('#esDepart', [{ 'value': $scope.m.DepartId, 'text': $scope.m.DepartName }]);
+                            }
+                            if ($scope.m.LearderId && $scope.m.LearderId > 0) {
+                                $('#esLeader').eSearch2.setDefaults('#esLeader', [{ 'value': $scope.m.LearderId, 'text': $scope.m.LearderName }]);
                             }
                         }
                         else {
@@ -144,8 +119,35 @@
                         return ajaxSendData;
                     },
                     onSelected: function () {
-                        $scope.User.DepartId = this.value;
-                        $scope.User.DepartName = this.text;
+                        $scope.m.DepartId = this.value;
+                        $scope.m.DepartName = this.text;
+                        console.log(`我是选中的value:${this.value},我是选中的text:${this.text}`);
+                        //所有的回调里面的this值都放了很多有用的东西
+                        //比如 你选中的 value值，选中的 text值
+                        //alert(`我是选中的value:${this.value},我是选中的text:${this.text}`)
+                    }
+                });
+
+
+                $('#esLeader').eSearch2({
+                    placeholder: '请输入员工名称查询',
+                    searchSource: $scope.config.searchUserUrl,
+                    searchKey: 'name',
+                    resultItem: {
+                        value: 'Code',
+                        text: 'Name'
+                    },
+                    onBeforeSend: function (ajaxSendData) {
+                        //这里的departmentId就是动态变化的
+                        //ajaxSendData.name = encodeURIComponent(ajaxSendData.name);
+                        if (!ajaxSendData.name || ajaxSendData.name.length <= 0) {
+                            return false;
+                        }
+                        return ajaxSendData;
+                    },
+                    onSelected: function () {
+                        $scope.m.LearderId = this.value;
+                        $scope.m.LearderName = this.text;
                         console.log(`我是选中的value:${this.value},我是选中的text:${this.text}`);
                         //所有的回调里面的this值都放了很多有用的东西
                         //比如 你选中的 value值，选中的 text值
@@ -157,14 +159,12 @@
 
             //保存
             $scope.Save = function () {
-
-
                 var c = $scope.checkData();
                 if (!c) return;
                 eLoading.show();
-                Untitl.Post($scope.config.saveUrl, $scope.User, function (data) {
+                Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
                     if (data != null && data.IsSuccess > 0) {
-                        $scope.User.Id = data.AddId;
+                        $scope.m.Id = data.AddId;
                         eMsg({
                             timer: 2000,
                             text: '操作成功，正在自动关闭页面！'
@@ -188,35 +188,13 @@
 
             //数据验证
             $scope.checkData = function () {
-                if ($scope.User.UIAccount.length <= 0) {
+                if ($scope.m.Name.length <= 0) {
                     eMsg({
                         timer: 2000,
                         text: '登陆账户不能为空！'
                     });
                     return false;
                 }
-                if ($scope.User.UIName.length <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '登陆账户不能为空！'
-                    });
-                    return false;
-                }
-                if ($scope.User.UIDepartId <= 0 || $scope.User.UIDepartName.length <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '未选择归属部门！'
-                    });
-                    return false;
-                }
-                if ($scope.Id == 0 && $scope.User.UIPassWord.length <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '登陆密码不能为空！'
-                    });
-                    return false;
-                }
-
                 return true;
             }
         });

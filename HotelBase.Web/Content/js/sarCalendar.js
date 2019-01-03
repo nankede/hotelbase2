@@ -1,6 +1,6 @@
 (function ($, window, undefined) {
     var sarCalender = function (opts) {
-        this.settings = $.extend({},sarCalender.defaults, opts);
+        this.settings = $.extend({}, sarCalender.defaults, opts);
         this.init();
     };
 
@@ -9,7 +9,7 @@
         setPos: 'body',//插入的位置
         calendarType: 1,//日历类型 1：价格日历 2：库存日历
         calendarList: [],//日历数据实体
-        yearArray: [2018,2019,2020,2021,2022], //可选年份列表
+        yearArray: [2018, 2019, 2020, 2021, 2022], //可选年份列表
         defaultYear: '2018',//默认年份
         defaultMonth: 0,//默认月份
         callBack: null
@@ -19,10 +19,11 @@
         init: function () {
 
             this.initCalendarHtml(this.settings.container);
-            this.createMonthUl(this.settings.container,this.settings.defaultYear);
-            
+            this.createMonthUl(this.settings.container, this.settings.defaultYear);
+
             this.slideMonthPanel(this.settings.container);
-            this.createDateUl(this.settings.defaultYear, this.settings.defaultMonth, ' ', this.settings.container);
+            // this.createDateUl(this.settings.defaultYear, this.settings.defaultMonth, ' ', this.settings.container);
+            this.getDateListAjaxFn(this.settings.defaultYear, this.settings.defaultMonth);
             this.clickDate()
             // this.create();
         },
@@ -41,13 +42,42 @@
             $(this.settings.setPos).append(_template);
             this.bindEvent();
         },
-        bindEvent: function() {
+        bindEvent: function () {
             var that = this;
-            $(that.settings.container).on("click", ".close", function(){
+            $(that.settings.container).on("click", ".close", function () {
                 $(that.settings.container).hide();
-                if($.isFunction(that.settings.callBack)){
+                if ($.isFunction(that.settings.callBack)) {
                     var className = $(this).attr("data-classname");
                     that.settings.callBack(className);
+                }
+            });
+        },
+        /**
+         * 获取日历数据接口
+         */
+        getDateListAjaxFn: function (opYear, opMonth) {
+            var that = this;
+            var ajaxUrl = this.settings.ajaxUrl;
+            var ajaxOptions = this.settings.ajaxOptions;
+            ajaxOptions.Month = opYear * 100 + (parseInt(opMonth) + 1)
+            $.ajax({
+                // url: ajaxUrl + "?RuleId=" + ajaxOptions.RuleId + "&Month=" + ajaxOptions.Month,
+                url: ajaxUrl,
+                type: 'get',
+                dataType: "json",
+                data: ajaxOptions,
+                timeout: 20000,
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        that.settings.calendarList = data;
+                        that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, ' ', that.settings.container);
+                    }
+                },
+                error: function () {
+                    console.log("err-getList");
+                },
+                complete: function () {
+                    eLoading.hide();
                 }
             });
         },
@@ -148,7 +178,7 @@
         /**
          * 创建月份列表，跟线上同步，渲染12个月
          */
-        createMonthUl: function createMonthUl(id,year) {
+        createMonthUl: function createMonthUl(id, year) {
             var that = this;
             var monthArr = [];
             var yearStr = year + '-01-01';
@@ -161,15 +191,21 @@
             var monthStr = '';
             for (var _i = 0; _i < monthArr.length; _i++) {
                 var item = monthArr[_i];
-                var classStr = !_i ? "active" : "";
+                var classStr = _i == that.settings.defaultMonth ? "active" : "";
                 var month = new Date(item.replace(/-/g, '/')).getMonth();
                 monthStr += '<li class="' + classStr + '" data-date="' + item + '" data-month="' + month + '">' + (month + 1) + '\u6708</li>';
             }
 
-            
+
             var t = '#' + id + ' ' + ".sarCalendar_month_ul";
 
             $(t).html(monthStr);
+            if (that.settings.defaultMonth >= 6) {
+                var slideMonthPanel_id = '#' + id + ' ' + ".sarCalendar_month_ul";
+                $(slideMonthPanel_id).animate({
+                    left: '-490px'
+                });
+            }
             that.changeMonth(that.settings.container);
         },
         /**
@@ -274,16 +310,22 @@
                 for (var i = 0; i < length; i++) {
                     if ($(t).eq(i).attr('data-date')) {
                         if (v.PriceDate.split(' ')[0] == $(t).eq(i).attr('data-date')) {
-                            $(t).eq(i).attr('data-obj',JSON.stringify(v));
-                            $(t).eq(i).children('.em_price_sell').text('售卖:￥' + Math.floor(v.SellPrice));
-                            $(t).eq(i).children('.em_price_close').text('结算:￥' + Math.floor(v.ContractPrice));
+                            $(t).eq(i).attr('data-obj', JSON.stringify(v));
+                            if (me.settings.calendarType == 1) {
+                                $(t).eq(i).children('.em_price_sell').text('售卖:￥' + Math.floor(v.SellPrice));
+                                $(t).eq(i).children('.em_price_close').text('结算:￥' + Math.floor(v.ContractPrice));
+                            } else if (me.settings.calendarType == 2) {
+                                $(t).eq(i).children('.em_price_sell').text('库存:￥' + Math.floor(v.Count));
+                                $(t).eq(i).children('.em_price_close').text('保留:￥' + Math.floor(v.RetainCount));
+                            }
+
                             $(t).eq(i).addClass('choose_date');
                         }
                     }
                 }
             });
 
-            
+
         },
         /**
          * 更改月份
@@ -300,7 +342,8 @@
                 var selectYear = new Date($(this).data('date').replace(/-/g, '/')).getFullYear();
                 // $(".sarCalendar_yearText").html(selectYear + '\u5E74');
                 var selectMonth = $(this).attr("data-month");
-                me.createDateUl(selectYear, selectMonth, '', id);
+                // me.createDateUl(selectYear, selectMonth, '', id);
+                me.getDateListAjaxFn(selectYear, selectMonth);
             });
 
         },
@@ -329,12 +372,12 @@
         initCalendarHtml: function initCalendarHtml(id) {
             var selfObj = this;
             var yearSelectHtml = '';
-            selfObj.settings.yearArray.forEach(function(item){
-                yearSelectHtml += '<option>'+ item +'</option>';
+            selfObj.settings.yearArray.forEach(function (item) {
+                yearSelectHtml += '<option>' + item + '</option>';
             });
             var calendarHtml = '<div id="sarCalendar">\
                 <div class="sarCalendar_head">\
-                    <select class="sarCalendar_yearText">'+ yearSelectHtml +'</select>\
+                    <select class="sarCalendar_yearText">'+ yearSelectHtml + '</select>\
                     <div class="sarCalendar_month">\
                         <em class="sarCalendar_month_prev"></em>\
                         <div class="sarCalendar_month_bar">\
@@ -382,14 +425,17 @@
         */
         clickDate: function clickDate() {
             var that = this;
-            $('#'+ that.settings.container).on('click', '.sarCalendar_date_ul li', function () {
-                if ($(this).hasClass('choose_date')) {
-                    $('.sarCalendar_date_ul li').removeClass('calendar_active');
-                    $(this).addClass('calendar_active');
-                    var selectDateInfo = JSON.parse($(this).attr('data-obj'));
-                    if($.isFunction(that.settings.callBack)){
-                        that.settings.callBack(selectDateInfo);
-                    }
+            $('#' + that.settings.container).on('click', '.sarCalendar_date_ul li', function () {
+                // if ($(this).hasClass('choose_date')) {
+                $('.sarCalendar_date_ul li').removeClass('calendar_active');
+                $(this).addClass('calendar_active');
+                var selectDateInfo;
+                selectDateInfo = $(this).attr('data-obj') ? JSON.parse($(this).attr('data-obj')) : { "Id": 0, "PriceDate": $(this).attr('data-date'), "SellPrice": 0, "ContractPrice": 0, "Count": 0, "RetainCount": 0 };
+                // if (!selectDateInfo) {
+                //     selectDateInfo = { "Id": 0, "PriceDate": $(this).attr('data-date'), "SellPrice": 0, "ContractPrice": 0, "Count": 0, "RetainCount": 0 }
+                // }
+                if ($.isFunction(that.settings.callBack)) {
+                    that.settings.callBack(selectDateInfo);
                 }
 
             });
@@ -400,11 +446,12 @@
          */
         yearChangeFn: function (id) {
             var that = this;
-            $('#'+ that.settings.container).on('change', '.sarCalendar_yearText', function(e){
+            $('#' + that.settings.container).on('change', '.sarCalendar_yearText', function (e) {
                 that.settings.defaultYear = $(this).val().toString();
                 // that.defaultDate = 1;
                 that.createMonthUl(id, $(this).val());
-                that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, '', that.settings.container);
+                // that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, '', that.settings.container);
+                that.getDateListAjaxFn(that.settings.defaultYear, that.settings.defaultMonth);
             });
         },
     };

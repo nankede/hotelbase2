@@ -1,4 +1,5 @@
-﻿using HotelBase.DataAccess.Resource;
+﻿using HotelBase.Common;
+using HotelBase.DataAccess.Resource;
 using HotelBase.DataAccess.System;
 using HotelBase.Entity;
 using HotelBase.Entity.Models;
@@ -22,30 +23,7 @@ namespace HotelBase.Service
         /// <param name="request"></param>
         public static BasePageResponse<HotelSearchResponse> GetList(HotelSearchRequest request)
         {
-            var data = H_HotelInfoAccess.GetList(request);
-            var response = new BasePageResponse<HotelSearchResponse>()
-            {
-                IsSuccess = data.IsSuccess,
-                Total = data.Total,
-                List = new List<HotelSearchResponse>()
-            };
-            data?.List?.ForEach(x =>
-            {
-                response.List.Add(new HotelSearchResponse
-                {
-                    Id = x.Id,
-                    Name = x.HIName,
-                    //SourceId = x.SSourceId,
-                    //Source = Sys_BaseDictionaryAccess.GetDicModel(0, x.SSourceId)?.DName ?? string.Empty,
-                    CityId = x.HICityId,
-                    CityName = x.HICity,
-                    ProvName = x.HIProvince,
-                    ProvId = x.HIProvinceId,
-                    Valid = x.HIIsValid,
-                    SupplierName = string.Empty,
-                    Source = string.Empty
-                });
-            });
+            var response = H_HotelInfoAccess.GetList(request);
             return response;
         }
 
@@ -73,7 +51,7 @@ namespace HotelBase.Service
                 res.Msg = "酒店名称不能为空";
                 return res;
             }
-            var id = H_HotelInfoAccess.Insert(model);
+            var id = new H_HotelInfoAccess().Add(model);
             if (id <= 0)
             {
                 res.Msg = "新增失败";
@@ -108,11 +86,14 @@ namespace HotelBase.Service
                 res.Msg = "酒店名称不能为空";
                 return res;
             }
-            var i = H_HotelInfoAccess.Update(model);
+
+            model = CommonHelper.CheckPropertiesNull(model);
+
+            var i = new H_HotelInfoAccess().Update(model);
             res = new BaseResponse
             {
-                IsSuccess = i > 0 ? 1 : 0,
-                Msg = i > 0 ? string.Empty : "更新失败",
+                IsSuccess = i ? 1 : 0,
+                Msg = i ? string.Empty : "更新失败",
             };
             return res;
         }
@@ -135,5 +116,24 @@ namespace HotelBase.Service
             return res;
         }
 
+        #region 酒店图片
+
+        /// <summary>
+        /// 酒店图片
+        /// </summary>
+        /// <param name="request"></param>
+        public static List<H_HotelPictureModel> GetPicList(HotelPicSearchRequest request)
+        {
+            var db = new H_HotelPictureAccess();
+
+            return db.Query().Where(x => x.HIId == request.HotelId)?.ToList();
+
+            //  return db.GetList(request);
+        }
+
+        #endregion
+
     }
+
+
 }

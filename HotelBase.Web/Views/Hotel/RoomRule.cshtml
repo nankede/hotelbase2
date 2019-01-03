@@ -6,7 +6,17 @@
                     <label>政策名称</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HRRName" />
+                    <input class="lay-input long-input" ng-model="m.HRRName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item ">
+                <div class="lay-form-item-caption ">
+                    <label>选择来源</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <select class="lay-select select-area" placeholder="请选择来源" ng-init="m.HRRSourceId=0" ng-model="m.HRRSourceId" ng-options="item.Code as item. Name for item in SourceList"></select>
                 </div>
             </div>
         </div>
@@ -16,8 +26,7 @@
                     <label>选择供应商</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择来源" ng-model="m.HRRSourceId" ng-init="m.HRRSourceId=0" ng-options="item.Code as item. Name for item in SourceList"></select>
-                    <select class="lay-select select-area" placeholder="请选择供应商" ng-model="m.HRRSupplierId" ng-init="m.HRRSupplierId=0" ng-options="item.Code as item. Name for item in SupplierList"></select>
+                    <div id="esSupplier"></div>
                 </div>
             </div>
         </div>
@@ -38,6 +47,7 @@
                 </div>
                 <div class="lay-form-item-control">
                     <select class="lay-select select-area" placeholder="请选择取消政策" ng-model="m.HRRCancelRule" ng-init="m.HRRCancelRule=0" ng-options="item.Code as item. Name for item in CancelList"></select>
+                    <input class="lay-input" ng-show="m.HRRCancelRule==30202" ng-model="m.HRRCancelRuleNameExtend" />
                 </div>
             </div>
         </div>
@@ -60,7 +70,7 @@
         app.controller('myCtrl', function ($scope) {
             $scope.Source = [{ Code: 0, Name: '请选择' }];
             $scope.config = {
-                detailUrl: "/hotel/getdroomruledetail/",
+                detailUrl: "/hotel/getroomruledetail/",
                 saveUrl: "/hotel/saveroomrule/",
                 supplierUrl: "/Supplier/GetSupplierList/",
                 //sourceId = 10101 & name=A
@@ -74,6 +84,7 @@
             //初始化
             $scope.pageInit = function () {
                 $scope.dicInit();
+                $scope.initSelect();
                 if ($scope.Id > 0) {
                     $scope.getDetail();
                 }
@@ -83,6 +94,7 @@
                         HRId: $scope.RoomId,
                         HRRBreakfastRuleName: '',
                         HRRCancelRuleName: '',
+                        HRRCancelRuleNameExtend: '',
                         HRRSourceName: '',
                         HRRSupplierName: ''
                     };
@@ -107,8 +119,41 @@
                 });
             }
 
+            //初始化
+            $scope.initSelect = function () {
+                $('#esSupplier').eSearch2({
+                    placeholder: '请输入供应商名称查询',
+                    searchSource: $scope.config.supplierUrl,
+                    searchKey: 'name',
+                    resultItem: {
+                        value: 'Code',
+                        text: 'Name'
+                    },
+                    onBeforeSend: function (ajaxSendData) {
+                        //这里的departmentId就是动态变化的
+                        //ajaxSendData.name = encodeURIComponent(ajaxSendData.name);
+                        if (!ajaxSendData.name || ajaxSendData.name.length <= 0) {
+                            return false;
+                        }
+                        ajaxSendData.sourceId = $scope.m.HRRSourceId || 0;
+                        return ajaxSendData;
+                    },
+                    onSelected: function () {
+                        $scope.m.HRRSupplierId = this.value;
+                        $scope.m.HRRSupplierName = this.text;
+                        $scope.$apply();
+                        console.log(`我是选中的value:${this.value},我是选中的text:${this.text}`);
+                        //所有的回调里面的this值都放了很多有用的东西
+                        //比如 你选中的 value值，选中的 text值
+                        //alert(`我是选中的value:${this.value},我是选中的text:${this.text}`)
+                    }
+                });
+
+            }
+
+
             //查询供应商
-            $scope.getSupplierList = function (name) {
+            $scope.getSupplierList = function () {
                 $.ajax({
                     url: $scope.config.supplierUrl + "?sourceId=" + $scope.m.HRRSourceId + "&name=",
                     type: 'get',
@@ -117,6 +162,10 @@
                     success: function (data) {
                         if (data != null && data.Id > 0) {
                             $scope.m = data;
+                            if ($scope.m.HRRSupplierId && $scope.m.HRRSupplierId > 0) {
+                                var d = { value: $scope.m.HRRSupplierId, text: $scope.m.HRRSupplierName };
+                                $('#esSupplier').eSearch2.setDefaults('#esSupplier', d);
+                            }
                         }
                         $scope.$apply();
                     },
@@ -152,6 +201,8 @@
                     success: function (data) {
                         if (data != null && data.Id > 0) {
                             $scope.m = data;
+                            Object.assign($scope.m, { HRRCancelRuleNameExtend: $scope.m.HRRCancelRuleName });
+                            $('#esSupplier').eSearch2.setDefaults('#esSupplier', [{ 'value': $scope.m.HRRSupplierId, 'text': $scope.m.HRRSupplierName}]);
                         }
                         else {
                             eMsg({
@@ -176,8 +227,9 @@
                 $scope.m.HRRBreakfastRuleName = $scope.DicValueInit($scope.m.HRRBreakfastRule, $scope.BreakfastList);
                 $scope.m.HRRCancelRuleName = $scope.DicValueInit($scope.m.HRRCancelRule, $scope.CancelList);
                 $scope.m.HRRSourceName = $scope.DicValueInit($scope.m.HRRSourceId, $scope.SourceList);
-                $scope.m.HRRSupplierName = $scope.DicValueInit($scope.m.HRRSupplierId, $scope.SupplierList);
-
+                if ($scope.m.HRRCancelRule == 30202) {
+                    $scope.m.HRRCancelRuleName = $scope.m.HRRCancelRuleNameExtend;
+                }
                 if (!c) return;
                 eLoading.show();
                 Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
