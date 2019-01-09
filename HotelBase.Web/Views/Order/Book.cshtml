@@ -103,10 +103,10 @@
                     <label>入住/离店</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="o.HOCheckInDate" />
+                    <input class="lay-input  long-input" id="txtDate" ng-model="o.HOCheckInDate" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-6 lay-must">
+            <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
                     <label>最晚到店时间</label>
                 </div>
@@ -244,15 +244,16 @@
         <div class="lay-row">
             <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
-                    <label>来单渠道</label>
+                    <label>来单渠道1</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="o.HOPlat1" />
+                    @*<input class="lay-input  long-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"/>*@
+                    <select class="lay-select lay-input" ng-model="o.HOPlat1"  ng-options="item.Type as item. Name for item in config.SourceOne"></select>
                 </div>
             </div>
             <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
-                    <label>来单渠道</label>
+                    <label>来单渠道2</label>
                 </div>
                 <div class="lay-form-item-control">
                     <input class="lay-input  long-input" ng-model="o.HOPlat2" />
@@ -280,6 +281,19 @@
             $scope.config = {
                 detailUrl: "/hotel/getorderneedinfo/",
                 saveUrl: "/order/save/",
+                SourceOne: [{
+                    Type: 1,
+                    Name: "OTA"
+                }, {
+                    Type: 2,
+                    Name: "新媒体"
+                }, {
+                    Type: 3,
+                    Name: "旅行社"
+                }, {
+                    Type: 4,
+                    Name: "线下"
+                }]
             };
             $scope.id = $('#hid').val();
             $scope.roomid = $('#hroomid').val();
@@ -333,6 +347,11 @@
                 //var c = $scope.checkData();
                 //if (!c) return;
                 //eLoading.show();
+                if ($('#txtDate').val() != '') {
+                    var date = $('#txtDate').val().split('~');
+                    $scope.o.HOCheckInDate = date[0];
+                    $scope.o.HOCheckOutDate = date[1];
+                }
                 $.ajax({
                     url: $scope.config.saveUrl,
                     type: 'post',

@@ -470,13 +470,13 @@ namespace HotelBase.Entity.Tables
 		/// <summary>
 		/// 数据库字段：HOLastCheckInTime
 		/// </summary>
-		private DateTime _hOLastCheckInTime = Convert.ToDateTime("1970-01-01 00:00:00");
+		private string _hOLastCheckInTime = string.Empty;
 
 		/// <summary>
 		/// 最晚到店时间
 		/// </summary>
 		[Column("HOLastCheckInTime")]
-		public DateTime HOLastCheckInTime
+		public string HOLastCheckInTime
 		{
 			get { return _hOLastCheckInTime; }
 			set { _hOLastCheckInTime = value; }

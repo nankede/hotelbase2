@@ -103,6 +103,7 @@ namespace HotelBase.DataAccess.Order
                 }
                 sb.AppendFormat(" AND HOStatus IN ({0})", state.Substring(0, state.Length - 1));
             }
+            sb.Append(" Order By HOAddTime DESC");
             var list = MysqlHelper.GetList<OrderSearchResponse>(sb.ToString());
             var total = list?.Count ?? 0;
             if (total > 0)
