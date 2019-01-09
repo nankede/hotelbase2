@@ -85,15 +85,16 @@
                     <label>入住人</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="o.HOCustomerName" />
+                    <input class="lay-input  long-input" id="cusname" ng-model="o.HOCustomerName" />
                 </div>
+                <input type="button" class="lay-btn lay-btn-primary" value="复制" ng-click="Copy()">
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
                     <label>入住人手机号</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="o.HOCustomerMobile" />
+                    <input class="lay-input  long-input" id="cusmobile" ng-model="o.HOCustomerMobile" />
                 </div>
             </div>
         </div>
@@ -229,7 +230,7 @@
                     <label>预定联系人</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="o.HOLinkerName" />
+                    <input class="lay-input  long-input"  id="linkname"  ng-model="o.HOLinkerName" />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -237,7 +238,7 @@
                     <label>联系人手机号</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="o.HOLinkerMobile" />
+                    <input class="lay-input  long-input" id="linkmobile" ng-model="o.HOLinkerMobile" />
                 </div>
             </div>
         </div>
@@ -342,6 +343,24 @@
                     }
                 });
             }
+
+            //复制
+            $scope.Copy = function () {
+                if ($("#cusname").val() == "" || $("#cusmobile").val() == "") {
+                    eMsg({
+                        timer: 2000,
+                        text: '请完善入住人信息！'
+                    });
+                    return;
+                }
+                $("#linkname").val($("#cusname").val());
+                $("#linkmobile").val($("#cusmobile").val());
+                //var name=$("#linkname").val();
+                //var mobile=$("#linkmobile").val();
+                $scope.o.HOLinkerName = $("#linkname").val();
+                $scope.o.HOLinkerMobile = $("#linkmobile").val();
+            }
+
             //保存
             $scope.Save = function () {
                 //var c = $scope.checkData();
@@ -387,64 +406,73 @@
             }
 
             //数据验证
-            $scope.checkData = function () {
-                if ($scope.o.HOCustomerName.length <= 0) {
+            $scope.checkData = function (m, o) {
+                if (o == null) {
+                    eMsg({
+                        timer: 2000,
+                        text: '请输入相关信息'
+                    });
+                    return false;
+                }
+                console.log(m);
+                console.log(o);
+                if (o.HOCustomerName == null || o.HOCustomerName.length <= 0) {
                     eMsg({
                         timer: 2000,
                         text: '入住人姓名不能为空！'
                     });
                     return false;
                 }
-                if ($scope.o.HOLinkerName.length <= 0) {
+                if (o.HOLinkerName == null || o.HOLinkerName.length <= 0) {
                     eMsg({
                         timer: 2000,
                         text: '联系人姓名不能为空！'
                     });
                     return false;
                 }
-                if ($scope.o.HOCheckInDate.length <= 0) {
+                if ($('#txtDate').val() == null) {
                     eMsg({
                         timer: 2000,
                         text: '入住/离店时间不能为空！'
                     });
                     return false;
                 }
-                if ($scope.o.HOLastCheckInTime.length <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '最晚到店时间不能为空！'
-                    });
-                    return false;
-                }
-                if ($scope.o.HOChild < 0) {
+                //if (o.HOLastCheckInTime == null || o.HOLastCheckInTime.length <= 0) {
+                //    eMsg({
+                //        timer: 2000,
+                //        text: '最晚到店时间不能为空！'
+                //    });
+                //    return false;
+                //}
+                if (o.HOChild == null || o.HOChild < 0) {
                     eMsg({
                         timer: 2000,
                         text: '成人数不能为空！'
                     });
                     return false;
                 }
-                if ($scope.o.HOChild < 0) {
+                if (o.HOChild == null || o.HOChild < 0) {
                     eMsg({
                         timer: 2000,
                         text: '儿童数不能为空！'
                     });
                     return false;
                 }
-                if ($scope.o.HORoomCount <= 0) {
+                if (o.HORoomCount == null || o.HORoomCount <= 0) {
                     eMsg({
                         timer: 2000,
                         text: '房间数不能为空！'
                     });
                     return false;
                 }
-                if ($scope.o.HOCustomerMobile.length > 0 && !mobileReg.test($scope.o.HOCustomerMobile) && !telReg.test($scope.o.HOCustomerMobile)) {
+                if (o.HOCustomerMobile == null || o.HOCustomerMobile.length > 0 && !mobileReg.test(o.HOCustomerMobile) && !telReg.test(o.HOCustomerMobile)) {
                     eMsg({
                         timer: 2000,
                         text: '入住人手机号格式不正确！'
                     });
                     return false;
                 }
-                if ($scope.o.HOLinkerMobile.length > 0 && !mobileReg.test($scope.o.HOLinkerMobile) && !telReg.test($scope.o.HOLinkerMobile)) {
+                if (o.HOLinkerMobile == null || o.HOLinkerMobile.length > 0 && !mobileReg.test(o.HOLinkerMobile) && !telReg.test(o.HOLinkerMobile)) {
                     eMsg({
                         timer: 2000,
                         text: '联系人手机号格式不正确！'
