@@ -249,7 +249,7 @@
                 </div>
                 <div class="lay-form-item-control">
                     @*<input class="lay-input  long-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"/>*@
-                    <select class="lay-select lay-input" ng-model="o.HOPlat1"  ng-options="item.Type as item. Name for item in config.SourceOne"></select>
+                    <select class="lay-select lay-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"></select>
                 </div>
             </div>
             <div class="lay-form-item lay-col-6">
@@ -363,9 +363,9 @@
 
             //保存
             $scope.Save = function () {
-                //var c = $scope.checkData();
-                //if (!c) return;
-                //eLoading.show();
+                var c = $scope.checkData();
+                if (!c) return;
+                eLoading.show();
                 if ($('#txtDate').val() != '') {
                     var date = $('#txtDate').val().split('~');
                     $scope.o.HOCheckInDate = date[0];

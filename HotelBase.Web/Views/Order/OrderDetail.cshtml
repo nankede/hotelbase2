@@ -1,4 +1,11 @@
-﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+﻿@section head{
+    <style>
+        .tip {
+            padding: 2px;
+        }
+    </style>
+}
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div class="lay-row">
         <div class="lay-form-item lay-col-14">
             <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
@@ -28,7 +35,7 @@
                         <td class="lay-table td">外部订单号：</td>
                         <td class="lay-table td" colspan="3">
                             <input id="HOOutSerialId" class="lay-input  long-input" ng-bind="m.HOOutSerialId" />
-                            <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save(m.Id,2,0)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="保存" ng-click="OperaType(2,0)">
                         </td>
                         <td></td>
                     </tr>
@@ -89,7 +96,7 @@
                         <td class="lay-table td">供应商确认号：</td>
                         <td class="lay-table td" colspan="3">
                             <input id="HOSupplierSerialId" class="lay-input  long-input" ng-bind="m.HOSupplierSerialId" />
-                            <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save(m.Id,3,0)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="保存" ng-click="OperaType(3,0)">
                         </td>
                     </tr>
                     <tr>
@@ -102,7 +109,7 @@
             </div>
             <div class="lay-form-item-control lay-col-6">
                 <h3 class="cont-title">操作日志</h3>
-                <input type="button" class="lay-btn lay-btn-primary" value="填写日志" ng-click="OpenSave()">
+                <input type="button" class="lay-btn lay-btn-primary" value="填写日志" ng-click="OperaType(0,0)">
                 <table class="lay-table">
                     <thead>
                         <tr>
@@ -173,7 +180,7 @@
                 </div>
             </div>
             <div class="lay-form-foot">
-                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save(m.Id,0,0)">
+                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
             </div>
         </div>
     </div>
@@ -188,6 +195,9 @@
                 //savelogUrl: "/order/savelog",
                 saveUrl: "/order/setorder/",
             };
+            $scope.type = "";//操作类型 0：填写日志 1：修改订单状态 2：添加外部订单号 3：添加供应商确认号
+            $scope.state = "";//订单状态
+            $scope.serialid = "";//外部订单号Or供应商确认号
             $scope.id = $('#horderid').val();
             $(function () {
                 $scope.pageInit();
@@ -200,31 +210,10 @@
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
                 //不带时分秒
                 return time = date.toLocaleDateString();
-                //带时分秒
-                //var datetime = date.getFullYear()
-                //+ "-"// "年"
-                //+ ((date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : "0"
-                //        + (date.getMonth() + 1))
-                //+ "-"// "月"
-                //+ (date.getDate() < 10 ? "0" + date.getDate() : date
-                //        .getDate())
-                //+ " "
-                //+ (date.getHours() < 10 ? "0" + date.getHours() : date
-                //        .getHours())
-                //+ ":"
-                //+ (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
-                //        .getMinutes())
-                //+ ":"
-                //+ (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
-                //        .getSeconds());
-                //return datetime;
             }
 
             $scope.GetLastdate = function (data) {
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
-                //不带时分秒
-                //return time = date.toLocaleDateString();
-                //带时分秒
                 var datetime = (date.getHours() < 10 ? "0" + date.getHours() : date
                         .getHours())
                 + ":"
@@ -254,7 +243,7 @@
                             $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate);
                             $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate);
                             //var lastdate = $scope.GetDate($scope.m.HOLastCheckInTime);
-                            $scope.m.HOLastCheckInTime = $scope.GetLastdate($scope.m.HOLastCheckInTime);
+                            //$scope.m.HOLastCheckInTime = $scope.GetLastdate($scope.m.HOLastCheckInTime);
                             $("#count").html($scope.m.HOChild + $scope.m.HOAdult);
                             $("#ordercommis").html($scope.m.HOSellPrice - $scope.m.HOContractPrice);
                         }
@@ -286,7 +275,7 @@
                         $scope.list = [];
                         if (data != null && data.IsSuccess > 0) {
                             $scope.list = data.List;
-                            $scope.pagerInit(index, data.Total);
+                            //$scope.pagerInit(index, data.Total);
                         }
                         $scope.$apply();
                     },
@@ -303,29 +292,20 @@
                 });
             }
 
-            //分页
-            $scope.pagerInit = function (index, total) {
-                var pager = new PagerView('pager');
-                pager.index = index;
-                pager.size = 10;
-                pager.itemCount = total;
-                pager.onclick = function (index) {
-                    $scope.search(index);
-                };
-                pager.render();
-            }
-
             //打开日志页面
-            $scope.OpenSave = function ()
-            {
-                $("#dialogDetail").eDialog('show');
-            }
+            //$scope.OpenSave = function ()
+            //{
+            //    $("#dialogDetail").eDialog('show');
+            //}
 
-
-            //保存
-            $scope.Save = function (id, type, state) {
-                var serialid = "";
+            //操作类型
+            $scope.OperaType = function (type, state) {
+                $scope.type = type;
                 switch (type) {
+                    //订单状态
+                    case 1:
+                        $scope.state = state;
+                        break;
                     //外部订单号
                     case 2:
                         var out = $("#HOOutSerialId").val();
@@ -337,9 +317,9 @@
                             });
                             return false;
                         }
-                        serialid = out;
+                        $scope.serialid = out;
                         break;
-                        //供应商确认号
+                    //供应商确认号
                     case 3:
                         var suplier = $("#HOSupplierSerialId").val();
                         if (suplier == null || suplier == undefined || suplier == "") {
@@ -349,46 +329,50 @@
                             });
                             return false;
                         }
-                        serialid = suplier;
+                        $scope.serialid = suplier;
                         break;
                 }
-                if (type > 0) {
-                    $("#dialogDetail").eDialog('show');
-                }
-                $.ajax({
-                    url: $scope.config.saveUrl,
-                    type: 'post',
-                    dataType: "json",
-                    data: { "id": $scope.m.id, "type": type, "state": state, "serialid": serialid, "logmodel": $scope.Log },
-                    timeout: 20000,
-                    success: function (data) {
-                        if (data != null && data.IsSuccess > 0) {
-                            eMsg({
-                                timer: 2000,
-                                text: '操作成功，正在自动关闭页面！'
-                            });
-                            //关闭页面
-                            setTimeout(function () {
-                                //$(parent.document).find('#btnSearch').click();
-                                $("#dialogDetail").eDialog('hide');
-                            }, 1000);
-                        }
-                        else {
-                            var msg = data ? data.Msg : "";
-                            eMsg({
-                                timer: 2000,
-                                text: '操作失败,' + msg
-                            });
-                        }
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-save");
-                    },
-                    complete: function () {
-                        eLoading.hide();
-                    }
-                });
+                $("#dialogDetail").eDialog('show');
+            }
+
+
+            //保存
+            $scope.Save = function () {
+                alert("12313");
+                //$.ajax({
+                //    url: $scope.config.saveUrl,
+                //    type: 'post',
+                //    dataType: "json",
+                //    data: { "id": $scope.m.id, "type": $scope.type, "state": $scope.state, "serialid": $scope.serialid, "logmodel": $scope.Log },
+                //    timeout: 20000,
+                //    success: function (data) {
+                //        if (data != null && data.IsSuccess > 0) {
+                //            eMsg({
+                //                timer: 2000,
+                //                text: '操作成功，正在自动关闭页面！'
+                //            });
+                //            //关闭页面
+                //            setTimeout(function () {
+                //                //$(parent.document).find('#btnSearch').click();
+                //                $("#dialogDetail").eDialog('hide');
+                //            }, 1000);
+                //        }
+                //        else {
+                //            var msg = data ? data.Msg : "";
+                //            eMsg({
+                //                timer: 2000,
+                //                text: '操作失败,' + msg
+                //            });
+                //        }
+                //        $scope.$apply();
+                //    },
+                //    error: function () {
+                //        console.log("err-save");
+                //    },
+                //    complete: function () {
+                //        eLoading.hide();
+                //    }
+                //});
             }
 
 
