@@ -71,6 +71,7 @@
     <Compile Include="Models\AreaInfoEntity.cs" />
     <Compile Include="Models\BaseDicEntity.cs" />
     <Compile Include="Models\BookEntity.cs" />
+    <Compile Include="Models\DistributorSearchEntity.cs" />
     <Compile Include="Models\HotelEntity.cs" />
     <Compile Include="Models\OrderInfoEntity.cs" />
     <Compile Include="Models\OrderStaticEntity.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Tables\HO_HotelOrderConfirmModel.cs" />
     <Compile Include="Tables\HO_HotelOrderLogModel.cs" />
     <Compile Include="Tables\HO_HotelOrderModel.cs" />
+    <Compile Include="Tables\H_DistributorInfoModel.cs" />
     <Compile Include="Tables\H_HotelFacilitiesModel.cs" />
     <Compile Include="Tables\H_HotelInfoModel.cs" />
     <Compile Include="Tables\H_HotelPictureModel.cs" />

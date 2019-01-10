@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataController.cs" />
+    <Compile Include="Distributor\DistributorController.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="BaseController.cs" />
     <Compile Include="Order\OrderController.cs" />

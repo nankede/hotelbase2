@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DistributorBll.cs" />
     <Compile Include="HotelRoomBll.cs" />
     <Compile Include="HotelBll.cs" />
     <Compile Include="HotelPriceBll.cs" />
