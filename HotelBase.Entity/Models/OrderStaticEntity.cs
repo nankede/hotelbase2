@@ -76,6 +76,11 @@ namespace HotelBase.Entity.Models
         /// 供应商名称
         /// </summary>
         public string SupplierName { get; set; }
+
+        /// <summary>
+        /// 分销商id
+        /// </summary>
+        public int DistributorId { get; set; }
     }
 
     public class OrderStaticResponse : BaseResponse
@@ -83,10 +88,15 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 统计时间
         /// </summary>
+        public string StaticTime { get; set; }
+        
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public string CreateTime { get; set; }
 
         /// <summary>
-        /// 统计时间
+        /// 离店时间
         /// </summary>
         public string CheckOutDate { get; set; }
 
@@ -113,7 +123,7 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 供应商名称
         /// </summary>
-        public string SupplierName { get; set; }
+        public string SupperlierName { get; set; }
 
         /// <summary>
         /// 酒店名称

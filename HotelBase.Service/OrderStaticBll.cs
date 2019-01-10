@@ -18,7 +18,7 @@ namespace HotelBase.Service
         /// <returns></returns>
         public static BasePageResponse<OrderStaticResponse> GetOrderStaticList(OrderStaticRequest request)
         {
-            return Ho_HotelOrderAccess.GetOrderStaticList(request);
+            return Ho_HotelOrderAccess.GetOrderStatic(request);
         }
     }
 }

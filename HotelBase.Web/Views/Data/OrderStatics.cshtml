@@ -7,23 +7,7 @@
             <label>查询维度</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="请输入供应商订单号" />
-        </div>
-    </div>
-    <div class="lay-form-item">
-        <div class="lay-form-item-control">
-            <input class="lay-input long-input" id="txtcheckbeginDate" ng-model="Search.StartTime" />——
-            <input class="lay-input long-input" id="txtcheckendDate" ng-model="Search.EndTime" />
-        </div>
-        <div class="lay-form-item-control">
-            <input class="lay-input long-input" id="txtcbeginDate" ng-model="Search.StartTime" />——
-            <input class="lay-input long-input" id="txtcendDate" ng-model="Search.EndTime" />
-        </div>
-    </div>
-    <div class="lay-form-item">
-        <div class="lay-form-item-control">
-            <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.ProvId" ng-init="Search.ProvId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
-            <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0" ng-options="item.Id as item. Name for item in CityList"></select>
+            <select class="lay-select lay-input" ng-model="Search.Type" ng-options="item.Type as item. Name for item in config.TypeSource" ng-change="ShowDiy(0)"></select>
         </div>
     </div>
     <div class="lay-form-item">
@@ -31,82 +15,205 @@
             <label>政策来源</label>
         </div>
         <div class="lay-form-item-control">
-            <select class="lay-select  lay-input" ng-model="Search.SourceId" ng-init="Search.SourceId=0" ng-options="item.Code as item. Name for item in Source"></select>
+            <select class="lay-select  lay-input" ng-model="Search.SupplierSource" ng-init="Search.SourceId=0" ng-options="item.Code as item. Name for item in Source"></select>
         </div>
     </div>
-    <div class="lay-form-item">
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item-caption">
+                <label>来单渠道</label>
+            </div>
+            <div class="lay-form-item-control">
+                @*<input class="lay-input  long-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"/>*@
+                <select class="lay-select lay-input" ng-model="Search.Plat1" ng-init="Search.Plat1=0" ng-options="item.Type as item. Name for item in config.SourceOne"></select>
+            </div>
+        </div>
+    </div>
+    <div class="lay-form-item" id="timesearch">
+        <div class="lay-form-item-caption ">
+            <label>时间类型</label>
+        </div>
+        <div class="lay-form-item-control">
+            <select class="lay-select lay-input" ng-model="Search.TimeType" ng-init="Search.TimeType=1" ng-options="item.Type as item. Name for item in config.TimeType"></select>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input long-input" id="txtbegindate" ng-model="Search.StartTime" />——
+            <input class="lay-input long-input" id="txtenddate" ng-model="Search.EndTime" />
+        </div>
+    </div>
+    <div class="lay-form-item" id="pcsearch" style="display:none">
+        <div class="lay-form-item-control">
+            <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.PrivoceId" ng-init="Search.PrivoceId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
+            <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0" ng-options="item.Id as item. Name for item in CityList"></select>
+        </div>
+    </div>
+    <div class="lay-form-item" id="hotelsearch" style="display:none">
         <div class="lay-form-item-caption ">
             <label>酒店id</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="多个以英文,隔开" />
+            <input class="lay-input" ng-model="Search.HotelId" placeholder="多个以英文,隔开" />
         </div>
         <div class="lay-form-item-caption ">
             <label>酒店名称</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="多个以英文,隔开" />
+            <input class="lay-input" ng-model="Search.HotelName" placeholder="多个以英文,隔开" />
         </div>
     </div>
-    <div class="lay-form-item">
+    <div class="lay-form-item" id="suppliersearch" style="display:none">
         <div class="lay-form-item-caption ">
             <label>供应商名称</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="多个以英文,隔开" />
+            <input class="lay-input" ng-model="Search.SupplierName" placeholder="多个以英文,隔开" />
+        </div>
+    </div>
+    <div class="lay-form-item" id="sourcesearch" style="display:none">
+        <div class="lay-form-item-caption ">
+            <label>分销商</label>
+        </div>
+        <div class="lay-form-item-control">
+            <input class="lay-input" ng-model="Search.DistributorId" placeholder="多个以英文,隔开" />
         </div>
     </div>
     <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
-    <table class="lay-table">
+    <table class="lay-table" id="tiemtable" style="display:none">
         <thead>
             <tr>
-                <th width="15%">订单号</th>
-                <th width="5%">渠道</th>
-                <th width="10%">酒店名称</th>
-                <th width="10%">入住时间</th>
-                <th width="15%">离店时间</th>
-                <th width="15%">预订人</th>
-                <th width="15%">订单状态</th>
-                <th width="15%">总金额</th>
+                <th width="15%">时间</th>
+                <th width="15%">创建订单</th>
+                <th width="15%">成功间夜</th>
+                <th width="10%">销售额</th>
                 <th width="10%">结算价</th>
-                <th width="10%">操作</th>
+                <th width="15%">营收</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="d in list">
-                <td ng-bind="d.HOCustomerSerialId" style="word-wrap:break-word;word-break:break-all;"></td>
-                <td ng-bind="d.HOSupplierSourceName"></td>
-                <td ng-bind="d.HName"></td>
-                <td ng-bind="d.HOCheckInDate"></td>
-                <td ng-bind="d.HOCheckOutDate"></td>
-                <td ng-bind="d.HOLinkerName"></td>
-                <td ng-bind="d.HOStatus"></td>
-                <td ng-bind="d.HOSellPrice"></td>
-                <td ng-bind="d.HOContractPrice"></td>
-                <td>
-                    <input type="button" class="lay-btn lay-btn-edit" value="详情" ng-click="detail(d.Id,d.HOCustomerSerialId)" />
-                </td>
+                <td ng-bind="d.StaticTime"></td>
+                <td ng-bind="d.TotalCreate"></td>
+                <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSell"></td>
+                <td ng-bind="d.TotalContract"></td>
+                <td ng-bind="d.TotalRevenue"></td>
             </tr>
-
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="8" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="lay-table" id="pctable" style="display:none">
+        <thead>
+            <tr>
+                <th width="15%">时间</th>
+                <th width="15%">省份</th>
+                <th width="15%">城市</th>
+                <th width="15%">创建订单</th>
+                <th width="15%">成功间夜</th>
+                <th width="10%">销售额</th>
+                <th width="10%">结算价</th>
+                <th width="15%">营收</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="d in list">
+                <td ng-bind="d.StaticTime"></td>
+                <td ng-bind="d.ProviceName"></td>
+                <td ng-bind="d.CityName"></td>
+                <td ng-bind="d.TotalCreate"></td>
+                <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSell"></td>
+                <td ng-bind="d.TotalContract"></td>
+                <td ng-bind="d.TotalRevenue"></td>
+            </tr>
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="8" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="lay-table" id="hoteltable" style="display:none">
+        <thead>
+            <tr>
+                <th width="15%">时间</th>
+                <th width="15%">酒店名称</th>
+                <th width="15%">创建订单</th>
+                <th width="15%">成功间夜</th>
+                <th width="10%">销售额</th>
+                <th width="10%">结算价</th>
+                <th width="15%">营收</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="d in list">
+                <td ng-bind="d.StaticTime"></td>
+                <td ng-bind="d.HotelName"></td>
+                <td ng-bind="d.TotalCreate"></td>
+                <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSell"></td>
+                <td ng-bind="d.TotalContract"></td>
+                <td ng-bind="d.TotalRevenue"></td>
+            </tr>
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="8" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="lay-table" id="suppliertable" style="display:none">
+        <thead>
+            <tr>
+                <th width="15%">时间</th>
+                <th width="15%">供应商名称</th>
+                <th width="15%">创建订单</th>
+                <th width="15%">成功间夜</th>
+                <th width="10%">销售额</th>
+                <th width="10%">结算价</th>
+                <th width="15%">营收</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="d in list">
+                <td ng-bind="d.StaticTime"></td>
+                <td ng-bind="d.SupperlierName"></td>
+                <td ng-bind="d.TotalCreate"></td>
+                <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSell"></td>
+                <td ng-bind="d.TotalContract"></td>
+                <td ng-bind="d.TotalRevenue"></td>
+            </tr>
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="8" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="lay-table" id="sourcetable" style="display:none">
+        <thead>
+            <tr>
+                <th width="15%">时间</th>
+                <th width="15%">分销商名称</th>
+                <th width="15%">创建订单</th>
+                <th width="15%">成功间夜</th>
+                <th width="10%">销售额</th>
+                <th width="10%">结算价</th>
+                <th width="15%">营收</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="d in list">
+                <td ng-bind="d.StaticTime"></td>
+                <td ng-bind="d.SupperlierName"></td>
+                <td ng-bind="d.TotalCreate"></td>
+                <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSell"></td>
+                <td ng-bind="d.TotalContract"></td>
+                <td ng-bind="d.TotalRevenue"></td>
+            </tr>
             <tr ng-hide="list!=null &&list.length > 0">
                 <td colspan="8" class="lay-table-empty">暂无数据显示</td>
             </tr>
         </tbody>
     </table>
     <div id="pager"></div>
-</div>
-
-<div class="lay-dialog" id="dialogDetail">
-    <div class="lay-dialog-mask"></div>
-    <div class="lay-dialog-cont" style="width:1060px;height:730px;">
-        <div class="lay-dialog-hd">
-            <h3>订单信息</h3>
-            <button class="lay-dialog-btn-close"></button>
-        </div>
-        <div class="lay-dialog-bd">
-            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
-        </div>
-    </div>
 </div>
 
 @section foot{
@@ -117,19 +224,107 @@
                 $scope.pageInit();
             });
             $scope.config = {
-                listUrl: "/order/getorderlist/",
+                listUrl: "/data/getorderstatics/",
                 sourceUrl: "/system/getdiclistbypcode/?pCode=101",
                 areaUrl: "/system/GetAreaList/?pid=",
-                TypeSource: [{ Type: 1, Name: "按时间维度" }, { Type: 2, Name: "入住人" }, { Type: 1, Name: "按时间维度" }, { Type: 1, Name: "按时间维度" }, { Type: 1, Name: "按时间维度" }],
+                TypeSource: [{ Type: 1, Name: "按时间维度" }, { Type: 2, Name: "按省市维度" }, { Type: 3, Name: "按酒店维度" }, { Type: 4, Name: "按供应商维度" }, { Type: 5, Name: "按分销商维度" }],
                 TimeType: [{ Type: 1, Name: "创建时间" }, { Type: 2, Name: "离店时间" }],
-                //bedUrl: "/system/getdiclistbypcode/?pCode=501"
-                sourceUrl: "/system/getdiclistbypcode/?pCode=101"
+                SourceOne: [{ Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }]
             }
             //页面初始化
             $scope.pageInit = function () {
                 $scope.getSource();
                 $scope.Search = { PageIndex: 1 };
-                $scope.search(1);
+                //$scope.search(1);
+                $scope.getArea(0);
+            }
+
+            //页面展示
+            $scope.ShowDiy = function (showtype) {
+                var type = $scope.Search.Type;
+                switch (type) {
+                    case 1:
+                        if (showtype == 0) {
+                            //$("#timesearch").css("display", "");
+                            $("#pcsearch").css("display", "none");
+                            $("#hotelsearch").css("display", "none");
+                            $("#suppliersearch").css("display", "none");
+                            $("#sourcesearch").css("display", "none");
+                        }
+                        else
+                        {
+                            $("#timetable").css("display", "");
+                            $("#pctable").css("display", "none");
+                            $("#hoteltable").css("display", "none");
+                            $("#suppliertable").css("display", "none");
+                            $("#sourcetable").css("display", "none");
+                        }
+                        break;
+                    case 2:
+                        if (showtype == 0) {
+                            //$("#timesearch").css("display", "");
+                            $("#pcsearch").css("display", "");
+                            $("#hotelsearch").css("display", "none");
+                            $("#suppliersearch").css("display", "none");
+                            $("#sourcesearch").css("display", "none");
+                        }
+                        else {
+                            $("#timetable").css("display", "none");
+                            $("#pctable").css("display", "");
+                            $("#hoteltable").css("display", "none");
+                            $("#suppliertable").css("display", "none");
+                            $("#sourcetable").css("display", "none");
+                        }
+                        break;
+                    case 3:
+                        if (showtype == 0) {
+                            //$("#timesearch").css("display", "");
+                            $("#pcsearch").css("display", "none");
+                            $("#hotelsearch").css("display", "");
+                            $("#suppliersearch").css("display", "none");
+                            $("#sourcesearch").css("display", "none");
+                        }
+                        else {
+                            $("#timetable").css("display", "none");
+                            $("#pctable").css("display", "none");
+                            $("#hoteltable").css("display", "");
+                            $("#suppliertable").css("display", "none");
+                            $("#sourcetable").css("display", "none");
+                        }
+                        break;
+                    case 4:
+                        if (showtype == 0) {
+                            //$("#timesearch").css("display", "");
+                            $("#pcsearch").css("display", "none");
+                            $("#hotelsearch").css("display", "none");
+                            $("#suppliersearch").css("display", "");
+                            $("#sourcesearch").css("display", "none");
+                        }
+                        else {
+                            $("#timetable").css("display", "none");
+                            $("#pctable").css("display", "none");
+                            $("#hoteltable").css("display", "none");
+                            $("#suppliertable").css("display", "");
+                            $("#sourcetable").css("display", "none");
+                        }
+                        break;
+                    case 5:
+                        if (showtype == 0) {
+                            //$("#timesearch").css("display", "");
+                            $("#pcsearch").css("display", "none");
+                            $("#hotelsearch").css("display", "none");
+                            $("#suppliersearch").css("display", "none");
+                            $("#sourcesearch").css("display", "");
+                        }
+                        else {
+                            $("#timetable").css("display", "none");
+                            $("#pctable").css("display", "none");
+                            $("#hoteltable").css("display", "none");
+                            $("#suppliertable").css("display", "none");
+                            $("#sourcetable").css("display", "");
+                        }
+                        break;
+                }
             }
 
             //获取来源
@@ -164,26 +359,36 @@
                     success: function (data) {
                         if (type == 0) {
                             $scope.ProvList = data;
-                            $scope.ProvList.unshift({ Id: 0, Name: "请选择省份" });
-                            $scope.CityList = [{ Id: 0, Name: "请选择城市" }];
+                            $scope.ProvList.unshift({
+                                Id: 0,
+                                Name: "请选择省份"
+                            });
+                            $scope.CityList = [{
+                                Id: 0,
+                                Name: "请选择城市"
+                            }];
                             $scope.Search.CityId = 0;
-                        }
-                        else {
+                        } else {
                             $scope.CityList = data;
-                            $scope.CityList.unshift({ Id: 0, Name: "请选择城市" });
+                            $scope.CityList.unshift({
+                                Id: 0,
+                                Name: "请选择城市"
+                            });
                         }
                         $scope.$apply();
                     },
                     error: function () {
                         console.log("err-getSource");
                     },
-                    complete: function () {
-                    }
+                    complete: function () { }
                 });
             }
+
             //查询
             $scope.search = function (index) {
-                $scope.detailClear();
+                //$scope.detailClear();
+                var type = $scope.Search.Type;
+                $scope.ShowDiy(1);
                 $scope.Search.PageIndex = index;
                 var para = $scope.Search;
                 eLoading.show();
@@ -242,16 +447,6 @@
                     $scope.search(index);
                 };
                 pager.render();
-            }
-            $scope.detail = function (orderid,serialid) {
-                var url = "/order/orderdetail?orderid=" + orderid + "&serialid=" + serialid;
-                $('#ifm_detail').prop('src', url);
-                $("#dialogDetail").eDialog('show');
-            }
-
-            $scope.detailClear = function (id) {
-                $('#ifm_detail').prop('src', '');
-                $("#dialogDetail").eDialog('hide');
             }
         });
     </script>

@@ -141,7 +141,7 @@
 <input id="ha" type="hidden" />
 <input id="horderid" type="hidden" value="@ViewBag.OrderId" />
 <input id="hserialid" type="hidden" value="@ViewBag.CustomerSerialId" />
-<div class="lay-dialog" id="dialogDetail" hidden>
+<div class="lay-dialog" id="dialoglog" hidden>
     <div class="lay-dialog-mask"></div>
     <div class="lay-dialog-cont" style="width:60%;height:60%;">
         <div class="lay-dialog-hd">
@@ -180,7 +180,7 @@
                 </div>
             </div>
             <div class="lay-form-foot">
-                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveLog()">
             </div>
         </div>
     </div>
@@ -332,12 +332,12 @@
                         $scope.serialid = suplier;
                         break;
                 }
-                $("#dialogDetail").eDialog('show');
+                $("#dialoglog").eDialog('show');
             }
 
 
             //保存
-            $scope.Save = function () {
+            $scope.SaveLog = function () {
                 alert("12313");
                 //$.ajax({
                 //    url: $scope.config.saveUrl,
@@ -376,113 +376,113 @@
             }
 
 
-            //保存订单操作
-            $scope.SaveOrder = function (type, state) {
-                $.ajax({
-                    url: $scope.config.saveUrl,
-                    type: 'post',
-                    dataType: "json",
-                    data: { "id": $scope.id, "type": type, "state": state, "logmodel": $scope.Log },
-                    timeout: 20000,
-                    success: function (data) {
-                        if (data != null && data.IsSuccess > 0) {
-                            $scope.l.Id = data.AddId;
-                            eMsg({
-                                timer: 2000,
-                                text: '操作成功，正在自动关闭页面！'
-                            });
-                            //关闭页面
-                            setTimeout(function () {
-                                $scope.Search = { PageIndex: 1 };
-                                $scope.search(1);
-                            }, 1000);
-                        }
-                        else {
-                            var msg = data ? data.Msg : "";
-                            eMsg({
-                                timer: 2000,
-                                text: '操作失败,' + msg
-                            });
-                        }
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-save");
-                    },
-                    complete: function () {
-                        eLoading.hide();
-                    }
-                });
-            }
+            ////保存订单操作
+            //$scope.SaveOrder = function (type, state) {
+            //    $.ajax({
+            //        url: $scope.config.saveUrl,
+            //        type: 'post',
+            //        dataType: "json",
+            //        data: { "id": $scope.id, "type": type, "state": state, "logmodel": $scope.Log },
+            //        timeout: 20000,
+            //        success: function (data) {
+            //            if (data != null && data.IsSuccess > 0) {
+            //                $scope.l.Id = data.AddId;
+            //                eMsg({
+            //                    timer: 2000,
+            //                    text: '操作成功，正在自动关闭页面！'
+            //                });
+            //                //关闭页面
+            //                setTimeout(function () {
+            //                    $scope.Search = { PageIndex: 1 };
+            //                    $scope.search(1);
+            //                }, 1000);
+            //            }
+            //            else {
+            //                var msg = data ? data.Msg : "";
+            //                eMsg({
+            //                    timer: 2000,
+            //                    text: '操作失败,' + msg
+            //                });
+            //            }
+            //            $scope.$apply();
+            //        },
+            //        error: function () {
+            //            console.log("err-save");
+            //        },
+            //        complete: function () {
+            //            eLoading.hide();
+            //        }
+            //    });
+            //}
 
-            //保存订单日志
-            $scope.SaveLog = function () {
-                $("#dialogDetail").eDialog('show');
-                $.ajax({
-                    url: $scope.config.savelogUrl,
-                    type: 'post',
-                    dataType: "json",
-                    data: $scope.Log,
-                    timeout: 20000,
-                    success: function (data) {
-                        if (data != null && data.IsSuccess > 0) {
-                            $scope.l.Id = data.AddId;
-                            eMsg({
-                                timer: 2000,
-                                text: '操作成功，正在自动关闭页面！'
-                            });
-                            //关闭页面
-                            setTimeout(function () {
-                                $scope.Search = { PageIndex: 1 };
-                                $scope.search(1);
-                            }, 1000);
-                        }
-                        else {
-                            var msg = data ? data.Msg : "";
-                            eMsg({
-                                timer: 2000,
-                                text: '操作失败,' + msg
-                            });
-                        }
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-save");
-                    },
-                    complete: function () {
-                        eLoading.hide();
-                    }
-                });
-            }
+            ////保存订单日志
+            //$scope.SaveLog = function () {
+            //    $("#dialoglog").eDialog('show');
+            //    $.ajax({
+            //        url: $scope.config.savelogUrl,
+            //        type: 'post',
+            //        dataType: "json",
+            //        data: $scope.Log,
+            //        timeout: 20000,
+            //        success: function (data) {
+            //            if (data != null && data.IsSuccess > 0) {
+            //                $scope.l.Id = data.AddId;
+            //                eMsg({
+            //                    timer: 2000,
+            //                    text: '操作成功，正在自动关闭页面！'
+            //                });
+            //                //关闭页面
+            //                setTimeout(function () {
+            //                    $scope.Search = { PageIndex: 1 };
+            //                    $scope.search(1);
+            //                }, 1000);
+            //            }
+            //            else {
+            //                var msg = data ? data.Msg : "";
+            //                eMsg({
+            //                    timer: 2000,
+            //                    text: '操作失败,' + msg
+            //                });
+            //            }
+            //            $scope.$apply();
+            //        },
+            //        error: function () {
+            //            console.log("err-save");
+            //        },
+            //        complete: function () {
+            //            eLoading.hide();
+            //        }
+            //    });
+            //}
 
-            //更新订单
-            $scope.setOrder = function (id, valid) {
-                var msg = "确定保存？";
-                eMsg({
-                    timer: 2000,
-                    text: msg
-                });
-                valid = valid == 1 ? 0 : 1;
-                var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
-                Untitl.Get(url, {}, function (data) {
-                    if (data != null && data.IsSuccess > 0) {
-                        eMsg({
-                            timer: 2000,
-                            text: '操作成功，正在刷新页面！'
-                        });
-                        //刷新页面
-                        $scope.search(1);
-                    }
-                    else {
-                        var msg = data ? data.Msg : "";
-                        eMsg({
-                            timer: 2000,
-                            text: '操作失败,' + msg
-                        });
-                    }
-                });
+            ////更新订单
+            //$scope.setOrder = function (id, valid) {
+            //    var msg = "确定保存？";
+            //    eMsg({
+            //        timer: 2000,
+            //        text: msg
+            //    });
+            //    valid = valid == 1 ? 0 : 1;
+            //    var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
+            //    Untitl.Get(url, {}, function (data) {
+            //        if (data != null && data.IsSuccess > 0) {
+            //            eMsg({
+            //                timer: 2000,
+            //                text: '操作成功，正在刷新页面！'
+            //            });
+            //            //刷新页面
+            //            $scope.search(1);
+            //        }
+            //        else {
+            //            var msg = data ? data.Msg : "";
+            //            eMsg({
+            //                timer: 2000,
+            //                text: '操作失败,' + msg
+            //            });
+            //        }
+            //    });
 
-            }
+            //}
         });
     </script>
 }
