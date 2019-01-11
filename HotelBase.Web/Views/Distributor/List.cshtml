@@ -23,7 +23,6 @@
                 </div>
                 <div class="lay-form-item lay-col-3">
                     <div class="lay-form-item-caption ">
-                        <label>lay-form-item-caption ">
                         <label>分销商名称</label>
                     </div>
                     <div class="lay-form-item-control">
@@ -48,7 +47,7 @@
                     <div class="lay-form-item-control">
                         <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.DProviceId" ng-init="Search.DProviceId=0"
                                 ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
-                        <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0"
+                        <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.DCityId" ng-init="Search.DCityId=0"
                                 ng-options="item.Id as item. Name for item in CityList"></select>
                     </div>
                 </div>
@@ -138,7 +137,7 @@
                 $scope.pageInit();
             });
             $scope.config = {
-                areaUrl: "/system/GetAreaList/?pid=",
+                areaUrl: "/system/getarealist/?pid=",
                 listUrl: "/distributor/getlist/",
                 validUrl: "/distributor/setvalid/",
                 ValidSource: [{
@@ -228,7 +227,7 @@
 
             //获取省市查询
             $scope.getArea = function (type) {
-                var pId = type == 0 ? 1 : $scope.Search.ProvId;
+                var pId = type == 0 ? 1 : $scope.Search.DProviceId;
                 if (!pId || pId <= 0) return;
                 var url = $scope.config.areaUrl + pId;
                 $.ajax({
