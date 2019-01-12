@@ -230,7 +230,7 @@
                     <label>预定联系人</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input"  id="linkname"  ng-model="o.HOLinkerName" />
+                    <input class="lay-input  long-input" id="linkname" ng-model="o.HOLinkerName" />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
@@ -257,7 +257,8 @@
                     <label>来单渠道2</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="o.HOPlat2" />
+                    @*<input class="lay-input  long-input" ng-model="o.HOPlat2" />*@
+                    <select class="lay-select lay-input" ng-model="o.HOPlat2" ng-options="item.Code as item. Name for item in config.SourceTwo"></select>
                 </div>
             </div>
         </div>
@@ -278,10 +279,11 @@
         var emailReg = /\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
         var app = angular.module('myApp', []);
         app.controller('myCtrl', function ($scope) {
-            $scope.Source = [{ Code: 0, Name: '请选择' }];
             $scope.config = {
                 detailUrl: "/hotel/getorderneedinfo/",
+                distributorUrl: "/distributor/getdistributor/",
                 saveUrl: "/order/save/",
+                SourceTwo: [{ Code: -1, Name: "请选择" }],
                 SourceOne: [{
                     Type: 1,
                     Name: "OTA"
@@ -320,7 +322,20 @@
                     $scope.o.HOContractPrice = $("#totalcontract").val();
                     $scope.o.HOSellPrice = $("#totalsell").val();
                 });
+                $scope.getDistributor();
             }
+
+            //获取分销商
+            $scope.getDistributor = function () {
+                var url = $scope.config.distributorUrl;
+                Untitl.Get(url, {}, function (data) {
+                    $scope.config.SourceTwo = data;
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getDistributor");
+                })
+            }
+
             //获取酒店详情
             $scope.getHotel = function (hid, roomid, ruleid, supplierid) {
                 if (!hid || hid <= 0 && !roomid || roomid <= 0 && !ruleid || ruleid <= 0 && !supplierid || supplierid <= 0) return;

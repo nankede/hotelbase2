@@ -91,5 +91,16 @@ namespace HotelBase.Web.Controller.Distributor
             var model = DistributorBll.SetValid(id, valid, CurrtUser.Name);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 分销商列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetDistributor(int isDefault = 1)
+        {
+            var response = DistributorBll.GetDistributor(isDefault);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

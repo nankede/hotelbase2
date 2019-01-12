@@ -516,13 +516,25 @@ namespace HotelBase.DataAccess.Order
             StringBuilder sbwhere = new StringBuilder();
             if (request.TimeType == 1)
             {
-                sbwhere.AppendFormat(" AND ho.HOAddTime>= '{0}'", request.StartTime);
-                sbwhere.AppendFormat(" AND ho.HOAddTime< '{0}'", request.EndTime);
+                if (!string.IsNullOrWhiteSpace(request.StartTime))
+                {
+                    sbwhere.AppendFormat(" AND ho.HOAddTime>= '{0}'", request.StartTime);
+                }
+                if (!string.IsNullOrWhiteSpace(request.EndTime))
+                {
+                    sbwhere.AppendFormat(" AND ho.HOAddTime< '{0}'", request.EndTime);
+                }
             }
-            if(request.TimeType == 2)
+            if (request.TimeType == 2)
             {
-                sbwhere.AppendFormat(" AND ho.HOCheckOutDate>= '{0}'", request.StartTime);
-                sbwhere.AppendFormat(" AND ho.HOCheckOutDate< '{0}'", request.EndTime);
+                if (!string.IsNullOrWhiteSpace(request.StartTime))
+                {
+                    sbwhere.AppendFormat(" AND ho.HOCheckOutDate>= '{0}'", request.StartTime);
+                }
+                if (!string.IsNullOrWhiteSpace(request.EndTime))
+                {
+                    sbwhere.AppendFormat(" AND ho.HOCheckOutDate< '{0}'", request.EndTime);
+                }
             }
             if (request.PrivoceId > 0)
             {
@@ -538,7 +550,7 @@ namespace HotelBase.DataAccess.Order
             }
             if (request.Part2 > 0)
             {
-                sbwhere.AppendFormat(" AND hb.HoPlat2= {0}", request.Part2);
+                sbwhere.AppendFormat(" AND ho.HoPlat2= {0}", request.Part2);
             }
             if (!string.IsNullOrWhiteSpace(request.HotelName))
             {
@@ -711,15 +723,48 @@ namespace HotelBase.DataAccess.Order
                     break;
                 //分销商
                 case 5:
+                    sb.AppendFormat(@"SELECT
+	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d') AS StaticTime,
+	                                        hd.Id AS DistributorId,
+	                                        hd.DName AS DistributorName,
+	                                        count(ho.Id) AS TotalCreate,
+	                                        count(
+		                                        CASE
+		                                        WHEN ho.HOStatus = 1 THEN
+			                                        1
+		                                        END
+	                                        ) AS TotalSuccess,
+	                                        sum(ho.HOSellPrice) AS TotalSell,
+	                                        sum(ho.HOContractPrice) AS TotalContract,
+	                                        sum(
+		                                        ho.HOSellPrice - ho.HOContractPrice
+	                                        ) AS TotalRevenue
+                                        FROM
+	                                        ho_hotelorder ho
+										INNER JOIN h_hotelinfo hb ON hb.Id = ho.HIId
+                                        INNER JOIN h_distributorinfo hd ON hd.Id = ho.HoPlat2
+                                        WHERE
+	                                        1 = 1
+                                            {0}
+                                        GROUP BY
+	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d'),
+	                                        hd.Id,
+	                                        hd.DName", sbwhere.ToString());
                     break;
             }
             var list = MysqlHelper.GetList<OrderStaticResponse>(sb.ToString());
+            var TotalCreate = list.Sum(x => Convert.ToInt32(x.TotalCreate));
+            var TotalSuccess = list.Sum(x => Convert.ToInt32(x.TotalSuccess));
+            var TotalSell = list.Sum(x => Convert.ToInt32(x.TotalSell));
+            var TotalContract = list.Sum(x => Convert.ToInt32(x.TotalContract));
+            var TotalRevenue = list.Sum(x => Convert.ToInt32(x.TotalRevenue));
             var total = list?.Count ?? 0;
             if (total > 0)
             {
                 response.IsSuccess = 1;
                 response.Total = total;
                 response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
+                response.Msg = TotalCreate + "|" + TotalSuccess + "|" + TotalSell + "|" + TotalContract + "|" + TotalRevenue;
             }
             return response;
         }

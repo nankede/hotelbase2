@@ -7,7 +7,9 @@
             <label>查询维度</label>
         </div>
         <div class="lay-form-item-control">
-            <select class="lay-select lay-input" ng-model="Search.Type" ng-options="item.Type as item. Name for item in config.TypeSource" ng-change="ShowDiy(0)"></select>
+            <select class="lay-select lay-input" ng-model="Search.Type" ng-init="Search.Type=1" ng-options="item.Type as item. Name for item in config.TypeSource" ng-change="ShowDiy(0)">
+                <option value="" selected hidden>
+            </select>
         </div>
     </div>
     <div class="lay-form-item">
@@ -15,7 +17,9 @@
             <label>政策来源</label>
         </div>
         <div class="lay-form-item-control">
-            <select class="lay-select  lay-input" ng-model="Search.SupplierSource" ng-init="Search.SourceId=0" ng-options="item.Code as item. Name for item in Source"></select>
+            <select class="lay-select  lay-input" ng-model="Search.SupplierSource" ng-init="Search.SourceId=0" ng-options="item.Code as item. Name for item in Source">
+                <option value="" selected hidden>
+            </select>
         </div>
     </div>
     <div class="lay-row">
@@ -25,7 +29,9 @@
             </div>
             <div class="lay-form-item-control">
                 @*<input class="lay-input  long-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"/>*@
-                <select class="lay-select lay-input" ng-model="Search.Plat1" ng-init="Search.Plat1=0" ng-options="item.Type as item. Name for item in config.SourceOne"></select>
+                <select class="lay-select lay-input" ng-model="Search.Plat1" ng-init="Search.Plat1=0" ng-options="item.Type as item. Name for item in config.SourceOne">
+                    <option value="" selected hidden>
+                </select>
             </div>
         </div>
     </div>
@@ -34,17 +40,23 @@
             <label>时间类型</label>
         </div>
         <div class="lay-form-item-control">
-            <select class="lay-select lay-input" ng-model="Search.TimeType" ng-init="Search.TimeType=1" ng-options="item.Type as item. Name for item in config.TimeType"></select>
+            <select class="lay-select lay-input" ng-model="Search.TimeType" ng-init="Search.TimeType=1" ng-options="item.Type as item. Name for item in config.TimeType">
+                <option value="" selected hidden>
+            </select>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input long-input" id="txtbegindate" ng-model="Search.StartTime" />——
-            <input class="lay-input long-input" id="txtenddate" ng-model="Search.EndTime" />
+            <input class="lay-input long-input" id="txtbeginDate" ng-model="Search.StartTime" />——
+            <input class="lay-input long-input" id="txtendDate" ng-model="Search.EndTime" />
         </div>
     </div>
     <div class="lay-form-item" id="pcsearch" style="display:none">
         <div class="lay-form-item-control">
-            <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.PrivoceId" ng-init="Search.PrivoceId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
-            <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0" ng-options="item.Id as item. Name for item in CityList"></select>
+            <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.PrivoceId" ng-init="Search.PrivoceId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)">
+                <option value="" selected hidden>
+            </select>
+            <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0" ng-options="item.Id as item. Name for item in CityList">
+                <option value="" selected hidden>
+            </select>
         </div>
     </div>
     <div class="lay-form-item" id="hotelsearch" style="display:none">
@@ -74,11 +86,13 @@
             <label>分销商</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="Search.DistributorId" placeholder="多个以英文,隔开" />
+            <select class="lay-select lay-input" ng-model="Search.Plat2" ng-init="Search.Plat2=0" ng-options="item.Code as item. Name for item in config.SourceTwo">
+                <option value="" selected hidden>
+            </select>
         </div>
     </div>
     <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
-    <table class="lay-table" id="tiemtable" style="display:none">
+    <table class="lay-table" id="timetable">
         <thead>
             <tr>
                 <th width="15%">时间</th>
@@ -90,6 +104,14 @@
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td>汇总</td>
+                <td ng-bind="getToal(0)"></td>
+                <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(2)"></td>
+                <td ng-bind="getToal(3)"></td>
+                <td ng-bind="getToal(4)"></td>
+            </tr>
             <tr ng-repeat="d in list">
                 <td ng-bind="d.StaticTime"></td>
                 <td ng-bind="d.TotalCreate"></td>
@@ -117,6 +139,16 @@
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td>汇总</td>
+                <td></td>
+                <td></td>
+                <td ng-bind="getToal(0)"></td>
+                <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(2)"></td>
+                <td ng-bind="getToal(3)"></td>
+                <td ng-bind="getToal(4)"></td>
+            </tr>
             <tr ng-repeat="d in list">
                 <td ng-bind="d.StaticTime"></td>
                 <td ng-bind="d.ProviceName"></td>
@@ -145,6 +177,15 @@
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td>汇总</td>
+                <td></td>
+                <td ng-bind="getToal(0)"></td>
+                <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(2)"></td>
+                <td ng-bind="getToal(3)"></td>
+                <td ng-bind="getToal(4)"></td>
+            </tr>
             <tr ng-repeat="d in list">
                 <td ng-bind="d.StaticTime"></td>
                 <td ng-bind="d.HotelName"></td>
@@ -172,6 +213,15 @@
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td>汇总</td>
+                <td></td>
+                <td ng-bind="getToal(0)"></td>
+                <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(2)"></td>
+                <td ng-bind="getToal(3)"></td>
+                <td ng-bind="getToal(4)"></td>
+            </tr>
             <tr ng-repeat="d in list">
                 <td ng-bind="d.StaticTime"></td>
                 <td ng-bind="d.SupperlierName"></td>
@@ -199,9 +249,18 @@
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td>汇总</td>
+                <td></td>
+                <td ng-bind="getToal(0)"></td>
+                <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(2)"></td>
+                <td ng-bind="getToal(3)"></td>
+                <td ng-bind="getToal(4)"></td>
+            </tr>
             <tr ng-repeat="d in list">
                 <td ng-bind="d.StaticTime"></td>
-                <td ng-bind="d.SupperlierName"></td>
+                <td ng-bind="d.DistributorName"></td>
                 <td ng-bind="d.TotalCreate"></td>
                 <td ng-bind="d.TotalSuccess"></td>
                 <td ng-bind="d.TotalSell"></td>
@@ -215,7 +274,7 @@
     </table>
     <div id="pager"></div>
 </div>
-
+<input type="hidden" id="hidtotalmsg">
 @section foot{
     <script>
         var app = angular.module('myApp', []);
@@ -225,18 +284,53 @@
             });
             $scope.config = {
                 listUrl: "/data/getorderstatics/",
+                distributorUrl: "/distributor/getdistributor/",
                 sourceUrl: "/system/getdiclistbypcode/?pCode=101",
                 areaUrl: "/system/GetAreaList/?pid=",
+                SourceTwo: [{ Code: -1, Name: "请选择" }],
                 TypeSource: [{ Type: 1, Name: "按时间维度" }, { Type: 2, Name: "按省市维度" }, { Type: 3, Name: "按酒店维度" }, { Type: 4, Name: "按供应商维度" }, { Type: 5, Name: "按分销商维度" }],
                 TimeType: [{ Type: 1, Name: "创建时间" }, { Type: 2, Name: "离店时间" }],
-                SourceOne: [{ Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }]
+                SourceOne: [{ Type: -1, Name: "请选择" }, { Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }]
             }
             //页面初始化
             $scope.pageInit = function () {
                 $scope.getSource();
-                $scope.Search = { PageIndex: 1 };
-                //$scope.search(1);
+                $scope.Search = { PageIndex: 1, TimeType: 1, Type: 1, PrivoceId: 0, CityId: -1, Plat1: -1, Plat2: 0, SupplierSource: 0 };
+                laydate.render({
+                    elem: '#txtbeginDate'
+                })
+                laydate.render({
+                    elem: '#txtendDate'
+                })
+                $scope.search(1);
                 $scope.getArea(0);
+                $scope.getDistributor();
+                //$scope.Search.Type=$scope.config.TypeSource[0];
+            }
+
+            //获取分销商
+            $scope.getDistributor = function () {
+                var url = $scope.config.distributorUrl;
+                Untitl.Get(url, {}, function (data) {
+                    $scope.config.SourceTwo = data;
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getDistributor");
+                })
+            }
+
+            //获取汇总数据
+            $scope.getToal = function (index) {
+                //alert($("#hidtotalmsg").val());
+                var collect = "";
+                console.log($("#hidtotalmsg").val());
+                var meg = $("#hidtotalmsg").val();
+                var show = meg.split("|");
+                if (show)
+                {
+                    collect = show[index];
+                }
+                return collect;
             }
 
             //页面展示
@@ -251,8 +345,7 @@
                             $("#suppliersearch").css("display", "none");
                             $("#sourcesearch").css("display", "none");
                         }
-                        else
-                        {
+                        else {
                             $("#timetable").css("display", "");
                             $("#pctable").css("display", "none");
                             $("#hoteltable").css("display", "none");
@@ -348,7 +441,7 @@
 
             //获取省市查询
             $scope.getArea = function (type) {
-                var pId = type == 0 ? 1 : $scope.Search.ProvId;
+                var pId = type == 0 ? 1 : $scope.Search.PrivoceId;
                 if (!pId || pId <= 0) return;
                 var url = $scope.config.areaUrl + pId;
                 $.ajax({
@@ -390,6 +483,8 @@
                 var type = $scope.Search.Type;
                 $scope.ShowDiy(1);
                 $scope.Search.PageIndex = index;
+                $scope.Search.StartTime = $("#txtbeginDate").val();
+                $scope.Search.EndTime = $("#txtendDate").val();
                 var para = $scope.Search;
                 eLoading.show();
                 $.ajax({
@@ -401,6 +496,8 @@
                     success: function (data) {
                         $scope.list = [];
                         if (data != null && data.IsSuccess > 0) {
+                            $scope.Msg = data.Msg;
+                            $("#hidtotalmsg").val(data.Msg);
                             $scope.list = data.List;
                             $scope.pagerInit(index, data.Total);
                         }
@@ -415,25 +512,6 @@
                     },
                     complete: function () {
                         eLoading.hide();
-                    }
-                });
-            }
-
-            //获取来源
-            $scope.getSource = function () {
-                $.ajax({
-                    url: $scope.config.sourceUrl,
-                    type: 'get',
-                    dataType: "json",
-                    timeout: 20000,
-                    success: function (data) {
-                        $scope.Source = data;
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-getSource");
-                    },
-                    complete: function () {
                     }
                 });
             }

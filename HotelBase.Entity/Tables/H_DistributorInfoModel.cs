@@ -99,7 +99,7 @@ namespace HotelBase.Entity.Tables
         /// <summary>
         /// 加价/返佣比例
         /// </summary>
-        public int DCommissionPoint { get; set; } = 0;
+        public string DCommissionPoint { get; set; }
         /// <summary>
         /// 开票抬头
         /// </summary>

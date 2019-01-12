@@ -108,5 +108,29 @@ namespace HotelBase.Service
             return res;
         }
 
+        /// <summary>
+        /// 查询分销商列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static List<BaseDic> GetDistributor( int isDefault)
+        {
+            var list = new List<BaseDic>();
+            if (isDefault == 1)
+            {
+                list.Add(new BaseDic { Code = 0, Name = "请选择" });
+            }
+            var data = H_DistributorAccess.GetDistributorList(new DistributorSearchRequest
+            {
+                PageSize = 100
+            });
+            data?.List?.ForEach(x =>
+            {
+                list.Add(new BaseDic { Code = x.Id, Name = x.DName });
+
+            });
+            return list;
+        }
+
     }
 }

@@ -52,7 +52,7 @@ namespace HotelBase.Entity.Models
         public int Part1 { get; set; }
 
         /// <summary>
-        /// 来源2
+        /// 分销商id
         /// </summary>
         public int Part2 { get; set; }
 
@@ -80,7 +80,7 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 分销商id
         /// </summary>
-        public int DistributorId { get; set; }
+       // public int DistributorId { get; set; }
     }
 
     public class OrderStaticResponse : BaseResponse
@@ -121,6 +121,11 @@ namespace HotelBase.Entity.Models
         public string CityName { get; set; }
 
         /// <summary>
+        /// 分销商名称
+        /// </summary>
+        public string DistributorName { get; set; }
+
+        /// <summary>
         /// 供应商名称
         /// </summary>
         public string SupperlierName { get; set; }
@@ -154,5 +159,38 @@ namespace HotelBase.Entity.Models
         /// 营收
         /// </summary>
         public decimal TotalRevenue { get; set; }
+
+        /// <summary>
+        /// 汇总数据
+        /// </summary>
+        public decimal CollectData { get; set; }
+    }
+
+    public class ShowResponse : OrderStaticResponse
+    {
+        /// <summary>
+        /// 汇总创建订单
+        /// </summary>
+        public string CountCreate { get; set; }
+
+        /// <summary>
+        /// 汇总成功订单
+        /// </summary>
+        public string CountSuccess { get; set; }
+
+        /// <summary>
+        /// 汇总销售额
+        /// </summary>
+        public decimal CountSell { get; set; }
+
+        /// <summary>
+        /// 汇总结算额
+        /// </summary>
+        public decimal CountContract { get; set; }
+
+        /// <summary>
+        /// 汇总营收
+        /// </summary>
+        public decimal CountRevenue { get; set; }
     }
 }

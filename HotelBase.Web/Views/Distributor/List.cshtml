@@ -35,7 +35,9 @@
                     </div>
                     <div class="lay-form-item-control">
                         <select class="lay-select  lay-input" ng-model="Search.DIsValid" ng-init="Search.DIsValid=-1"
-                                ng-options="item.Code as item. Name for item in Config.ValidSource"></select>
+                                ng-options="item.Code as item. Name for item in config.ValidSource">
+                            <option value="" selected hidden>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -57,7 +59,9 @@
                     </div>
                     <div class="lay-form-item-control">
                         <select class="lay-select  lay-input" ng-model="Search.DCooperationMode" ng-init="Search.DCooperationMode=-1"
-                                ng-options="item.Code as item. Name for item in Config.CooperationMode"></select>
+                                ng-options="item.Code as item. Name for item in config.CooperationMode">
+                            <option value="" selected hidden>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -164,14 +168,11 @@
             //页面初始化
             $scope.pageInit = function () {
                 $scope.Search = {
-                    PageIndex: 1
-                    //Id: '',
-                    //DName: '',
-                    //SupplierName: '',
-                    //Valid: -1,
-                    //ProvId: 0,
-                    //CityId: 0,
-                    //SourceId: 0
+                    PageIndex: 1,
+                    DIsValid: -1,
+                    DCooperationMode: -1,
+                    DProviceId: 0,
+                    DCityId: 0
                 };
                 $scope.getArea(0);
                 $scope.search(1);

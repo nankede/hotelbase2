@@ -15,8 +15,8 @@
                     <label>省市</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择省份" ng-model="m.DProvinceId" ng-init="m.DProvinceId=0" ng-options="item.Code as item. Name for item in ProvList" ng-change="getArea(1)"></select>
-                    <select class="lay-select select-area" placeholder="请选择城市" ng-model="m.DCityId" ng-init="m.DCityId=0" ng-options="item.Code as item. Name for item in CityList"></select>
+                    <select class="lay-select select-area" placeholder="请选择省份" ng-model="m.DProviceId" ng-init="m.DProviceId=0" ng-options="item.Code as item.Name for item in ProvList" ng-change="getArea(1)"></select>
+                    <select class="lay-select select-area" placeholder="请选择城市" ng-model="m.DCityId" ng-init="m.DCityId=0" ng-options="item.Code as item.Name for item in CityList"></select>
                 </div>
             </div>
         </div>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="lay-form-item-control">
                     @*<input class="lay-input  long-input" ng-model="o.HOPlat2" />*@
-                    <select class="lay-select lay-input" ng-model="o.DSettlementType" ng-options="item.Type as item. Name for item in config.SettlementType"></select>
+                    <select class="lay-select lay-input" ng-model="m.DSettlementType" ng-options="item.Type as item. Name for item in config.SettlementType"></select>
                 </div>
             </div>
         </div>
@@ -272,7 +272,7 @@
 
                 //获取省市查询
                 $scope.getArea = function (type) {
-                    var pId = type == 0 ? 1 : $scope.m.DProvinceId;
+                    var pId = type == 0 ? 1 : $scope.m.DProviceId;
                     if (!pId || pId <= 0) return;
                     var url = $scope.config.areaUrl + pId;
                     Untitl.Get(url, {}, function (data) {
@@ -280,7 +280,7 @@
                             $scope.ProvList = data;
                             $scope.ProvList.unshift({ Code: 0, Name: "请选择省份" });
                             $scope.CityList = [{ Code: 0, Name: "请选择城市" }];
-                            $scope.m.HICityId = 0;
+                            $scope.m.DCityId = 0;
                         }
                         else {
                             $scope.CityList = data;
@@ -325,6 +325,19 @@
                         }
                     });
                 }
+
+                //省市赋值
+                $scope.DicPCValueInit = function (id, list) {
+                    var name = "--";
+                    if (list) {
+                        $.each(list, function (index, item) {
+                            if (item.Code == id)
+                                name = item.Name;
+                        });
+                    }
+                    return name;
+                }
+
                 //赋值
                 $scope.DicValueInit = function (id, list) {
                     var name = "";
@@ -340,35 +353,33 @@
                 $scope.GetDate = function (data) {
                     var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
                     //不带时分秒
-                    return time = date.toLocaleDateString();
-                }
-
-                $scope.GetLastdate = function (data) {
-                    var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
-                    var datetime = (date.getHours() < 10 ? "0" + date.getHours() : date
-                            .getHours())
-                    + ":"
-                    + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
-                            .getMinutes())
-                    + ":"
-                    + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
-                            .getSeconds());
-                    return datetime;
+                    //var time = date.toLocaleDateString();
+                    var myyear = date.getFullYear();
+                    var mymonth = date.getMonth() + 1;
+                    var myweekday = date.getDate();
+                    if (mymonth < 10) {
+                        mymonth = "0" + mymonth;
+                    }
+                    if (myweekday < 10) {
+                        myweekday = "0" + myweekday;
+                    }
+                    
+                    return (myyear + "-" + mymonth + "-" + myweekday);
                 }
 
                 //保存
                 $scope.Save = function () {
-                    $scope.m.DCityName = $scope.DicValueInit($scope.m.DCityId, $scope.CityList)
-                    $scope.m.DProviceName = $scope.DicValueInit($scope.m.DProvinceId, $scope.ProvList)
+                    $scope.m.DCityName = $scope.DicPCValueInit($scope.m.DCityId, $scope.CityList)
+                    $scope.m.DProviceName = $scope.DicPCValueInit($scope.m.DProviceId, $scope.ProvList)
 
-                    $scope.m.DPart1Name = $scope.DicValueInit($scope.m.DPart1, $scope.SourceOne)
-                    $scope.m.DPart2Name = $scope.DicValueInit($scope.m.DPart2, $scope.SourceTwo)
+                    $scope.m.DPart1Name = $scope.DicValueInit($scope.m.DPart1, $scope.config.SourceOne)
+                    $scope.m.DPart2Name = $scope.DicValueInit($scope.m.DPart2, $scope.config.SourceTwo)
 
-                    $scope.m.DCooperationModeName = $scope.DicValueInit($scope.m.DCooperationMode, $scope.CoopMode)
-                    $scope.m.DSettlementName = $scope.DicValueInit($scope.m.DSettlement, $scope.Settlement)
+                    $scope.m.DCooperationModeName = $scope.DicValueInit($scope.m.DCooperationMode, $scope.config.CoopMode)
+                    $scope.m.DSettlementName = $scope.DicValueInit($scope.m.DSettlement, $scope.config.Settlement)
 
-                    $scope.m.DSignTypeName = $scope.DicValueInit($scope.m.DSignType, $scope.SignType)
-                    $scope.m.DSettlementTypeName = $scope.DicValueInit($scope.m.DSettlementType, $scope.SettlementType)
+                    $scope.m.DSignTypeName = $scope.DicValueInit($scope.m.DSignType, $scope.config.SignType)
+                    $scope.m.DSettlementTypeName = $scope.DicValueInit($scope.m.DSettlementType, $scope.config.SettlementType)
 
                     var c = $scope.checkData();
                     if (!c) return;
