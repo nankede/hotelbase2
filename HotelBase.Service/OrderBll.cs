@@ -88,7 +88,7 @@ namespace HotelBase.Service
         /// <param name="valid"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static BaseResponse SetOrder(int id, int type, int state, string serialid)
+        public static BaseResponse SetOrder(string id, string type, string state, string serialid)
         {
             var i = Ho_HotelOrderAccess.UpdateOrderSerialid(id,type, state, serialid);
             var res = new BaseResponse

@@ -48,27 +48,50 @@ namespace HotelBase.DataAccess.Order
                 sb.AppendFormat(" AND HOCustomerSerialId Like '%{0}%'", request.HOCustomerSerialId);
             }
             //人员归属查询
-            if (!string.IsNullOrWhiteSpace(request.PeopleMobile) || !string.IsNullOrWhiteSpace(request.PeopleName))
+            if (request.CustomerType == 1)
             {
-                if (request.CustomerType == 1)
+                if (!string.IsNullOrWhiteSpace(request.PeopleName))
                 {
-                    sb.AppendFormat(" AND HOCustomerName Like '%{0}%' AND HOCustomerMobile = '{1}'", request.PeopleName, request.PeopleMobile);
+                    sb.AppendFormat(" AND HOCustomerName Like '%{0}%'", request.PeopleName);
                 }
-                else
+                if (!string.IsNullOrWhiteSpace(request.PeopleMobile))
                 {
-                    sb.AppendFormat(" AND HOLinkerName Like '%{0}%' AND HOLinkerMobile = '{1}'", request.PeopleName, request.PeopleMobile);
+                    sb.AppendFormat(" AND HOCustomerMobile = '{1}'", request.PeopleMobile);
                 }
             }
-            //时间
-            if (!string.IsNullOrWhiteSpace(request.StartTime) || !string.IsNullOrWhiteSpace(request.EndTime))
+            if(request.CustomerType == 2)
             {
-                if (request.TimeType == 1)
+                if (!string.IsNullOrWhiteSpace(request.PeopleName))
                 {
-                    sb.AppendFormat(" AND HOCheckInDate >= '{0}' AND HOCheckInDate<'{0}'", request.StartTime, Convert.ToDateTime(request.EndTime).AddDays(1).ToShortDateString());
+                    sb.AppendFormat(" AND HOLinkerName Like '%{0}%'", request.PeopleName);
                 }
-                else
+                if (!string.IsNullOrWhiteSpace(request.PeopleMobile))
                 {
-                    sb.AppendFormat(" AND HOAddTime >= '{0}' AND HOAddTime<'{0}'", request.StartTime, Convert.ToDateTime(request.EndTime).AddDays(1).ToShortDateString());
+                    sb.AppendFormat(" AND HOLinkerMobile = '{1}'", request.PeopleMobile);
+                }
+
+            }
+            //时间
+            if (request.TimeType == 1)
+            {
+                if (!string.IsNullOrWhiteSpace(request.StartTime))
+                {
+                    sb.AppendFormat(" AND HOCheckInDate >= '{0}'", request.StartTime);
+                }
+                if (!string.IsNullOrWhiteSpace(request.EndTime))
+                {
+                    sb.AppendFormat(" AND HOCheckInDate<'{0}'", Convert.ToDateTime(request.EndTime).AddDays(1).ToShortDateString());
+                }
+            }
+            if (request.TimeType == 2)
+            {
+                if (!string.IsNullOrWhiteSpace(request.StartTime))
+                {
+                    sb.AppendFormat(" AND HOAddTime >= '{0}'", request.StartTime);
+                }
+                if (!string.IsNullOrWhiteSpace(request.EndTime))
+                {
+                    sb.AppendFormat(" AND HOAddTime<'{0}'", Convert.ToDateTime(request.EndTime).AddDays(1).ToShortDateString());
                 }
             }
             //来源
@@ -94,14 +117,16 @@ namespace HotelBase.DataAccess.Order
             }
 
             //订单状态
-            if (request.HOStatus != null)
+            if (!string.IsNullOrWhiteSpace(request.HOStatus))
             {
-                string state = "";
-                foreach (var item in state)
-                {
-                    state += "'" + item + "',";
-                }
-                sb.AppendFormat(" AND HOStatus IN ({0})", state.Substring(0, state.Length - 1));
+                //var state = request.HOStatus.Split(',');
+                //var searchstatus = "";
+                //foreach (var item in state)
+                //{
+                //    searchstatus += "'" + item + "',";
+                //}
+                //sb.AppendFormat(" AND HOStatus IN ({0})", searchstatus.Substring(0, state.Length - 1));
+                sb.AppendFormat(" AND HOStatus IN ({0})", request.HOStatus);
             }
             sb.Append(" Order By HOAddTime DESC");
             var list = MysqlHelper.GetList<OrderSearchResponse>(sb.ToString());
@@ -338,33 +363,33 @@ namespace HotelBase.DataAccess.Order
         /// <param name="serialid"></param>
         /// <returns></returns>
 
-        public static int UpdateOrderSerialid(int orderid, int type, int state, string serialid)
+        public static int UpdateOrderSerialid(string orderid, string type, string state, string serialid)
         {
-            if (orderid == 0) return 0;
+            if (string.IsNullOrWhiteSpace(orderid)) return 0;
             var sql = new StringBuilder();
             sql.Append(" UPDATE `ho_hotelorder` SET ");
             switch (type)
             {
-                case 0:
-                    if (state > 0)
+                case "1":
+                    if (!string.IsNullOrWhiteSpace(state) && Convert.ToInt32(state) > 0)
                     {
                         sql.AppendFormat(" `HOStatus` = {0}  ", state);
                     }
                     break;
-                case 1:
+                case "3":
                     if (!string.IsNullOrWhiteSpace(serialid))
                     {
-                        sql.AppendFormat(" `HOOutSerialId` = {0}  ", serialid);
+                        sql.AppendFormat(" `HOSupplierSerialId` = '{0}'  ", serialid);
                     }
                     break;
-                case 2:
+                case "2":
                     if (!string.IsNullOrWhiteSpace(serialid))
                     {
-                        sql.AppendFormat(" `HOSupplierSerialId` = {0}  ", serialid);
+                        sql.AppendFormat(" `HOOutSerialId` = '{0}'  ", serialid);
                     }
                     break;
             }
-            sql.Append(" WHERE  `Id` =@Id   Limit 1;  ");
+            sql.AppendFormat(" WHERE  `HOCustomerSerialId` ='{0}'   Limit 1;  ",orderid);
             var c = MysqlHelper.Update(sql.ToString());
             return c;
         }
@@ -378,7 +403,7 @@ namespace HotelBase.DataAccess.Order
         {
             var response = new BasePageResponse<HO_HotelOrderLogModel>();
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat(@"SELECT * FROM ho_hotelorderlog  WHERE  HOLOrderId='{0}'  LIMIT 1;", request.CustomerSerialId);
+            sb.AppendFormat(@"SELECT * FROM ho_hotelorderlog  WHERE  HOLOrderId='{0}'", request.CustomerSerialId);
             var list = MysqlHelper.GetList<HO_HotelOrderLogModel>(sb.ToString());
             var total = list?.Count ?? 0;
             if (total > 0)

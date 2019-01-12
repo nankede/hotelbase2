@@ -67,7 +67,7 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 订单状态
         /// </summary>
-        public List<string> HOStatus { get; set; }
+        public string HOStatus { get; set; }
     }
 
     /// <summary>

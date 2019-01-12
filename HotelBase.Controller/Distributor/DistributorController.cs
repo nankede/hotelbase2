@@ -96,9 +96,9 @@ namespace HotelBase.Web.Controller.Distributor
         /// 分销商列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetDistributor(int isDefault = 1)
+        public JsonResult GetDistributor(int IsValid,int isDefault = 1)
         {
-            var response = DistributorBll.GetDistributor(isDefault);
+            var response = DistributorBll.GetDistributor(IsValid,isDefault);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 

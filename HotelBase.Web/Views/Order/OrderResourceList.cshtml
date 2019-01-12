@@ -56,7 +56,7 @@ ViewBag.PageTitle = "供应商管理";
             </tr>
             <tr ng-repeat="d in list">
                 <td ng-bind="d.HotelRoomName"></td>
-                <td ng-bind="d.HotelRoomBedType"></td>
+                <td ng-bind="getbedname(d.HotelRoomBedType)"></td>
                 <td ng-bind="d.HotelRoomBreakfastRuleName"></td>
                 <td ng-bind="d.HotelRoomCancelRuleName"></td>
                 <td ng-bind="d.HoteRoomRuleSellPrice"></td>
@@ -112,6 +112,7 @@ ViewBag.PageTitle = "供应商管理";
         }
         //页面初始化
         $scope.pageInit = function () {
+            $scope.Ded = {};
             $scope.getBed();
             $scope.Search = {
                 PageIndex: 1,
@@ -126,7 +127,7 @@ ViewBag.PageTitle = "供应商管理";
                 elem: '#txtendDate'
             })
         }
-        //获取来源
+        //床型
         $scope.getBed = function () {
             $.ajax({
                 url: $scope.config.bedUrl,
@@ -144,11 +145,25 @@ ViewBag.PageTitle = "供应商管理";
             });
         }
 
+        //赋值
+        $scope.getbedname = function (id) {
+            var name = "";
+            var list = $scope.Ded;
+            if (list) {
+                $.each(list, function (index, item) {
+                    if (item.Code == id)
+                        name = item.Name;
+                });
+            }
+            return name;
+        }
 
         //查询
         $scope.search = function (index) {
             $scope.detailClear();
             $scope.Search.PageIndex = index;
+            $scope.Search.InBeginDate = $("#txtbeginDate").val();
+            $scope.Search.InEndDate = $("#txtendDate").val();
             var para = $scope.Search;
             eLoading.show();
             $.ajax({

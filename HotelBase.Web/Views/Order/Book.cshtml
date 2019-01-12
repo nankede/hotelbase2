@@ -249,7 +249,9 @@
                 </div>
                 <div class="lay-form-item-control">
                     @*<input class="lay-input  long-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"/>*@
-                    <select class="lay-select lay-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"></select>
+                    <select class="lay-select lay-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne">
+                        <option value="" selected hidden>
+                    </select>
                 </div>
             </div>
             <div class="lay-form-item lay-col-6">
@@ -258,7 +260,9 @@
                 </div>
                 <div class="lay-form-item-control">
                     @*<input class="lay-input  long-input" ng-model="o.HOPlat2" />*@
-                    <select class="lay-select lay-input" ng-model="o.HOPlat2" ng-options="item.Code as item. Name for item in config.SourceTwo"></select>
+                    <select class="lay-select lay-input" ng-model="o.HOPlat2" ng-options="item.Code as item. Name for item in config.SourceTwo">
+                        <option value="" selected hidden>
+                    </select>
                 </div>
             </div>
         </div>
@@ -304,7 +308,6 @@
             $scope.supplierid = $('#hsupplierid').val();
             $(function () {
                 $scope.pageInit();
-
             });
             //初始化
             $scope.pageInit = function () {
@@ -328,7 +331,7 @@
             //获取分销商
             $scope.getDistributor = function () {
                 var url = $scope.config.distributorUrl;
-                Untitl.Get(url, {}, function (data) {
+                Untitl.Get(url, { "IsValid": 1, "isDefault": 0 }, function (data) {
                     $scope.config.SourceTwo = data;
                     $scope.$apply();
                 }, function () {

@@ -113,7 +113,7 @@ namespace HotelBase.Service
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static List<BaseDic> GetDistributor( int isDefault)
+        public static List<BaseDic> GetDistributor(int IsValid, int isDefault)
         {
             var list = new List<BaseDic>();
             if (isDefault == 1)
@@ -122,7 +122,8 @@ namespace HotelBase.Service
             }
             var data = H_DistributorAccess.GetDistributorList(new DistributorSearchRequest
             {
-                PageSize = 100
+                PageSize = 100,
+                DIsValid = IsValid
             });
             data?.List?.ForEach(x =>
             {

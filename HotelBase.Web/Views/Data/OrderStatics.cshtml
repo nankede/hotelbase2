@@ -311,7 +311,7 @@
             //获取分销商
             $scope.getDistributor = function () {
                 var url = $scope.config.distributorUrl;
-                Untitl.Get(url, {}, function (data) {
+                Untitl.Get(url, { "IsValid": 1}, function (data) {
                     $scope.config.SourceTwo = data;
                     $scope.$apply();
                 }, function () {

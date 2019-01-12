@@ -1,5 +1,5 @@
 ﻿@{
-ViewBag.PageTitle = "订单列表";
+    ViewBag.PageTitle = "订单列表";
 }
 <div class="lay-form" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div class="topContain_sar">
@@ -29,8 +29,6 @@ ViewBag.PageTitle = "订单列表";
                         <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="请输入手机号" />
                     </div>
                 </div>
-                @*<input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
-                <input type="button" class="lay-btn lay-btn-primary none" value="新增" ng-click="Add(0)">*@
             </div>
             <div class="lay-form-item">
                 <div class="lay-form-item">
@@ -42,8 +40,6 @@ ViewBag.PageTitle = "订单列表";
                         <input class="lay-input long-input" id="txtendDate" ng-model="Search.EndTime" />
                     </div>
                 </div>
-                @*<input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
-                <input type="button" class="lay-btn lay-btn-primary none" value="新增" ng-click="Add(0)">*@
             </div>
             <div class="lay-form-item hide">
                 <div class="lay-form-item lay-col-4">
@@ -52,7 +48,7 @@ ViewBag.PageTitle = "订单列表";
                     </div>
                     <div class="lay-form-item-control">
                         <select class="lay-select  lay-input" ng-model="Search.SourceId" ng-init="Search.SourceId=0"
-                            ng-options="item.Code as item. Name for item in Source"></select>
+                                ng-options="item.Code as item. Name for item in Source"></select>
                     </div>
                 </div>
                 <div class="lay-form-item lay-col-4">
@@ -60,7 +56,7 @@ ViewBag.PageTitle = "订单列表";
                         <label>供应商订单号</label>
                     </div>
                     <div class="lay-form-item-control">
-                        <input class="lay-input" ng-model="Search.PeopleMobile" placeholder="请输入供应商订单号" />
+                        <input class="lay-input" ng-model="Search.HOSupplierSerialId" placeholder="请输入供应商订单号" />
                     </div>
                 </div>
             </div>
@@ -99,17 +95,13 @@ ViewBag.PageTitle = "订单列表";
                     </div>
                     <div class="lay-form-item-caption ">
                         @*<label><input name="States" type="checkbox" value="0" />待处理 </label>*@
-                        <input class="lay-checkbox-variant" id="checkbox-1" name="States" type="checkbox" value="0" /><label
-                            for="checkbox-1" class="txt_center">待处理</label>
+                        <input class="lay-checkbox-variant" id="checkbox-1" name="States" type="checkbox" value="0" /><label for="checkbox-1" class="txt_center">待处理</label>
                         @*<label><input name="States" type="checkbox" value="1" />确认成功 </label>*@
-                        <input class="lay-checkbox-variant" id="checkbox-2" name="States" type="checkbox" value="1" /><label
-                            for="checkbox-2" class="txt_center">确认成功</label>
+                        <input class="lay-checkbox-variant" id="checkbox-2" name="States" type="checkbox" value="1" /><label for="checkbox-2" class="txt_center">确认成功</label>
                         @*<label><input name="States" type="checkbox" value="2" />确认失败 </label>*@
-                        <input class="lay-checkbox-variant" id="checkbox-3" name="States" type="checkbox" value="2" /><label
-                            for="checkbox-3" class="txt_center">确认失败</label>
+                        <input class="lay-checkbox-variant" id="checkbox-3" name="States" type="checkbox" value="2" /><label for="checkbox-3" class="txt_center">确认失败</label>
                         @*<label><input name="States" type="checkbox" value="3" />取消 </label>*@
-                        <input class="lay-checkbox-variant" id="checkbox-4" name="States" type="checkbox" value="3" /><label
-                            for="checkbox-4" class="txt_center">取消</label>
+                        <input class="lay-checkbox-variant" id="checkbox-4" name="States" type="checkbox" value="3" /><label for="checkbox-4" class="txt_center">取消</label>
                     </div>
                 </div>
             </div>
@@ -173,160 +165,176 @@ ViewBag.PageTitle = "订单列表";
 </div>
 
 @section foot{
-<style>
-.topContain_sar{
-    display: flex;
-    justify-content: space-between;
-}
-.searchInputContain_sar{
-
-}
-.btnContain_sar{
-    display:flex;
-    align-items: flex-end;
-}
-.flex_grow_1{
-    flex-grow: 1;
-}
-.txt_center{
-    text-align: center;
-}
-.hide{
-    display: none;
-}
-.operate_contain{
-    text-align: center;
-    width: 100%;
-    height: 30px;
-    line-height: 30px;
-    font-size: 14px;
-    color: #4eb900;
-    padding: 10px 0 0 0;
-    cursor: pointer;
-}
-
-
-</style>
-<script>
-    var app = angular.module('myApp', []);
-    app.controller('myCtrl', function ($scope) {
-        $(function () {
-            $scope.pageInit();
-            $(".operate_contain").on("click",function(){
-                if($(this).attr("data-state") == 0){
-                    $(this).attr("data-state",1);
-                    $(this).html('收起 ▲');
-                    $('.searchInputContain_sar .hide').css('display','flex');
-                }else{
-                    $(this).attr("data-state",0);
-                    $(this).html('展开 ▼');
-                    $('.searchInputContain_sar .hide').css('display','none');
-                }
-            })
-        });
-        $scope.config = {
-            listUrl: "/order/getorderlist/",
-            TypeSource: [{
-                Type: 1,
-                Name: "预订人"
-            }, {
-                Type: 2,
-                Name: "入住人"
-            }],
-            TimeType: [{
-                Type: 1,
-                Name: "入住时间"
-            }, {
-                Type: 1,
-                Name: "创建时间"
-            }, {
-                Type: 2,
-                Name: "离店时间"
-            }],
-            //bedUrl: "/system/getdiclistbypcode/?pCode=501"
-            sourceUrl: "/system/getdiclistbypcode/?pCode=101"
-        }
-        //页面初始化
-        $scope.pageInit = function () {
-            $scope.getSource();
-            $scope.Search = {
-                PageIndex: 1
-            };
-            $scope.search(1);
+    <style>
+        .topContain_sar {
+            display: flex;
+            justify-content: space-between;
         }
 
+        .searchInputContain_sar {
+        }
 
-        //查询
-        $scope.search = function (index) {
-            $scope.detailClear();
-            $scope.Search.PageIndex = index;
-            var para = $scope.Search;
-            eLoading.show();
-            $.ajax({
-                url: $scope.config.listUrl,
-                type: 'post',
-                dataType: "json",
-                data: para,
-                timeout: 20000,
-                success: function (data) {
-                    $scope.list = [];
-                    if (data != null && data.IsSuccess > 0) {
-                        $scope.list = data.List;
-                        $scope.pagerInit(index, data.Total);
+        .btnContain_sar {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .flex_grow_1 {
+            flex-grow: 1;
+        }
+
+        .txt_center {
+            text-align: center;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .operate_contain {
+            text-align: center;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+            color: #4eb900;
+            padding: 10px 0 0 0;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $(function () {
+                $scope.pageInit();
+                $(".operate_contain").on("click", function () {
+                    if ($(this).attr("data-state") == 0) {
+                        $(this).attr("data-state", 1);
+                        $(this).html('收起 ▲');
+                        $('.searchInputContain_sar .hide').css('display', 'flex');
+                    } else {
+                        $(this).attr("data-state", 0);
+                        $(this).html('展开 ▼');
+                        $('.searchInputContain_sar .hide').css('display', 'none');
                     }
-                    $scope.$apply();
-                },
-                error: function () {
-                    console.log("err");
-                    eMsg({
-                        timer: 2000,
-                        text: '查询失败，请稍后重试！'
-                    });
-                },
-                complete: function () {
-                    eLoading.hide();
-                }
+                })
             });
-        }
+            $scope.config = {
+                listUrl: "/order/getorderlist/",
+                TypeSource: [{
+                    Type: 1,
+                    Name: "预订人"
+                }, {
+                    Type: 2,
+                    Name: "入住人"
+                }],
+                TimeType: [{
+                    Type: 1,
+                    Name: "入住时间"
+                }, {
+                    Type: 2,
+                    Name: "创建时间"
+                }],
+                sourceUrl: "/system/getdiclistbypcode/?pCode=101"
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                $scope.getSource();
+                $scope.Search = {
+                    PageIndex: 1,
+                    CustomerType: 1,
+                    SourceId: 0
+                };
+                laydate.render({
+                    elem: '#txtbeginDate'
+                })
+                laydate.render({
+                    elem: '#txtendDate'
+                })
+                $scope.search(1);
+            }
+            $scope.GetState = function () {
+                var id_array = new Array();
+                $('input[name="States"]:checked').each(function () {
+                    id_array.push($(this).val());//向数组中添加元素
+                });
+                return idstr = id_array.join(',');//将数组元素连接起来以构建一个字符串
+            }
 
-        //获取来源
-        $scope.getSource = function () {
-            $.ajax({
-                url: $scope.config.sourceUrl,
-                type: 'get',
-                dataType: "json",
-                timeout: 20000,
-                success: function (data) {
-                    $scope.Source = data;
-                    $scope.$apply();
-                },
-                error: function () {
-                    console.log("err-getSource");
-                },
-                complete: function () {}
-            });
-        }
-        //分页
-        $scope.pagerInit = function (index, total) {
-            var pager = new PagerView('pager');
-            pager.index = index;
-            pager.size = 10;
-            pager.itemCount = total;
-            pager.onclick = function (index) {
-                $scope.search(index);
-            };
-            pager.render();
-        }
-        $scope.detail = function (orderid, serialid) {
-            var url = "/order/orderdetail?orderid=" + orderid + "&serialid=" + serialid;
-            $('#ifm_detail').prop('src', url);
-            $("#dialogDetail").eDialog('show');
-        }
+            //查询
+            $scope.search = function (index) {
+                $scope.detailClear();
+                $scope.Search.StartTime = $("#txtbeginDate").val();
+                $scope.Search.EndTime = $("#txtendDate").val();
+                $scope.Search.HOStatus = $scope.GetState();
+                $scope.Search.PageIndex = index;
+                var para = $scope.Search;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.listUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.list = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.list = data.List;
+                            $scope.pagerInit(index, data.Total);
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
 
-        $scope.detailClear = function (id) {
-            $('#ifm_detail').prop('src', '');
-            $("#dialogDetail").eDialog('hide');
-        }
-    });
-</script>
+            //获取来源
+            $scope.getSource = function () {
+                $.ajax({
+                    url: $scope.config.sourceUrl,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.Source = data;
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getSource");
+                    },
+                    complete: function () { }
+                });
+            }
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                };
+                pager.render();
+            }
+            $scope.detail = function (orderid, serialid) {
+                var url = "/order/orderdetail?orderid=" + orderid + "&serialid=" + serialid;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
+            $scope.detailClear = function (id) {
+                $('#ifm_detail').prop('src', '');
+                $("#dialogDetail").eDialog('hide');
+            }
+        });
+    </script>
 }

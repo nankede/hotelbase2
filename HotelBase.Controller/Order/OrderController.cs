@@ -167,15 +167,16 @@ namespace HotelBase.Web.Controller.System
         /// 更新订单
         /// </summary>
         /// <returns></returns>
-        public JsonResult SetOrder(int id, int type, int state, string serialid, HO_HotelOrderLogModel logmodel)
+        public JsonResult SetOrder(string id, string type, string state, string serialid, HO_HotelOrderLogModel logmodel)
         {
             var model = new BaseResponse();
             //日志
             logmodel.HOLAddId = CurrtUser.Id;
+            logmodel.HOLLogType = 1;
             logmodel.HOLAddDepartId = CurrtUser.DepartId;
             logmodel.HOLAddTime = DateTime.Now;
             var savelog = OrderLogBll.AddOrderModel(logmodel);
-            if (type > 0)
+            if (!string.IsNullOrWhiteSpace(type) && Convert.ToInt32(type) > 0)
             {
                 model = OrderBll.SetOrder(id, type, state, serialid);
             }
@@ -194,6 +195,20 @@ namespace HotelBase.Web.Controller.System
         #endregion
 
         #region 日志
+
+        /// <summary>
+        /// 日志
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult OrderLog(string orderid, string type, string state, string serialid)
+        {
+            ViewBag.OrderId = orderid;
+            ViewBag.Type = type;
+            ViewBag.State = state;
+            ViewBag.CustomerSerialId = serialid;
+            return View();
+        }
+
         /// <summary>
         /// 查询日志
         /// </summary>

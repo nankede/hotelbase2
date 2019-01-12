@@ -1,0 +1,127 @@
+﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-row">
+        <div class="lay-form-item lay-must">
+            <div class="lay-form-item-caption">
+                <label>部门名称：</label>
+            </div>
+            <div class="lay-form-item-control">
+                <input class="lay-input" ng-model="Log.HOLAddDepartName" />
+            </div>
+        </div>
+    </div>
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-6 lay-must">
+            <div class="lay-form-item-caption">
+                <label>操作人：</label>
+            </div>
+            <div class="lay-form-item-control">
+                <input class="lay-input" ng-model="Log.HOLAddName" />
+            </div>
+        </div>
+    </div>
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-6 lay-must">
+            <div class="lay-form-item-caption ">
+                <label>日志信息：</label>
+            </div>
+            <div class="lay-form-item-control">
+                <textarea class="lay-input long-input" ng-model="Log.HOLRemark" style="height: auto;"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="lay-form-foot">
+        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveLog()">
+    </div>
+</div>
+<input id="horderid" type="hidden" value="@ViewBag.OrderId" />
+<input id="htype" type="hidden" value="@ViewBag.Type" />
+<input id="hstate" type="hidden" value="@ViewBag.State" />
+<input id="hserialid" type="hidden" value="@ViewBag.CustomerSerialId" />
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.id = $('#horderid').val();
+            $scope.type = $('#htype').val();
+            $scope.state = $('#hstate').val();
+            $scope.serialid = $('#hserialid').val();
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                saveUrl: "/order/setorder/",
+            };
+            //页面初始化
+            $scope.pageInit = function () {
+                //$scope.initSelect();
+            }
+
+            //保存
+            $scope.SaveLog = function () {
+                $scope.Log.HOLOrderId = $scope.id;
+                var c = $scope.checkData($scope.Log);
+                if (!c) return;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.saveUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: { "id": $scope.id, "type": $scope.type, "state": $scope.state, "serialid": $scope.serialid, "logmodel": $scope.Log },
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.IsSuccess > 0) {
+                            eMsg({
+                                timer: 2000,
+                                text: '操作成功，正在自动关闭页面！'
+                            });
+                            //关闭页面
+                            setTimeout(function () {
+                                parent.location.reload();
+                            }, 1000);
+                        }
+                        else {
+                            var msg = data ? data.Msg : "";
+                            eMsg({
+                                timer: 2000,
+                                text: '操作失败,' + msg
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-save");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //数据验证
+            $scope.checkData = function (Log) {
+                if (Log.HOLAddDepartName == null || Log.HOLAddDepartName.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '部门不能为空！'
+                    });
+                    return false;
+                }
+                if (Log.HOLAddName == null || Log.HOLAddName.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '操作人不能为空！'
+                    });
+                    return false;
+                }
+                if (Log.HOLRemark == null || Log.HOLRemark.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '操作内容不能为空！'
+                    });
+                    return false;
+                }
+                return true;
+            }
+        });
+    </script>
+}
