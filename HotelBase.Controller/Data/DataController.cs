@@ -32,7 +32,6 @@ namespace HotelBase.Web.Controller.System
         /// <returns></returns>
         public JsonResult GetOrderStatics(OrderStaticRequest request)
         {
-            //GetOrderList
             var response = OrderStaticBll.GetOrderStaticList(request);
             return Json(response, JsonRequestBehavior.AllowGet);
         }

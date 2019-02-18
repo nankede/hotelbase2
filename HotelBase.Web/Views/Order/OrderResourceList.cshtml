@@ -1,28 +1,42 @@
 ﻿@{
-    ViewBag.PageTitle = "供应商管理";
+ViewBag.PageTitle = "供应商管理";
 }
 <div class="lay-form" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
-    <div class="lay-form-item">
-        <div class="lay-form-item-caption ">
-            <label>酒店id</label>
+    <div class="topContain_sar">
+        <div class="searchInputContain_sar">
+            <div class="lay-form-item">
+                <div class="lay-form-item lay-col-4">
+                    <div class="lay-form-item-caption ">
+                        <label>酒店id</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="Search.HotelId" placeholder="请输入酒店id" />
+                    </div>
+                </div>
+                <div class="lay-form-item lay-col-4">
+                    <div class="lay-form-item-caption ">
+                        <label>酒店名称</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="Search.HotelName" placeholder="请输入酒店名称" />
+                    </div>
+                </div>
+            </div>
+            <div class="lay-form-item">
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>入住离店时间</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input long-input" id="txtbeginDate" ng-model="Search.InBeginDate" />——
+                        <input class="lay-input long-input" id="txtendDate" ng-model="Search.InEndDate" />
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="Search.HotelId" placeholder="请输入酒店id" />
+        <div class="btnContain_sar">
+            <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
         </div>
-        <div class="lay-form-item-caption ">
-            <label>酒店名称</label>
-        </div>
-        <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="Search.HotelName" placeholder="请输入酒店名称" />
-        </div>
-        <div class="lay-form-item-caption ">
-            <label>入住离店时间</label>
-        </div>
-        <div class="lay-form-item-control">
-            <input class="lay-input long-input" id="txtbeginDate" ng-model="Search.InBeginDate" />——
-            <input class="lay-input long-input" id="txtendDate" ng-model="Search.InEndDate" />
-        </div>
-        <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
     </div>
     <table class="lay-table">
         <thead>
@@ -42,7 +56,7 @@
             </tr>
             <tr ng-repeat="d in list">
                 <td ng-bind="d.HotelRoomName"></td>
-                <td ng-bind="d.HotelRoomBedType"></td>
+                <td ng-bind="getbedname(d.HotelRoomBedType)"></td>
                 <td ng-bind="d.HotelRoomBreakfastRuleName"></td>
                 <td ng-bind="d.HotelRoomCancelRuleName"></td>
                 <td ng-bind="d.HoteRoomRuleSellPrice"></td>
@@ -72,102 +86,134 @@
     </div>
 </div>
 @section foot{
-    <script>
-        var app = angular.module('myApp', []);
-        app.controller('myCtrl', function ($scope) {
-            $(function () {
-                $scope.pageInit();
-            });
-            $scope.config = {
-                listUrl: "/order/getresource/",
-                bedUrl: "/system/getdiclistbypcode/?pCode=501"
-                //sourceUrl: "/system/getdiclistbypcode/?pCode=503",
-            }
-            //页面初始化
-            $scope.pageInit = function () {
-                $scope.getBed();
-                $scope.Search = { PageIndex: 1, HotelId: '', HotelName: '' };
-                $scope.search(1);
-                laydate.render({
-                    elem: '#txtbeginDate'
-                })
-                laydate.render({
-                    elem: '#txtendDate'
-                })
-            }
-            //获取来源
-            $scope.getBed = function () {
-                $.ajax({
-                    url: $scope.config.bedUrl,
-                    type: 'get',
-                    dataType: "json",
-                    timeout: 20000,
-                    success: function (data) {
-                        $scope.Ded = data;
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-getSource");
-                    },
-                    complete: function () {
-                    }
-                });
-            }
+<style>
+    .topContain_sar{
+        display: flex;
+        justify-content: space-between;
+    }
+    .searchInputContain_sar{
 
-            
-            //查询
-            $scope.search = function (index) {
-                $scope.detailClear();
-                $scope.Search.PageIndex = index;
-                var para = $scope.Search;
-                eLoading.show();
-                $.ajax({
-                    url: $scope.config.listUrl,
-                    type: 'post',
-                    dataType: "json",
-                    data: para,
-                    timeout: 20000,
-                    success: function (data) {
-                        $scope.list = [];
-                        if (data != null && data.IsSuccess > 0) {
-                            $scope.list = data.List;
-                            $scope.pagerInit(index, data.Total);
-                        }
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err");
-                        eMsg({
-                            timer: 2000,
-                            text: '查询失败，请稍后重试！'
-                        });
-                    },
-                    complete: function () {
-                        eLoading.hide();
-                    }
-                });
-            }
-            //分页
-            $scope.pagerInit = function (index, total) {
-                var pager = new PagerView('pager');
-                pager.index = index;
-                pager.size = 10;
-                pager.itemCount = total;
-                pager.onclick = function (index) {
-                    $scope.search(index);
-                };
-                pager.render();
-            }
-            $scope.detail = function (hid, roomid, ruleid,supplierid) {
-                var url = "/order/book?hotelId=" + hid + "&roomId=" + roomid + "&ruleid=" + ruleid + "&supplierid=" + supplierid;
-                $('#ifm_detail').prop('src', url);
-                $("#dialogDetail").eDialog('show');
-            }
-
-            $scope.detailClear = function (id) {
-                $('#ifm_detail').prop('src', '');
-                $("#dialogDetail").eDialog('hide');
-            }
+    }
+    .btnContain_sar{
+        display:flex;
+        align-items: flex-end;
+    }
+</style>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function ($scope) {
+        $(function () {
+            $scope.pageInit();
         });
-    </script>
+        $scope.config = {
+            listUrl: "/order/getresource/",
+            bedUrl: "/system/getdiclistbypcode/?pCode=501"
+            //sourceUrl: "/system/getdiclistbypcode/?pCode=503",
+        }
+        //页面初始化
+        $scope.pageInit = function () {
+            $scope.Ded = {};
+            $scope.getBed();
+            $scope.Search = {
+                PageIndex: 1,
+                HotelId: '',
+                HotelName: ''
+            };
+            $scope.search(1);
+            laydate.render({
+                elem: '#txtbeginDate'
+            })
+            laydate.render({
+                elem: '#txtendDate'
+            })
+        }
+        //床型
+        $scope.getBed = function () {
+            $.ajax({
+                url: $scope.config.bedUrl,
+                type: 'get',
+                dataType: "json",
+                timeout: 20000,
+                success: function (data) {
+                    $scope.Ded = data;
+                    $scope.$apply();
+                },
+                error: function () {
+                    console.log("err-getSource");
+                },
+                complete: function () {}
+            });
+        }
+
+        //赋值
+        $scope.getbedname = function (id) {
+            var name = "";
+            var list = $scope.Ded;
+            if (list) {
+                $.each(list, function (index, item) {
+                    if (item.Code == id)
+                        name = item.Name;
+                });
+            }
+            return name;
+        }
+
+        //查询
+        $scope.search = function (index) {
+            $scope.detailClear();
+            $scope.Search.PageIndex = index;
+            $scope.Search.InBeginDate = $("#txtbeginDate").val();
+            $scope.Search.InEndDate = $("#txtendDate").val();
+            var para = $scope.Search;
+            eLoading.show();
+            $.ajax({
+                url: $scope.config.listUrl,
+                type: 'post',
+                dataType: "json",
+                data: para,
+                timeout: 20000,
+                success: function (data) {
+                    $scope.list = [];
+                    if (data != null && data.IsSuccess > 0) {
+                        $scope.list = data.List;
+                        $scope.pagerInit(index, data.Total);
+                    }
+                    $scope.$apply();
+                },
+                error: function () {
+                    console.log("err");
+                    eMsg({
+                        timer: 2000,
+                        text: '查询失败，请稍后重试！'
+                    });
+                },
+                complete: function () {
+                    eLoading.hide();
+                }
+            });
+        }
+        //分页
+        $scope.pagerInit = function (index, total) {
+            var pager = new PagerView('pager');
+            pager.index = index;
+            pager.size = 10;
+            pager.itemCount = total;
+            pager.onclick = function (index) {
+                $scope.search(index);
+            };
+            pager.render();
+        }
+        $scope.detail = function (hid, roomid, ruleid, supplierid) {
+            var url = "/order/book?hotelId=" + hid + "&roomId=" + roomid + "&ruleid=" + ruleid +
+                "&supplierid=" + supplierid;
+            $('#ifm_detail').prop('src', url);
+            $("#dialogDetail").eDialog('show');
+        }
+
+        $scope.detailClear = function (id) {
+            $('#ifm_detail').prop('src', '');
+            $("#dialogDetail").eDialog('hide');
+        }
+    });
+</script>
 }

@@ -1,0 +1,431 @@
+﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div>
+        <h3 class="cont-title">基础信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption">
+                    <label>分销商名称</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DName" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6 lay-must">
+                <div class="lay-form-item-caption ">
+                    <label>省市</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <select class="lay-select select-area" placeholder="请选择省份" ng-model="m.DProviceId" ng-init="m.DProviceId=0" ng-options="item.Code as item.Name for item in ProvList" ng-change="getArea(1)"></select>
+                    <select class="lay-select select-area" placeholder="请选择城市" ng-model="m.DCityId" ng-init="m.DCityId=0" ng-options="item.Code as item.Name for item in CityList"></select>
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>一级渠道</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <select class="lay-select lay-input" ng-model="m.DPart1" ng-options="item.Type as item. Name for item in config.SourceOne"></select>
+                    @*<input style="display:none" ng-model="m.DPart1Name" />*@
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>二级级渠道</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <select class="lay-select lay-input" ng-model="m.DPart2" ng-options="item.Type as item. Name for item in config.SourceTwo"></select>
+                    @*<input style="display:none" ng-model="m.DPart2Name" />*@
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>合作模式</label>
+                </div>
+                <div class="lay-form-item-control">
+                    @*<input class="lay-input  long-input" ng-model="m.DCooperationMode" />*@
+                    <select class="lay-select lay-input" ng-model="m.DCooperationMode" ng-options="item.Type as item. Name for item in config.CoopMode"></select>
+                    @*<input style="display:none" ng-model="m.DCooperationModeName" />*@
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>结算价</label>
+                </div>
+                <div class="lay-form-item-control">
+                    @*<input class="lay-input  long-input" ng-model="m.DSettlement" />*@
+                    <select class="lay-select lay-input" ng-model="m.DSettlement" ng-options="item.Type as item. Name for item in config.Settlement"></select>
+                    <input style="display:none" ng-model="m.DSettlementName" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>开始时间</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input long-input" id="txtbeginDate" ng-model="m.DStartDate" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption ">
+                    <label>结束时间</label>
+                </div>
+                <div class="lay-form-item-control">
+                    @*<input class="lay-input long-input" id="txtbeginDate" ng-model="m.DStartDate" />——*@
+                    <input class="lay-input long-input" id="txtendDate" ng-model="m.DEndDate" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="cont-title">财务信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>签约主体</label>
+                </div>
+                <div class="lay-form-item-control">
+                    @*<input class="lay-input  long-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"/>*@
+                    <select class="lay-select lay-input" ng-model="m.DSignType" ng-options="item.Type as item. Name for item in config.SignType"></select>
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>结算方式</label>
+                </div>
+                <div class="lay-form-item-control">
+                    @*<input class="lay-input  long-input" ng-model="o.HOPlat2" />*@
+                    <select class="lay-select lay-input" ng-model="m.DSettlementType" ng-options="item.Type as item. Name for item in config.SettlementType"></select>
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>预付款金额</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DAdvanceMoney" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>加价返佣比例</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DCommissionPoint" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>开票抬头</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DInvoiceTitle" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>税号</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DTaxNumbe" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>开票项目</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DInvoiceProject" />
+                </div>
+            </div>
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>发票类型</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DBillType" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="cont-title">联系人信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>联系人姓名</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DLinkMan" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>联系人电话</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DLinkMobile" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>联系人邮箱</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DLinkEmail" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>联系地址</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DLineAddress" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="cont-title">备注信息</h3>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item-caption">
+                    <label>上线渠道</label>
+                </div>
+                <div class="lay-form-item-control">
+                    <input class="lay-input  long-input" ng-model="m.DLineChannel" />
+                </div>
+            </div>
+        </div>
+        <div class="lay-row">
+            <div class="lay-form-item lay-col-6">
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>备注</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <textarea class="lay-input long-input" rows="8" ng-model="m.DRemark"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lay-form-foot">
+            <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+        </div>
+    </div>
+    <input id="hfId" type="hidden" value="@ViewBag.Id" />
+    @section foot{
+        <script>
+
+            var mobileReg = /^1(3|4|5|7|8|9)\d{9}$/;
+            var telReg = /^(\d{3,4}-?)?\d{7,9}$/;
+            var emailReg = /\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+            var app = angular.module('myApp', []);
+            app.controller('myCtrl', function ($scope) {
+                $scope.Source = [{ Code: 0, Name: '请选择' }];
+                $scope.config = {
+                    sourceUrl: "/system/getdiclistbypcode/?pCode=101",
+                    areaUrl: "/system/GetAreaList2/?pid=",
+                    detailUrl: "/distributor/getdetial/",
+                    saveUrl: "/distributor/save/",
+                    SourceOne: [{Type: 1,Name: "OTA"}, {Type: 2, Name: "新媒体"}, {Type: 3,Name: "旅行社"}, {Type: 4,Name: "线下"}],
+                    SourceTwo: [{ Type: 1, Name: "微信公众号" }, { Type: 2, Name: "微信群" }],
+                    CoopMode: [{ Type: 1, Name: "佣金模式" }, { Type: 2, Name: "底价模式" }],
+                    Settlement: [{ Type: 1, Name: "卖价" }, { Type: 2, Name: "线上价格" }, { Type: 3, Name: "线下价格" }, { Type: 4, Name: "优惠价格" }],
+                    SignType: [{ Type: 1, Name: "人旅" }, { Type: 2, Name: "国旅" }, { Type: 3, Name: "文旅" }],
+                    SettlementType: [{ Type: 1, Name: "月结" }, { Type: 2, Name: "半月结" }, { Type: 3, Name: "周结" }, { Type: 4, Name: "一单一结" }]
+                };
+                $scope.Id = $('#hfId').val();
+                $(function () {
+                    $scope.pageInit();
+                });
+                //初始化
+                $scope.pageInit = function () {
+                    laydate.render({
+                        elem: '#txtbeginDate'
+                    })
+                    laydate.render({
+                        elem: '#txtendDate'
+                    })
+                    $scope.getArea(0);
+                    if ($scope.Id > 0) {
+                        $scope.getDetail();
+                    }
+                }
+
+                //获取省市查询
+                $scope.getArea = function (type) {
+                    var pId = type == 0 ? 1 : $scope.m.DProviceId;
+                    if (!pId || pId <= 0) return;
+                    var url = $scope.config.areaUrl + pId;
+                    Untitl.Get(url, {}, function (data) {
+                        if (type == 0) {
+                            $scope.ProvList = data;
+                            $scope.ProvList.unshift({ Code: 0, Name: "请选择省份" });
+                            $scope.CityList = [{ Code: 0, Name: "请选择城市" }];
+                            $scope.m.DCityId = 0;
+                        }
+                        else {
+                            $scope.CityList = data;
+                            $scope.CityList.unshift({ Code: 0, Name: "请选择城市" });
+                        }
+                        $scope.$apply();
+                    }, function () {
+                        console.log("err-getArea");
+                    })
+                }
+
+                //详情
+                $scope.getDetail = function () {
+                    eLoading.show();
+                    $.ajax({
+                        url: $scope.config.detailUrl + "?id=" + $scope.Id,
+                        type: 'get',
+                        dataType: "json",
+                        timeout: 20000,
+                        success: function (data) {
+                            if (data != null && data.Id > 0) {
+                                $scope.m = data;
+                                $scope.m.DStartDate = $scope.GetDate($scope.m.DStartDate);
+                                $scope.m.DEndDate = $scope.GetDate($scope.m.DEndDate);
+                                if ($scope.m && $scope.m.DProvinceId > 0) {
+                                    $scope.getArea(1);
+                                }
+                            }
+                            else {
+                                eMsg({
+                                    timer: 2000,
+                                    text: '查询失败，请稍后重试！'
+                                });
+                            }
+                            $scope.$apply();
+                        },
+                        error: function () {
+                            console.log("err-getDetail");
+                        },
+                        complete: function () {
+                            eLoading.hide();
+                        }
+                    });
+                }
+
+                //省市赋值
+                $scope.DicPCValueInit = function (id, list) {
+                    var name = "--";
+                    if (list) {
+                        $.each(list, function (index, item) {
+                            if (item.Code == id)
+                                name = item.Name;
+                        });
+                    }
+                    return name;
+                }
+
+                //赋值
+                $scope.DicValueInit = function (id, list) {
+                    var name = "";
+                    if (list) {
+                        $.each(list, function (index, item) {
+                            if (item.Type == id)
+                                name = item.Name;
+                        });
+                    }
+                    return name;
+                }
+
+                $scope.GetDate = function (data) {
+                    var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+                    //不带时分秒
+                    //var time = date.toLocaleDateString();
+                    var myyear = date.getFullYear();
+                    var mymonth = date.getMonth() + 1;
+                    var myweekday = date.getDate();
+                    if (mymonth < 10) {
+                        mymonth = "0" + mymonth;
+                    }
+                    if (myweekday < 10) {
+                        myweekday = "0" + myweekday;
+                    }
+                    
+                    return (myyear + "-" + mymonth + "-" + myweekday);
+                }
+
+                //保存
+                $scope.Save = function () {
+                    $scope.m.DCityName = $scope.DicPCValueInit($scope.m.DCityId, $scope.CityList)
+                    $scope.m.DProviceName = $scope.DicPCValueInit($scope.m.DProviceId, $scope.ProvList)
+
+                    $scope.m.DPart1Name = $scope.DicValueInit($scope.m.DPart1, $scope.config.SourceOne)
+                    $scope.m.DPart2Name = $scope.DicValueInit($scope.m.DPart2, $scope.config.SourceTwo)
+
+                    $scope.m.DCooperationModeName = $scope.DicValueInit($scope.m.DCooperationMode, $scope.config.CoopMode)
+                    $scope.m.DSettlementName = $scope.DicValueInit($scope.m.DSettlement, $scope.config.Settlement)
+
+                    $scope.m.DSignTypeName = $scope.DicValueInit($scope.m.DSignType, $scope.config.SignType)
+                    $scope.m.DSettlementTypeName = $scope.DicValueInit($scope.m.DSettlementType, $scope.config.SettlementType)
+
+                    var c = $scope.checkData();
+                    if (!c) return;
+                    eLoading.show();
+                    Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.m.Id = data.AddId;
+                            eMsg({
+                                timer: 2000,
+                                text: '操作成功，正在自动关闭页面！'
+                            });
+                            //关闭页面
+                            setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                        }
+                        else {
+                            var msg = data ? data.Msg : "";
+                            eMsg({
+                                timer: 2000,
+                                text: '操作失败,' + msg
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                        function () {
+                            eLoading.hide();
+                        });
+                }
+
+                //数据验证
+                $scope.checkData = function () {
+                    if ($scope.m.DName.length <= 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '分销商称不能为空！'
+                        });
+                        return false;
+                    }
+                    if ($scope.m.DLinkMobile && $scope.m.DLinkMobile.length > 0 && !mobileReg.test($scope.m.DLinkMobile) && !telReg.test($scope.m.DLinkMobile)) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请输入正确的联系电话！'
+                        });
+                        return false;
+                    }
+                    return true;
+                }
+            });
+        </script>
+    }

@@ -10,6 +10,7 @@ using HotelBase.Entity.Tables;
 using HotelBase.Service;
 using HotelBase.Web.Controllers;
 using HotelBase.Common.Extension;
+using HotelBase.Entity;
 
 namespace HotelBase.Web.Controller.System
 {
@@ -41,7 +42,7 @@ namespace HotelBase.Web.Controller.System
         /// 订单详情
         /// </summary>
         /// <returns></returns>
-        public ActionResult OrderDetail(int orderid,string serialid)
+        public ActionResult OrderDetail(int orderid, string serialid)
         {
             ViewBag.OrderId = orderid;
             ViewBag.CustomerSerialId = serialid;
@@ -67,7 +68,7 @@ namespace HotelBase.Web.Controller.System
         /// 手动录单
         /// </summary>
         /// <returns></returns>
-        public ActionResult Book(string hotelId,string roomId, string ruleId,string supplierid)
+        public ActionResult Book(string hotelId, string roomId, string ruleId, string supplierid)
         {
             ViewBag.HotelId = hotelId;
             ViewBag.RoomId = roomId;
@@ -101,7 +102,7 @@ namespace HotelBase.Web.Controller.System
         /// 新增订单
         /// </summary>
         /// <returns></returns>
-        public ActionResult Save(BookSearchResponse hotelmodel,HO_HotelOrderModel ordermodel)
+        public ActionResult Save(BookSearchResponse hotelmodel, HO_HotelOrderModel ordermodel)
         {
             var newmodel = new HO_HotelOrderModel
             {
@@ -132,7 +133,7 @@ namespace HotelBase.Web.Controller.System
                 HOLinkerName = ordermodel.HOLinkerName,
                 HOLinkerMobile = ordermodel.HOLinkerMobile,
                 HOCheckInDate = ordermodel.HOCheckInDate,
-                HOCheckOutDate = ordermodel.HOCheckInDate,
+                HOCheckOutDate = ordermodel.HOCheckOutDate,
                 HOLastCheckInTime = ordermodel.HOLastCheckInTime,
                 HOAddId = CurrtUser.Id,
                 HOAddName = CurrtUser.Name,
@@ -166,20 +167,48 @@ namespace HotelBase.Web.Controller.System
         /// 更新订单
         /// </summary>
         /// <returns></returns>
-        public JsonResult SetOrder(int id, int type, int state, string serialid, HO_HotelOrderLogModel logmodel)
+        public JsonResult SetOrder(string id, string type, string state, string serialid, HO_HotelOrderLogModel logmodel)
         {
+            var model = new BaseResponse();
             //日志
             logmodel.HOLAddId = CurrtUser.Id;
+            logmodel.HOLLogType = 1;
             logmodel.HOLAddDepartId = CurrtUser.DepartId;
             logmodel.HOLAddTime = DateTime.Now;
-            OrderLogBll.AddOrderModel(logmodel);
-            var model = OrderBll.SetOrder(id, type, state, serialid);
+            var savelog = OrderLogBll.AddOrderModel(logmodel);
+            if (!string.IsNullOrWhiteSpace(type) && Convert.ToInt32(type) > 0)
+            {
+                model = OrderBll.SetOrder(id, type, state, serialid);
+            }
+            else
+            {
+                model = new BaseResponse
+                {
+                    IsSuccess = savelog ? 1 : 0,
+                    Msg = savelog ? string.Empty : "更新失败",
+                };
+            }
+            //var model = OrderBll.SetOrder(id, type, state, serialid);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
 
         #region 日志
+
+        /// <summary>
+        /// 日志
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult OrderLog(string orderid, string type, string state, string serialid)
+        {
+            ViewBag.OrderId = orderid;
+            ViewBag.Type = type;
+            ViewBag.State = state;
+            ViewBag.CustomerSerialId = serialid;
+            return View();
+        }
+
         /// <summary>
         /// 查询日志
         /// </summary>

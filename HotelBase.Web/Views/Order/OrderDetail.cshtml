@@ -1,4 +1,22 @@
-﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+﻿@section head{
+    <style>
+        .tip {
+            padding: 2px;
+        }
+    </style>
+}
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-12">
+            @*<div class="lay-form-item-control lay-col-6"></div>*@
+            <div class="lay-form-item-control lay-col-6">
+                <h3 class="cont-title">订单处理</h3>
+                <input type="button" class="lay-btn lay-btn-primary" id="btsure" value="确认订单" ng-click="OperaType(1,1)">
+                <input type="button" class="lay-btn lay-btn-primary" id="btfail" value="确认失败" ng-click="OperaType(1,2)">
+                <input type="button" class="lay-btn lay-btn-primary" id="btcalel" value="取消" ng-click="OperaType(1,3)">
+            </div>
+        </div>
+    </div>
     <div class="lay-row">
         <div class="lay-form-item lay-col-14">
             <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
@@ -9,7 +27,7 @@
                         <td class="lay-table td" ng-bind="m.HOSellPrice"></td>
                         <td class="lay-table td">预定人数：</td>
                         <td class="lay-table td">
-                            <label id="count"></label>(成人:<label ng-bind="m.HOChild"></label>  儿童:<label ng-bind="m.HOChild"></label>)
+                            <label id="count"></label>(成人:<label ng-bind="m.HOAdult"></label>  儿童:<label ng-bind="m.HOChild"></label>)
                         </td>
                     </tr>
                     <tr>
@@ -25,10 +43,10 @@
                             <td class="lay-table td"></td>
                         </tr>*@
                     <tr>
-                        <td class="lay-table td">外部订单号：</td>
+                        <td class="lay-table td">分销商确认号：</td>
                         <td class="lay-table td" colspan="3">
                             <input id="HOOutSerialId" class="lay-input  long-input" ng-bind="m.HOOutSerialId" />
-                            <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save(m.Id,2,0)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="保存" ng-click="OperaType(2,0)">
                         </td>
                         <td></td>
                     </tr>
@@ -89,7 +107,7 @@
                         <td class="lay-table td">供应商确认号：</td>
                         <td class="lay-table td" colspan="3">
                             <input id="HOSupplierSerialId" class="lay-input  long-input" ng-bind="m.HOSupplierSerialId" />
-                            <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save(m.Id,3,0)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="保存" ng-click="OperaType(3,0)">
                         </td>
                     </tr>
                     <tr>
@@ -102,7 +120,7 @@
             </div>
             <div class="lay-form-item-control lay-col-6">
                 <h3 class="cont-title">操作日志</h3>
-                <input type="button" class="lay-btn lay-btn-primary" value="填写日志" ng-click="Save()">
+                <input type="button" class="lay-btn lay-btn-primary" value="填写日志" ng-click="OperaType(0,0)">
                 <table class="lay-table">
                     <thead>
                         <tr>
@@ -131,10 +149,10 @@
     </div>
 </div>
 <input id="hc" type="hidden" />
-<input id="ha" type="hidden" />
+<input id="hstatus" type="hidden" />
 <input id="horderid" type="hidden" value="@ViewBag.OrderId" />
 <input id="hserialid" type="hidden" value="@ViewBag.CustomerSerialId" />
-<div class="lay-dialog" id="dialogDetail" hidden>
+<div class="lay-dialog" id="dialoglog" hidden>
     <div class="lay-dialog-mask"></div>
     <div class="lay-dialog-cont" style="width:60%;height:60%;">
         <div class="lay-dialog-hd">
@@ -142,39 +160,7 @@
             <button class="lay-dialog-btn-close"></button>
         </div>
         <div class="lay-dialog-bd">
-            <div class="lay-row">
-                <div class="lay-form-item lay-must">
-                    <div class="lay-form-item-caption">
-                        <label>部门名称：</label>
-                    </div>
-                    <div class="lay-form-item-control">
-                        <input class="lay-input" ng-model="Log.HOLAddDepartName" />
-                    </div>
-                </div>
-            </div>
-            <div class="lay-row">
-                <div class="lay-form-item lay-col-6 lay-must">
-                    <div class="lay-form-item-caption">
-                        <label>操作人：</label>
-                    </div>
-                    <div class="lay-form-item-control">
-                        <input class="lay-input" ng-model="Log.HOLAddName" />
-                    </div>
-                </div>
-            </div>
-            <div class="lay-row">
-                <div class="lay-form-item lay-col-6 lay-must">
-                    <div class="lay-form-item-caption ">
-                        <label>日志信息：</label>
-                    </div>
-                    <div class="lay-form-item-control">
-                        <textarea class="lay-input long-input" ng-model="Log.HOLRemark" style="height: auto;"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="lay-form-foot">
-                <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save(m.Id,0,0)">
-            </div>
+            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
         </div>
     </div>
 </div>
@@ -185,9 +171,12 @@
             $scope.config = {
                 detailUrl: "/order/getdetial",
                 logUrl: "/order/getorderloglist",
-                savelogUrl: "/order/savelog",
+                //savelogUrl: "/order/savelog",
                 saveUrl: "/order/setorder/",
             };
+            $scope.type = "";//操作类型 0：填写日志 1：修改订单状态 2：添加外部订单号 3：添加供应商确认号
+            $scope.state = "";//订单状态
+            $scope.serialid = "";//外部订单号Or供应商确认号
             $scope.id = $('#horderid').val();
             $(function () {
                 $scope.pageInit();
@@ -196,42 +185,21 @@
             });
 
 
-            $scope.GetDate=function (data) {
+            $scope.GetDate = function (data) {
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
                 //不带时分秒
                 return time = date.toLocaleDateString();
-                //带时分秒
-                //var datetime = date.getFullYear()
-                //+ "-"// "年"
-                //+ ((date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : "0"
-                //        + (date.getMonth() + 1))
-                //+ "-"// "月"
-                //+ (date.getDate() < 10 ? "0" + date.getDate() : date
-                //        .getDate())
-                //+ " "
-                //+ (date.getHours() < 10 ? "0" + date.getHours() : date
-                //        .getHours())
-                //+ ":"
-                //+ (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
-                //        .getMinutes())
-                //+ ":"
-                //+ (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
-                //        .getSeconds());
-                //return datetime;
             }
 
             $scope.GetLastdate = function (data) {
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
-                //不带时分秒
-                //return time = date.toLocaleDateString();
-                //带时分秒
                 var datetime = (date.getHours() < 10 ? "0" + date.getHours() : date
-                        .getHours())
-                + ":"
-                + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
+                    .getHours())
+                    + ":"
+                    + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
                         .getMinutes())
-                + ":"
-                + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
+                    + ":"
+                    + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
                         .getSeconds());
                 return datetime;
             }
@@ -254,8 +222,22 @@
                             $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate);
                             $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate);
                             //var lastdate = $scope.GetDate($scope.m.HOLastCheckInTime);
-                            $scope.m.HOLastCheckInTime = $scope.GetLastdate($scope.m.HOLastCheckInTime);
+                            //$scope.m.HOLastCheckInTime = $scope.GetLastdate($scope.m.HOLastCheckInTime);
                             $("#count").html($scope.m.HOChild + $scope.m.HOAdult);
+                            switch ($scope.m.HOStatus)
+                            {
+                                case 1:
+                                    $("#btsure").attr("disabled", true);
+                                    break;
+                                case 2:
+                                    $("#btfail").attr("disabled", true);
+                                    break;
+                                case 3:
+                                    $("#btcalel").attr("disabled", true);
+                                    break;
+                            }
+                            $("#HOOutSerialId").val($scope.m.HOOutSerialId)
+                            $("#HOSupplierSerialId").val($scope.m.HOSupplierSerialId)
                             $("#ordercommis").html($scope.m.HOSellPrice - $scope.m.HOContractPrice);
                         }
                         $scope.$apply();
@@ -286,7 +268,7 @@
                         $scope.list = [];
                         if (data != null && data.IsSuccess > 0) {
                             $scope.list = data.List;
-                            $scope.pagerInit(index, data.Total);
+                            //$scope.pagerInit(index, data.Total);
                         }
                         $scope.$apply();
                     },
@@ -302,57 +284,18 @@
                     }
                 });
             }
-
-            //分页
-            $scope.pagerInit = function (index, total) {
-                var pager = new PagerView('pager');
-                pager.index = index;
-                pager.size = 10;
-                pager.itemCount = total;
-                pager.onclick = function (index) {
-                    $scope.search(index);
-                };
-                pager.render();
-            }
-
-
-            //更新订单
-            $scope.setOrder = function (id, valid) {
-                var msg = "确定保存？";
-                eMsg({
-                    timer: 2000,
-                    text: msg
-                });
-                valid = valid == 1 ? 0 : 1;
-                var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
-                Untitl.Get(url, {}, function (data) {
-                    if (data != null && data.IsSuccess > 0) {
-                        eMsg({
-                            timer: 2000,
-                            text: '操作成功，正在刷新页面！'
-                        });
-                        //刷新页面
-                        $scope.search(1);
-                    }
-                    else {
-                        var msg = data ? data.Msg : "";
-                        eMsg({
-                            timer: 2000,
-                            text: '操作失败,' + msg
-                        });
-                    }
-                });
-
-            }
-
-
-            //保存
-            $scope.Save = function (id, type, state) {
+            //操作类型
+            $scope.OperaType = function (type, state) {
+                $scope.type = type;
                 switch (type) {
+                    //订单状态
+                    case 1:
+                        $scope.state = state;
+                        break;
                     //外部订单号
                     case 2:
                         var out = $("#HOOutSerialId").val();
-                        alert(out);
+                        //alert(out);
                         if (out == null || out == undefined || out == "") {
                             eMsg({
                                 timer: 2000,
@@ -360,8 +303,9 @@
                             });
                             return false;
                         }
+                        $scope.serialid = out;
                         break;
-                        //供应商确认号
+                    //供应商确认号
                     case 3:
                         var suplier = $("#HOSupplierSerialId").val();
                         if (suplier == null || suplier == undefined || suplier == "") {
@@ -371,120 +315,13 @@
                             });
                             return false;
                         }
+                        $scope.serialid = suplier;
                         break;
                 }
-                $("#dialogDetail").eDialog('show');
-                //$.ajax({
-                //    url: $scope.config.saveUrl,
-                //    type: 'post',
-                //    dataType: "json",
-                //    data: { "hotelmodel": $scope.m, "ordermodel": $scope.o },
-                //    timeout: 20000,
-                //    success: function (data) {
-                //        if (data != null && data.IsSuccess > 0) {
-                //            $scope.m.Id = data.AddId;
-                //            eMsg({
-                //                timer: 2000,
-                //                text: '操作成功，正在自动关闭页面！'
-                //            });
-                //            //关闭页面
-                //            setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
-                //        }
-                //        else {
-                //            var msg = data ? data.Msg : "";
-                //            eMsg({
-                //                timer: 2000,
-                //                text: '操作失败,' + msg
-                //            });
-                //        }
-                //        $scope.$apply();
-                //    },
-                //    error: function () {
-                //        console.log("err-save");
-                //    },
-                //    complete: function () {
-                //        eLoading.hide();
-                //    }
-                //});
-            }
-
-
-            //保存订单操作
-            $scope.SaveOrder = function (type,state) {
-                $.ajax({
-                    url: $scope.config.saveUrl,
-                    type: 'post',
-                    dataType: "json",
-                    data: { "id": $scope.id, "type": type, "state": state, "logmodel": $scope.Log },
-                    timeout: 20000,
-                    success: function (data) {
-                        if (data != null && data.IsSuccess > 0) {
-                            $scope.l.Id = data.AddId;
-                            eMsg({
-                                timer: 2000,
-                                text: '操作成功，正在自动关闭页面！'
-                            });
-                            //关闭页面
-                            setTimeout(function () {
-                                $scope.Search = { PageIndex: 1 };
-                                $scope.search(1);
-                            }, 1000);
-                        }
-                        else {
-                            var msg = data ? data.Msg : "";
-                            eMsg({
-                                timer: 2000,
-                                text: '操作失败,' + msg
-                            });
-                        }
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-save");
-                    },
-                    complete: function () {
-                        eLoading.hide();
-                    }
-                });
-            }
-
-            //保存订单日志
-            $scope.SaveLog = function () {
-                $.ajax({
-                    url: $scope.config.savelogUrl,
-                    type: 'post',
-                    dataType: "json",
-                    data: $scope.Log,
-                    timeout: 20000,
-                    success: function (data) {
-                        if (data != null && data.IsSuccess > 0) {
-                            $scope.l.Id = data.AddId;
-                            eMsg({
-                                timer: 2000,
-                                text: '操作成功，正在自动关闭页面！'
-                            });
-                            //关闭页面
-                            setTimeout(function () {
-                                $scope.Search = { PageIndex: 1 };
-                                $scope.search(1);
-                            }, 1000);
-                        }
-                        else {
-                            var msg = data ? data.Msg : "";
-                            eMsg({
-                                timer: 2000,
-                                text: '操作失败,' + msg
-                            });
-                        }
-                        $scope.$apply();
-                    },
-                    error: function () {
-                        console.log("err-save");
-                    },
-                    complete: function () {
-                        eLoading.hide();
-                    }
-                });
+                var url = "/order/orderlog?orderid=" + $('#hserialid').val() + "&type=" + $scope.type + "&state=" + $scope.state + "&serialid=" + $scope.serialid;
+                $('#ifm_detail').prop('src', url);
+                //$("#dialogDetail").eDialog('show');
+                $("#dialoglog").eDialog('show');
             }
         });
     </script>
