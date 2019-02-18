@@ -1,0 +1,171 @@
+﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+
+</div>
+<input id="hfId" type="hidden" value="@ViewBag.Id" />
+@section foot{
+    <script>
+
+        var mobileReg = /^1(3|4|5|7|8|9)\d{9}$/;
+        var telReg = /^(\d{3,4}-?)?\d{7,9}$/;
+        var emailReg = /\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.Source = [{ Code: 0, Name: '请选择' }];
+            $scope.config = {
+                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
+                areaUrl: "/system/GetAreaList2/?pid=",
+                detailUrl: "/hotel/getdateil/",
+                saveUrl: "/hotel/save/",
+            };
+            $scope.Id = $('#hfId').val();
+            $(function () {
+                $scope.pageInit();
+            });
+            //初始化
+            $scope.pageInit = function () {
+                laydate.render({
+                    elem: '#txtDate',
+                    range: '~'
+                })
+                $scope.getArea(0);
+                $scope.dicInit();
+                if ($scope.Id > 0) {
+                    $scope.getDetail();
+                }
+                else {
+                    $scope.m = { HICheckIn: '14:00以后', HICheckOut: '12:00之前' }
+                }
+            }
+            //字典初始化
+            $scope.dicInit = function () {
+
+                //FacilitiyData 设施
+                Untitl.GetDicList2(201, 0, function (data) {
+                    $scope.FacilitiyData = data;
+                    $scope.$apply();
+                });
+
+            }
+
+            //获取省市查询
+            $scope.getArea = function (type) {
+                var pId = type == 0 ? 1 : $scope.m.HIProvinceId;
+                if (!pId || pId <= 0) return;
+                var url = $scope.config.areaUrl + pId;
+                Untitl.Get(url, {}, function (data) {
+                    if (type == 0) {
+                        $scope.ProvList = data;
+                        $scope.ProvList.unshift({ Code: 0, Name: "请选择省份" });
+                        $scope.CityList = [{ Code: 0, Name: "请选择城市" }];
+                        $scope.m.HICityId = 0;
+                    }
+                    else {
+                        $scope.CityList = data;
+                        $scope.CityList.unshift({ Code: 0, Name: "请选择城市" });
+                    }
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getArea");
+                })
+            }
+
+            //详情
+            $scope.getDetail = function () {
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                            if ($scope.m && $scope.m.HIProvinceId > 0) {
+                                $scope.getArea(1);
+                            }
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //赋值
+            $scope.DicValueInit = function (id, list) {
+                var name = "--";
+                if (list) {
+                    $.each(list, function (index, item) {
+                        if (item.Code == id)
+                            name = item.Name;
+                    });
+                }
+                return name;
+            }
+
+            //保存
+            $scope.Save = function () {
+                $scope.m.HICity = $scope.DicValueInit($scope.m.HICityId, $scope.CityList)
+                $scope.m.HIProvince = $scope.DicValueInit($scope.m.HIProvinceId, $scope.ProvList)
+
+                var c = $scope.checkData();
+                if (!c) return;
+                eLoading.show();
+                Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        $scope.m.Id = data.AddId;
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功，正在自动关闭页面！'
+                        });
+                        //关闭页面
+                        setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                    }
+                    else {
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
+                        });
+                    }
+                    $scope.$apply();
+                },
+                    function () {
+                        eLoading.hide();
+                    });
+            }
+
+            //数据验证
+            $scope.checkData = function () {
+                if ($scope.m.HIName.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '酒店名称不能为空！'
+                    });
+                    return false;
+                }
+                if ($scope.m.HILinkPhone && $scope.m.HILinkPhone.length > 0 && !mobileReg.test($scope.m.HILinkPhone) && !telReg.test($scope.m.HILinkPhone)) {
+                    eMsg({
+                        timer: 2000,
+                        text: '请输入正确的联系电话！'
+                    });
+                    return false;
+                }
+                //省份 城市赋值
+
+
+                return true;
+            }
+        });
+    </script>
+}

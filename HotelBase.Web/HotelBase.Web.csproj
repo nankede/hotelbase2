@@ -267,6 +267,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Hotel\PriceDetail.cshtml" />
     <Content Include="Views\System\DepartDetail.cshtml" />
+    <Content Include="Views\Hotel\HotelBase.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
