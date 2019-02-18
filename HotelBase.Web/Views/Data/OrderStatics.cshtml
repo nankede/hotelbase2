@@ -12,7 +12,7 @@
             </select>
         </div>
     </div>
-    <div class="lay-form-item">
+    @*<div class="lay-form-item">
         <div class="lay-form-item-caption ">
             <label>政策来源</label>
         </div>
@@ -21,20 +21,19 @@
                 <option value="" selected hidden>
             </select>
         </div>
-    </div>
-    <div class="lay-row">
+    </div>*@
+    @*<div class="lay-row">
         <div class="lay-form-item lay-col-6">
             <div class="lay-form-item-caption">
                 <label>来单渠道</label>
             </div>
             <div class="lay-form-item-control">
-                @*<input class="lay-input  long-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"/>*@
                 <select class="lay-select lay-input" ng-model="Search.Plat1" ng-init="Search.Plat1=0" ng-options="item.Type as item. Name for item in config.SourceOne">
                     <option value="" selected hidden>
                 </select>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="lay-form-item" id="timesearch">
         <div class="lay-form-item-caption ">
             <label>时间类型</label>
@@ -75,13 +74,32 @@
     </div>
     <div class="lay-form-item" id="suppliersearch" style="display:none">
         <div class="lay-form-item-caption ">
+            <label>供应商来源</label>
+        </div>
+        <div class="lay-form-item-control">
+            <select class="lay-select  lay-input" ng-model="Search.SupplierSource" ng-init="Search.SourceId=0" ng-options="item.Code as item. Name for item in Source">
+                <option value="" selected hidden>
+            </select>
+        </div>
+        <div class="lay-form-item-caption ">
             <label>供应商名称</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="Search.SupplierName" placeholder="多个以英文,隔开" />
+            @*<input class="lay-input" ng-model="Search.SupplierName" placeholder="多个以英文,隔开" />*@
+            <select class="lay-select lay-input" ng-model="Search.Plat2" ng-init="Search.Plat2=0" ng-options="item.Code as item. Name for item in config.Suppler">
+                <option value="" selected hidden>
+            </select>
         </div>
     </div>
     <div class="lay-form-item" id="sourcesearch" style="display:none">
+        <div class="lay-form-item-caption">
+            <label>来源</label>
+        </div>
+        <div class="lay-form-item-control">
+            <select class="lay-select lay-input" ng-model="Search.Plat1" ng-init="Search.Plat1=0" ng-options="item.Type as item. Name for item in config.SourceOne">
+                <option value="" selected hidden>
+            </select>
+        </div>
         <div class="lay-form-item-caption ">
             <label>分销商</label>
         </div>
@@ -285,9 +303,11 @@
             $scope.config = {
                 listUrl: "/data/getorderstatics/",
                 distributorUrl: "/distributor/getdistributor/",
+                supplierUrl: "/supplier/getsupplier/",
                 sourceUrl: "/system/getdiclistbypcode/?pCode=101",
                 areaUrl: "/system/GetAreaList/?pid=",
                 SourceTwo: [{ Code: -1, Name: "请选择" }],
+                Supplier: [{ Code: -1, Name: "请选择" }],
                 TypeSource: [{ Type: 1, Name: "按时间维度" }, { Type: 2, Name: "按省市维度" }, { Type: 3, Name: "按酒店维度" }, { Type: 4, Name: "按供应商维度" }, { Type: 5, Name: "按分销商维度" }],
                 TimeType: [{ Type: 1, Name: "创建时间" }, { Type: 2, Name: "离店时间" }],
                 SourceOne: [{ Type: -1, Name: "请选择" }, { Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }]
@@ -305,14 +325,26 @@
                 $scope.search(1);
                 $scope.getArea(0);
                 $scope.getDistributor();
+                $scope.getSupplier();
                 //$scope.Search.Type=$scope.config.TypeSource[0];
+            }
+
+            //获取供应商
+            $scope.getSupplier = function () {
+                var url = $scope.config.supplierUrl;
+                Untitl.Get(url, { "IsValid": 1 }, function (data) {
+                    $scope.config.Supplier = data;
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getSupplier");
+                })
             }
 
             //获取分销商
             $scope.getDistributor = function () {
                 var url = $scope.config.distributorUrl;
                 Untitl.Get(url, { "IsValid": 1}, function (data) {
-                    $scope.config.SourceTwo = data;
+                    $scope.config.Supplier = data;
                     $scope.$apply();
                 }, function () {
                     console.log("err-getDistributor");

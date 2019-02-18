@@ -7,8 +7,21 @@
 }
 <div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div class="lay-row">
-        <div class="lay-form-item lay-col-12">
-            @*<div class="lay-form-item-control lay-col-6"></div>*@
+        <div class="lay-form-item lay-col-14">
+            <div class="lay-form-item-control lay-col-6" style="padding-right:15px;">
+                <h3 class="cont-title">订单基础</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td" style="width:50%">订单号：</td>
+                        <td class="lay-table td" style="width:150%" ng-bind="m.HOCustomerSerialId"></td>
+                        <td class="lay-table td">订单状态：</td>
+                        <td class="lay-table td" ng-bind="getOrderStatus(m.HOStatus)"></td>
+                    </tr>
+                </table>
+                @*<label>订单号：</label>
+                    <label>订单号：</label>
+                    <input type="text"  ng-bind="m.HOCustomerSerialId" disabled>*@
+            </div>
             <div class="lay-form-item-control lay-col-6">
                 <h3 class="cont-title">订单处理</h3>
                 <input type="button" class="lay-btn lay-btn-primary" id="btsure" value="确认订单" ng-click="OperaType(1,1)">
@@ -43,7 +56,7 @@
                             <td class="lay-table td"></td>
                         </tr>*@
                     <tr>
-                        <td class="lay-table td">分销商确认号：</td>
+                        <td class="lay-table td">外部订单号：</td>
                         <td class="lay-table td" colspan="3">
                             <input id="HOOutSerialId" class="lay-input  long-input" ng-bind="m.HOOutSerialId" />
                             <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="保存" ng-click="OperaType(2,0)">
@@ -72,6 +85,12 @@
                         <td class="lay-table td" ng-bind="m.HRName"></td>
                         <td class="lay-table td">房型ID：</td>
                         <td class="lay-table td" ng-bind="m.HRId"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">确认方式：</td>
+                        <td class="lay-table td" ng-bind="m.SSubWay"></td>
+                        <td class="lay-table td">传真号/邮箱：</td>
+                        <td class="lay-table td"><label id="email" /><</td>
                     </tr>
                 </table>
             </div>
@@ -191,6 +210,27 @@
                 return time = date.toLocaleDateString();
             }
 
+            //获取订单状态
+            $scope.getOrderStatus = function (status) {
+                //alert($("#hidtotalmsg").val());
+                var collect = "";
+                switch (status) {
+                    case 0:
+                        collect = "待确认";
+                        break;
+                    case 1:
+                        collect = "预定成功";
+                        break;
+                    case 2:
+                        collect = "酒店下单失败";
+                        break;
+                    case 3:
+                        collect = "取消成功";
+                        break;
+                }
+                return collect;
+            }
+
             $scope.GetLastdate = function (data) {
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
                 var datetime = (date.getHours() < 10 ? "0" + date.getHours() : date
@@ -224,21 +264,15 @@
                             //var lastdate = $scope.GetDate($scope.m.HOLastCheckInTime);
                             //$scope.m.HOLastCheckInTime = $scope.GetLastdate($scope.m.HOLastCheckInTime);
                             $("#count").html($scope.m.HOChild + $scope.m.HOAdult);
-                            switch ($scope.m.HOStatus)
-                            {
-                                case 1:
-                                    $("#btsure").attr("disabled", true);
-                                    break;
-                                case 2:
-                                    $("#btfail").attr("disabled", true);
-                                    break;
-                                case 3:
-                                    $("#btcalel").attr("disabled", true);
-                                    break;
+                            if ($scope.m.HOStatus != 0) {
+                                $("#btsure").attr("disabled", true);
+                                $("#btfail").attr("disabled", true);
+                                $("#btcalel").attr("disabled", true);
                             }
                             $("#HOOutSerialId").val($scope.m.HOOutSerialId)
                             $("#HOSupplierSerialId").val($scope.m.HOSupplierSerialId)
                             $("#ordercommis").html($scope.m.HOSellPrice - $scope.m.HOContractPrice);
+                            $("#email").html($scope.m.SLinkMail + "/" + $scope.m.SLinkFax);
                         }
                         $scope.$apply();
                     },
@@ -292,7 +326,7 @@
                     case 1:
                         $scope.state = state;
                         break;
-                    //外部订单号
+                        //外部订单号
                     case 2:
                         var out = $("#HOOutSerialId").val();
                         //alert(out);
@@ -305,7 +339,7 @@
                         }
                         $scope.serialid = out;
                         break;
-                    //供应商确认号
+                        //供应商确认号
                     case 3:
                         var suplier = $("#HOSupplierSerialId").val();
                         if (suplier == null || suplier == undefined || suplier == "") {

@@ -146,16 +146,26 @@ namespace HotelBase.DataAccess.Order
         /// </summary>
         /// <param name="orderid"></param>
         /// <returns></returns>
-        public static HO_HotelOrderModel GetModel(int orderid)
+        public static OrdrModel GetModel(int orderid)
         {
             if (orderid <= 0)
             {
                 return null;
             }
             var para = new DynamicParameters();
-            var sql = "SELECT * FROM ho_hotelorder  WHERE  id=@id  LIMIT 1;   ";
+            var sql = @"SELECT
+                        hs.SSubWay,
+	                    hs.SLinkMail,
+	                    hs.SLinkFax,
+	                    ho.*
+                    FROM
+                        ho_hotelorder ho
+                        INNER JOIN h_supplier hs ON ho.HOSupplierId = hs.Id
+                    WHERE
+                        ho.id = @id
+                        LIMIT 1; ";
             para.Add("@id", orderid);
-            var data = MysqlHelper.GetModel<HO_HotelOrderModel>(sql, para);
+            var data = MysqlHelper.GetModel<OrdrModel>(sql, para);
             return data;
         }
 
@@ -205,16 +215,16 @@ namespace HotelBase.DataAccess.Order
             {
                 sb.AppendFormat(" AND  b.Id = {0}", request.HotelId);
             }
-            //入离店时间
-            if (!string.IsNullOrWhiteSpace(request.InBeginDate))
-            {
-                sb.AppendFormat(" AND rp.HRPDate >= '{0}'", request.InBeginDate);
-            }
-            //离店时间
-            if (!string.IsNullOrWhiteSpace(request.InEndDate))
-            {
-                sb.AppendFormat(" AND rp.HRPDate<'{0}'", Convert.ToDateTime(request.InEndDate).AddDays(1).ToShortDateString());
-            }
+            ////入离店时间
+            //if (!string.IsNullOrWhiteSpace(request.InBeginDate))
+            //{
+            //    sb.AppendFormat(" AND rp.HRPDate >= '{0}'", request.InBeginDate);
+            //}
+            ////离店时间
+            //if (!string.IsNullOrWhiteSpace(request.InEndDate))
+            //{
+            //    sb.AppendFormat(" AND rp.HRPDate<'{0}'", Convert.ToDateTime(request.InEndDate).AddDays(1).ToShortDateString());
+            //}
             var list = MysqlHelper.GetList<BookSearchResponse>(sb.ToString());
             var total = list?.Count ?? 0;
             if (total > 0)
@@ -465,6 +475,10 @@ namespace HotelBase.DataAccess.Order
             if (!string.IsNullOrWhiteSpace(request.SupplierName))
             {
                 sbwhere.AppendFormat(" AND ho.HOSupperlierName Like '%{0}%'", request.SupplierName);
+            }
+            if (request.SupplierId > 0)
+            {
+                sbwhere.AppendFormat(" AND ho.HOSupperlierId = {0}", request.SupplierId);
             }
             if (request.SupplierSource > 0)
             {

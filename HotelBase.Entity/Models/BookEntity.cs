@@ -18,15 +18,15 @@ namespace HotelBase.Entity.Models
         /// </summary>
         public int HotelId { get; set; }
 
-        /// <summary>
-        /// 入住开始时间
-        /// </summary>
-        public string InBeginDate { get; set; }
+        ///// <summary>
+        ///// 入住开始时间
+        ///// </summary>
+        //public string InBeginDate { get; set; }
 
-        /// <summary>
-        /// 入住结束时间
-        /// </summary>
-        public string InEndDate { get; set; }
+        ///// <summary>
+        ///// 入住结束时间
+        ///// </summary>
+        //public string InEndDate { get; set; }
     }
 
     /// <summary>

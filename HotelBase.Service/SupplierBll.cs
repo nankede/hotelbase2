@@ -130,5 +130,30 @@ namespace HotelBase.Service
             var model = H_SupplierAccess.GetModel(id);
             return model;
         }
+
+        /// <summary>
+        /// 查询供应商列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static List<BaseDic> GetSupplier(int IsValid, int isDefault)
+        {
+            var list = new List<BaseDic>();
+            if (isDefault == 1)
+            {
+                list.Add(new BaseDic { Code = 0, Name = "请选择" });
+            }
+            var data = H_SupplierAccess.GetList(new SupplierSearchRequest
+            {
+                PageSize = 100,
+                IsValid = IsValid
+            });
+            data?.List?.ForEach(x =>
+            {
+                list.Add(new BaseDic { Code = x.Id, Name = x.SName });
+
+            });
+            return list;
+        }
     }
 }

@@ -135,7 +135,7 @@
                 <td ng-bind="d.HOCheckInDate"></td>
                 <td ng-bind="d.HOCheckOutDate"></td>
                 <td ng-bind="d.HOLinkerName"></td>
-                <td ng-bind="d.HOStatus"></td>
+                <td ng-bind="getOrderStatus(d.HOStatus)"></td>
                 <td ng-bind="d.HOSellPrice"></td>
                 <td ng-bind="d.HOContractPrice"></td>
                 <td>
@@ -259,6 +259,28 @@
                     id_array.push($(this).val());//向数组中添加元素
                 });
                 return idstr = id_array.join(',');//将数组元素连接起来以构建一个字符串
+            }
+
+            //获取订单状态
+            $scope.getOrderStatus = function (status) {
+                //alert($("#hidtotalmsg").val());
+                var collect = "";
+                switch (status)
+                {
+                    case "0":
+                        collect = "待确认";
+                        break;
+                    case "1":
+                        collect = "预定成功";
+                        break;
+                    case "2":
+                        collect = "酒店下单失败";
+                        break;
+                    case "3":
+                        collect = "取消成功";
+                        break;
+                }
+                return collect;
             }
 
             //查询

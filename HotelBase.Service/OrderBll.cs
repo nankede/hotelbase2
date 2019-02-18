@@ -27,7 +27,7 @@ namespace HotelBase.Service
         /// </summary>
         /// <param name="orderid"></param>
         /// <returns></returns>
-        public static HO_HotelOrderModel GetModel(int orderid)
+        public static OrdrModel GetModel(int orderid)
         {
             return Ho_HotelOrderAccess.GetModel(orderid);
         }

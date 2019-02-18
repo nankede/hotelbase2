@@ -78,6 +78,11 @@ namespace HotelBase.Entity.Models
         public string SupplierName { get; set; }
 
         /// <summary>
+        /// 供应商ID
+        /// </summary>
+        public int SupplierId { get; set; }
+
+        /// <summary>
         /// 分销商id
         /// </summary>
        // public int DistributorId { get; set; }

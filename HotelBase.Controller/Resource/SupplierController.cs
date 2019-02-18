@@ -89,6 +89,16 @@ namespace HotelBase.Web.Controller.System
             return Json(rtn, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 供应商列表--订单统计使用
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetSupplier(int IsValid, int isDefault = 1)
+        {
+            var response = SupplierBll.GetSupplier(IsValid, isDefault);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }
