@@ -138,7 +138,20 @@ namespace HotelBase.Entity.Models
 
     public class OrdrModel : HO_HotelOrderModel
     {
+        /// <summary>
+        /// 确认方式
+        /// </summary>
+        public string SSubWay { get; set; }
 
+        /// <summary>
+        /// 传真号
+        /// </summary>
+        public string SLinkMail { get; set; }
+
+        /// <summary>
+        /// 邮箱
+        /// </summary>
+        public string SLinkFax { get; set; }
     }
 
     public class OrderLogSearchRequset : BaseRequest

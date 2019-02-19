@@ -22,7 +22,7 @@ ViewBag.PageTitle = "供应商管理";
                     </div>
                 </div>
             </div>
-            <div class="lay-form-item">
+            @*<div class="lay-form-item">
                 <div class="lay-form-item">
                     <div class="lay-form-item-caption ">
                         <label>入住离店时间</label>
@@ -32,7 +32,7 @@ ViewBag.PageTitle = "供应商管理";
                         <input class="lay-input long-input" id="txtendDate" ng-model="Search.InEndDate" />
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
         <div class="btnContain_sar">
             <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
@@ -120,12 +120,12 @@ ViewBag.PageTitle = "供应商管理";
                 HotelName: ''
             };
             $scope.search(1);
-            laydate.render({
-                elem: '#txtbeginDate'
-            })
-            laydate.render({
-                elem: '#txtendDate'
-            })
+            //laydate.render({
+            //    elem: '#txtbeginDate'
+            //})
+            //laydate.render({
+            //    elem: '#txtendDate'
+            //})
         }
         //床型
         $scope.getBed = function () {
@@ -162,8 +162,8 @@ ViewBag.PageTitle = "供应商管理";
         $scope.search = function (index) {
             $scope.detailClear();
             $scope.Search.PageIndex = index;
-            $scope.Search.InBeginDate = $("#txtbeginDate").val();
-            $scope.Search.InEndDate = $("#txtendDate").val();
+            //$scope.Search.InBeginDate = $("#txtbeginDate").val();
+            //$scope.Search.InEndDate = $("#txtendDate").val();
             var para = $scope.Search;
             eLoading.show();
             $.ajax({

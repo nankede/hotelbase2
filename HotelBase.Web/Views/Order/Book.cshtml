@@ -381,7 +381,7 @@
 
             //保存
             $scope.Save = function () {
-                var c = $scope.checkData();
+                var c = $scope.checkData($scope.m, $scope.o);
                 if (!c) return;
                 eLoading.show();
                 if ($('#txtDate').val() != '') {
@@ -389,6 +389,7 @@
                     $scope.o.HOCheckInDate = date[0];
                     $scope.o.HOCheckOutDate = date[1];
                 }
+                return;
                 $.ajax({
                     url: $scope.config.saveUrl,
                     type: 'post',
@@ -448,13 +449,28 @@
                     });
                     return false;
                 }
-                if ($('#txtDate').val() == null) {
+                if ($('#txtDate').val() == null && $('#txtDate').val().length <= 0) {
                     eMsg({
                         timer: 2000,
                         text: '入住/离店时间不能为空！'
                     });
                     return false;
                 }
+                //debugger;
+                //if (o.HOCheckInDate == null || o.HOCheckInDate.length <= 0) {
+                //    eMsg({
+                //        timer: 2000,
+                //        text: '入住时间不能为空！'
+                //    });
+                //    return false;
+                //}
+                //if (o.HOCheckOutDate == null || o.HOCheckOutDate.length <= 0) {
+                //    eMsg({
+                //        timer: 2000,
+                //        text: '离店时间不能为空！'
+                //    });
+                //    return false;
+                //}
                 //if (o.HOLastCheckInTime == null || o.HOLastCheckInTime.length <= 0) {
                 //    eMsg({
                 //        timer: 2000,
@@ -462,7 +478,7 @@
                 //    });
                 //    return false;
                 //}
-                if (o.HOChild == null || o.HOChild < 0) {
+                if (o.HOAdult == null || o.HOAdult < 0) {
                     eMsg({
                         timer: 2000,
                         text: '成人数不能为空！'
