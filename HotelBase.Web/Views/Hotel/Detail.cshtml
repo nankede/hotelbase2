@@ -224,7 +224,7 @@
                 //赋值
                 $scope.DicValueInit = function (id, list) {
                     var name = "--";
-                    if (list) {
+                    if (list && id > 0) {
                         $.each(list, function (index, item) {
                             if (item.Code == id)
                                 name = item.Name;

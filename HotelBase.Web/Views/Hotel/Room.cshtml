@@ -96,20 +96,24 @@
                 //床型
                 Untitl.GetDicList(501, function (data) {
                     $scope.BedTypeList = data;
+                    $scope.m.HRBedType =  $scope.m.HRBedType ||0;
                     $scope.$apply();
                 });
                 Untitl.GetDicList(502, function (data) {
                     $scope.BedSizeList = data;
+                    $scope.m.HRBedSize = $scope.m.HRBedSize ||0;
                     $scope.$apply();
                 });
                 //窗户
                 Untitl.GetDicList(503, function (data) {
                     $scope.WindowsTypeList = data;
+                    $scope.m.HRWindowsType = $scope.m.HRWindowsType|| 0;
                     $scope.$apply();
                 });
                 //人数
                 Untitl.GetDicList(504, function (data) {
                     $scope.PersonCountList = data;
+                    $scope.m.HRPersonCount = $scope.m.HRPersonCount ||0;
                     $scope.$apply();
                 });
             }
