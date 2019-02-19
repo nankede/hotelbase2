@@ -5,7 +5,7 @@ ViewBag.PageTitle = "供应商管理";
     <div class="topContain_sar">
         <div class="searchInputContain_sar">
             <div class="lay-form-item">
-                <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item lay-col-6">
                     <div class="lay-form-item-caption ">
                         <label>酒店id</label>
                     </div>
@@ -13,7 +13,7 @@ ViewBag.PageTitle = "供应商管理";
                         <input class="lay-input" ng-model="Search.HotelId" placeholder="请输入酒店id" />
                     </div>
                 </div>
-                <div class="lay-form-item lay-col-4">
+                <div class="lay-form-item lay-col-6">
                     <div class="lay-form-item-caption ">
                         <label>酒店名称</label>
                     </div>
@@ -142,6 +142,67 @@ ViewBag.PageTitle = "供应商管理";
                     console.log("err-getSource");
                 },
                 complete: function () {}
+            });
+        }
+
+
+
+        //初始化
+        $scope.initSelect = function () {
+            $('#esSupplier').eSearch2({
+                placeholder: '请输入酒店名称查询',
+                searchSource: $scope.config.hotelUrl,
+                searchKey: 'name',
+                resultItem: {
+                    value: 'Code',
+                    text: 'Name'
+                },
+                onBeforeSend: function (ajaxSendData) {
+                    //这里的departmentId就是动态变化的
+                    //ajaxSendData.name = encodeURIComponent(ajaxSendData.name);
+                    if (!ajaxSendData.name || ajaxSendData.name.length <= 0) {
+                        return false;
+                    }
+                    ajaxSendData.sourceId = $scope.m.HRRSourceId || 0;
+                    return ajaxSendData;
+                },
+                onSelected: function () {
+                    $scope.m.HRRSupplierId = this.value;
+                    $scope.m.HRRSupplierName = this.text;
+                    $scope.$apply();
+                    console.log(`我是选中的value:${this.value},我是选中的text:${this.text}`);
+                    //所有的回调里面的this值都放了很多有用的东西
+                    //比如 你选中的 value值，选中的 text值
+                    //alert(`我是选中的value:${this.value},我是选中的text:${this.text}`)
+                }
+            });
+
+        }
+
+
+        //查询供应商
+        $scope.getSupplierList = function () {
+            $.ajax({
+                url: $scope.config.supplierUrl + "?sourceId=" + $scope.m.HRRSourceId + "&name=",
+                type: 'get',
+                dataType: "json",
+                timeout: 20000,
+                success: function (data) {
+                    if (data != null && data.Id > 0) {
+                        $scope.m = data;
+                        if ($scope.m.HRRSupplierId && $scope.m.HRRSupplierId > 0) {
+                            var d = { value: $scope.m.HRRSupplierId, text: $scope.m.HRRSupplierName };
+                            $('#esSupplier').eSearch2.setDefaults('#esSupplier', d);
+                        }
+                    }
+                    $scope.$apply();
+                },
+                error: function () {
+                    console.log("err-getDetail");
+                },
+                complete: function () {
+
+                }
             });
         }
 
