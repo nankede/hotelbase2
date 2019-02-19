@@ -259,6 +259,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Hotel\PriceDetail.cshtml" />
     <Content Include="Views\System\DepartDetail.cshtml" />
+    <Content Include="Views\Hotel\HotelBase.cshtml" />
     <Content Include="Views\Distributor\List.cshtml" />
     <Content Include="Views\Distributor\Detail.cshtml" />
     <Content Include="Views\Order\OrderLog.cshtml" />

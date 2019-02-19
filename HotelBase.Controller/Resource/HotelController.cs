@@ -45,6 +45,17 @@ namespace HotelBase.Web.Controller.System
             return View();
         }
 
+
+        /// <summary>
+        /// 酒店详情
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult HotelBase(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
         /// <summary>
         /// 查询酒店详情
         /// </summary>
