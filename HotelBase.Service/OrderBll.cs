@@ -119,5 +119,15 @@ namespace HotelBase.Service
         {
             return Ho_HotelOrderAccess.GetOrderLogList(request);
         }
+
+        /// <summary>
+        /// 导出订单
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static List<OrdrModel> GetOrderStaticList(OrderStaticRequest request)
+        {
+            return Ho_HotelOrderAccess.GetExportOrder(request);
+        }
     }
 }

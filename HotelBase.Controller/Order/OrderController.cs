@@ -11,6 +11,7 @@ using HotelBase.Service;
 using HotelBase.Web.Controllers;
 using HotelBase.Common.Extension;
 using HotelBase.Entity;
+using Newtonsoft.Json;
 
 namespace HotelBase.Web.Controller.System
 {
@@ -213,6 +214,57 @@ namespace HotelBase.Web.Controller.System
             }
             //var model = OrderBll.SetOrder(id, type, state, serialid);
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// 导出订单
+        /// </summary>
+        /// <param name="request"></param>
+        public void ExportOrder(string request)
+        {
+            if (!string.IsNullOrWhiteSpace(request))
+            {
+                var modelrequest = JsonConvert.DeserializeObject<OrderStaticRequest>(request);
+
+                var data = OrderBll.GetOrderStaticList(modelrequest);
+                if (data != null && data.Any())
+                {
+                    List<OrdrModel> emlist = new List<OrdrModel>();
+                    for (int i = 0; i < data.Count(); i++)
+                    {
+                        var detail = new OrdrModel
+                        {
+                            HOCustomerSerialId = data[i].HOCustomerSerialId ?? "",//订单号
+                            ProviceName = data[i].ProviceName ?? "",//省份
+                            CityName = data[i].CityName ?? "",//城市
+                                                              //IDCardNo = data[i].IDCardNo ?? "",//分销商
+                            HOSupperlierName = data[i].HOSupperlierName ?? "",//供应商
+                            HName = data[i].HName ?? "",//酒店
+                            HRRName = data[i].HRRName ?? "",//房型
+                            HORoomCount = data[i].HORoomCount,//房间数
+                                                              //Night = GetNight(data[i].DomicileProvinceId, data[i].DomicileCityId, data[i].DomicileDistrictId),//间夜
+                            HOCheckInDate = data[i].HOCheckInDate,//入店时间
+                            HOCheckOutDate = data[i].HOCheckOutDate,//离店时间
+                            HOAddTime = data[i].HOAddTime,//下单时间
+                            HOLinkerName = data[i].HOLinkerName ?? "",//联系人
+                            HOLinkerMobile = data[i].HOLinkerMobile ?? "",//手机号
+                            HOSellPrice = data[i].HOSellPrice,//订单价
+                            HOContractPrice = data[i].HOContractPrice,//酒店价
+                            Reven = data[i].HOSellPrice - data[i].HOContractPrice,//营收
+                            HOStatus = data[i].HOStatus,//订单状态
+                        };
+                        emlist.Add(detail);
+                    }
+                    var newdata = ConvertHelper.ListToDataTable(emlist);
+                    var filed = "HOCustomerSerialId;ProviceName;CityName;HOSupperlierName;HName;HRRName;HORoomCount;HOCheckInDate;HOCheckOutDate;HOAddTime;HOLinkerName;HOLinkerMobile;HOSellPrice;HOContractPrice;Reven;HOStatus;";
+                    var headName = "订单号#省份#城市#供应商#酒店#房型#房间数#入店时间#离店时间#下单时间#联系人#手机号#订单价#酒店价#营收#订单状态";
+                    IList<ExcelHelper.NPOIModel> list = new List<ExcelHelper.NPOIModel>();
+                    list.Add(new ExcelHelper.NPOIModel(newdata, filed, "Sheet1", headName));
+                    var fileName = "导出订单" + DateTime.Now.ToString("yyyyMMddhhssmm");
+                    ExcelHelper.NewExport(fileName, list, 0);
+                }
+            }
         }
 
         #endregion

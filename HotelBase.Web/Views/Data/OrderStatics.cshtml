@@ -110,6 +110,10 @@
         </div>
     </div>
     <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
+    <input id="btnExport" type="button" class="lay-btn lay-btn-primary" value="导出" ng-click="export()">
+    @*<form id="exports">
+        <button type="submit" class="lay-btn lay-btn-primary" ng-click="export()">导出</button>
+    </form>*@
     <table class="lay-table" id="timetable">
         <thead>
             <tr>
@@ -303,6 +307,7 @@
             $scope.config = {
                 listUrl: "/data/getorderstatics/",
                 distributorUrl: "/distributor/getdistributor/",
+                exportUrl: "/order/exportorder",
                 supplierUrl: "/supplier/getsupplier/",
                 sourceUrl: "/system/getdiclistbypcode/?pCode=101",
                 areaUrl: "/system/GetAreaList/?pid=",
@@ -547,6 +552,38 @@
                     }
                 });
             }
+
+
+            //导出
+            $scope.export = function ()
+            {
+                $scope.Search.StartTime = $("#txtbeginDate").val();
+                $scope.Search.EndTime = $("#txtendDate").val();
+                var para = $scope.Search;
+                console.log(JSON.stringify(para));
+                console.log($scope.config.exportUrl + "?request=" + JSON.stringify(para));
+                window.location.href = $scope.config.exportUrl + "?request=" + JSON.stringify(para);
+                //$.ajax({
+                //    url: $scope.config.exportUrl,
+                //    type: 'post',
+                //    dataType: "json",
+                //    data: para,
+                //    timeout: 20000,
+                //    success: function (data) {
+                //    },
+                //    error: function () {
+                //        console.log("err");
+                //        eMsg({
+                //            timer: 2000,
+                //            text: '下载失败，请稍后重试！'
+                //        });
+                //    },
+                //    complete: function () {
+                //        eLoading.hide();
+                //    }
+                //});
+            }
+
             //分页
             $scope.pagerInit = function (index, total) {
                 var pager = new PagerView('pager');

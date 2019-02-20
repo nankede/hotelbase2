@@ -170,6 +170,84 @@ namespace HotelBase.DataAccess.Order
         }
 
 
+        /// <summary>
+        /// 导出订单查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static List<OrdrModel> GetExportOrder(OrderStaticRequest request)
+        {
+            StringBuilder sb = new StringBuilder();
+            StringBuilder sbwhere = new StringBuilder();
+            if (request.TimeType == 1)
+            {
+                if (!string.IsNullOrWhiteSpace(request.StartTime))
+                {
+                    sbwhere.AppendFormat(" AND ho.HOAddTime>= '{0}'", request.StartTime);
+                }
+                if (!string.IsNullOrWhiteSpace(request.EndTime))
+                {
+                    sbwhere.AppendFormat(" AND ho.HOAddTime< '{0}'", request.EndTime);
+                }
+            }
+            if (request.TimeType == 2)
+            {
+                if (!string.IsNullOrWhiteSpace(request.StartTime))
+                {
+                    sbwhere.AppendFormat(" AND ho.HOCheckOutDate>= '{0}'", request.StartTime);
+                }
+                if (!string.IsNullOrWhiteSpace(request.EndTime))
+                {
+                    sbwhere.AppendFormat(" AND ho.HOCheckOutDate< '{0}'", request.EndTime);
+                }
+            }
+            if (request.PrivoceId > 0)
+            {
+                sbwhere.AppendFormat(" AND hb.HIProvinceId= {0}", request.PrivoceId);
+            }
+            if (request.CityId > 0)
+            {
+                sbwhere.AppendFormat(" AND hb.HICityId= {0}", request.CityId);
+            }
+            if (request.Part1 > 0)
+            {
+                sbwhere.AppendFormat(" AND ho.HoPlat1= {0}", request.Part1);
+            }
+            if (request.Part2 > 0)
+            {
+                sbwhere.AppendFormat(" AND ho.HoPlat2= {0}", request.Part2);
+            }
+            if (!string.IsNullOrWhiteSpace(request.HotelName))
+            {
+                sbwhere.AppendFormat(" AND ho.HName IN ({0})", request.HotelName);
+            }
+            if (!string.IsNullOrWhiteSpace(request.HotelId))
+            {
+                sbwhere.AppendFormat(" AND ho.HId IN ({0})", request.HotelId);
+            }
+            if (!string.IsNullOrWhiteSpace(request.SupplierName))
+            {
+                sbwhere.AppendFormat(" AND ho.HOSupperlierName Like '%{0}%'", request.SupplierName);
+            }
+            if (request.SupplierSource > 0)
+            {
+                sbwhere.AppendFormat(" AND ho.HOSupplierSourceId ={0}", request.SupplierSource);
+            }
+            sb.AppendFormat(@" SELECT
+	                                ho.*, 
+	                                hb.HIProvince AS ProviceName,
+	                                hb.HICity AS CityName
+                                FROM
+	                                ho_hotelorder ho
+                                INNER JOIN h_hotelinfo hb ON hb.Id = ho.HIId
+                                WHERE
+	                                1 = 1
+                                     {0}", sbwhere.ToString());
+            var list = MysqlHelper.GetList<OrdrModel>(sb.ToString());
+            var total = list?.Count ?? 0;
+            return list;
+        }
+
 
         /// <summary>
         /// 录单页面资源查询

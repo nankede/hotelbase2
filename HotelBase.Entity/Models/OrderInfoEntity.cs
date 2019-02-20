@@ -152,6 +152,26 @@ namespace HotelBase.Entity.Models
         /// 邮箱
         /// </summary>
         public string SLinkFax { get; set; }
+
+        /// <summary>
+        /// 省份
+        /// </summary>
+        public string ProviceName { get; set; }
+
+        /// <summary>
+        /// 城市
+        /// </summary>
+        public string CityName { get; set; }
+
+        /// <summary>
+        /// 间夜
+        /// </summary>
+        public int Night { get; set; }
+
+        /// <summary>
+        /// 营收
+        /// </summary>
+        public decimal Reven { get; set; }
     }
 
     public class OrderLogSearchRequset : BaseRequest
