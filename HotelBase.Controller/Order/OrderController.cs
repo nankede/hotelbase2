@@ -99,6 +99,29 @@ namespace HotelBase.Web.Controller.System
         }
 
         /// <summary>
+        /// 手动录单详情
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ResourceDetail(string hotelId, string hotelname, string hoteladdress)
+        {
+            ViewBag.HotelId = hotelId;
+            ViewBag.HotelName = hotelname;
+            ViewBag.HotelAddress = hoteladdress;
+            return View();
+        }
+
+        /// <summary>
+        /// 资源详情查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public ActionResult GetResourceDetial(BookSearchRequest request)
+        {
+            var response = OrderBll.GetHotelRuleDetialList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// 新增订单
         /// </summary>
         /// <returns></returns>

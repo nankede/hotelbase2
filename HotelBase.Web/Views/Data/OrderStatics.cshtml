@@ -86,7 +86,7 @@
         </div>
         <div class="lay-form-item-control">
             @*<input class="lay-input" ng-model="Search.SupplierName" placeholder="多个以英文,隔开" />*@
-            <select class="lay-select lay-input" ng-model="Search.Plat2" ng-init="Search.Plat2=0" ng-options="item.Code as item. Name for item in config.Suppler">
+            <select class="lay-select lay-input" ng-model="Search.Plat2" ng-init="Search.Plat2=0" ng-options="item.Code as item. Name for item in config.Supplier">
                 <option value="" selected hidden>
             </select>
         </div>
@@ -344,7 +344,7 @@
             $scope.getDistributor = function () {
                 var url = $scope.config.distributorUrl;
                 Untitl.Get(url, { "IsValid": 1}, function (data) {
-                    $scope.config.Supplier = data;
+                    $scope.config.SourceTwo = data;
                     $scope.$apply();
                 }, function () {
                     console.log("err-getDistributor");

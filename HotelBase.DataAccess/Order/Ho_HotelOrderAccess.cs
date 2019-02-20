@@ -182,14 +182,67 @@ namespace HotelBase.DataAccess.Order
             StringBuilder sb = new StringBuilder();
             sb.Append(@"SELECT
 	                        b.Id AS HotelId,
+	                        b.HIName AS HotelName,
+	                        b.HIAddress AS HotelAddress,
+	                        b.HILinkPhone AS HotelTel,
+	                        MIN(rp.HRPSellPrice) AS HoteRoomRuleSellPrice
+                        FROM
+	                        h_hotelinfo b
+                        INNER JOIN h_hotelroom r ON r.HIId = b.Id
+                        INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
+                        INNER JOIN h_hoteruleprice rp ON rr.Id = rp.HRRId
+                        WHERE
+	                        b.HIIsValid = 1
+                        AND r.HRIsValid = 1
+                        AND rr.HRRIsValid = 1
+                        AND rp.HRPIsValid = 1
+                        GROUP BY b.Id ,
+	                        b.HIName,
+	                        b.HIAddress,
+	                        b.HILinkPhone");
+            //订单号
+            if (!string.IsNullOrWhiteSpace(request.HotelName))
+            {
+                sb.AppendFormat(" AND b.HIName Like '%{0}%'", request.HotelName);
+            }
+            //酒店id
+            if (request.HotelId > 0)
+            {
+                sb.AppendFormat(" AND  b.Id = {0}", request.HotelId);
+            }
+            var list = MysqlHelper.GetList<BookSearchResponse>(sb.ToString());
+            var total = list?.Count ?? 0;
+            if (total > 0)
+            {
+                response.IsSuccess = 1;
+                response.Total = total;
+                response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
+            }
+            return response;
+        }
+
+
+        /// <summary>
+        /// 资源详情查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BasePageResponse<BookSearchResponse> GetHotelRuleDetialList(BookSearchRequest request)
+        {
+            var response = new BasePageResponse<BookSearchResponse>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append(@"SELECT
+	                        b.Id AS HotelId,
 	                        r.Id AS HotelRoomId,
 	                        rr.Id AS HotelRoomRuleId,
                             rr.HRRSupplierId AS HotelSupplierId,
+                            rr.HRRSupplierName AS HotelSupplierName,
 	                        b.HIName AS HotelName,
 	                        b.HIAddress AS HotelAddress,
 	                        b.HILinkPhone AS HotelTel,
 	                        r.HRName AS HotelRoomName,
 	                        r.HRBedType AS HotelRoomBedType,
+                            rr.HRRName as HotelRoomRuleName,
 	                        rr.HRRBreakfastRule AS HotelRoomBreakfastRule,
                             rr.HRRBreakfastRuleName AS HotelRoomBreakfastRuleName,
 	                        rr.HRRCancelRule AS HotelRoomCancelRule,
@@ -215,16 +268,16 @@ namespace HotelBase.DataAccess.Order
             {
                 sb.AppendFormat(" AND  b.Id = {0}", request.HotelId);
             }
-            ////入离店时间
-            //if (!string.IsNullOrWhiteSpace(request.InBeginDate))
-            //{
-            //    sb.AppendFormat(" AND rp.HRPDate >= '{0}'", request.InBeginDate);
-            //}
-            ////离店时间
-            //if (!string.IsNullOrWhiteSpace(request.InEndDate))
-            //{
-            //    sb.AppendFormat(" AND rp.HRPDate<'{0}'", Convert.ToDateTime(request.InEndDate).AddDays(1).ToShortDateString());
-            //}
+            //入离店时间
+            if (!string.IsNullOrWhiteSpace(request.InBeginDate))
+            {
+                sb.AppendFormat(" AND rp.HRPDate >= '{0}'", request.InBeginDate);
+            }
+            //离店时间
+            if (!string.IsNullOrWhiteSpace(request.InEndDate))
+            {
+                sb.AppendFormat(" AND rp.HRPDate<'{0}'", Convert.ToDateTime(request.InEndDate).AddDays(1).ToShortDateString());
+            }
             var list = MysqlHelper.GetList<BookSearchResponse>(sb.ToString());
             var total = list?.Count ?? 0;
             if (total > 0)
@@ -235,7 +288,7 @@ namespace HotelBase.DataAccess.Order
             }
             return response;
         }
-
+        
 
         /// <summary>
         /// 录单详情页酒店信息查询

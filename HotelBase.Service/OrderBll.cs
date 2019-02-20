@@ -43,6 +43,17 @@ namespace HotelBase.Service
         }
 
         /// <summary>
+        /// 资源详情查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BasePageResponse<BookSearchResponse> GetHotelRuleDetialList(BookSearchRequest request)
+        {
+            return Ho_HotelOrderAccess.GetHotelRuleDetialList(request);
+        }
+
+        
+        /// <summary>
         /// 录单详情页酒店信息查询
         /// </summary>
         /// <param name="hotelid"></param>
