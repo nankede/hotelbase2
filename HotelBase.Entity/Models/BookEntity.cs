@@ -18,15 +18,15 @@ namespace HotelBase.Entity.Models
         /// </summary>
         public int HotelId { get; set; }
 
-        ///// <summary>
-        ///// 入住开始时间
-        ///// </summary>
-        //public string InBeginDate { get; set; }
+        /// <summary>
+        /// 入住开始时间
+        /// </summary>
+        public string InBeginDate { get; set; }
 
-        ///// <summary>
-        ///// 入住结束时间
-        ///// </summary>
-        //public string InEndDate { get; set; }
+        /// <summary>
+        /// 入住结束时间
+        /// </summary>
+        public string InEndDate { get; set; }
     }
 
     /// <summary>
@@ -50,6 +50,11 @@ namespace HotelBase.Entity.Models
         public int HotelRoomRuleId { get; set; }
 
         /// <summary>
+        /// 政策名称
+        /// </summary>
+        public string HotelRoomRuleName { get; set; }
+
+        /// <summary>
         /// 酒店名称
         /// </summary>
         public string HotelName { get; set; }
@@ -68,11 +73,6 @@ namespace HotelBase.Entity.Models
         /// 房型名称
         /// </summary>
         public string HotelRoomName { get; set; }
-
-        /// <summary>
-        /// 政策名称
-        /// </summary>
-        public string  HotelRoomRuleName { get; set; }
 
         /// <summary>
         /// 床型名称

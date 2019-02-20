@@ -255,7 +255,7 @@
     <Content Include="Views\Hotel\RoomList.cshtml" />
     <Content Include="Views\Order\OrderDetail.cshtml" />
     <Content Include="Views\Order\OrderResourceList.cshtml" />
-    <Content Include="Views\Hotel\RoomRuleList.cshtml" />
+    <Content Include="Views\Order\RoomRuleList.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Hotel\PriceDetail.cshtml" />
     <Content Include="Views\System\DepartDetail.cshtml" />
@@ -264,6 +264,7 @@
     <Content Include="Views\Distributor\Detail.cshtml" />
     <Content Include="Views\Order\OrderLog.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <Content Include="Views\Order\ResourceDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

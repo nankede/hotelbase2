@@ -133,6 +133,19 @@ namespace HotelBase.Service
 
         #endregion
 
+
+        /// <summary>
+        /// 模糊搜索酒店
+        /// </summary>
+        /// <param name="sourceId"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static List<H_HotelInfoModel> GetHotelList(string name)
+        {
+            var db = new H_HotelInfoAccess();
+            var query = db.Query().Where(x => x.HIName.Contains(name) && x.HIIsValid == 1);
+            return query.Top(20).ToList();
+        }
     }
 
 

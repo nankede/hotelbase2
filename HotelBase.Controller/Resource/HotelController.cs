@@ -361,5 +361,20 @@ namespace HotelBase.Web.Controller.System
         }
 
         #endregion
+
+        #region 查询酒店-模糊查询
+        /// <summary>
+        /// 查询供应商-模糊查询
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetHotelList(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return Json("", JsonRequestBehavior.AllowGet);
+            name = HttpUtility.UrlDecode(name);
+            var list = HotelBll.GetHotelList(name);
+            var rtn = list?.Select(x => new { Code = x.Id, Name = x.HIName });
+            return Json(rtn, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }
