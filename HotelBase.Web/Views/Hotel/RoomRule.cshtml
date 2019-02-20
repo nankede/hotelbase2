@@ -105,16 +105,19 @@
                 //早餐
                 Untitl.GetDicList(301, function (data) {
                     $scope.BreakfastList = data;
+                    $scope.m.HRRBreakfastRule = $scope.m.HRRBreakfastRule || 0;
                     $scope.$apply();
                 });
                 //取消
                 Untitl.GetDicList(302, function (data) {
                     $scope.CancelList = data;
+                    $scope.m.HRRCancelRule = $scope.m.HRRCancelRule || 0;
                     $scope.$apply();
                 });
                 //供应商来源
                 Untitl.GetDicList(101, function (data) {
                     $scope.SourceList = data;
+                    $scope.m.HRRSourceId = $scope.m.HRRSourceId || 0;
                     $scope.$apply();
                 });
             }
@@ -181,7 +184,7 @@
             //赋值
             $scope.DicValueInit = function (id, list) {
                 var name = "--";
-                if (list) {
+                if (list && id > 0) {
                     $.each(list, function (index, item) {
                         if (item.Code == id)
                             name = item.Name;
@@ -202,7 +205,7 @@
                         if (data != null && data.Id > 0) {
                             $scope.m = data;
                             Object.assign($scope.m, { HRRCancelRuleNameExtend: $scope.m.HRRCancelRuleName });
-                            $('#esSupplier').eSearch2.setDefaults('#esSupplier', [{ 'value': $scope.m.HRRSupplierId, 'text': $scope.m.HRRSupplierName}]);
+                            $('#esSupplier').eSearch2.setDefaults('#esSupplier', [{ 'value': $scope.m.HRRSupplierId, 'text': $scope.m.HRRSupplierName }]);
                         }
                         else {
                             eMsg({

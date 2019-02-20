@@ -1,6 +1,7 @@
 ﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div class="lay-row">
         <input type="button" class="lay-btn lay-btn-primary" value="新增房型" ng-click="detail(0)">
+        <input id="btnSearch" type="button" class="lay-btn lay-btn-primary none" value="查询" ng-click="getList()">
     </div>
     <table class="lay-table">
         <thead>
@@ -64,7 +65,7 @@
                 dicUrl: "/system/getdiclistbypcode/?pCode=",
             };
             $(function () {
-                $scope.Search = { PageIndex: 1, HotelId: 0, IsValiad:-1};
+                $scope.Search = { PageIndex: 1, HotelId: 0, IsValiad: -1 };
                 $scope.dicInit();
                 $scope.pageInit();
             });
@@ -146,7 +147,7 @@
             //赋值
             $scope.DicValueInit = function (id, list) {
                 var name = "--";
-                if (list) {
+                if (list && id > 0) {
                     $.each(list, function (index, item) {
                         if (item.Code == id)
                             name = item.Name;

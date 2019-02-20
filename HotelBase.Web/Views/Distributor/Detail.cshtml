@@ -245,7 +245,7 @@
                     areaUrl: "/system/GetAreaList2/?pid=",
                     detailUrl: "/distributor/getdetial/",
                     saveUrl: "/distributor/save/",
-                    SourceOne: [{Type: 1,Name: "OTA"}, {Type: 2, Name: "新媒体"}, {Type: 3,Name: "旅行社"}, {Type: 4,Name: "线下"}],
+                    SourceOne: [{ Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }],
                     SourceTwo: [{ Type: 1, Name: "微信公众号" }, { Type: 2, Name: "微信群" }],
                     CoopMode: [{ Type: 1, Name: "佣金模式" }, { Type: 2, Name: "底价模式" }],
                     Settlement: [{ Type: 1, Name: "卖价" }, { Type: 2, Name: "线上价格" }, { Type: 3, Name: "线下价格" }, { Type: 4, Name: "优惠价格" }],
@@ -341,7 +341,7 @@
                 //赋值
                 $scope.DicValueInit = function (id, list) {
                     var name = "";
-                    if (list) {
+                    if (list && id > 0) {
                         $.each(list, function (index, item) {
                             if (item.Type == id)
                                 name = item.Name;
@@ -363,7 +363,7 @@
                     if (myweekday < 10) {
                         myweekday = "0" + myweekday;
                     }
-                    
+
                     return (myyear + "-" + mymonth + "-" + myweekday);
                 }
 

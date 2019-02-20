@@ -176,6 +176,7 @@
                             $scope.ProvList = data;
                             $scope.ProvList.unshift({ Code: 0, Name: "请选择省份" });
                             $scope.CityList = [{ Code: 0, Name: "请选择城市" }];
+                            $scope.m.HIProvinceId = $scope.m.HIProvinceId || 0;
                             $scope.m.HICityId = 0;
                         }
                         else {
@@ -223,7 +224,7 @@
                 //赋值
                 $scope.DicValueInit = function (id, list) {
                     var name = "--";
-                    if (list) {
+                    if (list && id > 0) {
                         $.each(list, function (index, item) {
                             if (item.Code == id)
                                 name = item.Name;
@@ -281,7 +282,20 @@
                         return false;
                     }
                     //省份 城市赋值
-
+                    if (!$scope.m.HIProvinceId || $scope.m.HIProvinceId == 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择酒店所在省份！'
+                        });
+                        return false;
+                    }
+                    if (!$scope.m.HICityId || $scope.m.HICityId == 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择酒店所在城市！'
+                        });
+                        return false;
+                    }
 
                     return true;
                 }
