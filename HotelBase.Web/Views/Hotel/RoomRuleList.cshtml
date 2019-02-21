@@ -1,0 +1,193 @@
+﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-row">
+
+        <input id="btnSearch" type="button" class="lay-btn lay-btn-primary none" value="查询政策" ng-click="getList(1)">
+        <input type="button" class="lay-btn lay-btn-primary" value="新增政策" ng-click="detail(0)">
+    </div>
+    <table class="lay-table">
+        <thead>
+            <tr>
+                <th width="10%">政策ID</th>
+                <th>政策名称</th>
+                <th width="10%">早餐政策</th>
+                <th width="8%">取消规则</th>
+                <th width="8%">供应商来源</th>
+                <th width="8%">是否有效</th>
+                <th width="20%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="h in list">
+                <td ng-bind="h.Id"></td>
+                <td ng-bind="h.HRRName"></td>
+                <td ng-bind="h.HRRBreakfastRuleName"></td>
+                <td ng-bind="h.HRRCancelRuleName"></td>
+                <td ng-bind="h.HRRSourceName"></td>
+                <td ng-bind-template="{{h.HRRIsValid==1?'有效':'无效'}}"></td>
+                <td>
+                    <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(h.Id)" />
+                    <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.HRRIsValid==1?'无效':'有效'}}" ng-click="setValid(h.Id,h.Valid)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="库存设置" ng-click="Storedetail(h.Id)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="价格设置" ng-click="Pricedetail(h.Id)" />
+                </td>
+            </tr>
+
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="7" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="pager"></div>
+</div>
+
+<div class="lay-dialog" id="dialogDetail">
+    <div class="lay-dialog-mask"></div>
+    <div class="lay-dialog-cont" style="width:460px;height:450px;">
+        <div class="lay-dialog-hd">
+            <h3>价格政策信息</h3>
+            <button class="lay-dialog-btn-close"></button>
+        </div>
+        <div class="lay-dialog-bd">
+            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="lay-dialog" id="dgCalendar">
+    <div class="lay-dialog-mask"></div>
+    <div class="lay-dialog-cont" style="width:700px;height:680px;">
+        <div class="lay-dialog-hd">
+            <h3>价格政策信息</h3>
+            <button class="lay-dialog-btn-close"></button>
+        </div>
+        <div class="lay-dialog-bd">
+            <iframe id="ifm_dgCalendar" src="" style="border:none;width:100%;height:100%;"></iframe>
+        </div>
+    </div>
+</div>
+
+
+<input id="hfRoomId" type="hidden" value="@ViewBag.RoomId" />
+<input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.config = {
+                searchUrl: "/hotel/GetRoomRuleList/",
+                validUrl: "/hotel/SetRoomRuleValid/",
+            };
+            $(function () {
+                $scope.Search = { PageIndex: 1, RoomId: 0, IsValiad: -1 };
+                $scope.pageInit();
+            });
+            //初始化
+            $scope.pageInit = function () {
+                $scope.getList();
+            }
+
+            //列表
+            $scope.getList = function (index) {
+                $scope.detailClear();
+                $scope.Search.PageIndex = index || 1;
+                $scope.Search.HotelId = $('#hfHotelId').val();
+                $scope.Search.RoomId = $('#hfRoomId').val();
+                var para = $scope.Search;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.searchUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.list = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.list = data.List;
+                            $scope.pagerInit(index, data.Total);
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getList");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                };
+                pager.render();
+            }
+
+            //详情
+            $scope.detail = function (id) {
+                var url = "/hotel/roomrule?roomid=" + $('#hfRoomId').val() + "&id=" + id + "&hotelid=" + $('#hfHotelId').val();
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
+            //价格设置
+            $scope.Pricedetail = function (id) {
+                var url = "/hotel/PriceList?roomid=" + $('#hfRoomId').val() + "&ruleId=" + id + "&hotelid=" + $('#hfHotelId').val();
+                $('#ifm_dgCalendar').prop('src', url);
+                $("#dgCalendar").eDialog('show');
+            }
+
+            //库存设置
+            $scope.Storedetail = function (id) {
+                var url = "/hotel/StoreList?roomid=" + $('#hfRoomId').val() + "&ruleId=" + id + "&hotelid=" + $('#hfHotelId').val();
+                $('#ifm_dgCalendar').prop('src', url);
+                $("#dgCalendar").eDialog('show');
+            }
+
+            //设置有效性
+            $scope.setValid = function (id, valid) {
+                var msg = "确定设置为" + valid == 1 ? "无效？" : "有效？请谨慎操作！！";
+                eMsg({
+                    timer: 2000,
+                    text: msg
+                });
+                valid = valid == 1 ? 0 : 1;
+                var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
+                Untitl.Get(url, {}, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功，正在刷新页面！'
+                        });
+                        //刷新页面
+                        $scope.search(1);
+                    }
+                    else {
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
+                        });
+                    }
+                });
+
+            }
+            $scope.detailClear = function (id) {
+                $('#ifm_detail').prop('src', '');
+                $("#dialogDetail").eDialog('hide');
+            }
+        });
+    </script>
+}

@@ -94,7 +94,7 @@ namespace HotelBase.DataAccess.Resource
             , `SInvoiceTitle` = @SInvoiceTitle, `SInvoiceTax` = @SInvoiceTax
             , `SInvoiceItem` = @SInvoiceItem, `SInvoiceType` =@SInvoiceType
             , `SCooperationBegin` = @SCooperationBegin, `SCooperationEnd` = @SCooperationEnd
-            , `SIsValid` = @SIsValid, `SUpdateTime`  =@SUpdateTime, `SUpdateName` =@SUpdateName  ");
+            , `SIsValid` = @SIsValid, `SUpdateTime`  =@SUpdateTime, `SUpdateName` =@SUpdateName ,`SPMName` = @SPMName ");
             sql.Append(" WHERE  `Id` =@Id   Limit 1;  ");
 
             var para = new DynamicParameters();
@@ -123,6 +123,7 @@ namespace HotelBase.DataAccess.Resource
             para.Add("@SIsValid", model.SIsValid);
             para.Add("@SUpdateName", model.SUpdateName ?? string.Empty);
             para.Add("@SUpdateTime", model.SUpdateTime);
+            para.Add("@SPMName", model.SPMName);
             var c = MysqlHelper.Update(sql.ToString(), para);
             return c;
         }

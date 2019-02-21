@@ -265,6 +265,7 @@
     <Content Include="Views\Order\OrderLog.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <Content Include="Views\Order\ResourceDetail.cshtml" />
+    <Content Include="Views\Hotel\RoomRuleList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

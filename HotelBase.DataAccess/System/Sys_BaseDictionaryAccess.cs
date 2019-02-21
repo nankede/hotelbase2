@@ -25,8 +25,8 @@ namespace HotelBase.DataAccess.System
             {
                 //if (_DicList == null || _DicList.Count == 0)
                 //{
-                    var sql = "SELECT * FROM Sys_BaseDictionary   ";
-                    _DicList = MysqlHelper.GetList<Sys_BaseDictionaryModel>(sql);
+                var sql = "SELECT * FROM Sys_BaseDictionary   ";
+                _DicList = MysqlHelper.GetList<Sys_BaseDictionaryModel>(sql);
 
                 //}
                 return _DicList ?? new List<Sys_BaseDictionaryModel>();
@@ -41,7 +41,7 @@ namespace HotelBase.DataAccess.System
         public static BasePageResponse<Sys_BaseDictionaryModel> GetDicList(GetDicListRequest request)
         {
             var response = new BasePageResponse<Sys_BaseDictionaryModel>();
-            var list = DicList;
+            var list = DicList?.Where(x => x.DIsValid == 1)?.ToList();
             if (list == null || !list.Any())
             {
                 return response;
