@@ -26,7 +26,7 @@
                 <td ng-bind-template="{{h.HRRIsValid==1?'有效':'无效'}}"></td>
                 <td>
                     <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(h.Id)" />
-                    <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.HRRIsValid==1?'无效':'有效'}}" ng-click="setValid(h.Id,h.Valid)" />
+                    <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.HRRIsValid==1?'无效':'有效'}}" ng-click="setValid(h.Id,h.HRRIsValid)" />
                     <input type="button" class="lay-btn lay-btn-edit" value="库存设置" ng-click="Storedetail(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit" value="价格设置" ng-click="Pricedetail(h.Id)" />
                 </td>
@@ -158,11 +158,11 @@
 
             //设置有效性
             $scope.setValid = function (id, valid) {
-                var msg = "确定设置为" + valid == 1 ? "无效？" : "有效？请谨慎操作！！";
-                eMsg({
-                    timer: 2000,
-                    text: msg
-                });
+                //var msg = "确定设置为" + valid == 1 ? "无效？" : "有效？请谨慎操作！！";
+                //eMsg({
+                //    timer: 2000,
+                //    text: msg
+                //});
                 valid = valid == 1 ? 0 : 1;
                 var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
                 Untitl.Get(url, {}, function (data) {
@@ -172,7 +172,7 @@
                             text: '操作成功，正在刷新页面！'
                         });
                         //刷新页面
-                        $scope.search(1);
+                        $scope.getList();
                     }
                     else {
                         var msg = data ? data.Msg : "";
