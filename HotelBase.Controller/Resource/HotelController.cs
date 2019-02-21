@@ -201,7 +201,7 @@ namespace HotelBase.Web.Controller.System
         /// <returns></returns>
         public JsonResult SetRoomValid(int id, int valid)
         {
-            var model = HotelBll.SetValid(id, valid, CurrtUser.Name);
+            var model = HotelRoomBll.SetValid(id, valid, CurrtUser.Name);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
