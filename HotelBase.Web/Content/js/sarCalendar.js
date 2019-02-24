@@ -1,4 +1,5 @@
 (function ($, window, undefined) {
+    var d0 = new Date();
     var sarCalender = function (opts) {
         this.settings = $.extend({}, sarCalender.defaults, opts);
         this.init();
@@ -9,9 +10,9 @@
         setPos: 'body',//插入的位置
         calendarType: 1,//日历类型 1：价格日历 2：库存日历
         calendarList: [],//日历数据实体
-        yearArray: [2018, 2019, 2020, 2021, 2022], //可选年份列表
-        defaultYear: '2018',//默认年份
-        defaultMonth: 0,//默认月份
+        yearArray: [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030], //可选年份列表
+        defaultYear: new Date().getFullYear(),//默认年份
+        defaultMonth: new Date().getMonth + 1,//默认月份
         callBack: null
     };
 
@@ -372,6 +373,9 @@
         initCalendarHtml: function initCalendarHtml(id) {
             var selfObj = this;
             var yearSelectHtml = '';
+            console.log('initCalendarHtml-----------1、');
+            console.log(selfObj);
+            console.log(selfObj.settings.yearArray);
             selfObj.settings.yearArray.forEach(function (item) {
                 yearSelectHtml += '<option>' + item + '</option>';
             });

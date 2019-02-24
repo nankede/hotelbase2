@@ -1,9 +1,9 @@
 ﻿@{
-ViewBag.PageTitle = "酒店管理";
+    ViewBag.PageTitle = "酒店管理";
 }
 @section head{
-<style>
-    .select-area {
+    <style>
+        .select-area {
             min-width: 90px;
         }
     </style>
@@ -35,7 +35,7 @@ ViewBag.PageTitle = "酒店管理";
                     </div>
                     <div class="lay-form-item-control">
                         <select class="lay-select  lay-input" ng-model="Search.Valid" ng-init="Search.Valid=-1"
-                            ng-options="item.Code as item. Name for item in Config.ValidSource"></select>
+                                ng-options="item.Code as item. Name for item in Config.ValidSource"></select>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@ ViewBag.PageTitle = "酒店管理";
                     </div>
                     <div class="lay-form-item-control">
                         <select class="lay-select  lay-input" ng-model="Search.SourceId" ng-init="Search.SourceId=0"
-                            ng-options="item.Code as item. Name for item in Source"></select>
+                                ng-options="item.Code as item. Name for item in Source"></select>
                     </div>
                 </div>
                 <div class="lay-form-item lay-col-3">
@@ -63,9 +63,9 @@ ViewBag.PageTitle = "酒店管理";
                     </div>
                     <div class="lay-form-item-control">
                         <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.ProvId" ng-init="Search.ProvId=0"
-                            ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
+                                ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
                         <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0"
-                            ng-options="item.Id as item. Name for item in CityList"></select>
+                                ng-options="item.Id as item. Name for item in CityList"></select>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@ ViewBag.PageTitle = "酒店管理";
                     <input type="button" class="lay-btn lay-btn-edit" value="查看房型" ng-click="roomList(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit" value="上传图片" ng-click="piclist(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.Valid==1?'无效':'有效'}}"
-                        ng-click="setValid(h.Id,h.Valid)" />
+                           ng-click="setValid(h.Id,h.Valid)" />
                 </td>
             </tr>
 
@@ -124,218 +124,220 @@ ViewBag.PageTitle = "酒店管理";
 </div>
 
 @section foot{
-<style>
-    .topContain {
-        display: flex;
-        justify-content: space-between;
-    }
-    .searchInputContain_sar {
-        flex-grow: 1;
-    }
-    .btnContain_sar {
-        display: flex;
-        align-items: flex-end;
-    }
-</style>
-<script>
-    var app = angular.module('myApp', []);
-    app.controller('myCtrl', function ($scope) {
-        $(function () {
-            $scope.pageInit();
-        });
-        $scope.config = {
-            sourceUrl: "/system/getdiclistbypcode/?pCode=101",
-            areaUrl: "/system/GetAreaList/?pid=",
-            listUrl: "/hotel/getlist/",
-            validUrl: "/hotel/setvalid/",
-            ValidSource: [{
-                Code: -1,
-                Name: "全部"
-            }, {
-                Code: 1,
-                Name: "有效"
-            }, {
-                Code: 0,
-                Name: "无效"
-            }]
+    <style>
+        .topContain {
+            display: flex;
+            justify-content: space-between;
         }
-        //页面初始化
-        $scope.pageInit = function () {
-            $scope.Search = {
-                PageIndex: 1,
-                Id: '',
-                Name: '',
-                SupplierName: '',
-                Valid: -1,
-                ProvId: 0,
-                CityId: 0,
-                SourceId: 0
-            };
-            $scope.getSource();
-            $scope.getArea(0);
-            $scope.search(1);
+
+        .searchInputContain_sar {
+            flex-grow: 1;
         }
-        //查询
-        $scope.search = function (index) {
-            $scope.detailClear();
-            $scope.Search.PageIndex = index;
-            var para = $scope.Search;
-            eLoading.show();
-            $.ajax({
-                url: $scope.config.listUrl,
-                type: 'post',
-                dataType: "json",
-                data: para,
-                timeout: 20000,
-                success: function (data) {
-                    $scope.list = [];
-                    if (data != null && data.IsSuccess > 0) {
-                        $scope.list = data.List;
-                        $scope.pagerInit(index, data.Total);
-                    } else {
+
+        .btnContain_sar {
+            display: flex;
+            align-items: flex-end;
+        }
+    </style>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
+                areaUrl: "/system/GetAreaList/?pid=",
+                listUrl: "/hotel/getlist/",
+                validUrl: "/hotel/setvalid/",
+                ValidSource: [{
+                    Code: -1,
+                    Name: "全部"
+                }, {
+                    Code: 1,
+                    Name: "有效"
+                }, {
+                    Code: 0,
+                    Name: "无效"
+                }]
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                $scope.Search = {
+                    PageIndex: 1,
+                    Id: '',
+                    Name: '',
+                    SupplierName: '',
+                    Valid: -1,
+                    ProvId: 0,
+                    CityId: 0,
+                    SourceId: 0
+                };
+                $scope.getSource();
+                $scope.getArea(0);
+                $scope.search(1);
+            }
+            //查询
+            $scope.search = function (index) {
+                $scope.detailClear();
+                $scope.Search.PageIndex = index;
+                var para = $scope.Search;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.listUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.list = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.list = data.List;
+                            $scope.pagerInit(index, data.Total);
+                        } else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
                         eMsg({
                             timer: 2000,
                             text: '查询失败，请稍后重试！'
                         });
+                    },
+                    complete: function () {
+                        eLoading.hide();
                     }
-                    $scope.$apply();
-                },
-                error: function () {
-                    console.log("err");
-                    eMsg({
-                        timer: 2000,
-                        text: '查询失败，请稍后重试！'
-                    });
-                },
-                complete: function () {
-                    eLoading.hide();
-                }
-            });
-        }
-        //分页
-        $scope.pagerInit = function (index, total) {
-            var pager = new PagerView('pager');
-            pager.index = index;
-            pager.size = 10;
-            pager.itemCount = total;
-            pager.onclick = function (index) {
-                $scope.search(index);
-            };
-            pager.render();
-        }
+                });
+            }
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                };
+                pager.render();
+            }
 
-        //获取来源
-        $scope.getSource = function () {
-            $.ajax({
-                url: $scope.config.sourceUrl,
-                type: 'get',
-                dataType: "json",
-                timeout: 20000,
-                success: function (data) {
-                    $scope.Source = data;
-                    $scope.$apply();
-                },
-                error: function () {
-                    console.log("err-getSource");
-                },
-                complete: function () {}
-            });
-        }
+            //获取来源
+            $scope.getSource = function () {
+                $.ajax({
+                    url: $scope.config.sourceUrl,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.Source = data;
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getSource");
+                    },
+                    complete: function () { }
+                });
+            }
 
 
-        //获取省市查询
-        $scope.getArea = function (type) {
-            var pId = type == 0 ? 1 : $scope.Search.ProvId;
-            if (!pId || pId <= 0) return;
-            var url = $scope.config.areaUrl + pId;
-            $.ajax({
-                url: url,
-                type: 'get',
-                dataType: "json",
-                timeout: 20000,
-                success: function (data) {
-                    if (type == 0) {
-                        $scope.ProvList = data;
-                        $scope.ProvList.unshift({
-                            Id: 0,
-                            Name: "请选择省份"
+            //获取省市查询
+            $scope.getArea = function (type) {
+                var pId = type == 0 ? 1 : $scope.Search.ProvId;
+                if (!pId || pId <= 0) return;
+                var url = $scope.config.areaUrl + pId;
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (type == 0) {
+                            $scope.ProvList = data;
+                            $scope.ProvList.unshift({
+                                Id: 0,
+                                Name: "请选择省份"
+                            });
+                            $scope.CityList = [{
+                                Id: 0,
+                                Name: "请选择城市"
+                            }];
+                            $scope.Search.CityId = 0;
+                        } else {
+                            $scope.CityList = data;
+                            $scope.CityList.unshift({
+                                Id: 0,
+                                Name: "请选择城市"
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getSource");
+                    },
+                    complete: function () { }
+                });
+            }
+            //酒店房型
+            $scope.roomList = function (id) {
+                $scope.detailName = "酒店房型列表";
+                window.open("/hotel/roomList?hotelid=" + id);
+                //$('#ifm_detail').prop('src', url);
+                //$("#dialogDetail").eDialog('show');
+            }
+
+
+
+            //图片上传
+            $scope.piclist = function (id) {
+                $scope.detailName = "酒店图片";
+                var url = "/hotel/PicList?id=" + id;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
+            //详情
+            $scope.detail = function (id) {
+                $scope.detailName = "酒店详情";
+                var url = "/hotel/detail?id=" + id;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+            //设置有效性
+            $scope.setValid = function (id, valid) {
+                var msg = "确定设置为" + valid == 1 ? "无效？" : "有效？请谨慎操作！！";
+                eMsg({
+                    timer: 2000,
+                    text: msg
+                });
+                valid = valid == 1 ? 0 : 1;
+                var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
+                Untitl.Get(url, {}, function (data) {
+                    if (data != null && data.IsSuccess > 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '操作成功，正在刷新页面！'
                         });
-                        $scope.CityList = [{
-                            Id: 0,
-                            Name: "请选择城市"
-                        }];
-                        $scope.Search.CityId = 0;
+                        //刷新页面
+                        $scope.search(1);
                     } else {
-                        $scope.CityList = data;
-                        $scope.CityList.unshift({
-                            Id: 0,
-                            Name: "请选择城市"
+                        var msg = data ? data.Msg : "";
+                        eMsg({
+                            timer: 2000,
+                            text: '操作失败,' + msg
                         });
                     }
-                    $scope.$apply();
-                },
-                error: function () {
-                    console.log("err-getSource");
-                },
-                complete: function () {}
-            });
-        }
-        //酒店房型
-        $scope.roomList = function (id) {
-            $scope.detailName = "酒店房型列表";
-            var url = "/hotel/roomList?hotelid=" + id;
-            $('#ifm_detail').prop('src', url);
-            $("#dialogDetail").eDialog('show');
-        }
+                });
 
-
-
-        //图片上传
-        $scope.piclist = function (id) {
-            $scope.detailName = "酒店图片";
-            var url = "/hotel/PicList?id=" + id;
-            $('#ifm_detail').prop('src', url);
-            $("#dialogDetail").eDialog('show');
-        }
-
-        //详情
-        $scope.detail = function (id) {
-            $scope.detailName = "酒店详情";
-            var url = "/hotel/detail?id=" + id;
-            $('#ifm_detail').prop('src', url);
-            $("#dialogDetail").eDialog('show');
-        }
-        //设置有效性
-        $scope.setValid = function (id, valid) {
-            var msg = "确定设置为" + valid == 1 ? "无效？" : "有效？请谨慎操作！！";
-            eMsg({
-                timer: 2000,
-                text: msg
-            });
-            valid = valid == 1 ? 0 : 1;
-            var url = $scope.config.validUrl + "?id=" + id + "&valid=" + valid;
-            Untitl.Get(url, {}, function (data) {
-                if (data != null && data.IsSuccess > 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '操作成功，正在刷新页面！'
-                    });
-                    //刷新页面
-                    $scope.search(1);
-                } else {
-                    var msg = data ? data.Msg : "";
-                    eMsg({
-                        timer: 2000,
-                        text: '操作失败,' + msg
-                    });
-                }
-            });
-
-        }
-        $scope.detailClear = function (id) {
-            $('#ifm_detail').prop('src', '');
-            $("#dialogDetail").eDialog('hide');
-        }
-    });
-</script>
+            }
+            $scope.detailClear = function (id) {
+                $('#ifm_detail').prop('src', '');
+                $("#dialogDetail").eDialog('hide');
+            }
+        });
+    </script>
 }
