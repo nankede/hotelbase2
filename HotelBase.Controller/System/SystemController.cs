@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -321,6 +322,38 @@ namespace HotelBase.Web.Controller.System
             return Json(rtnList, JsonRequestBehavior.AllowGet);
         }
         //
+        #endregion
+
+        #region 上传
+
+        /// <summary>
+        /// 查询区域列表
+        /// pid =1 省份
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult upload(string mainType, int id, int secType)
+        {
+            var picList = new List<string>();
+            var files = Request.Files;
+            if (files != null && files.Count == 0)//判断文件是否存在
+                return null;
+            var path = $"{Server.MapPath("~/resource/")}{mainType}/{id}/{secType}/";
+            var showpath = $"/resource/{mainType}/{id}/{secType}/";
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            for (var i = 0; i < files.Count; i++)
+            {
+                string imageFilePath = path + files[i].FileName;
+                showpath += files[i].FileName;
+                Request.Files[0].SaveAs(imageFilePath);
+                picList.Add(showpath);
+            }
+            return Json(picList);
+        }
+
         #endregion
     }
 }

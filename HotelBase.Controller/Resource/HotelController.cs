@@ -107,7 +107,7 @@ namespace HotelBase.Web.Controller.System
         /// <returns></returns>
         public ActionResult PicList(int id)
         {
-            ViewBag.HotelId = id;
+            ViewBag.Id = id;
             return View();
         }
 
@@ -115,16 +115,30 @@ namespace HotelBase.Web.Controller.System
         /// 图片
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetPicList(int id, int index)
+        public JsonResult GetPicList(int id)
         {
             var request = new HotelPicSearchRequest
             {
-                HotelId = id,
-                PageIndex = index
+                HotelId = id
             };
             var List = HotelBll.GetPicList(request);
 
             return Json(List, JsonRequestBehavior.AllowGet);
+        }
+        //
+
+        /// <summary>
+        /// 图片
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SavePicModel(H_HotelPictureModel model)
+        {
+            model.HPAddName = CurrtUser.Name;
+            model.HPAddTime = DateTime.Now;
+            model.HPIsValid = 1;
+            var rtn = HotelBll.SavePicModel(model);
+
+            return Json(rtn);
         }
 
         #endregion

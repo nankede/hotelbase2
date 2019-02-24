@@ -295,9 +295,11 @@
             //图片上传
             $scope.piclist = function (id) {
                 $scope.detailName = "酒店图片";
-                var url = "/hotel/PicList?id=" + id;
-                $('#ifm_detail').prop('src', url);
-                $("#dialogDetail").eDialog('show');
+                window.open("/hotel/picList?id=" + id);
+
+                //var url = "/hotel/PicList?id=" + id;
+                //$('#ifm_detail').prop('src', url);
+                //$("#dialogDetail").eDialog('show');
             }
 
             //详情

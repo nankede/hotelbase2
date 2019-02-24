@@ -131,6 +131,40 @@ namespace HotelBase.Service
             //  return db.GetList(request);
         }
 
+        /// <summary>
+        /// 酒店图片
+        /// </summary>
+        /// <param name="request"></param>
+        public static BaseResponse SavePicModel(H_HotelPictureModel model)
+        {
+            var id = 0;
+            var rtn = new BaseResponse();
+            if (model.HIId <= 0)
+            {
+                rtn.IsSuccess = 0;
+                rtn.Msg = "酒店Id不能为空";
+                return rtn;
+            }
+            if (model.HPType <= 0)
+            {
+                rtn.IsSuccess = 0;
+                rtn.Msg = "酒店图片类型不能为空";
+                return rtn;
+            }
+            if (string.IsNullOrEmpty(model.HPUrl))
+            {
+                rtn.IsSuccess = 0;
+                rtn.Msg = "酒店图片地址不能为空";
+                return rtn;
+            }
+
+            var db = new H_HotelPictureAccess();
+            id = (int)db.Add(model);
+            rtn = new BaseResponse { AddId = id, IsSuccess = 1 };
+            return rtn;
+
+        }
+
         #endregion
 
 
