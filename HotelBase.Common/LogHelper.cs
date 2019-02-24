@@ -61,8 +61,6 @@ namespace HotelBase.Common
             logEvent.Properties["Account"] = account;
             logEvent.Properties["RealName"] = realName;
             logEvent.Properties["Operation"] = operation;
-            logEvent.Properties["IP"] = Net.Ip;
-            logEvent.Properties["IPAddress"] = Net.GetAddress(Net.Ip);
             logEvent.Properties["Browser"] = Net.Browser;
             logger.Log(logEvent);
         }

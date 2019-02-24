@@ -352,9 +352,18 @@ namespace HotelBase.Web.Controller.System
         /// <returns></returns>
         public JsonResult SavePriceBatch(SaveHotelPriceModel request)
         {
-            request.OperateName = CurrtUser.Name;
-            var rtn = HotelPriceBll.SavePriceBatch(request);
-            return Json(rtn, JsonRequestBehavior.AllowGet);
+            try
+            {
+                request.OperateName = CurrtUser.Name;
+                var rtn = HotelPriceBll.SavePriceBatch(request);
+                return Json(rtn, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.ToString());
+                throw;
+            }
+
         }
 
         #endregion
