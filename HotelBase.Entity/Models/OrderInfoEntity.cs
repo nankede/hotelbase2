@@ -32,7 +32,7 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 查询时间类型 1:入住时间 2：创建时间
         /// </summary>
-        public int TimeType { get; set; } 
+        public int TimeType { get; set; }
 
         /// <summary>
         /// 查询开始时间(入住开始时间，创建开始时间)
@@ -47,7 +47,7 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 来源id
         /// </summary>
-        public int SourceId { get; set;}
+        public int SourceId { get; set; }
 
         /// <summary>
         /// 酒店名称
@@ -172,6 +172,11 @@ namespace HotelBase.Entity.Models
         /// 营收
         /// </summary>
         public decimal Reven { get; set; }
+
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        public string Status { get; set; }
     }
 
     public class OrderLogSearchRequset : BaseRequest

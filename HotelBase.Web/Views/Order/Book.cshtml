@@ -317,13 +317,20 @@
                     range: '~'
                 })
                 $("#num").bind("input propertychange", function () {
-                    $("#yetnum").val($("#num").val());
-                    var totalsell = $("#sellprice").val() * $("#num").val()
-                    var totalcontract = $("#contractprice").val() * $("#num").val()
-                    $("#totalcontract").val(totalcontract.toFixed(2));
-                    $("#totalsell").val(totalsell.toFixed(2));
-                    $scope.o.HOContractPrice = $("#totalcontract").val();
-                    $scope.o.HOSellPrice = $("#totalsell").val();
+                    if ($('#txtDate').val() != '') {
+                        var date = $('#txtDate').val().split('~');
+                        var start = new Date(date[0]);
+                        var end = new Date(date[1]);
+                        var nDays = Math.abs(parseInt((end - start) / 1000 / 3600 / 24)) * $("#num").val();
+                        $("#yetnum").val(nDays);
+                        var totalsell = $("#sellprice").val() * $("#yetnum").val()
+                        var totalcontract = $("#contractprice").val() * $("#yetnum").val()
+                        $("#totalcontract").val(totalcontract.toFixed(2));
+                        $("#totalsell").val(totalsell.toFixed(2));
+                        $scope.o.HOContractPrice = $("#totalcontract").val();
+                        $scope.o.HOSellPrice = $("#totalsell").val();
+                    }
+
                 });
                 $scope.getDistributor();
             }
@@ -389,7 +396,6 @@
                     $scope.o.HOCheckInDate = date[0];
                     $scope.o.HOCheckOutDate = date[1];
                 }
-                return;
                 $.ajax({
                     url: $scope.config.saveUrl,
                     type: 'post',

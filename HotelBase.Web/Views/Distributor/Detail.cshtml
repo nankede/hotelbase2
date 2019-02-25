@@ -30,15 +30,14 @@
                     @*<input style="display:none" ng-model="m.DPart1Name" />*@
                 </div>
             </div>
-            <div class="lay-form-item lay-col-6">
+            @*<div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption ">
                     <label>二级级渠道</label>
                 </div>
                 <div class="lay-form-item-control">
                     <select class="lay-select lay-input" ng-model="m.DPart2" ng-options="item.Type as item. Name for item in config.SourceTwo"></select>
-                    @*<input style="display:none" ng-model="m.DPart2Name" />*@
                 </div>
-            </div>
+            </div>*@
         </div>
         <div class="lay-row">
             <div class="lay-form-item lay-col-6">
@@ -373,7 +372,7 @@
                     $scope.m.DProviceName = $scope.DicPCValueInit($scope.m.DProviceId, $scope.ProvList)
 
                     $scope.m.DPart1Name = $scope.DicValueInit($scope.m.DPart1, $scope.config.SourceOne)
-                    $scope.m.DPart2Name = $scope.DicValueInit($scope.m.DPart2, $scope.config.SourceTwo)
+                    //$scope.m.DPart2Name = $scope.DicValueInit($scope.m.DPart2, $scope.config.SourceTwo)
 
                     $scope.m.DCooperationModeName = $scope.DicValueInit($scope.m.DCooperationMode, $scope.config.CoopMode)
                     $scope.m.DSettlementName = $scope.DicValueInit($scope.m.DSettlement, $scope.config.Settlement)

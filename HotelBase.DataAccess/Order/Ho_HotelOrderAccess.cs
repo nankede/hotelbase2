@@ -234,7 +234,21 @@ namespace HotelBase.DataAccess.Order
                 sbwhere.AppendFormat(" AND ho.HOSupplierSourceId ={0}", request.SupplierSource);
             }
             sb.AppendFormat(@" SELECT
-	                                ho.*, 
+	                                ho.HOCustomerSerialId, 
+	                                ho.HOSupperlierName, 
+	                                ho.HName, 
+	                                ho.HRRName, 
+	                                ho.HORoomCount, 
+	                                ho.HOCheckInDate, 
+	                                ho.HOCheckOutDate, 
+	                                ho.HOAddTime, 
+	                                ho.HOLinkerName,
+	                                ho.HOLinkerMobile, 
+	                                ho.HOSellPrice, 
+	                                ho.HOContractPrice, 
+	                                ho.HOStatus,
+	                                hb.HIProvince AS ProviceName,
+	                                hb.HICity AS CityName, 
 	                                hb.HIProvince AS ProviceName,
 	                                hb.HICity AS CityName
                                 FROM
@@ -309,7 +323,7 @@ namespace HotelBase.DataAccess.Order
         {
             var response = new BasePageResponse<BookSearchResponse>();
             StringBuilder sb = new StringBuilder();
-            sb.Append(@"SELECT
+            sb.Append(@"SELECT DISTINCT
 	                        b.Id AS HotelId,
 	                        r.Id AS HotelRoomId,
 	                        rr.Id AS HotelRoomRuleId,

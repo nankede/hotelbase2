@@ -236,14 +236,13 @@ namespace HotelBase.Web.Controller.System
                         var detail = new OrdrModel
                         {
                             HOCustomerSerialId = data[i].HOCustomerSerialId ?? "",//订单号
-                            ProviceName = data[i].ProviceName ?? "",//省份
-                            CityName = data[i].CityName ?? "",//城市
-                                                              //IDCardNo = data[i].IDCardNo ?? "",//分销商
                             HOSupperlierName = data[i].HOSupperlierName ?? "",//供应商
                             HName = data[i].HName ?? "",//酒店
+                            HIId=data[i].HIId,//酒店id
                             HRRName = data[i].HRRName ?? "",//房型
+                            HRRId=data[i].HRRId,//房型id
                             HORoomCount = data[i].HORoomCount,//房间数
-                                                              //Night = GetNight(data[i].DomicileProvinceId, data[i].DomicileCityId, data[i].DomicileDistrictId),//间夜
+                            //间夜
                             HOCheckInDate = data[i].HOCheckInDate,//入店时间
                             HOCheckOutDate = data[i].HOCheckOutDate,//离店时间
                             HOAddTime = data[i].HOAddTime,//下单时间
@@ -253,6 +252,8 @@ namespace HotelBase.Web.Controller.System
                             HOContractPrice = data[i].HOContractPrice,//酒店价
                             Reven = data[i].HOSellPrice - data[i].HOContractPrice,//营收
                             HOStatus = data[i].HOStatus,//订单状态
+                            ProviceName = data[i].ProviceName ?? "",//省份
+                            CityName = data[i].CityName ?? "",//城市
                         };
                         emlist.Add(detail);
                     }
@@ -309,6 +310,11 @@ namespace HotelBase.Web.Controller.System
             var response = OrderLogBll.AddOrderModel(logmodel);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+
+        #region Common
+        
         #endregion
     }
 }
