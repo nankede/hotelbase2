@@ -1,241 +1,175 @@
-﻿<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
-    <div>
-        <h3 class="cont-title">基础信息</h3>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6 lay-must">
-                <div class="lay-form-item-caption">
-                    <label>酒店名称</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HIName" />
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-6 lay-must">
-                <div class="lay-form-item-caption ">
-                    <label>区域</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择省份" ng-model="m.HIProvinceId" ng-init="m.HIProvinceId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
-                    <select class="lay-select select-area" placeholder="请选择城市" ng-model="m.HICityId" ng-init="m.HICityId=0" ng-options="item.Id as item. Name for item in CityList"></select>
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>商圈</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择商圈" ng-model="m.HIShoppingAreaId" ng-init="m.HIShoppingAreaId=0" ng-options="item.Code as item. Name for item in ShopAreaData"></select>
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>酒店地址</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input long-input" ng-model="m.HIAddress" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>联系电话</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" ng-model="m.HILinkPhone" />
-                </div>
-            </div>
-        </div>
-        <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>办理入住时间</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择办理入住时间" ng-model="m.HICheckIn" ng-init="m.HICheckIn=0" ng-options="item.Code as item. Name for item in CheckInData"></select>
-                </div>
-            </div>
-            <div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>办理离店时间</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select select-area" placeholder="请选择办理离店时间" ng-model="m.HICheckOut" ng-init="m.HICheckOut=0" ng-options="item.Code as item. Name for item in CheckOutData"></select>
-                </div>
-            </div>
-        </div>
+﻿@{
+    ViewBag.Title = "酒店图片上传";
+}
 
-    </div>
+@section head{
+    <link href="~/Content/lib/layui/css/layui.css" rel="stylesheet" media="all" />
+}
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
     <div>
-        <h3 class="cont-title">酒店设施</h3>
+        <h3 class="cont-title">图片类型</h3>
         <div class="lay-form-item">
             <div class="lay-form-item-caption ">
-                <label></label>
+                <label>选择</label>
             </div>
             <div class="lay-form-item-control">
+                <input ng-repeat-start="x in SecTypeData" type="radio" class="lay-radio-variant"
+                       name="rdo-res" id="rdo-res-{{$index}}" ng-model="m.SecType" value="{{x.Code}}" ng-change="picShow()" />
+                <label for="rdo-res-{{$index}}">
+                    <span ng-bind="x.Name"></span>
+                </label>
+                <i ng-repeat-end class="none"></i>
             </div>
+            <button type="button" class="layui-btn layui-btn-danger" id="lay_upload">
+                <i class="layui-icon">&#xe67c;</i>上传图片
+            </button>
         </div>
-    </div>
-    <div>
-        <h3 class="cont-title">酒店政策</h3>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>儿童政策</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIChildRemark"></textarea>
-            </div>
-        </div>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>宠物政策政策</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIPetRemark"></textarea>
-            </div>
-        </div>
-        <div class="lay-form-item">
-            <div class="lay-form-item-caption ">
-                <label>酒店介绍</label>
-            </div>
-            <div class="lay-form-item-control">
-                <textarea class="lay-input long-input" ng-model="m.HIHotelIntroduction"></textarea>
-            </div>
-        </div>
-    </div>
-    <div class="lay-form-foot">
-        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="Save()">
+        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+            <div class="layui-upload-list" id="showlist"></div>
+        </blockquote>
     </div>
 </div>
 <input id="hfId" type="hidden" value="@ViewBag.Id" />
+<input id="hfsecType" type="hidden" value="0" />
 @section foot{
-    <script>
+    <script src="~/Content/lib/layui/layui.js" type="text/javascript"></script>
 
-        var mobileReg = /^1(3|4|5|7|8|9)\d{9}$/;
-        var telReg = /^(\d{3,4}-?)?\d{7,9}$/;
-        var emailReg = /\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+    <script>
         var app = angular.module('myApp', []);
         app.controller('myCtrl', function ($scope) {
             $scope.Source = [{ Code: 0, Name: '请选择' }];
+            $scope.Id = $('#hfId').val();
+            $scope.m = { SecType: 0 };
             $scope.config = {
-                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
-                areaUrl: "/system/GetAreaList/?pid=",
-                detailUrl: "/hotel/getdateil/",
-                saveUrl: "/hotel/save/",
+                uploadUrl: "/system/upload/?mainType=hotel",//secType=&id=
+                picUrl: "/hotel/GetPicList/?id=" + $('#hfId').val(),//secType=&id=
+                saveUrl: "/hotel/SavePicModel/",
+                SecTypeData: [],
+                AllImgData: [],
             };
             $scope.Id = $('#hfId').val();
             $(function () {
+                $scope.ImgData = [];
                 $scope.pageInit();
             });
             //初始化
             $scope.pageInit = function () {
-                laydate.render({
-                    elem: '#txtDate',
-                    range: '~'
-                })
-                $scope.getArea(0);
+                //图片类型
                 $scope.dicInit();
-                if ($scope.Id > 0) {
-                    $scope.getDetail();
-                }
+                //图片查询
+                $scope.picInit();
             }
+
             //字典初始化
             $scope.dicInit = function () {
-                //ShopAreaData 商圈
-                Untitl.GetDicList(101, function (data) {
-                    $scope.ShopAreaData = data;
-                    $scope.$apply();
-                });
-                //CheckInData 入住时间
-                Untitl.GetDicList(101, function (data) {
-                    $scope.CheckInData = data;
-                    $scope.$apply();
-                });
-
-                //CheckOutData 离店时间
-                Untitl.GetDicList(101, function (data) {
-                    $scope.CheckOutData = data;
-                    $scope.$apply();
-                });
-
-                //FacilitiyData 设施
-                Untitl.GetDicList(101, function (data) {
-                    $scope.FacilitiyData = data;
+                //图片类型
+                Untitl.GetDicList2(202, 0, function (data) {
+                    $scope.SecTypeData = data;
+                    $scope.m.SecType = data[0].Code;
                     $scope.$apply();
                 });
 
             }
-
-            //获取省市查询
-            $scope.getArea = function (type) {
-                var pId = type == 0 ? 1 : $scope.m.HIProvinceId;
-                if (!pId || pId <= 0) return;
-                var url = $scope.config.areaUrl + pId;
-                Untitl.Get(url, {}, function (data) {
-                    if (type == 0) {
-                        $scope.ProvList = data;
-                        $scope.ProvList.unshift({ Id: 0, Name: "请选择省份" });
-                        $scope.CityList = [{ Id: 0, Name: "请选择城市" }];
-                        $scope.m.HICityId = 0;
-                    }
-                    else {
-                        $scope.CityList = data;
-                        $scope.CityList.unshift({ Id: 0, Name: "请选择城市" });
-                    }
-                    $scope.$apply();
-                }, function () {
-                    console.log("err-getArea");
-                })
-            }
-
-            //详情
-            $scope.getDetail = function () {
+            //查询图片
+            $scope.picInit = function () {
+                //picUrl
                 eLoading.show();
                 $.ajax({
-                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
+                    url: $scope.config.picUrl,
                     type: 'get',
                     dataType: "json",
                     timeout: 20000,
                     success: function (data) {
-                        if (data != null && data.Id > 0) {
-                            $scope.m = data;
-                            if ($scope.m && $scope.m.HIProvinceId > 0) {
-                                $scope.getArea(1);
-                            }
-                        }
-                        else {
-                            eMsg({
-                                timer: 2000,
-                                text: '查询失败，请稍后重试！'
-                            });
-                        }
+                        $scope.config.AllImgData = data;
+                        $scope.picShow();
                         $scope.$apply();
                     },
                     error: function () {
-                        console.log("err-getDetail");
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
                     },
                     complete: function () {
                         eLoading.hide();
                     }
                 });
+
+            }
+            //图片列表
+            $scope.picShow = function () {
+                $('#hfsecType').val($scope.m.SecType)
+                console.log($scope.m.SecType);
+                var data = $scope.config.AllImgData;
+                $('#showlist').html("暂无图片");
+                var showHtml = "";
+                if (data && data.length > 0) {
+                    console.log(data);
+                    $.each(data, function (index, item) {
+                        if (item && item.HPType == $scope.m.SecType) {
+                            showHtml += '<img src="' + item.HPUrl + '" style="margin: 16px;width: 160px;height: 160px;"  alt="" class="layui-upload-img">';
+                        }
+                    });
+                }
+                if (showHtml.length > 0) {
+                    $('#showlist').html(showHtml);
+                }
+                //if (typeList.length > 0) {
+                //    $('#showlist').html("");
+                //    $.each(typeList, function (index, item) {
+                //        $('#showlist').append('<img src="' + item.HPUrl + '" style="margin: 16px;width: 160px;height: 160px;"  alt="" class="layui-upload-img">')
+                //    });
+                //}
             }
 
-            //保存
-            $scope.Save = function () {
-                var c = $scope.checkData();
-                if (!c) return;
+
+            //上传组件初始化 layui
+            layui.use('upload', function () {
+                var upload = layui.upload;
+                //执行实例
+                var uploadInst = upload.render({
+                    elem: '#lay_upload' //绑定元素
+                    , url: '/system/upload/' //secType=&id= //上传接口
+                    , data: {
+                        mainType: 'hotel',
+                        id: $('#hfId').val(),
+                        secType: $scope.getSecType(),
+                    }
+                    , done: function (res) {
+                        //上传完毕回调
+                        console.log('----------done----------');
+                        console.log(this);
+                        $scope.uploadDone(res);
+                    }
+                    , error: function () {
+                        //请求异常回调
+                    }
+                });
+            });
+            $scope.getSecType = function () {
+                console.log($scope.m.SecType);
+                return $scope.m.SecType;
+            }
+            $scope.uploadDone = function (data) {
+                console.log('----------uploadDone----------');
+                console.log(data);
+
+                var m = {
+                    HIId: $scope.Id,
+                    HPType: $scope.m.SecType,
+                    HPUrl: data[0],
+                };
+                //data.each(function (index, item) {
+                //});
                 eLoading.show();
-                Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
+                Untitl.Post($scope.config.saveUrl, m, function (data) {
                     if (data != null && data.IsSuccess > 0) {
-                        $scope.m.Id = data.AddId;
                         eMsg({
                             timer: 2000,
-                            text: '操作成功，正在自动关闭页面！'
+                            text: '图片上传成功！'
                         });
-                        //关闭页面
-                        setTimeout(function () { $(parent.document).find('#btnSearch').click(); }, 1000);
+                        $scope.picInit();
                     }
                     else {
                         var msg = data ? data.Msg : "";
@@ -249,28 +183,6 @@
                     function () {
                         eLoading.hide();
                     });
-            }
-
-            //数据验证
-            $scope.checkData = function () {
-                if ($scope.m.HIName.length <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '酒店名称不能为空！'
-                    });
-                    return false;
-                }
-                if ($scope.m.HILinkPhone && $scope.m.HILinkPhone.length > 0 && !mobileReg.test($scope.m.HILinkPhone) && !telReg.test($scope.m.HILinkPhone)) {
-                    eMsg({
-                        timer: 2000,
-                        text: '请输入正确的联系电话！'
-                    });
-                    return false;
-                }
-                //省份 城市赋值
-
-
-                return true;
             }
         });
     </script>

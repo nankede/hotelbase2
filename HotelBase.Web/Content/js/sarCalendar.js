@@ -1,4 +1,5 @@
 (function ($, window, undefined) {
+    // var d0 = new Date();
     var sarCalender = function (opts) {
         this.settings = $.extend({}, sarCalender.defaults, opts);
         this.init();
@@ -9,9 +10,9 @@
         setPos: 'body',//插入的位置
         calendarType: 1,//日历类型 1：价格日历 2：库存日历
         calendarList: [],//日历数据实体
-        yearArray: [2018, 2019, 2020, 2021, 2022], //可选年份列表
-        defaultYear: '2018',//默认年份
-        defaultMonth: 0,//默认月份
+        yearArray: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030], //可选年份列表
+        defaultYear: new Date().getFullYear(),//默认年份
+        defaultMonth: new Date().getMonth(),//默认月份
         callBack: null
     };
 
@@ -56,10 +57,14 @@
          * 获取日历数据接口
          */
         getDateListAjaxFn: function (opYear, opMonth) {
+            
             var that = this;
             var ajaxUrl = this.settings.ajaxUrl;
             var ajaxOptions = this.settings.ajaxOptions;
+            that.settings.defaultYear = opYear;
+            that.settings.defaultMonth = parseInt(opMonth);
             ajaxOptions.Month = opYear * 100 + (parseInt(opMonth) + 1)
+           
             $.ajax({
                 // url: ajaxUrl + "?RuleId=" + ajaxOptions.RuleId + "&Month=" + ajaxOptions.Month,
                 url: ajaxUrl,
@@ -70,6 +75,9 @@
                 success: function (data) {
                     if (data && data.length > 0) {
                         that.settings.calendarList = data;
+                        that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, ' ', that.settings.container);
+                    }else{
+                        that.settings.calendarList = [];
                         that.createDateUl(that.settings.defaultYear, that.settings.defaultMonth, ' ', that.settings.container);
                     }
                 },
@@ -372,8 +380,13 @@
         initCalendarHtml: function initCalendarHtml(id) {
             var selfObj = this;
             var yearSelectHtml = '';
+
             selfObj.settings.yearArray.forEach(function (item) {
-                yearSelectHtml += '<option>' + item + '</option>';
+                if(item == selfObj.settings.defaultYear){
+                    yearSelectHtml += '<option selected="selected">' + item + '</option>';
+                }else{
+                    yearSelectHtml += '<option>' + item + '</option>';
+                }
             });
             var calendarHtml = '<div id="sarCalendar">\
                 <div class="sarCalendar_head">\
