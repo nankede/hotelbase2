@@ -283,7 +283,7 @@ namespace HotelBase.Web.Controller.System
                         emlist.Add(detail);
                     }
                     var newdata = ConvertHelper.ListToDataTable(emlist);
-                    var filed = "HOCustomerSerialId;ProviceName;CityName;HOSupperlierName;HName;HIId;HRRName;HRRId;HORoomCount;HOSupplierCorfirmSerialId;HONight;HOCheckInDate;HOCheckOutDate;HOAddTime;HOLinkerName;HOLinkerMobile;HOSellPrice;HOContractPrice;Reven;Status;HODistributorName;HODistributorSerialId;";
+                    var filed = "HOCustomerSerialId;ProviceName;CityName;HOSupperlierName;HName;HIId;HRRName;HRRId;HORoomCount;HOSupplierCorfirmSerialId;HONight;HOCheckInDate;HOCheckOutDate;HOAddTime;HOLinkerName;HOLinkerMobile;HOSellPrice;HOContractPrice;Reven;Status;HODistributorName;HODistributorSerialId";
                     var headName = "订单号#省份#城市#供应商#酒店#酒店id#房型#房型id#房间数#供应商确认号#间夜#入店时间#离店时间#下单时间#联系人#手机号#订单价#酒店价#营收#订单状态#分销商名称#分销商订单号";
                     IList<ExcelHelper.NPOIModel> list = new List<ExcelHelper.NPOIModel>();
                     list.Add(new ExcelHelper.NPOIModel(newdata, filed, "Sheet1", headName));

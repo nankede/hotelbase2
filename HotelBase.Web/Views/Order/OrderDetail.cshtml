@@ -70,9 +70,9 @@
                 <table class="lay-table">
                     <tr>
                         <td class="lay-table td">分销商名称:</td>
-                        <td class="lay-table td" ng-bind="m.HODistributorName"></td>
+                        <td class="lay-table td" ng-bind="GetPartName(m.HoPlat2,config.SourceTwo,2)"></td>
                         <td class="lay-table td">分销商id：</td>
-                        <td class="lay-table td" ng-bind="m.HODistributorId"></td>
+                        <td class="lay-table td" ng-bind="m.HoPlat2"></td>
                     </tr>
                     <tr>
                         <td class="lay-table td">预定联系人：</td>
@@ -82,9 +82,9 @@
                     </tr>
                     <tr>
                         <td class="lay-table td">一级渠道：</td>
-                        <td class="lay-table td" ng-bind="GetPartName(m.HoPlat1,config.SourceOne)"></td>
+                        <td class="lay-table td" ng-bind="GetPartName(m.HoPlat1,config.SourceOne,1)"></td>
                         <td class="lay-table td">创建时间：</td>
-                        <td class="lay-table td" ng-bind="m.HOAddTime"></td>
+                        <td class="lay-table td" ng-bind="GetDate(m.HOAddTime)"></td>
                     </tr>
                 </table>
             </div>
@@ -221,7 +221,9 @@
                 logUrl: "/order/getorderloglist",
                 //savelogUrl: "/order/savelog",
                 saveUrl: "/order/setorder/",
+                distributorUrl: "/distributor/getdistributor/",
                 SourceOne: [{ Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }],
+                SourceTwo: []
             };
             $scope.type = "";//操作类型 0：填写日志 1：修改订单状态 2：添加外部订单号 3：添加供应商确认号
             $scope.state = "";//订单状态
@@ -231,6 +233,7 @@
                 $scope.pageInit();
                 $scope.Search = { PageIndex: 1 };
                 $scope.search(1);
+                $scope.getDistributor();
             });
 
 
@@ -270,6 +273,18 @@
                         break;
                 }
                 return collect;
+            }
+
+            //获取分销商
+            $scope.getDistributor = function () {
+                var url = $scope.config.distributorUrl;
+                Untitl.Get(url, { "IsValid": 1, "isDefault": 0 }, function (data) {
+                    $scope.config.SourceTwo = data;
+                    console.log($scope.config.SourceTwo);
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getDistributor");
+                })
             }
 
             $scope.GetLastdate = function (data) {
@@ -324,14 +339,23 @@
                 });
             }
 
-            $scope.GetPartName = function (id, list)
+            $scope.GetPartName = function (id, list,type)
             {
                 var name = "";
                 if (list && id > 0) {
-                    $.each(list, function (index, item) {
-                        if (item.Type == id)
-                            name = item.Name;
-                    });
+                    if (type == 1) {
+                        $.each(list, function (index, item) {
+                            if (item.Type == id)
+                                name = item.Name;
+                        });
+                    }
+                    else
+                    {
+                        $.each(list, function (index, item) {
+                            if (item.Code == id)
+                                name = item.Name;
+                        });
+                    }
                 }
                 return name;
             }

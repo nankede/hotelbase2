@@ -265,7 +265,7 @@
             </div>
             <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
-                    <label>来单渠道2</label>
+                    <label>分销商名称</label>
                 </div>
                 <div class="lay-form-item-control">
                     @*<input class="lay-input  long-input" ng-model="o.HOPlat2" />*@
@@ -353,8 +353,8 @@
                         var nDays = Math.abs(parseInt((end - start) / 1000 / 3600 / 24)) * $("#num").val();
                         //$("#yetnum").val() = nDays > 0 ? nDays : 1;
                         $("#yetnum").val(nDays);
-                        var totalsell = $("#sellprice").val() * $("#yetnum").val()
-                        var totalcontract = $("#contractprice").val() * $("#yetnum").val()
+                        var totalsell = $("#sellprice").val() * $("#num").val()
+                        var totalcontract = $("#contractprice").val() * $("#num").val()
                         $("#totalcontract").val(totalcontract.toFixed(2));
                         $("#totalsell").val(totalsell.toFixed(2));
                         $scope.o.HOContractPrice = $("#totalcontract").val();
