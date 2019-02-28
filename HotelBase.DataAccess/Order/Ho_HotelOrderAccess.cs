@@ -342,10 +342,7 @@ namespace HotelBase.DataAccess.Order
 		                                rp.HRPDate >= '{0}'
 	                                AND rp.HRPDate < '{1}'
 	                                GROUP BY
-		                                rp.HRRId,
-		                                rp.HRPSellPrice,
-		                                rp.HRPIsValid,
-		                                rp.HRPDate
+		                                rp.HRRId
 	                                ORDER BY
 		                                rp.HRPDate ASC
                                 ) AS rps ON rr.Id = rps.HRRId
