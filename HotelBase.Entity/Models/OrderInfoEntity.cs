@@ -193,13 +193,15 @@ namespace HotelBase.Entity.Models
 
         public int HIId { get; set; }
 
-        public string HRRName { get; set; }
+        public string HRName { get; set; }
 
-        public int HRRId { get; set; }
+        public int HRId { get; set; }
 
         public int HORoomCount { get; set; }
 
         public string HOSupplierCorfirmSerialId { get; set; }
+
+        public string HOSupplierSerialId { get; set; }
 
         public int HONight { get; set; }
 

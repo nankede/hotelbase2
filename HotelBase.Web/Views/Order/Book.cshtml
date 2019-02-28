@@ -269,7 +269,7 @@
                 </div>
                 <div class="lay-form-item-control">
                     @*<input class="lay-input  long-input" ng-model="o.HOPlat2" />*@
-                    <select class="lay-select lay-input" ng-model="o.HOPlat2" ng-options="item.Code as item. Name for item in config.SourceTwo">
+                    <select class="lay-select lay-input" ng-model="o.HODistributorId" ng-options="item.Code as item. Name for item in config.SourceTwo">
                         <option value="" selected hidden>
                     </select>
                 </div>
@@ -432,6 +432,17 @@
                 });
             }
 
+            //赋值
+            $scope.DicValueInit = function (id, list) {
+                var name = "";
+                if (list && id > 0) {
+                    $.each(list, function (index, item) {
+                        if (item.Code == id)
+                            name = item.Name;
+                    });
+                }
+                return name;
+            }
             //复制
             $scope.Copy = function () {
                 if ($("#cusname").val() == "" || $("#cusmobile").val() == "") {
@@ -451,10 +462,10 @@
 
             //保存
             $scope.Save = function () {
+                $scope.o.HODistributorName = $scope.DicPCValueInit($scope.o.HODistributorId, $scope.SourceTwo)
                 var c = $scope.checkData($scope.m, $scope.o);
                 if (!c) return;
                 eLoading.show();
-                debugger;
                 if ($('#txtDate').val() != '') {
                     var date = $('#txtDate').val().split('~');
                     console.log(date);
@@ -463,6 +474,7 @@
                     $scope.o.HOCheckInDate = date[0];
                     $scope.o.HOCheckOutDate = date[1];
                 }
+                
                 $.ajax({
                     url: $scope.config.saveUrl,
                     type: 'post',

@@ -233,6 +233,10 @@ namespace HotelBase.DataAccess.Order
             {
                 sbwhere.AppendFormat(" AND ho.HOSupplierSourceId ={0}", request.SupplierSource);
             }
+            if (!string.IsNullOrWhiteSpace(request.Status))
+            {
+                sbwhere.AppendFormat(" AND ho.HOStatus IN ({0})", request.Status);
+            }
             sb.AppendFormat(@" SELECT
 	                                ho.*,
 	                                hb.HIProvince AS ProviceName,
