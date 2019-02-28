@@ -462,7 +462,7 @@
 
             //保存
             $scope.Save = function () {
-                $scope.o.HODistributorName = $scope.DicPCValueInit($scope.o.HODistributorId, $scope.SourceTwo)
+                $scope.o.HODistributorName = $scope.DicValueInit($scope.o.HODistributorId, $scope.config.SourceTwo)
                 var c = $scope.checkData($scope.m, $scope.o);
                 if (!c) return;
                 eLoading.show();
