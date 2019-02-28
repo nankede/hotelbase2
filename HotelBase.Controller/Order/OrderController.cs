@@ -69,12 +69,13 @@ namespace HotelBase.Web.Controller.System
         /// 手动录单
         /// </summary>
         /// <returns></returns>
-        public ActionResult Book(string hotelId, string roomId, string ruleId, string supplierid)
+        public ActionResult Book(string hotelId, string roomId, string ruleId, string supplierid,string indate)
         {
             ViewBag.HotelId = hotelId;
             ViewBag.RoomId = roomId;
             ViewBag.RuleId = ruleId;
             ViewBag.SupplierId = supplierid;
+            ViewBag.Indate = indate;
             return View();
         }
 
@@ -139,13 +140,18 @@ namespace HotelBase.Web.Controller.System
                 HRRName = hotelmodel.HotelRoomRuleName,
                 HOSupplierId = hotelmodel.HotelSupplierId,
                 HOSupperlierName = hotelmodel.HotelSupplierName,
+                HODistributorId = ordermodel.HODistributorId,
+                HODistributorName = ordermodel.HODistributorName ?? string.Empty,
                 HOSupplierSourceId = hotelmodel.HotelSupplierSourceId,
                 HOSupplierSourceName = hotelmodel.HotelSupplierSourceName,
+                HODistributorSerialId = ordermodel.HODistributorSerialId ?? string.Empty,
                 HOOutSerialId = ordermodel.HOOutSerialId ?? string.Empty,
                 HOSupplierSerialId = ordermodel.HOSupplierSerialId ?? string.Empty,
+                HOSupplierCorfirmSerialId = ordermodel.HOSupplierCorfirmSerialId ?? string.Empty,
                 HOStatus = 0,
                 HOPayStatus = 0,
                 HORoomCount = ordermodel.HORoomCount,
+                HONight = ordermodel.HONight,
                 HOChild = ordermodel.HOChild,
                 HOAdult = ordermodel.HOAdult,
                 HoPlat1 = ordermodel.HoPlat1,
@@ -230,36 +236,55 @@ namespace HotelBase.Web.Controller.System
                 var data = OrderBll.GetOrderStaticList(modelrequest);
                 if (data != null && data.Any())
                 {
-                    List<OrdrModel> emlist = new List<OrdrModel>();
+                    List<ExeclOrder> emlist = new List<ExeclOrder>();
                     for (int i = 0; i < data.Count(); i++)
                     {
-                        var detail = new OrdrModel
+                        var detail = new ExeclOrder();
+                        detail.HOCustomerSerialId = data[i].HOCustomerSerialId ?? "";//订单号
+                        detail.ProviceName = data[i].ProviceName ?? "";//省份
+                        detail.CityName = data[i].CityName ?? "";//城市
+                        detail.HOSupperlierName = data[i].HOSupperlierName ?? "";//供应商
+                        detail.HName = data[i].HName ?? "";//酒店
+                        detail.HIId = data[i].HIId;//酒店id
+                        detail.HRRName = data[i].HRRName ?? "";//房型
+                        detail.HRRId = data[i].HRRId;//房型id
+                        detail.HORoomCount = data[i].HORoomCount;//房间数
+                        detail.HOSupplierCorfirmSerialId = data[i].HOSupplierCorfirmSerialId;//供应商确认号
+                        detail.HONight = data[i].HONight;//间夜
+                        detail.HOCheckInDate = data[i].HOCheckInDate;//入店时间
+                        detail.HOCheckOutDate = data[i].HOCheckOutDate;//离店时间
+                        detail.HOAddTime = data[i].HOAddTime;//下单时间
+                        detail.HOLinkerName = data[i].HOLinkerName ?? "";//联系人
+                        detail.HOLinkerMobile = data[i].HOLinkerMobile ?? "";//手机号
+                        detail.HOSellPrice = data[i].HOSellPrice;//订单价
+                        detail.HOContractPrice = data[i].HOContractPrice;//酒店价
+                        if (data[i].HOStatus == 1)
                         {
-                            HOCustomerSerialId = data[i].HOCustomerSerialId ?? "",//订单号
-                            HOSupperlierName = data[i].HOSupperlierName ?? "",//供应商
-                            HName = data[i].HName ?? "",//酒店
-                            HIId=data[i].HIId,//酒店id
-                            HRRName = data[i].HRRName ?? "",//房型
-                            HRRId=data[i].HRRId,//房型id
-                            HORoomCount = data[i].HORoomCount,//房间数
-                            //间夜
-                            HOCheckInDate = data[i].HOCheckInDate,//入店时间
-                            HOCheckOutDate = data[i].HOCheckOutDate,//离店时间
-                            HOAddTime = data[i].HOAddTime,//下单时间
-                            HOLinkerName = data[i].HOLinkerName ?? "",//联系人
-                            HOLinkerMobile = data[i].HOLinkerMobile ?? "",//手机号
-                            HOSellPrice = data[i].HOSellPrice,//订单价
-                            HOContractPrice = data[i].HOContractPrice,//酒店价
-                            Reven = data[i].HOSellPrice - data[i].HOContractPrice,//营收
-                            HOStatus = data[i].HOStatus,//订单状态
-                            ProviceName = data[i].ProviceName ?? "",//省份
-                            CityName = data[i].CityName ?? "",//城市
-                        };
+                            detail.Reven = data[i].HOSellPrice - data[i].HOContractPrice;//营收
+                        }
+                        //订单状态
+                        switch (data[i].HOStatus)
+                        {
+                            case 0:
+                                detail.Status = "待处理";
+                                break;
+                            case 1:
+                                detail.Status = "确认成功";
+                                break;
+                            case 2:
+                                detail.Status = "确认失败";
+                                break;
+                            case 3:
+                                detail.Status = "取消";
+                                break;
+                        }
+                        detail.HODistributorName = data[i].HODistributorName;//分销商名称
+                        detail.HODistributorSerialId = data[i].HODistributorSerialId;//分销商订单号
                         emlist.Add(detail);
                     }
                     var newdata = ConvertHelper.ListToDataTable(emlist);
-                    var filed = "HOCustomerSerialId;ProviceName;CityName;HOSupperlierName;HName;HRRName;HORoomCount;HOCheckInDate;HOCheckOutDate;HOAddTime;HOLinkerName;HOLinkerMobile;HOSellPrice;HOContractPrice;Reven;HOStatus;";
-                    var headName = "订单号#省份#城市#供应商#酒店#房型#房间数#入店时间#离店时间#下单时间#联系人#手机号#订单价#酒店价#营收#订单状态";
+                    var filed = "HOCustomerSerialId;ProviceName;CityName;HOSupperlierName;HName;HIId;HRRName;HRRId;HORoomCount;HOSupplierCorfirmSerialId;HONight;HOCheckInDate;HOCheckOutDate;HOAddTime;HOLinkerName;HOLinkerMobile;HOSellPrice;HOContractPrice;Reven;Status;HODistributorName;HODistributorSerialId;";
+                    var headName = "订单号#省份#城市#供应商#酒店#酒店id#房型#房型id#房间数#供应商确认号#间夜#入店时间#离店时间#下单时间#联系人#手机号#订单价#酒店价#营收#订单状态#分销商名称#分销商订单号";
                     IList<ExcelHelper.NPOIModel> list = new List<ExcelHelper.NPOIModel>();
                     list.Add(new ExcelHelper.NPOIModel(newdata, filed, "Sheet1", headName));
                     var fileName = "导出订单" + DateTime.Now.ToString("yyyyMMddhhssmm");
@@ -314,7 +339,15 @@ namespace HotelBase.Web.Controller.System
 
 
         #region Common
-        
+        /// <summary>
+        /// 价格日历
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetPriceList(int rrid, string begin, string end)
+        {
+            var list = HotelPriceBll.GetOrderPriceList(rrid, begin, end);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
         #endregion
     }
 }

@@ -50,12 +50,84 @@
                         <td class="lay-table td"><label id="ordercommis" /></td>
                     </tr>
                     <tr>
+                        <td class="lay-table td">供应商订单号：</td>
+                        <td class="lay-table td" ng-bind="m.HOSupplierSerialId"></td>
+                        <td class="lay-table td">分销商订单号：</td>
+                        <td class="lay-table td" ng-bind="m.HODistributorSerialId"></td>
+                    </tr>
+                    <tr>
                         <td class="lay-table td">外部订单号：</td>
                         <td class="lay-table td" colspan="3">
                             <input id="HOOutSerialId" class="lay-input  long-input" ng-bind="m.HOOutSerialId" />
                             <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="保存" ng-click="OperaType(2,0)">
                         </td>
                         <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="lay-form-item-control lay-col-6">
+                <h3 class="cont-title">分销商信息</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">分销商名称:</td>
+                        <td class="lay-table td" ng-bind="m.HODistributorName"></td>
+                        <td class="lay-table td">分销商id：</td>
+                        <td class="lay-table td" ng-bind="m.HODistributorId"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">预定联系人：</td>
+                        <td class="lay-table td" ng-bind="m.HOLinkerName"></td>
+                        <td class="lay-table td">预定人手机：</td>
+                        <td class="lay-table td" ng-bind="m.HOLinkerMobile"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">一级渠道：</td>
+                        <td class="lay-table td" ng-bind="GetPartName(m.HoPlat1,config.SourceOne)"></td>
+                        <td class="lay-table td">创建时间：</td>
+                        <td class="lay-table td" ng-bind="m.HOAddTime"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-12">
+            <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
+                <h3 class="cont-title">订单信息</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">入住人:</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
+                        <td class="lay-table td">入住/离店：</td>
+                        <td class="lay-table td">
+                            @*<label ng-bind="m.HOCheckInDate" />-<label ng-bind="m.HOCheckOutDate" />*@
+                            <label ng-bind="m.HOCheckInDate"></label>-<label ng-bind="m.HOCheckOutDate"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">早餐：</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
+                        <td class="lay-table td">最晚到店时间：</td>
+                        <td class="lay-table td" ng-bind="m.HOLastCheckInTime"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">房型政策：</td>
+                        <td class="lay-table td" ng-bind="m.HRRName"></td>
+                        <td class="lay-table td">房间数：</td>
+                        <td class="lay-table td" ng-bind="m.HORoomCount"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">供应商确认号：</td>
+                        <td class="lay-table td" colspan="3">
+                            <input id="HOSupplierSerialId" class="lay-input  long-input" ng-bind="m.HOSupplierCorfirmSerialId" />
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="保存" ng-click="OperaType(3,0)">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">客人特殊要求：</td>
+                        <td class="lay-table td" ng-bind="m.HORemark"></td>
+                        <td class="lay-table td">入住人手机号：</td>
+                        <td class="lay-table td" ng-bind="m.HOCustomerMobile"></td>
                     </tr>
                 </table>
             </div>
@@ -93,43 +165,6 @@
     <div class="lay-row">
         <div class="lay-form-item lay-col-12">
             <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
-                <h3 class="cont-title">订单信息</h3>
-                <table class="lay-table">
-                    <tr>
-                        <td class="lay-table td">入住人:</td>
-                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
-                        <td class="lay-table td">入住/离店：</td>
-                        <td class="lay-table td">
-                            @*<label ng-bind="m.HOCheckInDate" />-<label ng-bind="m.HOCheckOutDate" />*@
-                            <label ng-bind="m.HOCheckInDate"></label>-<label ng-bind="m.HOCheckOutDate"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lay-table td">早餐：</td>
-                        <td class="lay-table td" ng-bind="m.HOCustomerName"></td>
-                        <td class="lay-table td">最晚到店时间：</td>
-                        <td class="lay-table td" ng-bind="m.HOLastCheckInTime"></td>
-                    </tr>
-                    <tr>
-                        <td class="lay-table td">房型政策：</td>
-                        <td class="lay-table td" ng-bind="m.HRRName"></td>
-                        <td class="lay-table td">房间数：</td>
-                        <td class="lay-table td" ng-bind="m.HORoomCount"></td>
-                    </tr>
-                    <tr>
-                        <td class="lay-table td">供应商确认号：</td>
-                        <td class="lay-table td" colspan="3">
-                            <input id="HOSupplierSerialId" class="lay-input  long-input" ng-bind="m.HOSupplierSerialId" />
-                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="保存" ng-click="OperaType(3,0)">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lay-table td">客人特殊要求：</td>
-                        <td class="lay-table td" ng-bind="m.HORemark"></td>
-                        <td class="lay-table td">入住人手机号：</td>
-                        <td class="lay-table td" ng-bind="m.HOCustomerMobile"></td>
-                    </tr>
-                </table>
             </div>
             <div class="lay-form-item-control lay-col-6">
                 <h3 class="cont-title">操作日志</h3>
@@ -186,6 +221,7 @@
                 logUrl: "/order/getorderloglist",
                 //savelogUrl: "/order/savelog",
                 saveUrl: "/order/setorder/",
+                SourceOne: [{ Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }],
             };
             $scope.type = "";//操作类型 0：填写日志 1：修改订单状态 2：添加外部订单号 3：添加供应商确认号
             $scope.state = "";//订单状态
@@ -200,6 +236,7 @@
 
             $scope.GetDate = function (data) {
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+                console.log(date);
                 //不带时分秒
                 //return time = date.toLocaleDateString();
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
@@ -263,10 +300,6 @@
                     success: function (data) {
                         if (data != null && data.Id > 0) {
                             $scope.m = data;
-                            $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate);
-                            $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate);
-                            //var lastdate = $scope.GetDate($scope.m.HOLastCheckInTime);
-                            //$scope.m.HOLastCheckInTime = $scope.GetLastdate($scope.m.HOLastCheckInTime);
                             $("#count").html($scope.m.HOChild + $scope.m.HOAdult);
                             if ($scope.m.HOStatus != 0) {
                                 $("#btsure").attr("disabled", true);
@@ -277,6 +310,8 @@
                             $("#HOSupplierSerialId").val($scope.m.HOSupplierSerialId)
                             $("#ordercommis").html($scope.m.HOSellPrice - $scope.m.HOContractPrice);
                             $("#email").html($scope.m.SLinkMail + "/" + $scope.m.SLinkFax);
+                            $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate);
+                            $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate);
                         }
                         $scope.$apply();
                     },
@@ -287,6 +322,18 @@
                         eLoading.hide();
                     }
                 });
+            }
+
+            $scope.GetPartName = function (id, list)
+            {
+                var name = "";
+                if (list && id > 0) {
+                    $.each(list, function (index, item) {
+                        if (item.Type == id)
+                            name = item.Name;
+                    });
+                }
+                return name;
             }
 
             //查询

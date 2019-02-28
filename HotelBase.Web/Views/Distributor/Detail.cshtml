@@ -31,16 +31,16 @@
                 </div>
             </div>
             @*<div class="lay-form-item lay-col-6">
-                <div class="lay-form-item-caption ">
-                    <label>二级级渠道</label>
-                </div>
-                <div class="lay-form-item-control">
-                    <select class="lay-select lay-input" ng-model="m.DPart2" ng-options="item.Type as item. Name for item in config.SourceTwo"></select>
-                </div>
-            </div>*@
+                    <div class="lay-form-item-caption ">
+                        <label>二级级渠道</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <select class="lay-select lay-input" ng-model="m.DPart2" ng-options="item.Type as item. Name for item in config.SourceTwo"></select>
+                    </div>
+                </div>*@
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption ">
                     <label>合作模式</label>
                 </div>
@@ -50,7 +50,7 @@
                     @*<input style="display:none" ng-model="m.DCooperationModeName" />*@
                 </div>
             </div>
-            <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption ">
                     <label>结算价</label>
                 </div>
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption ">
                     <label>开始时间</label>
                 </div>
@@ -70,7 +70,7 @@
                     <input class="lay-input long-input" id="txtbeginDate" ng-model="m.DStartDate" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption ">
                     <label>结束时间</label>
                 </div>
@@ -90,10 +90,11 @@
                 </div>
                 <div class="lay-form-item-control">
                     @*<input class="lay-input  long-input" ng-model="o.HOPlat1" ng-options="item.Type as item. Name for item in config.SourceOne"/>*@
-                    <select class="lay-select lay-input" ng-model="m.DSignType" ng-options="item.Type as item. Name for item in config.SignType"></select>
+                    @*<select class="lay-select lay-input" ng-model="m.DSignType" ng-options="item.Type as item. Name for item in config.SignType"></select>*@
+                    <input class="lay-input  long-input" ng-model="m.DSignTypeName" />
                 </div>
             </div>
-            <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
                     <label>结算方式</label>
                 </div>
@@ -161,7 +162,7 @@
     <div>
         <h3 class="cont-title">联系人信息</h3>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
                     <label>联系人姓名</label>
                 </div>
@@ -171,7 +172,7 @@
             </div>
         </div>
         <div class="lay-row">
-            <div class="lay-form-item lay-col-6">
+            <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
                     <label>联系人电话</label>
                 </div>
@@ -271,6 +272,7 @@
 
                 //获取省市查询
                 $scope.getArea = function (type) {
+                    debugger;
                     var pId = type == 0 ? 1 : $scope.m.DProviceId;
                     if (!pId || pId <= 0) return;
                     var url = $scope.config.areaUrl + pId;
@@ -304,7 +306,7 @@
                                 $scope.m = data;
                                 $scope.m.DStartDate = $scope.GetDate($scope.m.DStartDate);
                                 $scope.m.DEndDate = $scope.GetDate($scope.m.DEndDate);
-                                if ($scope.m && $scope.m.DProvinceId > 0) {
+                                if ($scope.m && $scope.m.DProviceId > 0) {
                                     $scope.getArea(1);
                                 }
                             }
@@ -377,10 +379,15 @@
                     $scope.m.DCooperationModeName = $scope.DicValueInit($scope.m.DCooperationMode, $scope.config.CoopMode)
                     $scope.m.DSettlementName = $scope.DicValueInit($scope.m.DSettlement, $scope.config.Settlement)
 
-                    $scope.m.DSignTypeName = $scope.DicValueInit($scope.m.DSignType, $scope.config.SignType)
+                    //$scope.m.DSignTypeName = $scope.DicValueInit($scope.m.DSignType, $scope.config.SignType)
                     $scope.m.DSettlementTypeName = $scope.DicValueInit($scope.m.DSettlementType, $scope.config.SettlementType)
-
-                    var c = $scope.checkData();
+                    if ($('#txtbeginDate').val() != '') {
+                        $scope.m.DStartDate = $('#txtbeginDate').val();
+                    }
+                    if ($('#txtendDate').val() != '') {
+                        $scope.m.DEndDate = $('#txtendDate').val();
+                    }
+                    var c = $scope.checkData($scope.m);
                     if (!c) return;
                     eLoading.show();
                     Untitl.Post($scope.config.saveUrl, $scope.m, function (data) {
@@ -408,15 +415,86 @@
                 }
 
                 //数据验证
-                $scope.checkData = function () {
-                    if ($scope.m.DName.length <= 0) {
+                $scope.checkData = function (m) {
+                    if (m == null) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请输入相关信息'
+                        });
+                        return false;
+                    }
+                    console.log(m);
+                    if (m.DName == null || m.DName.length <= 0) {
                         eMsg({
                             timer: 2000,
                             text: '分销商称不能为空！'
                         });
                         return false;
                     }
-                    if ($scope.m.DLinkMobile && $scope.m.DLinkMobile.length > 0 && !mobileReg.test($scope.m.DLinkMobile) && !telReg.test($scope.m.DLinkMobile)) {
+                    if (m.DProviceId == null || m.DProviceId == 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择省份！'
+                        });
+                        return false;
+                    }
+                    if (m.DCityId == null || m.DCityId == 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择城市！'
+                        });
+                        return false;
+                    }
+                    if (m.DCooperationMode == null || m.DCooperationMode.length <= 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择合作模式！'
+                        });
+                        return false;
+                    }
+                    if (m.DSettlement == null || m.DSettlement.length <= 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择结算价！'
+                        });
+                        return false;
+                    }
+                    if (m.DStartDate == null || m.DStartDate.length <= 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择开始时间！'
+                        });
+                        return false;
+                    }
+                    if (m.DEndDate == null || m.DEndDate.length <= 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择结束时间！'
+                        });
+                        return false;
+                    }
+                    if (m.DSettlementType == null || m.DSettlementType.length <= 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '请选择结算方式！'
+                        });
+                        return false;
+                    }
+                    if (m.DLinkMan == null || m.DLinkMan.length <= 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '联系人姓名不能为空！'
+                        });
+                        return false;
+                    }
+                    if (m.DLinkMobile == null || m.DLinkMobile.length <= 0) {
+                        eMsg({
+                            timer: 2000,
+                            text: '联系人电话不能为空！'
+                        });
+                        return false;
+                    }
+                    if (m.DLinkMobile && m.DLinkMobile.length > 0 && !mobileReg.test(m.DLinkMobile) && !telReg.test(m.DLinkMobile)) {
                         eMsg({
                             timer: 2000,
                             text: '请输入正确的联系电话！'

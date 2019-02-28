@@ -179,6 +179,54 @@ namespace HotelBase.Entity.Models
         public string Status { get; set; }
     }
 
+    public class ExeclOrder
+    {
+        public string HOCustomerSerialId { get; set; }
+
+        public string ProviceName { get; set; }
+
+        public string CityName { get; set; }
+
+        public string HOSupperlierName { get; set; }
+
+        public string HName { get; set; }
+
+        public int HIId { get; set; }
+
+        public string HRRName { get; set; }
+
+        public int HRRId { get; set; }
+
+        public int HORoomCount { get; set; }
+
+        public string HOSupplierCorfirmSerialId { get; set; }
+
+        public int HONight { get; set; }
+
+        public DateTime HOCheckInDate { get; set; }
+
+        public DateTime HOCheckOutDate { get; set; }
+
+        public DateTime HOAddTime { get; set; }
+
+        public string HOLinkerName { get; set; }
+
+        public string HOLinkerMobile { get; set; }
+
+        public decimal HOSellPrice { get; set; }
+
+        public decimal HOContractPrice { get; set; }
+
+        public decimal Reven { get; set; }
+
+        public string Status { get; set; }
+
+        public string HODistributorName { get; set; }
+
+        public string HODistributorSerialId { get; set; }
+
+    }
+
     public class OrderLogSearchRequset : BaseRequest
     {
         /// <summary>

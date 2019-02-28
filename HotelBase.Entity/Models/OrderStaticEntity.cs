@@ -85,7 +85,12 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 分销商id
         /// </summary>
-       // public int DistributorId { get; set; }
+        public int DistributorId { get; set; }
+
+        /// <summary>
+        /// 分销商id
+        /// </summary>
+        public string Status { get; set; }
     }
 
     public class OrderStaticResponse : BaseResponse
