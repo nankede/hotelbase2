@@ -282,11 +282,12 @@ namespace HotelBase.Web.Controller.System
                             }
                             detail.HODistributorName = data[i].HODistributorName;//分销商名称
                             detail.HODistributorSerialId = data[i].HODistributorSerialId;//分销商订单号
+                            detail.HOPart1 = data[i].HoPlat1.ToString();
                             emlist.Add(detail);
                         }
                         var newdata = ConvertHelper.ListToDataTable(emlist);
-                        var filed = "HOCustomerSerialId;ProviceName;CityName;HOSupperlierName;HName;HIId;HRName;HRId;HORoomCount;HOSupplierCorfirmSerialId;HOSupplierSerialId;HONight;HOCheckInDate;HOCheckOutDate;HOAddTime;HOLinkerName;HOLinkerMobile;HOSellPrice;HOContractPrice;Reven;Status;HODistributorName;HODistributorSerialId;";
-                        var headName = "订单号#省份#城市#供应商#酒店#酒店id#房型#房型id#房间数#供应商确认号#供应商订单号#间夜#入店时间#离店时间#下单时间#联系人#手机号#订单价#酒店价#营收#订单状态#分销商名称#分销商订单号#";
+                        var filed = "HOCustomerSerialId;ProviceName;CityName;HOSupperlierName;HName;HIId;HRName;HRId;HORoomCount;HOSupplierCorfirmSerialId;HOSupplierSerialId;HONight;HOCheckInDate;HOCheckOutDate;HOAddTime;HOLinkerName;HOLinkerMobile;HOSellPrice;HOContractPrice;Reven;Status;HODistributorName;HODistributorSerialId;HOPart1";
+                        var headName = "订单号#省份#城市#供应商#酒店#酒店id#房型#房型id#房间数#供应商确认号#供应商订单号#间夜#入店时间#离店时间#下单时间#联系人#手机号#订单价#酒店价#营收#订单状态#分销商名称#分销商订单号#测试";
                         IList<ExcelHelper.NPOIModel> list = new List<ExcelHelper.NPOIModel>();
                         list.Add(new ExcelHelper.NPOIModel(newdata, filed, "Sheet1", headName));
                         var fileName = "导出订单" + DateTime.Now.ToString("yyyyMMddhhssmm");

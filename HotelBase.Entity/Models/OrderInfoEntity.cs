@@ -227,6 +227,8 @@ namespace HotelBase.Entity.Models
 
         public string HODistributorSerialId { get; set; }
 
+        public string HOPart1 { get; set; }
+
     }
 
     public class OrderLogSearchRequset : BaseRequest
