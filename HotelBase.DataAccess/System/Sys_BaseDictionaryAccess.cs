@@ -25,7 +25,7 @@ namespace HotelBase.DataAccess.System
             {
                 //if (_DicList == null || _DicList.Count == 0)
                 //{
-                var sql = "SELECT * FROM Sys_BaseDictionary   ";
+                var sql = "SELECT * FROM Sys_BaseDictionary  ORDER BY DCode ASC  ";
                 _DicList = MysqlHelper.GetList<Sys_BaseDictionaryModel>(sql);
 
                 //}
