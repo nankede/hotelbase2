@@ -59,7 +59,7 @@ namespace HotelBase.DataAccess.Order
                     sb.AppendFormat(" AND HOCustomerMobile = '{1}'", request.PeopleMobile);
                 }
             }
-            if(request.CustomerType == 2)
+            if (request.CustomerType == 2)
             {
                 if (!string.IsNullOrWhiteSpace(request.PeopleName))
                 {
@@ -233,8 +233,12 @@ namespace HotelBase.DataAccess.Order
             {
                 sbwhere.AppendFormat(" AND ho.HOSupplierSourceId ={0}", request.SupplierSource);
             }
+            if (!string.IsNullOrWhiteSpace(request.Status))
+            {
+                sbwhere.AppendFormat(" AND ho.HOStatus IN ({0})", request.Status);
+            }
             sb.AppendFormat(@" SELECT
-	                                ho.*, 
+	                                ho.*,
 	                                hb.HIProvince AS ProviceName,
 	                                hb.HICity AS CityName
                                 FROM
@@ -309,7 +313,7 @@ namespace HotelBase.DataAccess.Order
         {
             var response = new BasePageResponse<BookSearchResponse>();
             StringBuilder sb = new StringBuilder();
-            sb.Append(@"SELECT
+            sb.AppendFormat(@"SELECT DISTINCT
 	                        b.Id AS HotelId,
 	                        r.Id AS HotelRoomId,
 	                        rr.Id AS HotelRoomRuleId,
@@ -325,17 +329,33 @@ namespace HotelBase.DataAccess.Order
                             rr.HRRBreakfastRuleName AS HotelRoomBreakfastRuleName,
 	                        rr.HRRCancelRule AS HotelRoomCancelRule,
 	                        rr.HRRCancelRuleName AS HotelRoomCancelRuleName,
-	                        rp.HRPSellPrice AS HoteRoomRuleSellPrice
+	                        rps.HRPSellPrice AS HoteRoomRuleSellPrice
                         FROM
 	                        h_hotelinfo b
                         INNER JOIN h_hotelroom r ON r.HIId = b.Id
                         INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
-                        INNER JOIN h_hoteruleprice rp ON rr.Id = rp.HRRId
+                        INNER JOIN (
+	                                SELECT DISTINCT
+		                                rp.HRRId,
+		                                rp.HRPSellPrice,
+		                                rp.HRPIsValid,
+		                                rp.HRPDate
+	                                FROM
+		                                h_hoteruleprice rp
+	                                WHERE
+		                                rp.HRPDate >= '{0}'
+	                                AND rp.HRPDate < '{1}'
+	                                GROUP BY
+		                                rp.HRRId
+	                                ORDER BY
+		                                rp.HRPDate ASC
+                                ) AS rps ON rr.Id = rps.HRRId
                         WHERE
 	                        b.HIIsValid = 1
                         AND r.HRIsValid = 1
                         AND rr.HRRIsValid = 1
-                        AND rp.HRPIsValid = 1");
+                        AND rps.HRPIsValid = 1", !string.IsNullOrWhiteSpace(request.InBeginDate) ? request.InBeginDate : DateTime.Now.ToShortDateString(), 
+                        !string.IsNullOrWhiteSpace(request.InEndDate) ? request.InEndDate : DateTime.Now.AddDays(1).ToShortDateString());
             //订单号
             if (!string.IsNullOrWhiteSpace(request.HotelName))
             {
@@ -346,16 +366,16 @@ namespace HotelBase.DataAccess.Order
             {
                 sb.AppendFormat(" AND  b.Id = {0}", request.HotelId);
             }
-            //入离店时间
-            if (!string.IsNullOrWhiteSpace(request.InBeginDate))
-            {
-                sb.AppendFormat(" AND rp.HRPDate >= '{0}'", request.InBeginDate);
-            }
-            //离店时间
-            if (!string.IsNullOrWhiteSpace(request.InEndDate))
-            {
-                sb.AppendFormat(" AND rp.HRPDate<'{0}'", Convert.ToDateTime(request.InEndDate).AddDays(1).ToShortDateString());
-            }
+            ////入离店时间
+            //if (!string.IsNullOrWhiteSpace(request.InBeginDate))
+            //{
+            //    sb.AppendFormat(" AND rp.HRPDate >= '{0}'", request.InBeginDate);
+            //}
+            ////离店时间
+            //if (!string.IsNullOrWhiteSpace(request.InEndDate))
+            //{
+            //    sb.AppendFormat(" AND rp.HRPDate<'{0}'", Convert.ToDateTime(request.InEndDate).AddDays(1).ToShortDateString());
+            //}
             var list = MysqlHelper.GetList<BookSearchResponse>(sb.ToString());
             var total = list?.Count ?? 0;
             if (total > 0)
@@ -366,7 +386,7 @@ namespace HotelBase.DataAccess.Order
             }
             return response;
         }
-        
+
 
         /// <summary>
         /// 录单详情页酒店信息查询
@@ -449,8 +469,8 @@ namespace HotelBase.DataAccess.Order
         public static int AddOrderModel(HO_HotelOrderModel model)
         {
             var sql = new StringBuilder();
-            sql.Append(" INSERT INTO `ho_hotelorder` (`HOCustomerSerialId`, `HIId`, `HName`, `HRId`, `HRName`, `HRRId`, `HRRName`, `HOSupplierId`, `HOSupperlierName`, `HOSupplierSourceId`, `HOSupplierSourceName`, `HOOutSerialId`, `HOSupplierSerialId`, `HOStatus`, `HOPayStatus`, `HORoomCount`, `HOChild`, `HOAdult`, `HoPlat1`, `HoPlat2`, `HOContractPrice`, `HOSellPrice`, `HOCustomerName`, `HOCustomerMobile`, `HOLinkerName`, `HOLinkerMobile`, `HORemark`, `HOCheckInDate`, `HOCheckOutDate`, `HOLastCheckInTime`, `HOAddId`, `HOAddName`, `HOAddDepartId`, `HOAddDepartName`, `HOAddTime`, `HOUpdateId`, `HOUpdateName`, `HOUpdateTime`) VALUES ");
-            sql.Append("( @HOCustomerSerialId, @HIId, @HName, @HRId, @HRName, @HRRId, @HRRName, @HOSupplierId, @HOSupperlierName, @HOSupplierSourceId, @HOSupplierSourceName, @HOOutSerialId, @HOSupplierSerialId, @HOStatus, @HOPayStatus, @HORoomCount, @HOChild, @HOAdult, @HoPlat1, @HoPlat2, @HOContractPrice, @HOSellPrice, @HOCustomerName, @HOCustomerMobile, @HOLinkerName, @HOLinkerMobile, @HORemark, @HOCheckInDate, @HOCheckOutDate, @HOLastCheckInTime, @HOAddId, @HOAddName, @HOAddDepartId, @HOAddDepartName, @HOAddTime, @HOUpdateId, @HOUpdateName, @HOUpdateTime)");
+            sql.Append(" INSERT INTO `ho_hotelorder` (`HOCustomerSerialId`, `HIId`, `HName`, `HRId`, `HRName`, `HRRId`, `HRRName`, `HOSupplierId`, `HOSupperlierName`,`HODistributorId`, `HODistributorName`, `HOSupplierSourceId`, `HOSupplierSourceName`, `HOOutSerialId`,`HODistributorSerialId`,`HOSupplierCorfirmSerialId`,`HONight`,`HOSupplierSerialId`, `HOStatus`, `HOPayStatus`, `HORoomCount`, `HOChild`, `HOAdult`, `HoPlat1`, `HoPlat2`, `HOContractPrice`, `HOSellPrice`, `HOCustomerName`, `HOCustomerMobile`, `HOLinkerName`, `HOLinkerMobile`, `HORemark`, `HOCheckInDate`, `HOCheckOutDate`, `HOLastCheckInTime`, `HOAddId`, `HOAddName`, `HOAddDepartId`, `HOAddDepartName`, `HOAddTime`, `HOUpdateId`, `HOUpdateName`, `HOUpdateTime`) VALUES ");
+            sql.Append("( @HOCustomerSerialId, @HIId, @HName, @HRId, @HRName, @HRRId, @HRRName, @HOSupplierId, @HOSupperlierName,@HODistributorId, @HODistributorName, @HOSupplierSourceId, @HOSupplierSourceName, @HOOutSerialId, @HODistributorSerialId, @HOSupplierCorfirmSerialId, @HONight, @HOSupplierSerialId, @HOStatus, @HOPayStatus, @HORoomCount, @HOChild, @HOAdult, @HoPlat1, @HoPlat2, @HOContractPrice, @HOSellPrice, @HOCustomerName, @HOCustomerMobile, @HOLinkerName, @HOLinkerMobile, @HORemark, @HOCheckInDate, @HOCheckOutDate, @HOLastCheckInTime, @HOAddId, @HOAddName, @HOAddDepartId, @HOAddDepartName, @HOAddTime, @HOUpdateId, @HOUpdateName, @HOUpdateTime)");
             var para = new DynamicParameters();
             para.Add("@HOCustomerSerialId", model.HOCustomerSerialId);
             para.Add("@HIId", model.HIId);
@@ -461,9 +481,14 @@ namespace HotelBase.DataAccess.Order
             para.Add("@HRRName", model.HRRName);
             para.Add("@HOSupplierId", model.HOSupplierId);
             para.Add("@HOSupperlierName", model.HOSupperlierName);
+            para.Add("@HODistributorId", model.HODistributorId);
+            para.Add("@HODistributorName", model.HODistributorName);
             para.Add("@HOSupplierSourceId", model.HOSupplierSourceId);
             para.Add("@HOSupplierSourceName", model.HOSupplierSourceName);
             para.Add("@HOOutSerialId", model.HOOutSerialId);
+            para.Add("@HODistributorSerialId", model.HODistributorSerialId);
+            para.Add("@HOSupplierCorfirmSerialId", model.HOSupplierCorfirmSerialId);
+            para.Add("@HONight", model.HONight);
             para.Add("@HOSupplierSerialId", model.HOSupplierSerialId);
             para.Add("@HOStatus", model.HOStatus);
             para.Add("@HOPayStatus", model.HOPayStatus);
@@ -520,7 +545,7 @@ namespace HotelBase.DataAccess.Order
                 case "3":
                     if (!string.IsNullOrWhiteSpace(serialid))
                     {
-                        sql.AppendFormat(" `HOSupplierSerialId` = '{0}'  ", serialid);
+                        sql.AppendFormat(" `HOSupplierCorfirmSerialId` = '{0}'  ", serialid);
                     }
                     break;
                 case "2":
@@ -530,7 +555,7 @@ namespace HotelBase.DataAccess.Order
                     }
                     break;
             }
-            sql.AppendFormat(" WHERE  `HOCustomerSerialId` ='{0}'   Limit 1;  ",orderid);
+            sql.AppendFormat(" WHERE  `HOCustomerSerialId` ='{0}'   Limit 1;  ", orderid);
             var c = MysqlHelper.Update(sql.ToString());
             return c;
         }
@@ -610,6 +635,10 @@ namespace HotelBase.DataAccess.Order
             if (request.SupplierId > 0)
             {
                 sbwhere.AppendFormat(" AND ho.HOSupperlierId = {0}", request.SupplierId);
+            }
+            if (request.DistributorId > 0)
+            {
+                sbwhere.AppendFormat(" AND ho.HODistributorId = {0}", request.DistributorId);
             }
             if (request.SupplierSource > 0)
             {
@@ -738,6 +767,10 @@ namespace HotelBase.DataAccess.Order
             {
                 sbwhere.AppendFormat(" AND ho.HOSupplierSourceId ={0}", request.SupplierSource);
             }
+            if (!string.IsNullOrWhiteSpace(request.Status))
+            {
+                sbwhere.AppendFormat(" AND ho.HOStatus IN ({0})", request.Status);
+            }
             switch (request.Type)
             {
                 //时间
@@ -757,7 +790,11 @@ namespace HotelBase.DataAccess.Order
 	                                            sum(ho.HOSellPrice) AS TotalSell,
 	                                            sum(ho.HOContractPrice) AS TotalContract,
 	                                            sum(
-		                                            ho.HOSellPrice - ho.HOContractPrice
+		                                            CASE WHEN ho.HOStatus = 1 THEN
+			                                            ho.HOSellPrice - ho.HOContractPrice
+		                                            ELSE
+			                                            0
+		                                            END
 	                                            ) AS TotalRevenue
                                             FROM
 	                                            ho_hotelorder ho
@@ -786,7 +823,11 @@ namespace HotelBase.DataAccess.Order
 	                                            sum(ho.HOSellPrice) AS TotalSell,
 	                                            sum(ho.HOContractPrice) AS TotalContract,
 	                                            sum(
-		                                            ho.HOSellPrice - ho.HOContractPrice
+		                                            CASE WHEN ho.HOStatus = 1 THEN
+			                                            ho.HOSellPrice - ho.HOContractPrice
+		                                            ELSE
+			                                            0
+		                                            END
 	                                            ) AS TotalRevenue
                                             FROM
 	                                            ho_hotelorder ho
@@ -818,8 +859,12 @@ namespace HotelBase.DataAccess.Order
 	                                        sum(ho.HOSellPrice) AS TotalSell,
 	                                        sum(ho.HOContractPrice) AS TotalContract,
 	                                        sum(
-		                                        ho.HOSellPrice - ho.HOContractPrice
-	                                        ) AS TotalRevenue
+		                                            CASE WHEN ho.HOStatus = 1 THEN
+			                                            ho.HOSellPrice - ho.HOContractPrice
+		                                            ELSE
+			                                            0
+		                                            END
+	                                            ) AS TotalRevenue
                                         FROM
 	                                        ho_hotelorder ho
                                         INNER JOIN h_hotelinfo hb ON hb.Id = ho.HIId
@@ -849,8 +894,12 @@ namespace HotelBase.DataAccess.Order
 	                                        sum(ho.HOSellPrice) AS TotalSell,
 	                                        sum(ho.HOContractPrice) AS TotalContract,
 	                                        sum(
-		                                        ho.HOSellPrice - ho.HOContractPrice
-	                                        ) AS TotalRevenue
+		                                            CASE WHEN ho.HOStatus = 1 THEN
+			                                            ho.HOSellPrice - ho.HOContractPrice
+		                                            ELSE
+			                                            0
+		                                            END
+	                                            ) AS TotalRevenue
                                         FROM
 	                                        ho_hotelorder ho
                                         INNER JOIN h_hotelinfo hb ON hb.Id = ho.HIId
@@ -878,8 +927,12 @@ namespace HotelBase.DataAccess.Order
 	                                        sum(ho.HOSellPrice) AS TotalSell,
 	                                        sum(ho.HOContractPrice) AS TotalContract,
 	                                        sum(
-		                                        ho.HOSellPrice - ho.HOContractPrice
-	                                        ) AS TotalRevenue
+		                                            CASE WHEN ho.HOStatus = 1 THEN
+			                                            ho.HOSellPrice - ho.HOContractPrice
+		                                            ELSE
+			                                            0
+		                                            END
+	                                            ) AS TotalRevenue
                                         FROM
 	                                        ho_hotelorder ho
                                         INNER JOIN h_hotelinfo hb ON hb.Id = ho.HIId
@@ -907,8 +960,12 @@ namespace HotelBase.DataAccess.Order
 	                                        sum(ho.HOSellPrice) AS TotalSell,
 	                                        sum(ho.HOContractPrice) AS TotalContract,
 	                                        sum(
-		                                        ho.HOSellPrice - ho.HOContractPrice
-	                                        ) AS TotalRevenue
+		                                            CASE WHEN ho.HOStatus = 1 THEN
+			                                            ho.HOSellPrice - ho.HOContractPrice
+		                                            ELSE
+			                                            0
+		                                            END
+	                                            ) AS TotalRevenue
                                         FROM
 	                                        ho_hotelorder ho
 										INNER JOIN h_hotelinfo hb ON hb.Id = ho.HIId
@@ -929,7 +986,7 @@ namespace HotelBase.DataAccess.Order
             var TotalContract = list.Sum(x => Convert.ToInt32(x.TotalContract));
             var TotalRevenue = list.Sum(x => Convert.ToInt32(x.TotalRevenue));
             var total = list?.Count ?? 0;
-            if (total > 0)
+            if (total >= 0)
             {
                 response.IsSuccess = 1;
                 response.Total = total;

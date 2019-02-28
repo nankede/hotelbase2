@@ -168,6 +168,37 @@ namespace HotelBase.Entity.Tables
         }
 
         /// <summary>
+        /// 数据库字段：HODistributorId
+        /// </summary>
+        private int _hODistributorId = 0;
+
+        /// <summary>
+        /// 分销商Id
+        /// </summary>
+        [Column("HODistributorId")]
+        public int HODistributorId
+        {
+            get { return _hODistributorId; }
+            set { _hODistributorId = value; }
+        }
+
+        /// <summary>
+		/// 数据库字段：HODistributorName
+		/// </summary>
+		private string _hODistributorName = string.Empty;
+
+        /// <summary>
+		/// 分销商名称
+		/// </summary>
+		[Column("HODistributorName")]
+        public string HODistributorName
+        {
+            get { return _hODistributorName; }
+            set { _hODistributorName = value; }
+        }
+
+
+        /// <summary>
         /// 数据库字段：HOSupplierSourceId
         /// </summary>
         private int _hOSupplierSourceId = 0;
@@ -203,7 +234,7 @@ namespace HotelBase.Entity.Tables
         private string _hOOutSerialId = string.Empty;
 
 		/// <summary>
-		/// 第三方订单号
+		/// 外部订单号
 		/// </summary>
 		[Column("HOOutSerialId")]
 		public string HOOutSerialId
@@ -227,10 +258,56 @@ namespace HotelBase.Entity.Tables
 			set { _hOSupplierSerialId = value; }
 		}
 
-		/// <summary>
-		/// 数据库字段：HOStatus
+        /// <summary>
+		/// 数据库字段：HOSupplierCorfirmSerialId
 		/// </summary>
-		private int _hOStatus = 0;
+		private string _hOSupplierCorfirmSerialId = string.Empty;
+
+        /// <summary>
+        /// 供应商确认号
+        /// </summary>
+        [Column("HOSupplierCorfirmSerialId")]
+        public string HOSupplierCorfirmSerialId
+        {
+            get { return _hOSupplierCorfirmSerialId; }
+            set { _hOSupplierCorfirmSerialId = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HODistributorSerialId
+        /// </summary>
+        private string _hODistributorSerialId = string.Empty;
+
+        /// <summary>
+        /// 分销商订单号
+        /// </summary>
+        [Column("HODistributorSerialId")]
+        public string HODistributorSerialId
+        {
+            get { return _hODistributorSerialId; }
+            set { _hODistributorSerialId = value; }
+        }
+
+
+        /// <summary>
+        /// 数据库字段：HONight
+        /// </summary>
+        private int _hONight = 0;
+
+        /// <summary>
+        /// 间夜数
+        /// </summary>
+        [Column("HONight")]
+        public int HONight
+        {
+            get { return _hONight; }
+            set { _hONight = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HOStatus
+        /// </summary>
+        private int _hOStatus = 0;
 
 		/// <summary>
 		/// 订单状态

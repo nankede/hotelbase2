@@ -39,6 +39,30 @@ namespace HotelBase.DataAccess.Resource
         public H_HoteRulePriceAccess() : base(MysqlHelper.Db_HotelBase)
         {
         }
+
+
+        /// <summary>
+        /// 获取录单价格日历
+        /// </summary>
+        /// <param name="rrid"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public List<H_HoteRulePriceModel> GetOrderPriceList(int rrid, string begin, string end)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(@"SELECT
+	                                *
+                                FROM
+	                                h_hoteruleprice rp
+                                WHERE
+	                                rp.HRPDate >= '{0}'
+                                AND rp.HRPDate < '{1}'
+                                AND rp.HRRId = {2}
+                                AND rp.HRPIsValid = 1", begin, end, rrid);
+            var list = MysqlHelper.GetList<H_HoteRulePriceModel>(sb.ToString());
+            return list;
+        }
     }
 
     /// <summary>

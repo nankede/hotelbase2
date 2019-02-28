@@ -90,6 +90,7 @@
     <Compile Include="CommonHelper.cs" />
     <Compile Include="CookieHelpers.cs" />
     <Compile Include="Enum\ModuleType.cs" />
+    <Compile Include="Enum\OrderStatusType.cs" />
     <Compile Include="ExcelHelper.cs" />
     <Compile Include="Extension\ExtDateTime.cs" />
     <Compile Include="Extension\ExtOrderNum.cs" />

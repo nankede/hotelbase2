@@ -34,53 +34,53 @@
                 </div>
             </div>
             <div class="lay-form-item">
-                    <div class="lay-form-item">
-                        <div class="lay-form-item-caption ">
-                            <label>入住离店时间</label>
-                        </div>
-                        <div class="lay-form-item-control">
-                            <input class="lay-input long-input" id="txtbeginDate" ng-model="Search.InBeginDate" />——
-                            <input class="lay-input long-input" id="txtendDate" ng-model="Search.InEndDate" />
-                        </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>入住离店时间</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input long-input" id="txtbeginDate" ng-model="Search.InBeginDate" />——
+                        <input class="lay-input long-input" id="txtendDate" ng-model="Search.InEndDate" />
                     </div>
                 </div>
+            </div>
         </div>
         <div class="btnContain_sar">
             <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
         </div>
     </div>
     <table class="lay-table">
-            <thead>
-                <tr>
-                    <th width="10%">房型</th>
-                    <th width="10%">政策名称</th>
-                    <th>床型</th>
-                    <th width="15%">早餐</th>
-                    <th width="15%">退改</th>
-                    <th width="15%">供应商名称</th>
-                    <th width="15%">价格</th>
-                    <th width="15%">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="d in list">
-                    <td ng-bind="d.HotelRoomName"></td>
-                    <td ng-bind="d.HotelRoomRuleName"></td>
-                    <td ng-bind="getbedname(d.HotelRoomBedType)"></td>
-                    <td ng-bind="d.HotelRoomBreakfastRuleName"></td>
-                    <td ng-bind="d.HotelRoomCancelRuleName"></td>
-                    <td ng-bind="d.HotelSupplierName"></td>
-                    <td ng-bind="d.HoteRoomRuleSellPrice"></td>
-                    <td>
-                        <input type="button" class="lay-btn lay-btn-edit" value="预定" ng-click="detail(d.HotelId,d.HotelRoomId,d.HotelRoomRuleId,d.HotelSupplierId)" />
-                    </td>
-                </tr>
+        <thead>
+            <tr>
+                <th width="10%">房型</th>
+                <th width="10%">政策名称</th>
+                <th>床型</th>
+                <th width="15%">早餐</th>
+                <th width="15%">退改</th>
+                <th width="15%">供应商名称</th>
+                <th width="15%">价格</th>
+                <th width="15%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="d in list">
+                <td ng-bind="d.HotelRoomName"></td>
+                <td ng-bind="d.HotelRoomRuleName"></td>
+                <td ng-bind="getbedname(d.HotelRoomBedType)"></td>
+                <td ng-bind="d.HotelRoomBreakfastRuleName"></td>
+                <td ng-bind="d.HotelRoomCancelRuleName"></td>
+                <td ng-bind="d.HotelSupplierName"></td>
+                <td ng-bind="d.HoteRoomRuleSellPrice"></td>
+                <td>
+                    <input type="button" class="lay-btn lay-btn-edit" value="预定" ng-click="detail(d.HotelId,d.HotelRoomId,d.HotelRoomRuleId,d.HotelSupplierId)" />
+                </td>
+            </tr>
 
-                <tr ng-hide="list!=null &&list.length > 0">
-                    <td colspan="6" class="lay-table-empty">暂无数据显示</td>
-                </tr>
-            </tbody>
-        </table>
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="8" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
     <div id="pager"></div>
 </div>
 <input id="hid" type="hidden" value="@ViewBag.HotelId" />
@@ -131,6 +131,11 @@
                 $("#labhotelname").text($('#hhname').val());
                 $("#labhoteladdress").text($('#haddress').val());
                 $("#labhotelid").text($('#hid').val());
+                var newdate = new Date();
+                var datestar = newdate.getFullYear() + '-' + (newdate.getMonth() + 1 < 10 ? "0" + (newdate.getMonth() + 1) : (newdate.getMonth() + 1)) + '-' + (newdate.getDate() < 10 ? "0" + newdate.getDate() : newdate.getDate());
+                var dateend = newdate.getFullYear() + '-' + (newdate.getMonth() + 1 < 10 ? "0" + (newdate.getMonth() + 1) : (newdate.getMonth() + 1)) + '-' + (newdate.getDate() + 1 < 10 ? "0" + (newdate.getDate() + 1) : (newdate.getDate() + 1));
+                $("#txtbeginDate").val(datestar);
+                $("#txtendDate").val(dateend);
                 $scope.Ded = {};
                 $scope.getBed();
                 $scope.Search = {
@@ -195,7 +200,6 @@
                     timeout: 20000,
                     success: function (data) {
                         $scope.list = [];
-                        debugger;
                         if (data != null && data.IsSuccess > 0) {
                             $scope.list = data.List;
                             $scope.pagerInit(index, data.Total);
@@ -226,10 +230,19 @@
                 pager.render();
             }
             $scope.detail = function (hid, roomid, ruleid, supplierid) {
-                var url = "/order/book?hotelId=" + hid + "&roomId=" + roomid + "&ruleid=" + ruleid +
-                    "&supplierid=" + supplierid;
-                $('#ifm_detail').prop('src', url);
-                $("#dialogDetail").eDialog('show');
+                if ($('#txtbeginDate').val() == null || $('#txtbeginDate').val().length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '请选择入住/离店时间！'
+                    });
+                }
+                else {
+                    var url = "/order/book?hotelId=" + hid + "&roomId=" + roomid + "&ruleid=" + ruleid +
+                    "&supplierid=" + supplierid + "&indate=" + $('#txtbeginDate').val() + "~" + $('#txtendDate').val();
+                    $('#ifm_detail').prop('src', url);
+                    $("#dialogDetail").eDialog('show');
+                }
+
             }
 
             $scope.detailClear = function (id) {

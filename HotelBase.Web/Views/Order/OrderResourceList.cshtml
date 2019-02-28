@@ -298,7 +298,6 @@
                     timeout: 20000,
                     success: function (data) {
                         $scope.list = [];
-                        debugger;
                         if (data != null && data.IsSuccess > 0) {
                             $scope.list = data.List;
                             //for (var i = 0; i < data.List.length; i++) {

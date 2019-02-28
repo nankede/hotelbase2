@@ -12,28 +12,23 @@
             </select>
         </div>
     </div>
-    @*<div class="lay-form-item">
-        <div class="lay-form-item-caption ">
-            <label>政策来源</label>
-        </div>
-        <div class="lay-form-item-control">
-            <select class="lay-select  lay-input" ng-model="Search.SupplierSource" ng-init="Search.SourceId=0" ng-options="item.Code as item. Name for item in Source">
-                <option value="" selected hidden>
-            </select>
-        </div>
-    </div>*@
-    @*<div class="lay-row">
-        <div class="lay-form-item lay-col-6">
-            <div class="lay-form-item-caption">
-                <label>来单渠道</label>
+    <div class="lay-form-item">
+        <div class="lay-form-item lay-col-4">
+            <div class="lay-form-item-caption ">
+                <label>订单状态</label>
             </div>
-            <div class="lay-form-item-control">
-                <select class="lay-select lay-input" ng-model="Search.Plat1" ng-init="Search.Plat1=0" ng-options="item.Type as item. Name for item in config.SourceOne">
-                    <option value="" selected hidden>
-                </select>
+            <div class="lay-form-item-caption ">
+                @*<label><input name="States" type="checkbox" value="0" />待处理 </label>*@
+                <input class="lay-checkbox-variant" id="checkbox-1" name="States" type="checkbox" value="0" /><label for="checkbox-1" class="txt_center">待处理</label>
+                @*<label><input name="States" type="checkbox" value="1" />确认成功 </label>*@
+                <input class="lay-checkbox-variant" id="checkbox-2" name="States" type="checkbox" value="1" /><label for="checkbox-2" class="txt_center">确认成功</label>
+                @*<label><input name="States" type="checkbox" value="2" />确认失败 </label>*@
+                <input class="lay-checkbox-variant" id="checkbox-3" name="States" type="checkbox" value="2" /><label for="checkbox-3" class="txt_center">确认失败</label>
+                @*<label><input name="States" type="checkbox" value="3" />取消 </label>*@
+                <input class="lay-checkbox-variant" id="checkbox-4" name="States" type="checkbox" value="3" /><label for="checkbox-4" class="txt_center">取消</label>
             </div>
         </div>
-    </div>*@
+    </div>
     <div class="lay-form-item" id="timesearch">
         <div class="lay-form-item-caption ">
             <label>时间类型</label>
@@ -143,7 +138,7 @@
                 <td ng-bind="d.TotalRevenue"></td>
             </tr>
             <tr ng-hide="list!=null &&list.length > 0">
-                <td colspan="8" class="lay-table-empty">暂无数据显示</td>
+                <td colspan="6" class="lay-table-empty">暂无数据显示</td>
             </tr>
         </tbody>
     </table>
@@ -334,6 +329,15 @@
                 //$scope.Search.Type=$scope.config.TypeSource[0];
             }
 
+
+            $scope.GetState = function () {
+                var id_array = new Array();
+                $('input[name="States"]:checked').each(function () {
+                    id_array.push($(this).val());//向数组中添加元素
+                });
+                return idstr = id_array.join(',');//将数组元素连接起来以构建一个字符串
+            }
+
             //获取供应商
             $scope.getSupplier = function () {
                 var url = $scope.config.supplierUrl;
@@ -522,6 +526,7 @@
                 $scope.Search.PageIndex = index;
                 $scope.Search.StartTime = $("#txtbeginDate").val();
                 $scope.Search.EndTime = $("#txtendDate").val();
+                $scope.Search.Status = $scope.GetState();
                 var para = $scope.Search;
                 eLoading.show();
                 $.ajax({

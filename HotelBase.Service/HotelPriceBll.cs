@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HotelBase.DataAccess.Resource;
 using HotelBase.Common;
+using HotelBase.DataAccess;
 
 namespace HotelBase.Service
 {
@@ -304,6 +305,18 @@ namespace HotelBase.Service
                 list.Add(a);
             });
             return new BaseResponse() { IsSuccess = 1 };
+        }
+
+
+
+        /// <summary>
+        /// 录单价格查询
+        /// </summary>
+        /// <param name="request"></param>
+        public static List<H_HoteRulePriceModel> GetOrderPriceList(int rrid, string begin, string end)
+        {
+            var db = new H_HoteRulePriceAccess();
+            return db.GetOrderPriceList(rrid,begin,end);
         }
     }
 }

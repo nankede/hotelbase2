@@ -32,7 +32,7 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 查询时间类型 1:入住时间 2：创建时间
         /// </summary>
-        public int TimeType { get; set; } 
+        public int TimeType { get; set; }
 
         /// <summary>
         /// 查询开始时间(入住开始时间，创建开始时间)
@@ -47,7 +47,7 @@ namespace HotelBase.Entity.Models
         /// <summary>
         /// 来源id
         /// </summary>
-        public int SourceId { get; set;}
+        public int SourceId { get; set; }
 
         /// <summary>
         /// 酒店名称
@@ -172,6 +172,63 @@ namespace HotelBase.Entity.Models
         /// 营收
         /// </summary>
         public decimal Reven { get; set; }
+
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        public string Status { get; set; }
+    }
+
+    public class ExeclOrder
+    {
+        public string HOCustomerSerialId { get; set; }
+
+        public string ProviceName { get; set; }
+
+        public string CityName { get; set; }
+
+        public string HOSupperlierName { get; set; }
+
+        public string HName { get; set; }
+
+        public int HIId { get; set; }
+
+        public string HRName { get; set; }
+
+        public int HRId { get; set; }
+
+        public int HORoomCount { get; set; }
+
+        public string HOSupplierCorfirmSerialId { get; set; }
+
+        public string HOSupplierSerialId { get; set; }
+
+        public int HONight { get; set; }
+
+        public DateTime HOCheckInDate { get; set; }
+
+        public DateTime HOCheckOutDate { get; set; }
+
+        public DateTime HOAddTime { get; set; }
+
+        public string HOLinkerName { get; set; }
+
+        public string HOLinkerMobile { get; set; }
+
+        public decimal HOSellPrice { get; set; }
+
+        public decimal HOContractPrice { get; set; }
+
+        public decimal Reven { get; set; }
+
+        public string Status { get; set; }
+
+        public string HODistributorName { get; set; }
+
+        public string HODistributorSerialId { get; set; }
+
+        public string HOPart1 { get; set; }
+
     }
 
     public class OrderLogSearchRequset : BaseRequest

@@ -104,7 +104,7 @@
                     <label>入住/离店</label>
                 </div>
                 <div class="lay-form-item-control">
-                    <input class="lay-input  long-input" id="txtDate" ng-model="o.HOCheckInDate" />
+                    <input class="lay-input  long-input" id="txtDate" ng-model="o.HOCheckInDate" disabled />
                 </div>
             </div>
             <div class="lay-form-item lay-col-6">
@@ -175,16 +175,25 @@
                 <div class="lay-form-item-caption">
                     <label>酒店卖价</label>
                 </div>
-                <div class="lay-form-item-control">
+                <div class="lay-form-item-control mss">
                     <input id="sellprice" class="lay-input  long-input" ng-model="m.HoteRoomRuleSellPrice" disabled />
+                    <div class="tpc">
+                        <div id="diysellprice" class="tableContain">
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="lay-form-item lay-col-6 lay-must">
                 <div class="lay-form-item-caption">
                     <label>酒店结算价</label>
                 </div>
-                <div class="lay-form-item-control">
+                <div class="lay-form-item-control mss">
                     <input id="contractprice" class="lay-input  long-input" ng-model="m.HoteRoomRuleContractPrice" disabled />
+                    <div class="tpc">
+                        <div id="diycontractprice" class="tableContain">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -256,11 +265,11 @@
             </div>
             <div class="lay-form-item lay-col-6">
                 <div class="lay-form-item-caption">
-                    <label>来单渠道2</label>
+                    <label>分销商名称</label>
                 </div>
                 <div class="lay-form-item-control">
                     @*<input class="lay-input  long-input" ng-model="o.HOPlat2" />*@
-                    <select class="lay-select lay-input" ng-model="o.HOPlat2" ng-options="item.Code as item. Name for item in config.SourceTwo">
+                    <select class="lay-select lay-input" ng-model="o.HODistributorId" ng-options="item.Code as item. Name for item in config.SourceTwo">
                         <option value="" selected hidden>
                     </select>
                 </div>
@@ -275,7 +284,24 @@
 <input id="hroomid" type="hidden" value="@ViewBag.RoomId" />
 <input id="hruleid" type="hidden" value="@ViewBag.RuleId" />
 <input id="hsupplierid" type="hidden" value="@ViewBag.SupplierId" />
+<input id="hidate" type="hidden" value="@ViewBag.Indate" />
+<input id="sellprice" type="hidden" />
+<input id="contractprice" type="hidden" />
 @section foot{
+    <style>
+        .tableContain {
+            display: flex !important;
+        }
+
+        .tpc {
+            display: none;
+        }
+
+        .mss:hover .tpc {
+            display: block;
+        }
+    </style>
+
     <script>
 
         var mobileReg = /^1(3|4|5|7|8|9)\d{9}$/;
@@ -286,6 +312,7 @@
             $scope.config = {
                 detailUrl: "/hotel/getorderneedinfo/",
                 distributorUrl: "/distributor/getdistributor/",
+                priceUrl: "/order/getpricelist/",
                 saveUrl: "/order/save/",
                 SourceTwo: [{ Code: -1, Name: "请选择" }],
                 SourceOne: [{
@@ -312,20 +339,63 @@
             //初始化
             $scope.pageInit = function () {
                 $scope.getHotel($scope.id, $scope.roomid, $scope.ruleid, $scope.supplierid)
+                $("#txtDate").val($('#hidate').val());
                 laydate.render({
                     elem: '#txtDate',
                     range: '~'
                 })
+                $scope.getPrice();
                 $("#num").bind("input propertychange", function () {
-                    $("#yetnum").val($("#num").val());
-                    var totalsell = $("#sellprice").val() * $("#num").val()
-                    var totalcontract = $("#contractprice").val() * $("#num").val()
-                    $("#totalcontract").val(totalcontract.toFixed(2));
-                    $("#totalsell").val(totalsell.toFixed(2));
-                    $scope.o.HOContractPrice = $("#totalcontract").val();
-                    $scope.o.HOSellPrice = $("#totalsell").val();
+                    if ($('#txtDate').val() != '') {
+                        var date = $('#txtDate').val().split('~');
+                        var start = new Date(date[0]);
+                        var end = new Date(date[1]);
+                        var nDays = Math.abs(parseInt((end - start) / 1000 / 3600 / 24)) * $("#num").val();
+                        //$("#yetnum").val() = nDays > 0 ? nDays : 1;
+                        $("#yetnum").val(nDays);
+                        var totalsell = $("#sellprice").val() * $("#num").val()
+                        var totalcontract = $("#contractprice").val() * $("#num").val()
+                        $("#totalcontract").val(totalcontract.toFixed(2));
+                        $("#totalsell").val(totalsell.toFixed(2));
+                        $scope.o.HOContractPrice = $("#totalcontract").val();
+                        $scope.o.HOSellPrice = $("#totalsell").val();
+                        $scope.o.HONight = nDays > 0 ? nDays : 0;
+                    }
+
                 });
                 $scope.getDistributor();
+            }
+
+            //获取价格
+            $scope.getPrice = function () {
+                var url = $scope.config.priceUrl;
+                var date = $('#txtDate').val().split('~');
+                Untitl.Get(url, { "rrid": $('#hruleid').val(), "begin": date[0], "end": date[1] }, function (data) {
+                    if (data != null && data.length > 0) {
+                        var sellprice = 0;
+                        var contractprice = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            sellprice += data[i].HRPSellPrice;
+                            contractprice += data[i].HRPContractPrice;
+                        }
+                        $("#sellprice").val(sellprice);
+                        $("#contractprice").val(contractprice);
+                        var divsellprice = "";
+                        var divcontractprice = "";
+                        for (var i = 0; i < data.length; i++) {
+                            var date = eval(data[i].HRPDate.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+                            var time = date.toLocaleDateString();
+                            divsellprice += "<table class='lay-table'><tr class='lay-table td'><td>" + time + "</td></tr><tr class='lay-table td'><td>" + data[i].HRPSellPrice + "</td></tr></table>"
+                            divcontractprice += "<table class='lay-table'><tr class='lay-table td'><td>" + time + "</td></tr><tr class='lay-table td'><td>" + data[i].HRPContractPrice + "</td></tr></table>"
+                        }
+                        ////var noApplicationRecord = document.getElementById('diydiv')
+                        document.getElementById('diysellprice').innerHTML = divsellprice;
+                        document.getElementById('diycontractprice').innerHTML = divcontractprice;
+                    }
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getDistributor");
+                })
             }
 
             //获取分销商
@@ -362,6 +432,17 @@
                 });
             }
 
+            //赋值
+            $scope.DicValueInit = function (id, list) {
+                var name = "";
+                if (list && id > 0) {
+                    $.each(list, function (index, item) {
+                        if (item.Code == id)
+                            name = item.Name;
+                    });
+                }
+                return name;
+            }
             //复制
             $scope.Copy = function () {
                 if ($("#cusname").val() == "" || $("#cusmobile").val() == "") {
@@ -381,15 +462,19 @@
 
             //保存
             $scope.Save = function () {
+                $scope.o.HODistributorName = $scope.DicValueInit($scope.o.HODistributorId, $scope.config.SourceTwo)
                 var c = $scope.checkData($scope.m, $scope.o);
                 if (!c) return;
                 eLoading.show();
                 if ($('#txtDate').val() != '') {
                     var date = $('#txtDate').val().split('~');
+                    console.log(date);
+                    console.log(date[0]);
+                    console.log(date[1]);
                     $scope.o.HOCheckInDate = date[0];
                     $scope.o.HOCheckOutDate = date[1];
                 }
-                return;
+                
                 $.ajax({
                     url: $scope.config.saveUrl,
                     type: 'post',
