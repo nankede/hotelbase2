@@ -324,20 +324,7 @@
 
             //保存详情
             $scope.SaveDetail = function () {
-                if ($scope.show.Count <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '库存数量不能为空！'
-                    });
-                    return;
-                }
-                if ($scope.show.Count < $scope.show.RetainCount) {
-                    eMsg({
-                        timer: 2000,
-                        text: '库存数量不能小于保留数量！'
-                    });
-                    return;
-                }
+            
                 var baseModel = {
                     Type: 2,
                     HotelId: $('#hfHotelId').val(),
