@@ -1,0 +1,333 @@
+﻿@section head{
+    <style>
+        .tip {
+            padding: 2px;
+        }
+    </style>
+}
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-16">
+            <div class="lay-form-item-control lay-col-16 " style="padding-right:15px;">
+                <h3 class="cont-title">资源分配</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">分销商id:</td>
+                        <td class="lay-table td" ng-bind="m.HOSellPrice"></td>
+                        <td class="lay-table td">分销商名称：</td>
+                        <td class="lay-table td" ng-bind="m.HODistributorSerialId"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">合作模式：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">结算模式：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">账户模式：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">负责人：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">上线渠道：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">结算价：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="lay-form-item lay-col-16">
+            <div class="lay-form-item-control lay-col-7 " style="padding-right:15px;">
+                <h3 class="cont-title">未匹配资源</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">省份：</td>
+                        <td class="lay-table td" ng-bind="m.HOSellPrice"></td>
+                        <td class="lay-table td">城市：</td>
+                        <td class="lay-table td" ng-bind="m.HODistributorSerialId"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">资源id：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">酒店来源：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">筛选：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">匹配：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">导出：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="lay-form-item-control lay-col-7 " style="padding-right:15px;">
+                <h3 class="cont-title">未匹配资源</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">省份：</td>
+                        <td class="lay-table td" ng-bind="m.HOSellPrice"></td>
+                        <td class="lay-table td">城市：</td>
+                        <td class="lay-table td" ng-bind="m.HODistributorSerialId"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">资源id：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">酒店来源：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">筛选：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">解除匹配：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td">导出：</td>
+                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                    </tr>
+                    <tr>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="hc" type="hidden" />
+<input id="hstatus" type="hidden" />
+<input id="horderid" type="hidden" value="@ViewBag.OrderId" />
+<input id="hserialid" type="hidden" value="@ViewBag.CustomerSerialId" />
+<div class="lay-dialog" id="dialoglog" hidden>
+    <div class="lay-dialog-mask"></div>
+    <div class="lay-dialog-cont" style="width:60%;height:60%;">
+        <div class="lay-dialog-hd">
+            <h3>日志信息</h3>
+            <button class="lay-dialog-btn-close"></button>
+        </div>
+        <div class="lay-dialog-bd">
+            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
+        </div>
+    </div>
+</div>
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.config = {
+                detailUrl: "/order/getdetial",
+                logUrl: "/order/getorderloglist",
+                //savelogUrl: "/order/savelog",
+                saveUrl: "/order/setorder/",
+                distributorUrl: "/distributor/getdistributor/",
+                SourceOne: [{ Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }],
+                SourceTwo: []
+            };
+            $scope.type = "";//操作类型 0：填写日志 1：修改订单状态 2：添加外部订单号 3：添加供应商确认号
+            $scope.state = "";//订单状态
+            $scope.serialid = "";//外部订单号Or供应商确认号
+            $scope.id = $('#horderid').val();
+            $(function () {
+                $scope.pageInit();
+                $scope.Search = { PageIndex: 1 };
+                $scope.search(1);
+                $scope.getDistributor();
+            });
+
+
+            $scope.GetDate = function (data) {
+                var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+                console.log(date);
+                //不带时分秒
+                //return time = date.toLocaleDateString();
+                var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+                var datetime = date.toLocaleDateString() + " " + (date.getHours() < 10 ? "0" + date.getHours() : date
+                    .getHours())
+                    + ":"
+                    + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
+                        .getMinutes())
+                    + ":"
+                    + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
+                        .getSeconds());
+                return datetime;
+            }
+
+            //获取订单状态
+            $scope.getOrderStatus = function (status) {
+                //alert($("#hidtotalmsg").val());
+                var collect = "";
+                switch (status) {
+                    case 0:
+                        collect = "待确认";
+                        break;
+                    case 1:
+                        collect = "预定成功";
+                        break;
+                    case 2:
+                        collect = "酒店下单失败";
+                        break;
+                    case 3:
+                        collect = "取消成功";
+                        break;
+                }
+                return collect;
+            }
+
+            //获取分销商
+            $scope.getDistributor = function () {
+                var url = $scope.config.distributorUrl;
+                Untitl.Get(url, { "IsValid": 1, "isDefault": 0 }, function (data) {
+                    $scope.config.SourceTwo = data;
+                    console.log($scope.config.SourceTwo);
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getDistributor");
+                })
+            }
+
+            $scope.GetLastdate = function (data) {
+                var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+                var datetime = (date.getHours() < 10 ? "0" + date.getHours() : date
+                    .getHours())
+                    + ":"
+                    + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
+                        .getMinutes())
+                    + ":"
+                    + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
+                        .getSeconds());
+                return datetime;
+            }
+
+            //初始化
+            $scope.pageInit = function () {
+                $scope.getdetail($scope.id);
+            }
+            //获取订单详情
+            $scope.getdetail = function (orderid) {
+                if (!orderid || orderid <= 0) return;
+                $.ajax({
+                    url: $scope.config.detailUrl + "?orderid=" + orderid,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                            $("#count").html($scope.m.HOChild + $scope.m.HOAdult);
+                            if ($scope.m.HOStatus != 0) {
+                                $("#btsure").attr("disabled", true);
+                                $("#btfail").attr("disabled", true);
+                                $("#btcalel").attr("disabled", true);
+                            }
+                            $("#HOOutSerialId").val($scope.m.HOOutSerialId)
+                            $("#HOSupplierSerialId").val($scope.m.HOSupplierSerialId)
+                            $("#ordercommis").html($scope.m.HOSellPrice - $scope.m.HOContractPrice);
+                            $("#email").html($scope.m.SLinkMail + "/" + $scope.m.SLinkFax);
+                            $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate);
+                            $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate);
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            $scope.GetPartName = function (id, list, type) {
+                var name = "";
+                if (list && id > 0) {
+                    if (type == 1) {
+                        $.each(list, function (index, item) {
+                            if (item.Type == id)
+                                name = item.Name;
+                        });
+                    }
+                    else {
+                        $.each(list, function (index, item) {
+                            if (item.Code == id)
+                                name = item.Name;
+                        });
+                    }
+                }
+                return name;
+            }
+
+            //查询
+            $scope.search = function (index) {
+                //$scope.detailClear();
+                $scope.Search.PageIndex = index;
+                $scope.Search.CustomerSerialId = $('#hserialid').val();
+                var para = $scope.Search;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.logUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.list = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.list = data.List;
+                            //$scope.pagerInit(index, data.Total);
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+            //操作类型
+            $scope.OperaType = function (type, state) {
+                $scope.type = type;
+                switch (type) {
+                    //订单状态
+                    case 1:
+                        $scope.state = state;
+                        break;
+                    //外部订单号
+                    case 2:
+                        var out = $("#HOOutSerialId").val();
+                        //alert(out);
+                        if (out == null || out == undefined || out == "") {
+                            eMsg({
+                                timer: 2000,
+                                text: '外部订单号不能为空！'
+                            });
+                            return false;
+                        }
+                        $scope.serialid = out;
+                        break;
+                    //供应商确认号
+                    case 3:
+                        var suplier = $("#HOSupplierSerialId").val();
+                        if (suplier == null || suplier == undefined || suplier == "") {
+                            eMsg({
+                                timer: 2000,
+                                text: '供应商订单号不能为空！'
+                            });
+                            return false;
+                        }
+                        $scope.serialid = suplier;
+                        break;
+                }
+                var url = "/order/orderlog?orderid=" + $('#hserialid').val() + "&type=" + $scope.type + "&state=" + $scope.state + "&serialid=" + $scope.serialid;
+                $('#ifm_detail').prop('src', url);
+                //$("#dialogDetail").eDialog('show');
+                $("#dialoglog").eDialog('show');
+            }
+        });
+    </script>
+}
