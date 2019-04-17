@@ -5,6 +5,7 @@
             width: 630px;
             margin: 0 auto;
         }
+
         .tip-title {
             font-size: 14px;
             margin: 4px;
@@ -13,60 +14,94 @@
         }
     </style>
 }
-    <div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
-        <div class="div_content">
-            <label style="font-size: 14px;">房型政策：</label><span class="tip-title" ng-bind="room.HRName"></span><span class="tip-title" ng-bind="rule.HRRName"></span><br />
-            <label style="font-size: 14px;">供应商：</label><span class="tip-title" ng-bind="rule.HRRSourceName"></span>
-            <div style="float:right;margin-right:12px;">
-                <input type="button" class="lay-btn lay-btn-primary" value="批量处理" ng-click="batcList()">
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="div_content">
+        <label style="font-size: 14px;">房型政策：</label><span class="tip-title" ng-bind="room.HRName"></span><span class="tip-title" ng-bind="rule.HRRName"></span><br />
+        <label style="font-size: 14px;">供应商：</label><span class="tip-title" ng-bind="rule.HRRSourceName"></span>
+        <div style="float:right;margin-right:12px;">
+            <input type="button" class="lay-btn lay-btn-primary" value="批量处理" ng-click="batcList()">
+        </div>
+    </div>
+    <div class="lay-row" style="margin-top:20px;">
+        <!-- 日历 start -->
+        <div id="calendar_contain" class="calendar_contain div_content"></div>
+        <!-- 日历 end -->
+    </div>
+    <!-- 批量保存 -->
+    <div class="lay-dialog" id="dialogBatch">
+        <div class="lay-dialog-mask"></div>
+        <div class="lay-dialog-cont" style="width:520px;height:460px;">
+            <div class="lay-dialog-hd">
+                <h3>批量修改库存</h3>
+                <button class="lay-dialog-btn-close"></button>
+            </div>
+            <div class="lay-dialog-bd">
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>选择月份</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <div id="ems_Month"></div>
+                        @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Month" ng-init="price.Month=0" ng-options="item.Code as item. Name for item in MonthList"></select>*@
+                    </div>
+                </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>选择时间</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <div id="ems_Week"></div>
+                    </div>
+                </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>选择日期</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <select class="lay-select select-area" placeholder="请选择开始日期" ng-model="store.Day1" ng-init="price.Day1=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                        <select class="lay-select select-area" placeholder="请选择结束日期" ng-model="store.Day2" ng-init="price.Day2=0" ng-options="item.Code as item. Name for item in DateList"></select>
+                    </div>
+                </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>库存数量</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="store.Count" />
+                    </div>
+                </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>保留数量</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="store.RetainCount" />
+                    </div>
+                </div>
+                <div class="lay-form-foot">
+                    <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="saveBatch()">
+                </div>
             </div>
         </div>
-        <div class="lay-row" style="margin-top:20px;">
-            <!-- 日历 start -->
-            <div id="calendar_contain" class="calendar_contain div_content"></div>
-            <!-- 日历 end -->
-        </div>
-        <!-- 批量保存 -->
-        <div class="lay-dialog" id="dialogBatch">
-            <div class="lay-dialog-mask"></div>
-            <div class="lay-dialog-cont" style="width:520px;height:460px;">
-                <div class="lay-dialog-hd">
-                    <h3>批量修改库存</h3>
-                    <button class="lay-dialog-btn-close"></button>
-                </div>
-                <div class="lay-dialog-bd">
-                    <div class="lay-form-item">
-                        <div class="lay-form-item-caption ">
-                            <label>选择月份</label>
-                        </div>
-                        <div class="lay-form-item-control">
-                            <div id="ems_Month"></div>
-                            @*<select class="lay-select select-area" placeholder="请选择月份" ng-model="price.Month" ng-init="price.Month=0" ng-options="item.Code as item. Name for item in MonthList"></select>*@
-                        </div>
-                    </div>
-                    <div class="lay-form-item">
-                        <div class="lay-form-item-caption ">
-                            <label>选择时间</label>
-                        </div>
-                        <div class="lay-form-item-control">
-                            <div id="ems_Week"></div>
-                        </div>
-                    </div>
-                    <div class="lay-form-item">
-                        <div class="lay-form-item-caption ">
-                            <label>选择日期</label>
-                        </div>
-                        <div class="lay-form-item-control">
-                            <select class="lay-select select-area" placeholder="请选择开始日期" ng-model="store.Day1" ng-init="price.Day1=0" ng-options="item.Code as item. Name for item in DateList"></select>
-                            <select class="lay-select select-area" placeholder="请选择结束日期" ng-model="store.Day2" ng-init="price.Day2=0" ng-options="item.Code as item. Name for item in DateList"></select>
-                        </div>
-                    </div>
+    </div>
+
+    <!-- 单日期保存 -->
+    <div class="lay-dialog" id="dialogDetail">
+        <div class="lay-dialog-mask"></div>
+        <div class="lay-dialog-cont" style="width:460px;height:400px;">
+            <div class="lay-dialog-hd">
+                <h3>修改库存</h3>
+                <button class="lay-dialog-btn-close"></button>
+            </div>
+            <div class="lay-dialog-bd">
+                <div>
+                    <h3 class="cont-title">{{show.PriceDate}}</h3>
                     <div class="lay-form-item">
                         <div class="lay-form-item-caption ">
                             <label>库存数量</label>
                         </div>
                         <div class="lay-form-item-control">
-                            <input class="lay-input" ng-model="store.Count" />
+                            <input class="lay-input" ng-model="show.Count" />
                         </div>
                     </div>
                     <div class="lay-form-item">
@@ -74,53 +109,19 @@
                             <label>保留数量</label>
                         </div>
                         <div class="lay-form-item-control">
-                            <input class="lay-input" ng-model="store.RetainCount" />
+                            <input class="lay-input" ng-model="show.RetainCount" />
                         </div>
                     </div>
-                    <div class="lay-form-foot">
-                        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="saveBatch()">
-                    </div>
+
+                </div>
+                <div class="lay-form-foot">
+                    <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveDetail()">
                 </div>
             </div>
         </div>
-
-        <!-- 单日期保存 -->
-        <div class="lay-dialog" id="dialogDetail">
-            <div class="lay-dialog-mask"></div>
-            <div class="lay-dialog-cont" style="width:460px;height:400px;">
-                <div class="lay-dialog-hd">
-                    <h3>修改库存</h3>
-                    <button class="lay-dialog-btn-close"></button>
-                </div>
-                <div class="lay-dialog-bd">
-                    <div>
-                        <h3 class="cont-title">{{show.PriceDate}}</h3>
-                        <div class="lay-form-item">
-                            <div class="lay-form-item-caption ">
-                                <label>库存数量</label>
-                            </div>
-                            <div class="lay-form-item-control">
-                                <input class="lay-input" ng-model="show.Count" />
-                            </div>
-                        </div>
-                        <div class="lay-form-item">
-                            <div class="lay-form-item-caption ">
-                                <label>保留数量</label>
-                            </div>
-                            <div class="lay-form-item-control">
-                                <input class="lay-input" ng-model="show.RetainCount" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="lay-form-foot">
-                        <input type="button" class="lay-btn lay-btn-primary" value="保存" ng-click="SaveDetail()">
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
+
+</div>
 <input id="hfRuleId" type="hidden" value="@ViewBag.RuleId" />
 <input id="hfHotelId" type="hidden" value="@ViewBag.HotelId" />
 <input id="hfRoomId" type="hidden" value="@ViewBag.RoomId" />
@@ -324,7 +325,7 @@
 
             //保存详情
             $scope.SaveDetail = function () {
-            
+
                 var baseModel = {
                     Type: 2,
                     HotelId: $('#hfHotelId').val(),
@@ -358,14 +359,18 @@
 
             //batcList 批量处理
             $scope.batcList = function () {
+                $scope.store = {
+                    MonthList: "", WeekList: "", DateList: "", Count: 0, RetainCount: 0
+                };
                 $("#dialogBatch").eDialog('show');
             }
             //保存
             $scope.saveBatch = function () {
+
                 //设置日期
                 $scope.store.MonthList = $('#ems_Month').eMultiSelect.getValue('#ems_Month');
                 $scope.store.WeekList = $('#ems_Week').eMultiSelect.getValue('#ems_Week');
-                $scope.store.DateList = [];
+                $scope.store.DateList = "";
                 if ($scope.store.Day1 > 0 && $scope.store.Day2 > 0) {
                     $scope.store.DateList = `${$scope.price.Day1},${$scope.store.Day2},`;
                 }
@@ -407,13 +412,13 @@
 
             //数据验证
             $scope.checkData = function () {
-                if ($scope.store.Count.length <= 0 || $scope.store.Count <= 0) {
-                    eMsg({
-                        timer: 2000,
-                        text: '库存数量不能为空！'
-                    });
-                    return false;
-                }
+                //if ($scope.store.Count.length <= 0 || $scope.store.Count <= 0) {
+                //    eMsg({
+                //        timer: 2000,
+                //        text: '库存数量不能为空！'
+                //    });
+                //    return false;
+                //}
                 if ($scope.store.Count < $scope.store.RetainCount) {
                     eMsg({
                         timer: 2000,
