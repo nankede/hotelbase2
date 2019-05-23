@@ -180,6 +180,17 @@ namespace HotelBase.Service
             var query = db.Query().Where(x => x.HIName.Contains(name) && x.HIIsValid == 1);
             return query.Top(20).ToList();
         }
+
+
+        /// <summary>
+        /// 获取酒店列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static BasePageResponse<H_HotelInfoModel> GetResourceList(GiveResourceSearchRequest request)
+        {
+            return H_HotelInfoAccess.GetAll(request);
+        }
     }
 
 

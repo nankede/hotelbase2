@@ -196,5 +196,51 @@ namespace HotelBase.DataAccess.Resource
             return data;
         }
 
+        /// <summary>
+        /// 获取酒店列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static BasePageResponse<H_HotelInfoModel> GetAll(GiveResourceSearchRequest request)
+        {
+            var response = new BasePageResponse<H_HotelInfoModel>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append(@" SELECT DISTINCT b.* FROM 
+	                            h_hotelinfo b
+                            INNER JOIN h_hotelroom r ON r.HIId = b.Id
+                            INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
+                            LEFT JOIN h_supplier s ON s.Id = rr.HRRSupplierId AND s.SIsValid = 1 
+                            WHERE
+	                            b.HIIsValid = 1
+                            AND r.HRIsValid = 1
+                            AND rr.HRRIsValid = 1
+                            ");
+            if (!string.IsNullOrWhiteSpace(request.SupplierId))
+            {
+                sb.AppendFormat(" AND  rr.HRRSupplierId = {0}", request.SupplierId);
+            }
+            if (request.ProviceId > 0)
+            {
+                sb.AppendFormat(" AND  b.HIProvinceId = {0}", request.ProviceId);
+            }
+            if (request.CityId > 0)
+            {
+                sb.AppendFormat(" AND  b.HICityId = {0}", request.CityId);
+            }
+            if (!string.IsNullOrWhiteSpace(request.HotelId))
+            {
+                sb.AppendFormat(" AND  b.Id = {0}", request.HotelId);
+            }
+            var list = MysqlHelper.GetList<H_HotelInfoModel>(sb.ToString());
+            var total = list?.Count ?? 0;
+            if (total > 0)
+            {
+                response.IsSuccess = 1;
+                response.Total = total;
+                response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
+                response.AllList = list;
+            }
+            return response;
+        }
     }
 }

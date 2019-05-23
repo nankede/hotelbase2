@@ -58,5 +58,7 @@ namespace HotelBase.Entity
         /// 列表
         /// </summary>
         public List<T> List { get; set; }
+
+        public List<T> AllList { get; set; }
     }
 }

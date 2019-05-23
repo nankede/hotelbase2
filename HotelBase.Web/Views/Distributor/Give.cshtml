@@ -13,218 +13,346 @@
                 <table class="lay-table">
                     <tr>
                         <td class="lay-table td">分销商id:</td>
-                        <td class="lay-table td" ng-bind="m.HOSellPrice"></td>
+                        <td class="lay-table td" ng-bind="m.Id"></td>
                         <td class="lay-table td">分销商名称：</td>
-                        <td class="lay-table td" ng-bind="m.HODistributorSerialId"></td>
+                        <td class="lay-table td" ng-bind="m.DName"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
                     </tr>
                     <tr>
                         <td class="lay-table td">合作模式：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td" ng-bind="m.DCooperationModeName"></td>
                         <td class="lay-table td">结算模式：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
-                        <td class="lay-table td">账户模式：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td" ng-bind="m.DSettlementTypeName"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
                     </tr>
                     <tr>
                         <td class="lay-table td">负责人：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td" ng-bind="m.DLinkMan"></td>
                         <td class="lay-table td">上线渠道：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td" ng-bind="m.DLineChannel"></td>
                         <td class="lay-table td">结算价：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td" ng-bind="m.DSettlementName"></td>
                     </tr>
                 </table>
             </div>
         </div>
 
         <div class="lay-form-item lay-col-16">
-            <div class="lay-form-item-control lay-col-7 " style="padding-right:15px;">
+            <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
                 <h3 class="cont-title">未匹配资源</h3>
                 <table class="lay-table">
                     <tr>
-                        <td class="lay-table td">省份：</td>
-                        <td class="lay-table td" ng-bind="m.HOSellPrice"></td>
-                        <td class="lay-table td">城市：</td>
-                        <td class="lay-table td" ng-bind="m.HODistributorSerialId"></td>
+                        <td class="lay-table td" style="width:50%">省份：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.PrivoceId" ng-init="Search.PrivoceId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
+                        <td class="lay-table td" style="width:50%">城市：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0" ng-options="item.Id as item. Name for item in CityList">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="lay-table td">资源id：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
-                        <td class="lay-table td">酒店来源：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td" style="width:50%">资源id：</td>
+                        <td class="lay-table td">
+                            <input class="lay-input" ng-model="Search.HotelId" placeholder="多个以英文,隔开" />
+                        </td>
+                        <td class="lay-table td" style="width:50%">酒店来源：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select  lay-input" ng-model="Search.Supplier" ng-init="Search.Supplier=0" ng-options="item.Code as item. Name for item in config.Supplier">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="lay-table td">筛选：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
-                        <td class="lay-table td">匹配：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
-                        <td class="lay-table td">导出：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="筛选" ng-click="search(1)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="匹配" ng-click="OperaType(2,0)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="导出" ng-click="OperaType(2,0)">
+                        </td>
                     </tr>
                 </table>
+                <div>
+                    <table class="lay-table" id="nogive">
+                        <thead>
+                            <tr>
+                                <th width="15%">
+                                    <input id="flag" type="checkbox" ng-model="select_all" ng-change="selectAll()">全选</th>
+                                <th width="15%">省份</th>
+                                <th width="15%">城市</th>
+                                <th width="10%">酒店ID</th>
+                                <th width="10%">酒店名</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="d in list">
+                                <td>
+                                    <input type="checkbox" ng-model="d.checked" ng-change="selectOne()">
+                                </td>
+                                <td ng-bind="d.HIProvince"></td>
+                                <td ng-bind="d.HICity"></td>
+                                <td ng-bind="d.Id"></td>
+                                <td ng-bind="d.HIName"></td>
+                                @*<td ng-bind="d.HIGdLonLat"></td>*@
+                            </tr>
+                            <tr ng-hide="list!=null &&list.length > 0">
+                                <td colspan="5" class="lay-table-empty">暂无数据显示</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="pager"></div>
             </div>
-            <div class="lay-form-item-control lay-col-7 " style="padding-right:15px;">
-                <h3 class="cont-title">未匹配资源</h3>
+            <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
+                <h3 class="cont-title">已匹配资源</h3>
                 <table class="lay-table">
                     <tr>
-                        <td class="lay-table td">省份：</td>
-                        <td class="lay-table td" ng-bind="m.HOSellPrice"></td>
-                        <td class="lay-table td">城市：</td>
-                        <td class="lay-table td" ng-bind="m.HODistributorSerialId"></td>
+                        <td class="lay-table td" style="width:50%">省份：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.PrivoceId2" ng-init="Search.PrivoceId2=0" ng-options="item.Id as item. Name for item in ProvList2" ng-change="getArea2(1)">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
+                        <td class="lay-table td" style="width:50%">城市：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId2" ng-init="Search.CityId2=0" ng-options="item.Id as item. Name for item in CityList2">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="lay-table td">资源id：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
-                        <td class="lay-table td">酒店来源：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
+                        <td class="lay-table td" style="width:50%">资源id：</td>
+                        <td class="lay-table td">
+                            <input class="lay-input" ng-model="Search.HotelId2" placeholder="多个以英文,隔开" />
+                        </td>
+                        <td class="lay-table td" style="width:50%">酒店来源：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select  lay-input" ng-model="Search.Supplier2" ng-init="Search.Supplier2=0" ng-options="item.Code as item. Name for item in config.Supplier2">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="lay-table td">筛选：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
-                        <td class="lay-table td">解除匹配：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
-                        <td class="lay-table td">导出：</td>
-                        <td class="lay-table td" ng-bind="m.HOContractPrice"></td>
-                    </tr>
-                    <tr>
-
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="筛选" ng-click="OperaType(2,0)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="解除匹配" ng-click="OperaType(2,0)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="导出" ng-click="OperaType(2,0)">
+                        </td>
                     </tr>
                 </table>
+                <div>
+                    <table class="lay-table" id="isgive">
+                        <thead>
+                            <tr>
+                                <th width="15%">全选</th>
+                                <th width="15%">省份</th>
+                                <th width="15%">城市</th>
+                                <th width="10%">酒店ID</th>
+                                <th width="10%">酒店名</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="d in list">
+                                <td ng-bind="d.StaticTime"></td>
+                                <td ng-bind="d.TotalCreate"></td>
+                                <td ng-bind="d.TotalSuccess"></td>
+                                <td ng-bind="d.TotalSell"></td>
+                                <td ng-bind="d.TotalContract"></td>
+                            </tr>
+                            <tr ng-hide="list!=null &&list.length > 0">
+                                <td colspan="5" class="lay-table-empty">暂无数据显示</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="pager"></div>
             </div>
         </div>
     </div>
 </div>
-<input id="hc" type="hidden" />
-<input id="hstatus" type="hidden" />
-<input id="horderid" type="hidden" value="@ViewBag.OrderId" />
-<input id="hserialid" type="hidden" value="@ViewBag.CustomerSerialId" />
-<div class="lay-dialog" id="dialoglog" hidden>
-    <div class="lay-dialog-mask"></div>
-    <div class="lay-dialog-cont" style="width:60%;height:60%;">
-        <div class="lay-dialog-hd">
-            <h3>日志信息</h3>
-            <button class="lay-dialog-btn-close"></button>
-        </div>
-        <div class="lay-dialog-bd">
-            <iframe id="ifm_detail" src="" style="border:none;width:100%;height:100%;"></iframe>
-        </div>
-    </div>
-</div>
+<input id="hdid" type="hidden" value="@ViewBag.DId" />
 @section foot{
     <script>
         var app = angular.module('myApp', []);
         app.controller('myCtrl', function ($scope) {
             $scope.config = {
-                detailUrl: "/order/getdetial",
-                logUrl: "/order/getorderloglist",
-                //savelogUrl: "/order/savelog",
+                resourceUrl: "/hotel/getresourcelist/",
+                detailUrl: "/distributor/getdetial/",
+                areaUrl: "/system/GetAreaList/?pid=",
+                supplierUrl: "/supplier/getsupplier/",
                 saveUrl: "/order/setorder/",
-                distributorUrl: "/distributor/getdistributor/",
+                Supplier: [{ Code: -1, Name: "请选择" }],
+                Supplier2: [{ Code: -1, Name: "请选择" }],
                 SourceOne: [{ Type: 1, Name: "OTA" }, { Type: 2, Name: "新媒体" }, { Type: 3, Name: "旅行社" }, { Type: 4, Name: "线下" }],
                 SourceTwo: []
             };
-            $scope.type = "";//操作类型 0：填写日志 1：修改订单状态 2：添加外部订单号 3：添加供应商确认号
-            $scope.state = "";//订单状态
-            $scope.serialid = "";//外部订单号Or供应商确认号
-            $scope.id = $('#horderid').val();
+            $scope.Id = $('#hdid').val();
             $(function () {
                 $scope.pageInit();
-                $scope.Search = { PageIndex: 1 };
-                $scope.search(1);
-                $scope.getDistributor();
             });
-
-
-            $scope.GetDate = function (data) {
-                var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
-                console.log(date);
-                //不带时分秒
-                //return time = date.toLocaleDateString();
-                var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
-                var datetime = date.toLocaleDateString() + " " + (date.getHours() < 10 ? "0" + date.getHours() : date
-                    .getHours())
-                    + ":"
-                    + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
-                        .getMinutes())
-                    + ":"
-                    + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
-                        .getSeconds());
-                return datetime;
-            }
-
-            //获取订单状态
-            $scope.getOrderStatus = function (status) {
-                //alert($("#hidtotalmsg").val());
-                var collect = "";
-                switch (status) {
-                    case 0:
-                        collect = "待确认";
-                        break;
-                    case 1:
-                        collect = "预定成功";
-                        break;
-                    case 2:
-                        collect = "酒店下单失败";
-                        break;
-                    case 3:
-                        collect = "取消成功";
-                        break;
-                }
-                return collect;
-            }
-
-            //获取分销商
-            $scope.getDistributor = function () {
-                var url = $scope.config.distributorUrl;
-                Untitl.Get(url, { "IsValid": 1, "isDefault": 0 }, function (data) {
-                    $scope.config.SourceTwo = data;
-                    console.log($scope.config.SourceTwo);
-                    $scope.$apply();
-                }, function () {
-                    console.log("err-getDistributor");
-                })
-            }
-
-            $scope.GetLastdate = function (data) {
-                var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
-                var datetime = (date.getHours() < 10 ? "0" + date.getHours() : date
-                    .getHours())
-                    + ":"
-                    + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
-                        .getMinutes())
-                    + ":"
-                    + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
-                        .getSeconds());
-                return datetime;
-            }
 
             //初始化
             $scope.pageInit = function () {
-                $scope.getdetail($scope.id);
+                $scope.getArea(0);
+                $scope.getArea2(0);
+                $scope.getDetail($scope.id);
+                $scope.getSupplier();
             }
-            //获取订单详情
-            $scope.getdetail = function (orderid) {
-                if (!orderid || orderid <= 0) return;
+
+            $scope.m = [];
+            $scope.checked = [];
+            $scope.selectAll = function () {
+                if ($scope.select_all) {
+                    $scope.checked = [];
+                    angular.forEach($scope.list, function (i) {
+                        i.checked = true;
+                        $scope.checked.push(i.Id);
+                    })
+                } else {
+                    angular.forEach($scope.list, function (i) {
+                        i.checked = false;
+                        $scope.checked = [];
+                    })
+                }
+                console.log($scope.checked);
+            };
+            $scope.selectOne = function () {
+                angular.forEach($scope.list, function (i) {
+                    var index = $scope.checked.indexOf(i.Id);
+                    if (i.checked && index === -1) {
+                        $scope.checked.push(i.Id);
+                    } else if (!i.checked && index !== -1) {
+                        $scope.checked.splice(index, 1);
+                    };
+                })
+
+                if ($scope.list.length === $scope.checked.length) {
+                    $scope.select_all = true;
+                } else {
+                    $scope.select_all = false;
+                }
+                console.log($scope.checked);
+            }
+
+            //获取供应商
+            $scope.getSupplier = function () {
+                var url = $scope.config.supplierUrl;
+                Untitl.Get(url, { "IsValid": 1 }, function (data) {
+                    $scope.config.Supplier = data;
+                    $scope.config.Supplier2 = data;
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getSupplier");
+                })
+            }
+
+            //获取省市查询--未匹配
+            $scope.getArea = function (type) {
+                var pId = type == 0 ? 1 : $scope.Search.PrivoceId;
+                if (!pId || pId <= 0) return;
+                var url = $scope.config.areaUrl + pId;
                 $.ajax({
-                    url: $scope.config.detailUrl + "?orderid=" + orderid,
+                    url: url,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (type == 0) {
+                            $scope.ProvList = data;
+                            $scope.ProvList.unshift({
+                                Id: 0,
+                                Name: "请选择省份"
+                            });
+                            $scope.CityList = [{
+                                Id: 0,
+                                Name: "请选择城市"
+                            }];
+                            $scope.Search.CityId = 0;
+                        } else {
+                            $scope.CityList = data;
+                            $scope.CityList.unshift({
+                                Id: 0,
+                                Name: "请选择城市"
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getSource");
+                    },
+                    complete: function () { }
+                });
+            }
+
+            //获取省市查询--已匹配
+            $scope.getArea2 = function (type) {
+                var pId = type == 0 ? 1 : $scope.Search.PrivoceId2;
+                if (!pId || pId <= 0) return;
+                var url = $scope.config.areaUrl + pId;
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (type == 0) {
+                            $scope.ProvList2 = data;
+                            $scope.ProvList2.unshift({
+                                Id: 0,
+                                Name: "请选择省份"
+                            });
+                            $scope.CityList2 = [{
+                                Id: 0,
+                                Name: "请选择城市"
+                            }];
+                            $scope.Search.CityId2 = 0;
+                        } else {
+                            $scope.CityList2 = data;
+                            $scope.CityList2.unshift({
+                                Id: 0,
+                                Name: "请选择城市"
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getSource");
+                    },
+                    complete: function () { }
+                });
+            }
+
+
+            //详情
+            $scope.getDetail = function () {
+                $.ajax({
+                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
                     type: 'get',
                     dataType: "json",
                     timeout: 20000,
                     success: function (data) {
                         if (data != null && data.Id > 0) {
                             $scope.m = data;
-                            $("#count").html($scope.m.HOChild + $scope.m.HOAdult);
-                            if ($scope.m.HOStatus != 0) {
-                                $("#btsure").attr("disabled", true);
-                                $("#btfail").attr("disabled", true);
-                                $("#btcalel").attr("disabled", true);
+                            if ($scope.m && $scope.m.DProviceId > 0) {
+                                $scope.getArea(1);
                             }
-                            $("#HOOutSerialId").val($scope.m.HOOutSerialId)
-                            $("#HOSupplierSerialId").val($scope.m.HOSupplierSerialId)
-                            $("#ordercommis").html($scope.m.HOSellPrice - $scope.m.HOContractPrice);
-                            $("#email").html($scope.m.SLinkMail + "/" + $scope.m.SLinkFax);
-                            $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate);
-                            $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate);
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
                         }
                         $scope.$apply();
                     },
@@ -237,34 +365,26 @@
                 });
             }
 
-            $scope.GetPartName = function (id, list, type) {
-                var name = "";
-                if (list && id > 0) {
-                    if (type == 1) {
-                        $.each(list, function (index, item) {
-                            if (item.Type == id)
-                                name = item.Name;
-                        });
-                    }
-                    else {
-                        $.each(list, function (index, item) {
-                            if (item.Code == id)
-                                name = item.Name;
-                        });
-                    }
-                }
-                return name;
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                    $("#flag").attr("checked", "false");
+                };
+                pager.render();
             }
 
             //查询
             $scope.search = function (index) {
-                //$scope.detailClear();
                 $scope.Search.PageIndex = index;
-                $scope.Search.CustomerSerialId = $('#hserialid').val();
                 var para = $scope.Search;
                 eLoading.show();
                 $.ajax({
-                    url: $scope.config.logUrl,
+                    url: $scope.config.resourceUrl,
                     type: 'post',
                     dataType: "json",
                     data: para,
@@ -273,7 +393,8 @@
                         $scope.list = [];
                         if (data != null && data.IsSuccess > 0) {
                             $scope.list = data.List;
-                            //$scope.pagerInit(index, data.Total);
+                            $scope.alllist = data.AllList;
+                            $scope.pagerInit(index, data.Total);
                         }
                         $scope.$apply();
                     },
@@ -288,45 +409,6 @@
                         eLoading.hide();
                     }
                 });
-            }
-            //操作类型
-            $scope.OperaType = function (type, state) {
-                $scope.type = type;
-                switch (type) {
-                    //订单状态
-                    case 1:
-                        $scope.state = state;
-                        break;
-                    //外部订单号
-                    case 2:
-                        var out = $("#HOOutSerialId").val();
-                        //alert(out);
-                        if (out == null || out == undefined || out == "") {
-                            eMsg({
-                                timer: 2000,
-                                text: '外部订单号不能为空！'
-                            });
-                            return false;
-                        }
-                        $scope.serialid = out;
-                        break;
-                    //供应商确认号
-                    case 3:
-                        var suplier = $("#HOSupplierSerialId").val();
-                        if (suplier == null || suplier == undefined || suplier == "") {
-                            eMsg({
-                                timer: 2000,
-                                text: '供应商订单号不能为空！'
-                            });
-                            return false;
-                        }
-                        $scope.serialid = suplier;
-                        break;
-                }
-                var url = "/order/orderlog?orderid=" + $('#hserialid').val() + "&type=" + $scope.type + "&state=" + $scope.state + "&serialid=" + $scope.serialid;
-                $('#ifm_detail').prop('src', url);
-                //$("#dialogDetail").eDialog('show');
-                $("#dialoglog").eDialog('show');
             }
         });
     </script>

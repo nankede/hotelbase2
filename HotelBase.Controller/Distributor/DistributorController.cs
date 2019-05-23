@@ -57,6 +57,16 @@ namespace HotelBase.Web.Controller.Distributor
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 分配资源
+        /// </summary>
+        /// <param name="did"></param>
+        /// <returns></returns>
+        public ActionResult Give(int did)
+        {
+            ViewBag.DId = did;
+            return View();
+        }
 
         /// <summary>
         /// 分销商操作

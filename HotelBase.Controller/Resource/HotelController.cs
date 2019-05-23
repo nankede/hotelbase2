@@ -399,5 +399,19 @@ namespace HotelBase.Web.Controller.System
             return Json(rtn, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+
+        #region 查询酒店-分配资源查询
+        /// <summary>
+        /// 分配资源查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public JsonResult GetResourceList(GiveResourceSearchRequest request)
+        {
+            var response = HotelBll.GetResourceList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

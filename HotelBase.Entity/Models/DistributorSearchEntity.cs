@@ -78,4 +78,73 @@ namespace HotelBase.Entity.Models
         /// </summary>
         public int DIsValid { get; set; }
     }
+
+
+    public class GiveResourceSearchRequest : BaseRequest
+    {
+        /// <summary>
+        /// 资源id
+        /// </summary>
+        public string HotelId { get; set; }
+
+        /// <summary>
+        /// 供应商id
+        /// </summary>
+        public string SupplierId { get; set; }
+
+
+        /// <summary>
+        /// 省份id
+        /// </summary>
+        public int ProviceId { get; set; }
+
+        /// <summary>
+        /// 城市id
+        /// </summary>
+        public int CityId { get; set; }
+
+        /// <summary>
+        /// 类型（0：未分配资源  1：已分配资源）
+        /// </summary>
+        public int Type { get; set; }
+    }
+
+    public class GiveResourceSearchResponse
+    {
+        /// <summary>
+        /// 酒店Id
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// 酒店
+        /// </summary>
+        public int HIName { get; set; }
+
+        /// <summary>
+        /// 省份
+        /// </summary>
+        public string HIProvince { get; set; }
+
+
+        /// <summary>
+        /// 城市
+        /// </summary>
+        public string HICity { get; set; }
+
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public string HIAddress { get; set; }
+
+        /// <summary>
+        /// 电话
+        /// </summary>
+        public string HILinkPhone { get; set; }
+
+        /// <summary>
+        /// 经纬度
+        /// </summary>
+        public string HIGdLonLat { get; set; }
+    }
 }
