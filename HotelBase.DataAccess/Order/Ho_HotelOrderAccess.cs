@@ -277,11 +277,7 @@ namespace HotelBase.DataAccess.Order
 	                        b.HIIsValid = 1
                         AND r.HRIsValid = 1
                         AND rr.HRRIsValid = 1
-                        AND rp.HRPIsValid = 1
-                        GROUP BY b.Id ,
-	                        b.HIName,
-	                        b.HIAddress,
-	                        b.HILinkPhone");
+                        AND rp.HRPIsValid = 1");
             //订单号
             if (!string.IsNullOrWhiteSpace(request.HotelName))
             {
@@ -292,6 +288,10 @@ namespace HotelBase.DataAccess.Order
             {
                 sb.AppendFormat(" AND  b.Id = {0}", request.HotelId);
             }
+            sb.Append(@" GROUP BY b.Id ,
+	                        b.HIName,
+	                        b.HIAddress,
+	                        b.HILinkPhone");
             var list = MysqlHelper.GetList<BookSearchResponse>(sb.ToString());
             var total = list?.Count ?? 0;
             if (total > 0)
