@@ -1,0 +1,337 @@
+﻿@{
+    ViewBag.PageTitle = "分销产品管理";
+}
+<div class="lay-form" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="topContain">
+        <div class="searchInputContain_sar">
+            <div class="lay-row">
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>酒店id</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="Search.HotelId" placeholder="请输入酒店Id" />
+                    </div>
+                </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>酒店名称</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <input class="lay-input" ng-model="Search.HotelName" placeholder="请输入酒店名称" />
+                    </div>
+                </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>省份城市</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.ProviceId" ng-init="Search.ProviceId=0"
+                                ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)"></select>
+                        <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0"
+                                ng-options="item.Id as item. Name for item in CityList"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="lay-row">
+                <div class="lay-form-item ">
+                    <div class="lay-form-item-caption ">
+                        <label>供应商</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <select class="lay-select  lay-input" ng-model="Search.SupplierId" ng-init="Search.SupplierId=0" ng-options="item.Code as item. Name for item in config.Supplier">
+                            <option value="" selected hidden>
+                        </select>
+                    </div>
+                </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>酒店来源</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <select class="lay-select  lay-input" ng-model="Search.SourceId" ng-init="Search.SourceId=0" ng-options="item.Code as item. Name for item in config.Source">
+                            <option value="" selected hidden>
+                        </select>
+                    </div>
+                </div>
+                <div class="lay-form-item">
+                    <div class="lay-form-item-caption ">
+                        <label>分销商</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <select class="lay-select  lay-input" ng-model="Search.DistributorId" ng-init="Search.DistributorId=0" ng-options="item.Code as item. Name for item in config.SourceTwo">
+                            <option value="" selected hidden>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="lay-row">
+                <div class="lay-form-item ">
+                    <div class="lay-form-item-caption ">
+                        <label>是否匹配:</label>
+                    </div>
+                    <div class="lay-form-item-control">
+                        <select class="lay-select  lay-input" ng-model="Search.IsRank" ng-options="item.Code as item. Name for item in config.Give">
+                            <option value="" selected hidden>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btnContain_sar">
+            <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
+            <input type="button" class="lay-btn lay-btn-primary" value="新增" ng-click="detail(0)">
+        </div>
+    </div>
+    <table class="lay-table">
+        <thead>
+            <tr>
+                <th width="10%">酒店id</th>
+                <th width="20%">酒店名称</th>
+                <th width="15%">省份</th>
+                <th width="15%">城市</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="h in list">
+                <td ng-bind="h.Id"></td>
+                <td ng-bind="h.HIName"></td>
+                <td ng-bind="h.HIProvince"></td>
+                <td ng-bind="h.HICity"></td>
+            </tr>
+            <tr ng-hide="list!=null &&list.length > 0">
+                <td colspan="4" class="lay-table-empty">暂无数据显示</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="pager"></div>
+</div>
+@section foot{
+    <style>
+        .topContain_sar {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .searchInputContain_sar {
+        }
+
+        .btnContain_sar {
+            display: flex;
+            align-items: flex-end;
+        }
+    </style>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $(function () {
+                $scope.pageInit();
+            });
+            $scope.config = {
+                listUrl: "/hotel/getproductlist/",
+                sourceUrl: "/system/getdiclistbypcode/?pCode=101",
+                distributorUrl: "/distributor/getdistributor/",
+                areaUrl: "/system/getarealist/?pid=",
+                hotelUrl: "/hotel/gethotellist/",
+                supplierUrl: "/supplier/getsupplier/",
+                Supplier: [{ Code: -1, Name: "请选择" }],
+                Source: [{ Code: -1, Name: "请选择" }],
+                SourceTwo: [{ Code: -1, Name: "请选择" }],
+                Give: [{ Code: -1, Name: "请选择" }, { Code: 1, Name: "已匹配" }, { Code: 0, Name: "未匹配" }],
+                SourceOne: [{
+                    Type: 1,
+                    Name: "OTA"
+                }, {
+                    Type: 2,
+                    Name: "新媒体"
+                }, {
+                    Type: 3,
+                    Name: "旅行社"
+                }, {
+                    Type: 4,
+                    Name: "线下"
+                }]
+            }
+            //页面初始化
+            $scope.pageInit = function () {
+                $scope.Ded = {};
+                $scope.Search = {
+                    PageIndex: 1,
+                    HotelId: '',
+                    HotelName: ''
+                };
+                $scope.search(1);
+                $scope.getArea(0);
+                $scope.getSupplier();
+                $scope.getDistributor();
+                $scope.getSource();
+            }
+
+            //获取来源
+            $scope.getSource = function () {
+                $.ajax({
+                    url: $scope.config.sourceUrl,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.config.Source = data;
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getSource");
+                    },
+                    complete: function () { }
+                });
+            }
+
+            //获取省市查询
+            $scope.getArea = function (type) {
+                var pId = type == 0 ? 1 : $scope.Search.ProviceId;
+                if (!pId || pId <= 0) return;
+                var url = $scope.config.areaUrl + pId;
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (type == 0) {
+                            $scope.ProvList = data;
+                            $scope.ProvList.unshift({
+                                Id: 0,
+                                Name: "请选择省份"
+                            });
+                            $scope.CityList = [{
+                                Id: 0,
+                                Name: "请选择城市"
+                            }];
+                            $scope.Search.CityId = 0;
+                        } else {
+                            $scope.CityList = data;
+                            $scope.CityList.unshift({
+                                Id: 0,
+                                Name: "请选择城市"
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getSource");
+                    },
+                    complete: function () { }
+                });
+            }
+
+            //获取供应商
+            $scope.getSupplier = function () {
+                var url = $scope.config.supplierUrl;
+                Untitl.Get(url, { "IsValid": 1 }, function (data) {
+                    $scope.config.Supplier = data;
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getSupplier");
+                })
+            }
+
+            //获取分销商
+            $scope.getDistributor = function () {
+                var url = $scope.config.distributorUrl;
+                Untitl.Get(url, { "IsValid": 1}, function (data) {
+                    $scope.config.SourceTwo = data;
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getDistributor");
+                })
+            }
+
+            //查询
+            $scope.search = function (index) {
+                $scope.detailClear();
+                $scope.Search.PageIndex = index;
+                var para = $scope.Search;
+                eLoading.show();
+                $.ajax({
+                    url: $scope.config.listUrl,
+                    type: 'post',
+                    dataType: "json",
+                    data: para,
+                    timeout: 20000,
+                    success: function (data) {
+                        $scope.list = [];
+                        if (data != null && data.IsSuccess > 0) {
+                            $scope.list = data.List;
+                            $scope.pagerInit(index, data.Total);
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err");
+                        eMsg({
+                            timer: 2000,
+                            text: '查询失败，请稍后重试！'
+                        });
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //获取价格
+            $scope.getPrice = function () {
+                var url = $scope.config.priceUrl;
+                var date = $('#txtDate').val().split('~');
+                Untitl.Get(url, { "rrid": $('#hruleid').val(), "begin": date[0], "end": date[1] }, function (data) {
+                    if (data != null && data.length > 0) {
+                        var sellprice = 0;
+                        var contractprice = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            sellprice += data[i].HRPSellPrice;
+                            contractprice += data[i].HRPContractPrice;
+                        }
+                        $("#sellprice").val(sellprice);
+                        $("#contractprice").val(contractprice);
+                        var divsellprice = "";
+                        var divcontractprice = "";
+                        for (var i = 0; i < data.length; i++) {
+                            var date = eval(data[i].HRPDate.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+                            var time = date.toLocaleDateString();
+                            divsellprice += "<table class='lay-table'><tr class='lay-table td'><td>" + time + "</td></tr><tr class='lay-table td'><td>" + data[i].HRPSellPrice + "</td></tr></table>"
+                            divcontractprice += "<table class='lay-table'><tr class='lay-table td'><td>" + time + "</td></tr><tr class='lay-table td'><td>" + data[i].HRPContractPrice + "</td></tr></table>"
+                        }
+                        ////var noApplicationRecord = document.getElementById('diydiv')
+                        document.getElementById('diysellprice').innerHTML = divsellprice;
+                        document.getElementById('diycontractprice').innerHTML = divcontractprice;
+                    }
+                    $scope.$apply();
+                }, function () {
+                    console.log("err-getDistributor");
+                })
+            }
+
+            //分页
+            $scope.pagerInit = function (index, total) {
+                var pager = new PagerView('pager');
+                pager.index = index;
+                pager.size = 10;
+                pager.itemCount = total;
+                pager.onclick = function (index) {
+                    $scope.search(index);
+                };
+                pager.render();
+            }
+
+            $scope.detail = function (hid, hname, address) {
+                var url = "/order/resourcedetail?hotelId=" + hid + "&hotelname=" + hname + "&hoteladdress=" + address;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
+            $scope.detailClear = function (id) {
+                $('#ifm_detail').prop('src', '');
+                $("#dialogDetail").eDialog('hide');
+            }
+        });
+    </script>
+}

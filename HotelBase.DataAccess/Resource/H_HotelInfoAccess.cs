@@ -210,12 +210,14 @@ namespace HotelBase.DataAccess.Resource
                             INNER JOIN h_hotelroom r ON r.HIId = b.Id
                             INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
                             LEFT JOIN h_supplier s ON s.Id = rr.HRRSupplierId AND s.SIsValid = 1 
+                            LEFT JOIN h_relation hr on hr.RelationId=b.id 
                             WHERE
 	                            b.HIIsValid = 1
                             AND r.HRIsValid = 1
                             AND rr.HRRIsValid = 1
+                            AND hr.ID IS NULL
                             ");
-            if (!string.IsNullOrWhiteSpace(request.SupplierId))
+            if (!string.IsNullOrWhiteSpace(request.SupplierId) && Convert.ToInt32(request.SupplierId) > 0)
             {
                 sb.AppendFormat(" AND  rr.HRRSupplierId = {0}", request.SupplierId);
             }
@@ -238,6 +240,123 @@ namespace HotelBase.DataAccess.Resource
                 response.IsSuccess = 1;
                 response.Total = total;
                 response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
+                response.AllList = list;
+            }
+            return response;
+        }
+
+
+        /// <summary>
+        /// 获取酒店列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BasePageResponse<H_HotelInfoModel> GetProductList(ProductRequest request)
+        {
+            var response = new BasePageResponse<H_HotelInfoModel>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append(@" SELECT DISTINCT b.* FROM 
+	                            h_hotelinfo b
+                            INNER JOIN h_hotelroom r ON r.HIId = b.Id
+                            INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
+                            LEFT JOIN h_supplier s ON s.Id = rr.HRRSupplierId AND s.SIsValid = 1 
+                            LEFT JOIN h_relation hr on hr.RelationId=b.id 
+                            WHERE
+	                            b.HIIsValid = 1
+                            AND r.HRIsValid = 1
+                            AND rr.HRRIsValid = 1
+                            ");
+            if (request.SupplierId > 0)
+            {
+                sb.AppendFormat(" AND  rr.HRRSupplierId = {0}", request.SupplierId);
+            }
+            if (request.ProviceId > 0)
+            {
+                sb.AppendFormat(" AND  b.HIProvinceId = {0}", request.ProviceId);
+            }
+            if (request.CityId > 0)
+            {
+                sb.AppendFormat(" AND  b.HICityId = {0}", request.CityId);
+            }
+            if (request.HotelId > 0)
+            {
+                sb.AppendFormat(" AND  b.Id = {0}", request.HotelId);
+            }
+            if (request.SourceId > 0)
+            {
+                sb.AppendFormat(" AND  s.SSourceId = {0}", request.SourceId);
+            }
+            if (!string.IsNullOrWhiteSpace(request.HotelName))
+            {
+                sb.AppendFormat(" AND  b.HIName LIKE %{0}%", request.HotelName);
+            }
+            if (request.IsRank == 0)
+            {
+                sb.Append(" AND hr.ID IS NULL");
+            }
+            else if(request.IsRank == 1)
+            {
+                sb.Append(" AND hr.ID IS NOT NULL");
+                if (request.DistributorId > 0)
+                {
+                    sb.AppendFormat(" AND  hr.DistributorId = {0}", request.DistributorId);
+                }
+            }
+            var list = MysqlHelper.GetList<H_HotelInfoModel>(sb.ToString());
+            var total = list?.Count ?? 0;
+            if (total > 0)
+            {
+                response.IsSuccess = 1;
+                response.Total = total;
+                response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
+                response.AllList = list;
+            }
+            return response;
+        }
+        /// <summary>
+        /// 获取酒店列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static BasePageResponse<H_HotelInfoModel> GetGiveAll(InGiveRequest request)
+        {
+            var response = new BasePageResponse<H_HotelInfoModel>();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(@" SELECT DISTINCT b.* FROM 
+	                            h_hotelinfo b
+                            INNER JOIN h_hotelroom r ON r.HIId = b.Id
+                            INNER JOIN h_hotelroomrule rr ON r.Id = rr.HRId
+                            INNER JOIN  h_relation ra on ra.RelationId=b.Id
+                            LEFT JOIN h_supplier s ON s.Id = rr.HRRSupplierId AND s.SIsValid = 1 
+                            WHERE
+	                            b.HIIsValid = 1
+                            AND r.HRIsValid = 1
+                            AND rr.HRRIsValid = 1
+                            AND ra.DistributorId={0}
+                            ", request.GiveDistributorId);
+            if (!string.IsNullOrWhiteSpace(request.GiveSupplierId) && Convert.ToInt32(request.GiveSupplierId) > 0)
+            {
+                sb.AppendFormat(" AND  rr.HRRSupplierId = {0}", request.GiveSupplierId);
+            }
+            if (request.GiveProviceId > 0)
+            {
+                sb.AppendFormat(" AND  b.HIProvinceId = {0}", request.GiveProviceId);
+            }
+            if (request.GiveCityId > 0)
+            {
+                sb.AppendFormat(" AND  b.HICityId = {0}", request.GiveCityId);
+            }
+            if (!string.IsNullOrWhiteSpace(request.GiveHotelId))
+            {
+                sb.AppendFormat(" AND  b.Id = {0}", request.GiveHotelId);
+            }
+            var list = MysqlHelper.GetList<H_HotelInfoModel>(sb.ToString());
+            var total = list?.Count ?? 0;
+            if (total > 0)
+            {
+                response.IsSuccess = 1;
+                response.Total = total;
+                response.List = list.Skip((request.GivePageIndex - 1) * request.GivePageSize).Take(request.GivePageSize)?.ToList();
                 response.AllList = list;
             }
             return response;

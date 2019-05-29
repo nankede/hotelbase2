@@ -191,6 +191,25 @@ namespace HotelBase.Service
         {
             return H_HotelInfoAccess.GetAll(request);
         }
+
+        /// <summary>
+        /// 获取酒店列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static BasePageResponse<H_HotelInfoModel>  GetProductList(ProductRequest request)
+        {
+            return H_HotelInfoAccess.GetProductList(request);
+        }
+        /// <summary>
+        /// 获取酒店列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static BasePageResponse<H_HotelInfoModel> GetGiveAll(InGiveRequest request)
+        {
+            return H_HotelInfoAccess.GetGiveAll(request);
+        }
     }
 
 

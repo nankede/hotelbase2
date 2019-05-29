@@ -133,5 +133,70 @@ namespace HotelBase.Service
             return list;
         }
 
+
+
+        /// <summary>
+        /// 资源匹配
+        /// </summary>
+        /// <param name="resourceids"></param>
+        /// <param name="distributorid"></param>
+        /// <returns></returns>
+        public static BaseResponse BathGive(List<int> resourceids, string distributorid)
+        {
+            var addList = new List<H_RelationModel>();
+            var set = false;
+            var hDb = new H_RelationAccess();
+            if (resourceids != null && resourceids.Any() && !string.IsNullOrWhiteSpace(distributorid))
+            {
+                foreach (var item in resourceids)
+                {
+                    var list = new H_RelationModel
+                    {
+                        DistributorId = distributorid,
+                        RelationId = item.ToString()
+                    };
+                    addList.Add(list);
+                }
+            }
+            if (addList != null && addList.Count > 0)
+            {
+                set = hDb.AddBatch(addList);
+            }
+            var res = new BaseResponse
+            {
+                IsSuccess = set ? 1 : 0,
+                Msg = set ? string.Empty : "失败",
+            };
+            return res;
+        }
+
+
+        /// <summary>
+        /// 资源匹配
+        /// </summary>
+        /// <param name="resourceids"></param>
+        /// <param name="distributorid"></param>
+        /// <returns></returns>
+        public static BaseResponse OutGive(List<int> resourceids, string distributorid)
+        {
+            var addList = new List<H_RelationModel>();
+            var set = 0;
+            var hDb = new H_RelationAccess();
+            if (resourceids != null && resourceids.Any() && !string.IsNullOrWhiteSpace(distributorid))
+            {
+                foreach (var item in resourceids)
+                {
+                    var outgive = hDb.Query().Where(s => s.DistributorId == distributorid && s.RelationId == item.ToString()).FirstOrDefault();
+                    set = hDb.Delete(outgive);
+                }
+            }
+            var res = new BaseResponse
+            {
+                IsSuccess = set > 0 ? 1 : 0,
+                Msg = set > 0 ? string.Empty : "失败",
+            };
+            return res;
+        }
+
     }
 }

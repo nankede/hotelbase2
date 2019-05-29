@@ -374,6 +374,8 @@
     <Content Include="Views\Order\ResourceDetail.cshtml" />
     <Content Include="Views\Hotel\RoomRuleList.cshtml" />
     <Content Include="Views\Distributor\Give.cshtml" />
+    <Content Include="Views\Distributor\ProduceList.cshtml" />
+    <Content Include="Views\Distributor\SetPrice.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

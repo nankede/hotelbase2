@@ -94,6 +94,7 @@
                     <input type="button" class="lay-btn lay-btn-edit" value="编辑" ng-click="detail(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit-cancel" value="设置{{h.DIsValid==1?'无效':'有效'}}"
                            ng-click="setValid(h.Id,h.DIsValid)" />
+                    <input type="button" class="lay-btn lay-btn-edit" value="批量调价" ng-click="setPrice(h.Id)" />
                     <input type="button" class="lay-btn lay-btn-edit" value="资源匹配" ng-click="give(h.Id)" />
                 </td>
             </tr>
@@ -277,6 +278,14 @@
             $scope.give = function (id) {
                 $scope.detailName = "资源分配";
                 var url = "/distributor/give?did=" + id;
+                $('#ifm_detail').prop('src', url);
+                $("#dialogDetail").eDialog('show');
+            }
+
+            //批量调价
+            $scope.setPrice = function (id) {
+                $scope.detailName = "批量调价";
+                var url = "/distributor/setprice?did=" + id;
                 $('#ifm_detail').prop('src', url);
                 $("#dialogDetail").eDialog('show');
             }

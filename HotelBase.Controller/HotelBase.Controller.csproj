@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Component.Access, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Component.Access.dll</HintPath>
+    </Reference>
     <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
@@ -77,6 +81,10 @@
     <ProjectReference Include="..\HotelBase.Common\HotelBase.Common.csproj">
       <Project>{f0e21eaa-5032-4e90-a0be-411c67c8ce82}</Project>
       <Name>HotelBase.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HotelBase.DataAccess\HotelBase.DataAccess.csproj">
+      <Project>{d9dcf45e-dd12-43f9-a601-ff02b30607b7}</Project>
+      <Name>HotelBase.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\HotelBase.Entity\HotelBase.Entity.csproj">
       <Project>{a2475fc1-589f-46b3-ac20-e57e621cc994}</Project>

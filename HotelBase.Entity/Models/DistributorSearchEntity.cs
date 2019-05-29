@@ -109,6 +109,42 @@ namespace HotelBase.Entity.Models
         public int Type { get; set; }
     }
 
+    /// <summary>
+    /// 已匹配资源查询
+    /// </summary>
+    public class InGiveRequest
+    {
+        /// <summary>
+        /// 资源id
+        /// </summary>
+        public string GiveHotelId { get; set; }
+
+        /// <summary>
+        /// 供应商id
+        /// </summary>
+        public string GiveSupplierId { get; set; }
+
+
+        /// <summary>
+        /// 省份id
+        /// </summary>
+        public int GiveProviceId { get; set; }
+
+        /// <summary>
+        /// 城市id
+        /// </summary>
+        public int GiveCityId { get; set; }
+
+        /// <summary>
+        /// 分销商id
+        /// </summary>
+        public int GiveDistributorId { get; set; }
+
+        public int GivePageIndex { get; set; } = 1;
+        /// <summary>每页个数 </summary>
+        public int GivePageSize { get; set; } = 10;
+    }
+
     public class GiveResourceSearchResponse
     {
         /// <summary>
@@ -146,5 +182,51 @@ namespace HotelBase.Entity.Models
         /// 经纬度
         /// </summary>
         public string HIGdLonLat { get; set; }
+    }
+
+    /// <summary>
+    /// 产品管理
+    /// </summary>
+    public class ProductRequest : BaseRequest
+    {
+        /// <summary>
+        /// 酒店id
+        /// </summary>
+        public int HotelId { get; set; }
+
+        /// <summary>
+        /// 酒店名称
+        /// </summary>
+        public string HotelName { get; set; }
+
+        /// <summary>
+        /// 省份id
+        /// </summary>
+        public int ProviceId { get; set; }
+
+        /// <summary>
+        /// 城市id
+        /// </summary>
+        public int CityId { get; set; }
+
+        /// <summary>
+        /// 供应商id
+        /// </summary>
+        public int SupplierId { get; set; }
+
+        /// <summary>
+        /// 分销商id
+        /// </summary>
+        public int DistributorId { get; set; }
+
+        /// <summary>
+        /// 是否匹配 0：未  1：已
+        /// </summary>
+        public int IsRank { get; set; }
+
+        /// <summary>
+        /// 供应商来源
+        /// </summary>
+        public int SourceId { get; set; }
     }
 }

@@ -88,6 +88,7 @@
     <Compile Include="Tables\H_HotelRoomModel.cs" />
     <Compile Include="Tables\H_HotelRoomRuleModel.cs" />
     <Compile Include="Tables\H_HoteRulePriceModel.cs" />
+    <Compile Include="Tables\H_RelationModel.cs" />
     <Compile Include="Tables\H_ResourceLogModel.cs" />
     <Compile Include="Tables\H_SupplierModel.cs" />
     <Compile Include="Tables\Sys_BaseDictionaryModel.cs" />

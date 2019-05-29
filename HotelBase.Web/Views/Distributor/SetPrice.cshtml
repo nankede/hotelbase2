@@ -1,0 +1,259 @@
+﻿@section head{
+    <style>
+        .tip {
+            padding: 2px;
+        }
+    </style>
+}
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="lay-row">
+        <div class="lay-form-item lay-col-16">
+            <div class="lay-form-item-control lay-col-16 " style="padding-right:15px;">
+                <h3 class="cont-title">批量调价</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td">分销商id:</td>
+                        <td class="lay-table td" ng-bind="m.Id"></td>
+                        <td class="lay-table td">分销商名称：</td>
+                        <td class="lay-table td" ng-bind="m.DName"></td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td">负责人：</td>
+                        <td class="lay-table td" ng-bind="m.DLinkMan"></td>
+                        <td class="lay-table td">结算价：</td>
+                        <td class="lay-table td" ng-bind="m.DSettlementName"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="lay-form-item">
+            <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
+                <h3 class="cont-title">未匹配资源</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td" style="width:50%">省份：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search.PrivoceId" ng-init="Search.PrivoceId=0" ng-options="item.Id as item. Name for item in ProvList" ng-change="getArea(1)">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
+                        <td class="lay-table td" style="width:50%">城市：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search.CityId" ng-init="Search.CityId=0" ng-options="item.Id as item. Name for item in CityList">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td" style="width:50%">资源id：</td>
+                        <td class="lay-table td">
+                            <input class="lay-input" ng-model="Search.HotelId" placeholder="多个以英文,隔开" />
+                        </td>
+                        <td class="lay-table td" style="width:50%">酒店来源：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select  lay-input" ng-model="Search.SupplierId" ng-init="Search.SupplierId=0" ng-options="item.Code as item. Name for item in config.Supplier">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="筛选" ng-click="search(1)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="匹配" ng-click="giveResource()">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="导出" ng-click="OperaType(2,0)">
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <table class="lay-table" id="nogive">
+                        <thead>
+                            <tr>
+                                <th width="15%">
+                                    <input id="flag" type="checkbox" ng-model="select_all" ng-change="selectAll()">全选
+                                </th>
+                                <th width="15%">省份</th>
+                                <th width="15%">城市</th>
+                                <th width="10%">酒店ID</th>
+                                <th width="10%">酒店名</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="d in list">
+                                <td>
+                                    <input type="checkbox" ng-model="d.checked" ng-change="selectOne()">
+                                </td>
+                                <td ng-bind="d.HIProvince"></td>
+                                <td ng-bind="d.HICity"></td>
+                                <td ng-bind="d.Id"></td>
+                                <td ng-bind="d.HIName"></td>
+                                @*<td ng-bind="d.HIGdLonLat"></td>*@
+                            </tr>
+                            <tr ng-hide="list!=null &&list.length > 0">
+                                <td colspan="5" class="lay-table-empty">暂无数据显示</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="pager"></div>
+            </div>
+            <div class="lay-form-item-control lay-col-6 " style="padding-right:15px;">
+                <h3 class="cont-title">已匹配资源</h3>
+                <table class="lay-table">
+                    <tr>
+                        <td class="lay-table td" style="width:50%">省份：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select select-area" placeholder="请选择省份" ng-model="Search2.GivePrivoceId" ng-init="Search2.GivePrivoceId=0" ng-options="item.Id as item. Name for item in ProvList2" ng-change="getArea2(1)">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
+                        <td class="lay-table td" style="width:50%">城市：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select select-area" placeholder="请选择城市" ng-model="Search2.GiveCityId" ng-init="Search2.GiveCityId=0" ng-options="item.Id as item. Name for item in CityList2">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td" style="width:50%">资源id：</td>
+                        <td class="lay-table td">
+                            <input class="lay-input" ng-model="Search2.GiveHotelId" placeholder="多个以英文,隔开" />
+                        </td>
+                        <td class="lay-table td" style="width:50%">酒店来源：</td>
+                        <td class="lay-table td">
+                            <select class="lay-select  lay-input" ng-model="Search2.GiveSupplierId" ng-init="Search2.GiveSupplierId=0" ng-options="item.Code as item. Name for item in config.Supplier2">
+                                <option value="" selected hidden>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td"></td>
+                        <td class="lay-table td">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="筛选" ng-click="search2(1)">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="解除匹配" ng-click="outgive()">
+                            <input type="button" class="lay-btn lay-btn-primary" style="padding: 5px;" value="导出" ng-click="OperaType(2,0)">
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <table class="lay-table" id="isgive">
+                        <thead>
+                            <tr>
+                                <th width="15%">
+                                    <input id="flag2" type="checkbox" ng-model="select_all2" ng-change="selectAll2()">全选
+                                </th>
+                                <th width="15%">省份</th>
+                                <th width="15%">城市</th>
+                                <th width="10%">酒店ID</th>
+                                <th width="10%">酒店名</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="d in list2">
+                                <td>
+                                    <input type="checkbox" ng-model="d.checked" ng-change="selectOne2()">
+                                </td>
+                                <td ng-bind="d.HIProvince"></td>
+                                <td ng-bind="d.HICity"></td>
+                                <td ng-bind="d.Id"></td>
+                                <td ng-bind="d.HIName"></td>
+                            </tr>
+                            <tr ng-hide="list2!=null &&list2.length > 0">
+                                <td colspan="5" class="lay-table-empty">暂无数据显示</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="pager2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="hdid" type="hidden" value="@ViewBag.DId" />
+@section foot{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.config = {
+                detailUrl: "/distributor/getdetial/",
+                supplierUrl: "/distributor/getsupplier/"
+            };
+            $scope.Id = $('#hdid').val();
+            $(function () {
+                $scope.pageInit();
+            });
+
+            //初始化
+            $scope.pageInit = function () {
+                $scope.getDetail($scope.id);
+            }
+
+            //供应商详情
+            $scope.getSupplierDetail = function () {
+                $.ajax({
+                    url: $scope.config.supplierUrl + "?id=" + $scope.Id,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                            if ($scope.m && $scope.m.DProviceId > 0) {
+                                $scope.getArea(1);
+                            }
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+
+            //详情
+            $scope.getDetail = function () {
+                $.ajax({
+                    url: $scope.config.detailUrl + "?id=" + $scope.Id,
+                    type: 'get',
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data) {
+                        if (data != null && data.Id > 0) {
+                            $scope.m = data;
+                            if ($scope.m && $scope.m.DProviceId > 0) {
+                                $scope.getArea(1);
+                            }
+                        }
+                        else {
+                            eMsg({
+                                timer: 2000,
+                                text: '查询失败，请稍后重试！'
+                            });
+                        }
+                        $scope.$apply();
+                    },
+                    error: function () {
+                        console.log("err-getDetail");
+                    },
+                    complete: function () {
+                        eLoading.hide();
+                    }
+                });
+            }
+        });
+    </script>
+}

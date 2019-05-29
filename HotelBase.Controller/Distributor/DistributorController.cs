@@ -1,12 +1,11 @@
-﻿using HotelBase.Entity.Models;
+﻿using HotelBase.DataAccess.Distributor;
+using HotelBase.Entity.Models;
 using HotelBase.Entity.Tables;
 using HotelBase.Service;
 using HotelBase.Web.Controllers;
-using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace HotelBase.Web.Controller.Distributor
@@ -58,6 +57,16 @@ namespace HotelBase.Web.Controller.Distributor
         }
 
         /// <summary>
+        /// 分销商产品列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ProduceList()
+        {
+            return View();
+        }
+
+
+        /// <summary>
         /// 分配资源
         /// </summary>
         /// <param name="did"></param>
@@ -106,11 +115,37 @@ namespace HotelBase.Web.Controller.Distributor
         /// 分销商列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetDistributor(int IsValid,int isDefault = 1)
+        public JsonResult GetDistributor(int IsValid, int isDefault = 1)
         {
-            var response = DistributorBll.GetDistributor(IsValid,isDefault);
+            var response = DistributorBll.GetDistributor(IsValid, isDefault);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 分销商资源匹配
+        /// </summary>
+        /// <param name="resourceids"></param>
+        /// <param name="distributorid"></param>
+        /// <returns></returns>
+        public JsonResult BathGive(string resourceids, string distributorid)
+        {
+            var ids = JsonConvert.DeserializeObject<List<int>>(resourceids);
+            var response = DistributorBll.BathGive(ids, distributorid);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// 分销商资源解除匹配
+        /// </summary>
+        /// <param name="resourceids"></param>
+        /// <param name="distributorid"></param>
+        /// <returns></returns>
+        public JsonResult OutGive(string resourceids, string distributorid)
+        {
+            var ids = JsonConvert.DeserializeObject<List<int>>(resourceids);
+            var response = DistributorBll.OutGive(ids, distributorid);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
     }
 }

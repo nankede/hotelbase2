@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Component.Access;
+using Dapper;
 using HotelBase.Entity;
 using HotelBase.Entity.Models;
 using HotelBase.Entity.Tables;
@@ -10,9 +11,8 @@ using System.Threading.Tasks;
 
 namespace HotelBase.DataAccess.Distributor
 {
-    public class H_DistributorAccess
+    public class H_DistributorAccess 
     {
-
         /// <summary>
         /// 分销商列表
         /// </summary>
@@ -109,7 +109,7 @@ namespace HotelBase.DataAccess.Distributor
             para.Add("@DCityId", model.DCityId);
             para.Add("@DCityName", model.DCityName);
             para.Add("@DPart1", model.DPart1);
-            para.Add("@DPart1Name", model.DPart1Name??string.Empty);
+            para.Add("@DPart1Name", model.DPart1Name ?? string.Empty);
             para.Add("@DPart2", model.DPart2);
             para.Add("@DPart2Name", model.DPart2Name ?? string.Empty);
             para.Add("@DCooperationMode", model.DCooperationMode);

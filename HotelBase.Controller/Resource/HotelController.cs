@@ -400,7 +400,6 @@ namespace HotelBase.Web.Controller.System
         }
         #endregion
 
-
         #region 查询酒店-分配资源查询
         /// <summary>
         /// 分配资源查询
@@ -410,6 +409,30 @@ namespace HotelBase.Web.Controller.System
         public JsonResult GetResourceList(GiveResourceSearchRequest request)
         {
             var response = HotelBll.GetResourceList(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 分配资源查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public JsonResult GetGiveResourceList(InGiveRequest request)
+        {
+            var response = HotelBll.GetGiveAll(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region 查询酒店-产品管理查询
+        /// <summary>
+        /// 分配资源查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public JsonResult GetProductList(ProductRequest request)
+        {
+            var response = HotelBll.GetProductList(request);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         #endregion
