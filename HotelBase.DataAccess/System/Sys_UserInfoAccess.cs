@@ -80,8 +80,10 @@ namespace HotelBase.DataAccess
                     return "资源维护";
                 case 2:
                     return "订单维护";
-                case 4:
+                case 3:
                     return "订单统计";
+                case 4:
+                    return "分销商管理";
                 case 100:
                     return "超级管理员";
                 default:
@@ -131,6 +133,41 @@ namespace HotelBase.DataAccess
                     Pwd = data.UIPassWord
                 };
                 return model;
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// 用户详情
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static Sys_UserInfoModel GetUserDetial(int id, string account)
+        {
+            if (id <= 0 && string.IsNullOrEmpty(account))
+            {
+                return null;
+            }
+            var model = new UserModel();
+
+            var para = new DynamicParameters();
+
+            var sql = "SELECT * FROM Sys_UserInfo    ";
+            if (id > 0)
+            {
+                sql += " WHERE  id=@id  LIMIT 1;  ";
+                para.Add("@id", id);
+            }
+            else if (!string.IsNullOrEmpty(account))
+            {
+                sql += " WHERE  UIAccount=@account  LIMIT 1;  ";
+                para.Add("@account", account);
+            }
+            var data = MysqlHelper.GetModel<Sys_UserInfoModel>(sql, para);
+            if (data != null && data.Id > 0)
+            {
+                return data;
             }
             return null;
         }

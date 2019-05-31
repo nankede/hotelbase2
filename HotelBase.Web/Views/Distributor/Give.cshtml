@@ -101,6 +101,7 @@
                                 <td ng-bind="d.HICity"></td>
                                 <td ng-bind="d.Id"></td>
                                 <td ng-bind="d.HIName"></td>
+                                <td ng-bind="d.HIName" style="display:none"></td>
                                 @*<td ng-bind="d.HIGdLonLat"></td>*@
                             </tr>
                             <tr ng-hide="list!=null &&list.length > 0">
@@ -226,7 +227,7 @@
                     $scope.checked = [];
                     angular.forEach($scope.list, function (i) {
                         i.checked = true;
-                        $scope.checked.push(i.Id);
+                        $scope.checked.push(i.Id, i.HIOutType);
                     })
                 } else {
                     angular.forEach($scope.list, function (i) {

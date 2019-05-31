@@ -43,13 +43,13 @@ namespace HotelBase.Web.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            OperatorProvider.Instance.Current = new UserModel
-            {
-                Id = 1,
-                Name = "测试"
-            };
+            //OperatorProvider.Instance.Current = new UserModel
+            //{
+            //    Id = 1,
+            //    Name = "测试"
+            //};
 
-            return;
+            //return;
 
             if (!Ignore)
             {

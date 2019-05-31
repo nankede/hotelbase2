@@ -64,33 +64,21 @@ namespace HotelBase.Web.Controller.System
         /// 新增人员
         /// </summary>
         /// <returns></returns>
-        public JsonResult SaveUser(UserModel request)
+        public JsonResult SaveUser(Sys_UserInfoModel request)
         {
-            var model = new Sys_UserInfoModel
-            {
-                Id = request.Id,
-                UIAccount = request.Account,
-                UIName = request.Name,
-                UIPassWord = request.Id == 0 ? request.Pwd : string.Empty,
-                UIDepartId = request.DepartId,
-                UIDepartName = request.DepartName,
-                UIResponsibility = request.R,
-
-            };
             if (request.Id > 0)
             {
-                model.UIUpdateTime = DateTime.Now;
-                model.UIUpdateName = CurrtUser.Name;
-                var response = SystemBll.UpdateUser(model);
+                request.UIUpdateTime = DateTime.Now;
+                request.UIUpdateName = CurrtUser.Name;
+                var response = SystemBll.UpdateUser(request);
                 return Json(response);
             }
             else
             {
-                model.UIIsValid = 1;
-                model.UIAddName = CurrtUser.Name;
-                model.UIAddTime = DateTime.Now;
-                ;
-                var response = SystemBll.InsertUser(model);
+                request.UIIsValid = 1;
+                request.UIAddName = CurrtUser.Name;
+                request.UIAddTime = DateTime.Now;
+                var response = SystemBll.InsertUser(request);
                 return Json(response);
             }
         }

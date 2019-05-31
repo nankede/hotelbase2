@@ -34,8 +34,7 @@ namespace HotelBase.Service
         /// <returns></returns>
         public static UserModelResponse GetUserModel(int id, string account)
         {
-            var model = Sys_UserInfoAccess.GetUserModel(id, account);
-            model.Pwd = string.Empty;
+            var model = Sys_UserInfoAccess.GetUserDetial(id, account);
             var response = new UserModelResponse
             {
                 IsSuccess = model?.Id > 0 ? 1 : 0,

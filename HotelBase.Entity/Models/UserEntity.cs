@@ -1,4 +1,5 @@
 ﻿using HotelBase.Common;
+using HotelBase.Entity.Tables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace HotelBase.Entity.Models
 
     public class UserModelResponse : BaseResponse
     {
-        public UserModel Model { get; set; }
+        public Sys_UserInfoModel Model { get; set; }
     }
 
     /// <summary>

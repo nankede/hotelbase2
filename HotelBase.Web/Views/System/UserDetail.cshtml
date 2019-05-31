@@ -13,7 +13,7 @@
             <label>姓名</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="User.Name" placeholder="请输入姓名" />
+            <input class="lay-input" ng-model="User.UIName" placeholder="请输入姓名" />
         </div>
     </div>
     <div class="lay-form-item">
@@ -21,15 +21,15 @@
             <label>登陆账户</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="User.Account" placeholder="请输入登陆账户" />
+            <input class="lay-input" ng-model="User.UIAccount" placeholder="请输入登陆账户" />
         </div>
     </div>
-    <div class="lay-form-item" ng-show="$scope.Id==0">
+    <div class="lay-form-item">
         <div class="lay-form-item-caption ">
             <label>登陆密码</label>
         </div>
         <div class="lay-form-item-control">
-            <input class="lay-input" ng-model="User.Account" placeholder="请输入登陆密码" />
+            <input class="lay-input" ng-model="User.UIPassWord" placeholder="请输入登陆密码" />
         </div>
     </div>
     <div class="lay-form-item">
@@ -44,13 +44,21 @@
         <div class="lay-form-item-caption ">
             <label>职责</label>
         </div>
-        <div class="lay-form-item-control">
+        @*<div class="lay-form-item-control">
             <input ng-repeat-start="x in config.resList" type="radio" class="lay-radio-variant"
-                   name="rdo-res" id="rdo-res-{{$index}}" ng-model="User.R" ng-init="User.R=0" value="{{x.value}}" />
+                   name="rdo-res" id="rdo-res-{{$index}}" ng-model="User.UIResponsibility" ng-init="User.UIResponsibility=0" value="{{x.value}}" />
             <label for="rdo-res-{{$index}}">
                 <span ng-bind="x.name"></span>
             </label>
             <i ng-repeat-end class="none"></i>
+        </div>*@
+        <div class="lay-form-item-caption ">
+            <input class="lay-checkbox-variant" id="checkbox-1" name="States" type="checkbox" value="0" /><label for="checkbox-1" class="txt_center">未设定</label>
+            <input class="lay-checkbox-variant" id="checkbox-2" name="States" type="checkbox" value="1" /><label for="checkbox-2" class="txt_center">资源维护</label>
+            <input class="lay-checkbox-variant" id="checkbox-3" name="States" type="checkbox" value="2" /><label for="checkbox-3" class="txt_center">订单维护</label>
+            <input class="lay-checkbox-variant" id="checkbox-4" name="States" type="checkbox" value="3" /><label for="checkbox-4" class="txt_center">订单统计</label>
+            <input class="lay-checkbox-variant" id="checkbox-5" name="States" type="checkbox" value="4" /><label for="checkbox-5" class="txt_center">分销商管理</label>
+            <input class="lay-checkbox-variant" id="checkbox-6" name="States" type="checkbox" value="100" /><label for="checkbox-6" class="txt_center">超级管理</label>
         </div>
     </div>
     <div class="lay-form-foot">
@@ -74,7 +82,8 @@
                     { value: 0, name: "未设定" },
                     { value: 1, name: "资源维护" },
                     { value: 2, name: "订单维护" },
-                    { value: 4, name: "订单统计" },
+                    { value: 3, name: "订单统计" },
+                    { value: 4, name: "分销商管理" },
                     { value: 100, name: "超级管理" },
                 ]
             }
@@ -100,8 +109,8 @@
                         if (data != null && data.IsSuccess > 0) {
                             $scope.User = data.Model;
 
-                            if ($scope.User.DepartId && $scope.User.DepartId > 0) {
-                                $('#esDepart').eSearch2.setDefaults('#esDepart', [{ 'value': $scope.User.DepartId, 'text': $scope.User.DepartName }]);
+                            if ($scope.User.UIDepartId && $scope.User.UIDepartId > 0) {
+                                $('#esDepart').eSearch2.setDefaults('#esDepart', [{ 'value': $scope.User.UIDepartId, 'text': $scope.User.UIDepartName }]);
                             }
                         }
                         else {
@@ -144,8 +153,8 @@
                         return ajaxSendData;
                     },
                     onSelected: function () {
-                        $scope.User.DepartId = this.value;
-                        $scope.User.DepartName = this.text;
+                        $scope.User.UIDepartId = this.value;
+                        $scope.User.UIDepartName = this.text;
                         console.log(`我是选中的value:${this.value},我是选中的text:${this.text}`);
                         //所有的回调里面的this值都放了很多有用的东西
                         //比如 你选中的 value值，选中的 text值
@@ -154,14 +163,21 @@
                 });
 
             }
+            var id_array = new Array();
+            $scope.GetState = function () {
+                $('input[name="States"]:checked').each(function () {
+                    id_array.push($(this).val());//向数组中添加元素
+                });
+                return idstr = id_array.join(',');//将数组元素连接起来以构建一个字符串
+            }
 
             //保存
             $scope.Save = function () {
-
-
+                $scope.User.UIResponsibility = $scope.GetState();
                 var c = $scope.checkData();
                 if (!c) return;
                 eLoading.show();
+                console.log($scope.User);
                 Untitl.Post($scope.config.saveUrl, $scope.User, function (data) {
                     if (data != null && data.IsSuccess > 0) {
                         $scope.User.Id = data.AddId;
@@ -216,7 +232,13 @@
                     });
                     return false;
                 }
-
+                if (id_array.length <= 0) {
+                    eMsg({
+                        timer: 2000,
+                        text: '未选择职责！'
+                    });
+                    return false;
+                }
                 return true;
             }
         });
