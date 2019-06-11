@@ -150,6 +150,7 @@ namespace HotelBase.Service
             {
                 foreach (var item in resourceids)
                 {
+                    //var supplierid=SupplierBll.get
                     var list = new H_RelationModel
                     {
                         DistributorId = distributorid,
@@ -197,6 +198,23 @@ namespace HotelBase.Service
             };
             return res;
         }
+
+        /// <summary>
+        /// 根据分销商id获取已匹配过资源的供应商
+        /// </summary>
+        /// <param name="distributorid"></param>
+        /// <returns></returns>
+        public static List<H_RelationModel> GetGiveSupplier(string distributorid)
+        {
+            var list = new List<H_RelationModel>();
+            if (!string.IsNullOrWhiteSpace(distributorid))
+            {
+                var hDb = new H_RelationAccess();
+                list = hDb.Query().Where(s => s.DistributorId == distributorid).ToList();
+            }
+            return list;
+        }
+
 
     }
 }

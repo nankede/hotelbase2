@@ -34,9 +34,6 @@
                     <table class="lay-table" id="nogive">
                         <thead>
                             <tr>
-                                <th width="15%">
-                                    <input id="flag" type="checkbox" ng-model="select_all" ng-change="selectAll()">全选
-                                </th>
                                 <th width="15%">供应商id</th>
                                 <th width="15%">供应商</th>
                                 <th width="10%">加价模式</th>
@@ -45,13 +42,17 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="d in list">
-                                <td>
-                                    <input type="checkbox" ng-model="d.checked" ng-change="selectOne()">
-                                </td>
-                                <td ng-bind="d.HIProvince"></td>
-                                <td ng-bind="d.HICity"></td>
                                 <td ng-bind="d.Id"></td>
-                                <td ng-bind="d.HIName"></td>
+                                <td ng-bind="d.SName"></td>
+                                <td>
+                                    <select class="lay-select lay-input" ng-model="m.SetType" ng-options="item.Code as item. Name for item in config.setType">
+                                        <option value="" selected hidden>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input class="lay-input  long-input" id="linkmobile" ng-model="m.SetValue" />
+                                </td>
+                                <td></td>
                             </tr>
                             <tr ng-hide="list!=null &&list.length > 0">
                                 <td colspan="5" class="lay-table-empty">暂无数据显示</td>
@@ -65,15 +66,18 @@
     </div>
 </div>
 <input id="hdid" type="hidden" value="@ViewBag.DId" />
+<input id="hsupplierids" type="hidden" value="@ViewBag.SupplierIds" />
 @section foot{
     <script>
         var app = angular.module('myApp', []);
         app.controller('myCtrl', function ($scope) {
             $scope.config = {
                 detailUrl: "/distributor/getdetial/",
-                supplierUrl: "/distributor/getsupplier/"
+                supplierUrl: "/distributor/getdistributorsuppler/",
+                setType: [{ Code: 0, Name: "百分比" }, { Code: 1, Name: "固定值" }]
             };
             $scope.Id = $('#hdid').val();
+            $scope.supplierIds = $('#hsupplierids').val();
             $(function () {
                 $scope.pageInit();
             });
@@ -81,21 +85,19 @@
             //初始化
             $scope.pageInit = function () {
                 $scope.getDetail($scope.id);
+                $scope.getSupplierDetail();
             }
 
             //供应商详情
             $scope.getSupplierDetail = function () {
                 $.ajax({
-                    url: $scope.config.supplierUrl + "?id=" + $scope.Id,
+                    url: $scope.config.supplierUrl + "?supplierids=" + $scope.supplierIds,
                     type: 'get',
                     dataType: "json",
                     timeout: 20000,
                     success: function (data) {
-                        if (data != null && data.Id > 0) {
-                            $scope.m = data;
-                            if ($scope.m && $scope.m.DProviceId > 0) {
-                                $scope.getArea(1);
-                            }
+                        if (data != null) {
+                            $scope.list = data;
                         }
                         else {
                             eMsg({

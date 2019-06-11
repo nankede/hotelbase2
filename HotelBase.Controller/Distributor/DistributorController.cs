@@ -46,6 +46,21 @@ namespace HotelBase.Web.Controller.Distributor
         }
 
         /// <summary>
+        /// 分销商调价
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SetPrice(int did)
+        {
+            ViewBag.Id = did;
+            var supplierids = DistributorBll.GetGiveSupplier(did.ToString());
+            if (supplierids != null && supplierids.Any())
+            {
+                ViewBag.SupplierIds = supplierids.Select(s => s.SupplierId).ToList();
+            }
+            return View();
+        }
+
+        /// <summary>
         /// 分销商详情
         /// </summary>
         /// <param name="orderid"></param>
@@ -118,6 +133,16 @@ namespace HotelBase.Web.Controller.Distributor
         public JsonResult GetDistributor(int IsValid, int isDefault = 1)
         {
             var response = DistributorBll.GetDistributor(IsValid, isDefault);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 分销商列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetDistributorSuppler(List<int> supplierids)
+        {
+            var response = SupplierBll.GetDistributorSupplierList(supplierids);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 

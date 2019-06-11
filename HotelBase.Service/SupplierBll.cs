@@ -93,6 +93,20 @@ namespace HotelBase.Service
             return query.Top(20).ToList();
         }
 
+
+        /// <summary>
+        /// 模糊搜索供应商
+        /// </summary>
+        /// <param name="sourceId"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static List<H_SupplierModel> GetDistributorSupplierList(List<int> suppliers)
+        {
+            var db = new H_SupplierAccess();
+            var query = db.Query().Where(x => suppliers.Contains(x.Id) && x.SIsValid == 1);
+            return query.ToList();
+        }
+
         /// <summary>
         /// 修改供应商
         /// </summary>
