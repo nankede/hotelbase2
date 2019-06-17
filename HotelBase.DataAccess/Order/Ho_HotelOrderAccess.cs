@@ -28,12 +28,16 @@ namespace HotelBase.DataAccess.Order
             StringBuilder sb = new StringBuilder();
             sb.Append(@"SELECT
                         Id,
+                        HODistributorSerialId,
+                        HODistributorName,
+                        HOSupplierSerialId,
                         HOCustomerSerialId,
                         HOSupplierSourceName,
                         HIId,
                         HName,
-                        HOCheckInDate,
-                        HOCheckOutDate,
+                        DATE_FORMAT(HOCheckInDate,'%Y-%m-%d') AS HOCheckInDate,
+                        DATE_FORMAT(HOCheckOutDate,'%Y-%m-%d') AS HOCheckOutDate,
+                        HOAddTime,
                         HOLinkerName,
                         HOStatus,
                         HOSellPrice,
@@ -110,10 +114,16 @@ namespace HotelBase.DataAccess.Order
                 sb.AppendFormat(" AND HIId = '{0}'", request.HIId);
             }
 
-            //第三方流水
-            if (!string.IsNullOrWhiteSpace(request.HOOutSerialId))
+            //供应商流水号
+            if (!string.IsNullOrWhiteSpace(request.HOSupplierSerialId))
             {
-                sb.AppendFormat(" AND HOOutSerialId = '{0}'", request.HOOutSerialId);
+                sb.AppendFormat(" AND HOSupplierSerialId = '{0}'", request.HOSupplierSerialId);
+            }
+
+            //分销商流水号
+            if (!string.IsNullOrWhiteSpace(request.HODistributorSerialId))
+            {
+                sb.AppendFormat(" AND HODistributorSerialId = '{0}'", request.HODistributorSerialId);
             }
 
             //订单状态
@@ -157,9 +167,13 @@ namespace HotelBase.DataAccess.Order
                         hs.SSubWay,
 	                    hs.SLinkMail,
 	                    hs.SLinkFax,
+                        hi.HIOutId,
+						hr.HROutId,
 	                    ho.*
                     FROM
                         ho_hotelorder ho
+                        INNER join h_hotelinfo hi ON hi.Id=ho.HIId
+                        INNER join h_hotelroom hr ON hr.Id=ho.HRId
                         INNER JOIN h_supplier hs ON ho.HOSupplierId = hs.Id
                     WHERE
                         ho.id = @id

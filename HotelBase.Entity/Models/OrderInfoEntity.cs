@@ -65,6 +65,16 @@ namespace HotelBase.Entity.Models
         public string HOOutSerialId { get; set; }
 
         /// <summary>
+        /// 供应商流水号
+        /// </summary>
+        public string HOSupplierSerialId { get; set; }
+
+        /// <summary>
+        /// 分销商流水号
+        /// </summary>
+        public string HODistributorSerialId { get; set; }
+
+        /// <summary>
         /// 订单状态
         /// </summary>
         public string HOStatus { get; set; }
@@ -112,6 +122,11 @@ namespace HotelBase.Entity.Models
         /// 离店时间
         /// </summary>
         public string HOCheckOutDate { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public string HOAddTime { get; set; }
 
         /// <summary>
         /// 预订人
@@ -177,6 +192,16 @@ namespace HotelBase.Entity.Models
         /// 订单状态
         /// </summary>
         public string Status { get; set; }
+
+        /// <summary>
+        /// 供应商酒店id
+        /// </summary>
+        public string HIOutId { get; set; }
+
+        /// <summary>
+        /// 供应商房型id
+        /// </summary>
+        public string HROutId { get; set; }
     }
 
     public class ExeclOrder

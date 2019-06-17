@@ -84,7 +84,7 @@
                         <label>分销商订单号</label>
                     </div>
                     <div class="lay-form-item-control">
-                        <input class="lay-input" ng-model="Search.HOOutSerialId" placeholder="请输入分销商订单号" />
+                        <input class="lay-input" ng-model="Search.HODistributorSerialId" placeholder="请输入分销商订单号" />
                     </div>
                 </div>
             </div>
@@ -121,6 +121,7 @@
                 <th width="10%">入住时间</th>
                 <th width="15%">离店时间</th>
                 <th width="15%">预订人</th>
+                <th width="15%">创建时间</th>
                 <th width="15%">订单状态</th>
                 <th width="15%">总金额</th>
                 <th width="10%">结算价</th>
@@ -130,11 +131,12 @@
         <tbody>
             <tr ng-repeat="d in list">
                 <td ng-bind="d.HOCustomerSerialId" style="word-wrap:break-word;word-break:break-all;"></td>
-                <td ng-bind="d.HOSupplierSourceName"></td>
+                <td ng-bind="d.HODistributorName"></td>
                 <td ng-bind="d.HName"></td>
                 <td ng-bind="d.HOCheckInDate"></td>
                 <td ng-bind="d.HOCheckOutDate"></td>
                 <td ng-bind="d.HOLinkerName"></td>
+                <td ng-bind="d.HOAddTime"></td>
                 <td ng-bind="getOrderStatus(d.HOStatus)"></td>
                 <td ng-bind="d.HOSellPrice"></td>
                 <td ng-bind="d.HOContractPrice"></td>
