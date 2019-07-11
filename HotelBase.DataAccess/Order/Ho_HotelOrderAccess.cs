@@ -169,12 +169,14 @@ namespace HotelBase.DataAccess.Order
 	                    hs.SLinkFax,
                         hi.HIOutId,
 						hr.HROutId,
+                        di.DPart1Name,
 	                    ho.*
                     FROM
                         ho_hotelorder ho
                         INNER join h_hotelinfo hi ON hi.Id=ho.HIId
                         INNER join h_hotelroom hr ON hr.Id=ho.HRId
                         INNER JOIN h_supplier hs ON ho.HOSupplierId = hs.Id
+                        LEFT JOIN h_distributorinfo di on di.Id=ho.HODistributorId
                     WHERE
                         ho.id = @id
                         LIMIT 1; ";
@@ -368,7 +370,7 @@ namespace HotelBase.DataAccess.Order
 	                        b.HIIsValid = 1
                         AND r.HRIsValid = 1
                         AND rr.HRRIsValid = 1
-                        AND rps.HRPIsValid = 1", !string.IsNullOrWhiteSpace(request.InBeginDate) ? request.InBeginDate : DateTime.Now.ToShortDateString(), 
+                        AND rps.HRPIsValid = 1", !string.IsNullOrWhiteSpace(request.InBeginDate) ? request.InBeginDate : DateTime.Now.ToShortDateString(),
                         !string.IsNullOrWhiteSpace(request.InEndDate) ? request.InEndDate : DateTime.Now.AddDays(1).ToShortDateString());
             //订单号
             if (!string.IsNullOrWhiteSpace(request.HotelName))
@@ -801,6 +803,15 @@ namespace HotelBase.DataAccess.Order
 			                                            1
 		                                            END
 	                                            ) AS TotalSuccess,
+	                                            sum(
+		                                            CASE
+		                                            WHEN ho.HOStatus = 1 THEN
+			                                            DATEDIFF(
+				                                            ho.HOCheckOutDate,
+				                                            ho.HOCheckInDate
+			                                            ) * HORoomCount
+		                                            END
+	                                            ) AS TotalSuccessNight,
 	                                            sum(ho.HOSellPrice) AS TotalSell,
 	                                            sum(ho.HOContractPrice) AS TotalContract,
 	                                            sum(
@@ -817,7 +828,9 @@ namespace HotelBase.DataAccess.Order
 	                                            1 = 1
                                                 {0}
                                             GROUP BY
-                                            DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d')", sbwhere.ToString());
+                                            DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d')
+                                            ORDER BY
+	                                            DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d') DESC", sbwhere.ToString());
                     }
                     //离店时间
                     else
@@ -834,6 +847,15 @@ namespace HotelBase.DataAccess.Order
 			                                            1
 		                                            END
 	                                            ) AS TotalSuccess,
+	                                            sum(
+		                                            CASE
+		                                            WHEN ho.HOStatus = 1 THEN
+			                                            DATEDIFF(
+				                                            ho.HOCheckOutDate,
+				                                            ho.HOCheckInDate
+			                                            ) * HORoomCount
+		                                            END
+	                                            ) AS TotalSuccessNight,
 	                                            sum(ho.HOSellPrice) AS TotalSell,
 	                                            sum(ho.HOContractPrice) AS TotalContract,
 	                                            sum(
@@ -852,7 +874,9 @@ namespace HotelBase.DataAccess.Order
                                             GROUP BY
 	                                            DATE_FORMAT(
 		                                            ho.HOCheckOutDate,
-		                                            '%Y-%m-%d')", sbwhere.ToString());
+		                                            '%Y-%m-%d')
+                                            ORDER BY
+	                                            DATE_FORMAT(ho.HOCheckOutDate, '%Y-%m-%d') DESC", sbwhere.ToString());
                     }
                     break;
                 //省市
@@ -870,6 +894,15 @@ namespace HotelBase.DataAccess.Order
 			                                        1
 		                                        END
 	                                        ) AS TotalSuccess,
+	                                        sum(
+		                                        CASE
+		                                        WHEN ho.HOStatus = 1 THEN
+			                                        DATEDIFF(
+				                                        ho.HOCheckOutDate,
+				                                        ho.HOCheckInDate
+			                                        ) * HORoomCount
+		                                        END
+	                                        ) AS TotalSuccessNight,
 	                                        sum(ho.HOSellPrice) AS TotalSell,
 	                                        sum(ho.HOContractPrice) AS TotalContract,
 	                                        sum(
@@ -890,7 +923,9 @@ namespace HotelBase.DataAccess.Order
 	                                        hb.HIProvinceId,
 	                                        hb.HIProvince,
 	                                        hb.HICityId,
-	                                        hb.HICity", sbwhere.ToString());
+	                                        hb.HICity
+                                        ORDER BY
+	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d') DESC", sbwhere.ToString());
                     break;
                 //酒店
                 case 3:
@@ -905,6 +940,15 @@ namespace HotelBase.DataAccess.Order
 			                                        1
 		                                        END
 	                                        ) AS TotalSuccess,
+	                                        sum(
+		                                        CASE
+		                                        WHEN ho.HOStatus = 1 THEN
+			                                        DATEDIFF(
+				                                        ho.HOCheckOutDate,
+				                                        ho.HOCheckInDate
+			                                        ) * HORoomCount
+		                                        END
+	                                        ) AS TotalSuccessNight,
 	                                        sum(ho.HOSellPrice) AS TotalSell,
 	                                        sum(ho.HOContractPrice) AS TotalContract,
 	                                        sum(
@@ -923,7 +967,9 @@ namespace HotelBase.DataAccess.Order
                                         GROUP BY
 	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d'),
 	                                        ho.HName,
-	                                        ho.HIId", sbwhere.ToString());
+	                                        ho.HIId
+                                        ORDER BY
+	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d') DESC", sbwhere.ToString());
                     break;
                 //供应商
                 case 4:
@@ -938,6 +984,15 @@ namespace HotelBase.DataAccess.Order
 			                                        1
 		                                        END
 	                                        ) AS TotalSuccess,
+	                                        sum(
+		                                        CASE
+		                                        WHEN ho.HOStatus = 1 THEN
+			                                        DATEDIFF(
+				                                        ho.HOCheckOutDate,
+				                                        ho.HOCheckInDate
+			                                        ) * HORoomCount
+		                                        END
+	                                        ) AS TotalSuccessNight,
 	                                        sum(ho.HOSellPrice) AS TotalSell,
 	                                        sum(ho.HOContractPrice) AS TotalContract,
 	                                        sum(
@@ -956,7 +1011,9 @@ namespace HotelBase.DataAccess.Order
                                         GROUP BY
 	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d'),
 	                                        ho.HOSupperlierName,
-	                                        ho.HOSupplierId", sbwhere.ToString());
+	                                        ho.HOSupplierId
+                                        ORDER BY
+	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d') DESC", sbwhere.ToString());
                     break;
                 //分销商
                 case 5:
@@ -971,6 +1028,15 @@ namespace HotelBase.DataAccess.Order
 			                                        1
 		                                        END
 	                                        ) AS TotalSuccess,
+	                                        sum(
+		                                        CASE
+		                                        WHEN ho.HOStatus = 1 THEN
+			                                        DATEDIFF(
+				                                        ho.HOCheckOutDate,
+				                                        ho.HOCheckInDate
+			                                        ) * HORoomCount
+		                                        END
+	                                        ) AS TotalSuccessNight,
 	                                        sum(ho.HOSellPrice) AS TotalSell,
 	                                        sum(ho.HOContractPrice) AS TotalContract,
 	                                        sum(
@@ -990,12 +1056,15 @@ namespace HotelBase.DataAccess.Order
                                         GROUP BY
 	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d'),
 	                                        hd.Id,
-	                                        hd.DName", sbwhere.ToString());
+	                                        hd.DName
+                                        ORDER BY
+	                                        DATE_FORMAT(ho.HOAddTime, '%Y-%m-%d') DESC", sbwhere.ToString());
                     break;
             }
             var list = MysqlHelper.GetList<OrderStaticResponse>(sb.ToString());
             var TotalCreate = list.Sum(x => Convert.ToInt32(x.TotalCreate));
             var TotalSuccess = list.Sum(x => Convert.ToInt32(x.TotalSuccess));
+            var TotalSuccessNight = list.Sum(x => Convert.ToInt32(x.TotalSuccessNight));
             var TotalSell = list.Sum(x => Convert.ToInt32(x.TotalSell));
             var TotalContract = list.Sum(x => Convert.ToInt32(x.TotalContract));
             var TotalRevenue = list.Sum(x => Convert.ToInt32(x.TotalRevenue));
@@ -1005,7 +1074,7 @@ namespace HotelBase.DataAccess.Order
                 response.IsSuccess = 1;
                 response.Total = total;
                 response.List = list.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)?.ToList();
-                response.Msg = TotalCreate + "|" + TotalSuccess + "|" + TotalSell + "|" + TotalContract + "|" + TotalRevenue;
+                response.Msg = TotalCreate + "|" + TotalSuccess + "|" + TotalSell + "|" + TotalContract + "|" + TotalRevenue + "|" + TotalSuccessNight;
             }
             return response;
         }

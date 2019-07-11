@@ -104,6 +104,11 @@ namespace HotelBase.Entity.Models
         public string HOSupplierSourceName { get; set; }
 
         /// <summary>
+        /// 渠道
+        /// </summary>
+        public string HODistributorName { get; set; }
+
+        /// <summary>
         /// 酒店Id
         /// </summary>
         public string HIId { get; set; }
@@ -197,6 +202,11 @@ namespace HotelBase.Entity.Models
         /// 供应商酒店id
         /// </summary>
         public string HIOutId { get; set; }
+
+        /// <summary>
+        /// 分销商渠道
+        /// </summary>
+        public string DPart1Name { get; set; }
 
         /// <summary>
         /// 供应商房型id

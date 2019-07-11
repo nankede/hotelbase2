@@ -107,13 +107,14 @@
     <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
     <input id="btnExport" type="button" class="lay-btn lay-btn-primary" value="导出" ng-click="export()">
     @*<form id="exports">
-        <button type="submit" class="lay-btn lay-btn-primary" ng-click="export()">导出</button>
-    </form>*@
+            <button type="submit" class="lay-btn lay-btn-primary" ng-click="export()">导出</button>
+        </form>*@
     <table class="lay-table" id="timetable">
         <thead>
             <tr>
                 <th width="15%">时间</th>
                 <th width="15%">创建订单</th>
+                <th width="15%">成功订单</th>
                 <th width="15%">成功间夜</th>
                 <th width="10%">销售额</th>
                 <th width="10%">结算价</th>
@@ -125,6 +126,7 @@
                 <td>汇总</td>
                 <td ng-bind="getToal(0)"></td>
                 <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(5)"></td>
                 <td ng-bind="getToal(2)"></td>
                 <td ng-bind="getToal(3)"></td>
                 <td ng-bind="getToal(4)"></td>
@@ -133,6 +135,7 @@
                 <td ng-bind="d.StaticTime"></td>
                 <td ng-bind="d.TotalCreate"></td>
                 <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSuccessNight"></td>
                 <td ng-bind="d.TotalSell"></td>
                 <td ng-bind="d.TotalContract"></td>
                 <td ng-bind="d.TotalRevenue"></td>
@@ -149,6 +152,7 @@
                 <th width="15%">省份</th>
                 <th width="15%">城市</th>
                 <th width="15%">创建订单</th>
+                <th width="15%">成功订单</th>
                 <th width="15%">成功间夜</th>
                 <th width="10%">销售额</th>
                 <th width="10%">结算价</th>
@@ -162,6 +166,7 @@
                 <td></td>
                 <td ng-bind="getToal(0)"></td>
                 <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(5)"></td>
                 <td ng-bind="getToal(2)"></td>
                 <td ng-bind="getToal(3)"></td>
                 <td ng-bind="getToal(4)"></td>
@@ -172,6 +177,7 @@
                 <td ng-bind="d.CityName"></td>
                 <td ng-bind="d.TotalCreate"></td>
                 <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSuccessNight"></td>
                 <td ng-bind="d.TotalSell"></td>
                 <td ng-bind="d.TotalContract"></td>
                 <td ng-bind="d.TotalRevenue"></td>
@@ -187,6 +193,7 @@
                 <th width="15%">时间</th>
                 <th width="15%">酒店名称</th>
                 <th width="15%">创建订单</th>
+                <th width="15%">成功订单</th>
                 <th width="15%">成功间夜</th>
                 <th width="10%">销售额</th>
                 <th width="10%">结算价</th>
@@ -199,6 +206,7 @@
                 <td></td>
                 <td ng-bind="getToal(0)"></td>
                 <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(5)"></td>
                 <td ng-bind="getToal(2)"></td>
                 <td ng-bind="getToal(3)"></td>
                 <td ng-bind="getToal(4)"></td>
@@ -208,6 +216,7 @@
                 <td ng-bind="d.HotelName"></td>
                 <td ng-bind="d.TotalCreate"></td>
                 <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSuccessNight"></td>
                 <td ng-bind="d.TotalSell"></td>
                 <td ng-bind="d.TotalContract"></td>
                 <td ng-bind="d.TotalRevenue"></td>
@@ -223,6 +232,7 @@
                 <th width="15%">时间</th>
                 <th width="15%">供应商名称</th>
                 <th width="15%">创建订单</th>
+                <th width="15%">成功订单</th>
                 <th width="15%">成功间夜</th>
                 <th width="10%">销售额</th>
                 <th width="10%">结算价</th>
@@ -235,6 +245,7 @@
                 <td></td>
                 <td ng-bind="getToal(0)"></td>
                 <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(5)"></td>
                 <td ng-bind="getToal(2)"></td>
                 <td ng-bind="getToal(3)"></td>
                 <td ng-bind="getToal(4)"></td>
@@ -244,6 +255,7 @@
                 <td ng-bind="d.SupperlierName"></td>
                 <td ng-bind="d.TotalCreate"></td>
                 <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSuccessNight"></td>
                 <td ng-bind="d.TotalSell"></td>
                 <td ng-bind="d.TotalContract"></td>
                 <td ng-bind="d.TotalRevenue"></td>
@@ -259,6 +271,7 @@
                 <th width="15%">时间</th>
                 <th width="15%">分销商名称</th>
                 <th width="15%">创建订单</th>
+                <th width="15%">成功订单</th>
                 <th width="15%">成功间夜</th>
                 <th width="10%">销售额</th>
                 <th width="10%">结算价</th>
@@ -271,6 +284,7 @@
                 <td></td>
                 <td ng-bind="getToal(0)"></td>
                 <td ng-bind="getToal(1)"></td>
+                <td ng-bind="getToal(5)"></td>
                 <td ng-bind="getToal(2)"></td>
                 <td ng-bind="getToal(3)"></td>
                 <td ng-bind="getToal(4)"></td>
@@ -280,6 +294,7 @@
                 <td ng-bind="d.DistributorName"></td>
                 <td ng-bind="d.TotalCreate"></td>
                 <td ng-bind="d.TotalSuccess"></td>
+                <td ng-bind="d.TotalSuccessNight"></td>
                 <td ng-bind="d.TotalSell"></td>
                 <td ng-bind="d.TotalContract"></td>
                 <td ng-bind="d.TotalRevenue"></td>

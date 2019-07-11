@@ -154,7 +154,11 @@ namespace HotelBase.Entity.Models
         /// 成功订单
         /// </summary>
         public string TotalSuccess { get; set; }
-
+        
+        /// <summary>
+        /// 成功间夜
+        /// </summary>
+        public string TotalSuccessNight { get; set; }
         /// <summary>
         /// 销售额
         /// </summary>

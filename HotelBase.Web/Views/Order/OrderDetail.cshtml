@@ -82,9 +82,9 @@
                     </tr>
                     <tr>
                         <td class="lay-table td">一级渠道：</td>
-                        <td class="lay-table td" ng-bind="GetPartName(m.HoPlat1,config.SourceOne,1)"></td>
+                        <td class="lay-table td" ng-bind="m.DPart1Name"></td>
                         <td class="lay-table td">创建时间：</td>
-                        <td class="lay-table td" ng-bind="GetDate(m.HOAddTime)"></td>
+                        <td class="lay-table td" ng-bind="GetDate(m.HOAddTime,1)"></td>
                     </tr>
                 </table>
             </div>
@@ -189,7 +189,7 @@
                             <td class="lay-table td" ng-bind="d.HOLAddDepartName"></td>
                             <td class="lay-table td" ng-bind="d.HOLAddName"></td>
                             <td class="lay-table td" ng-bind="d.HOLRemark" style="word-wrap:break-word;word-break:break-all;"></td>
-                            <td class="lay-table td" ng-bind="GetDate(d.HOLAddTime)"></td>
+                            <td class="lay-table td" ng-bind="GetDate(d.HOLAddTime,1)"></td>
                         </tr>
 
                         <tr ng-hide="list!=null &&list.length > 0">
@@ -243,11 +243,25 @@
             });
 
 
-            $scope.GetDate = function (data) {
+            $scope.GetDate = function (data,type) {
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
-                console.log(date);
                 //不带时分秒
-                return time = date.toLocaleDateString();
+                if (type == 0) {
+                    return time = date.toLocaleDateString();
+                }
+                else
+                {
+                    var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+                    var datetime = date.toLocaleDateString() + " " + (date.getHours() < 10 ? "0" + date.getHours() : date
+                        .getHours())
+                        + ":"
+                        + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
+                            .getMinutes())
+                        + ":"
+                        + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
+                            .getSeconds());
+                    return datetime;
+                }
                 //var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
                 //var datetime = date.toLocaleDateString() + " " + (date.getHours() < 10 ? "0" + date.getHours() : date
                 //    .getHours())
@@ -335,8 +349,8 @@
                             $("#HOSupplierSerialId").val($scope.m.HOSupplierSerialId)
                             $("#ordercommis").html($scope.m.HOSellPrice - $scope.m.HOContractPrice);
                             $("#email").html($scope.m.SLinkMail + "/" + $scope.m.SLinkFax);
-                            $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate);
-                            $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate);
+                            $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate,0);
+                            $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate,0);
                         }
                         $scope.$apply();
                     },
