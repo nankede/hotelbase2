@@ -214,6 +214,18 @@ namespace HotelBase.Entity.Models
         public string HROutId { get; set; }
     }
 
+
+    public class SeaOrdrModel : HO_HotelOrderModel
+    {
+        public string OutHotelId { get; set; }
+
+        public string OutRoomId { get; set; }
+
+        public int OutProductSerial { get; set; }
+
+        public string OutRoomCode { get; set; }
+    }
+
     public class ExeclOrder
     {
         public string HOCustomerSerialId { get; set; }

@@ -209,6 +209,31 @@ namespace HotelBase.Web.Controller.System
             if (!string.IsNullOrWhiteSpace(type) && Convert.ToInt32(type) > 0)
             {
                 model = OrderBll.SetOrder(id, type, state, serialid);
+                if (type == "1" && model.IsSuccess == 1)//更新成功通知飞猪
+                {
+                    var order = OrderBll.GetModel(id);
+                    if (order != null && order.HODistributorId == 2)//飞猪
+                    {
+                        //状态通知
+                        int status = 0;
+                        switch (state)
+                        {
+                            case "1":
+                                status = 2;
+                                break;
+                            case "2":
+                                status = 6;
+                                break;
+                            case "3":
+                                status = 5;
+                                break;
+                        }
+                        if (status > 0)
+                        {
+                            OpenApi.HotelOrderStatus(id, status);
+                        }
+                    }
+                }
             }
             else
             {

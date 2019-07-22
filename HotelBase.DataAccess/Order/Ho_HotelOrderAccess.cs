@@ -185,6 +185,27 @@ namespace HotelBase.DataAccess.Order
             return data;
         }
 
+        /// <summary>
+        /// 订单详情
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
+        public static SeaOrdrModel GetSeaModel(string serialid)
+        {
+            if (string.IsNullOrWhiteSpace(serialid))
+            {
+                return null;
+            }
+            var para = new DynamicParameters();
+            var sql = @"SELECT hl.*,hi.HIOutId AS OutHotelId,hr.HROutId AS OutRoomId,hrr.HRROutCode AS OutRoomCode,hrr.HRRXwProductSerial AS OutProductSerial FROM ho_hotelorder hl  
+                        inner join h_hotelinfo hi on hl.HIId = hi.Id
+                        inner join h_hotelroom hr on hr.Id = hl.HRId
+                        inner join h_hotelroomrule hrr on hrr.Id=hl.HRRId
+                        WHERE HOCustomerSerialId = @HOCustomerSerialId  LIMIT 1; ";
+            para.Add("@HOCustomerSerialId", serialid);
+            var data = MysqlHelper.GetModel<SeaOrdrModel>(sql, para);
+            return data;
+        }
 
         /// <summary>
         /// 导出订单查询

@@ -66,6 +66,7 @@
     <Compile Include="HotelBll.cs" />
     <Compile Include="HotelPriceBll.cs" />
     <Compile Include="HotelRoomRuleBll.cs" />
+    <Compile Include="OpenApi.cs" />
     <Compile Include="OrderBll.cs" />
     <Compile Include="OrderLogBll.cs" />
     <Compile Include="OrderStaticBll.cs" />

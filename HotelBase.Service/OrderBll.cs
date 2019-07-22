@@ -33,6 +33,16 @@ namespace HotelBase.Service
         }
 
         /// <summary>
+        /// 获取订单详情--根据订单流水号
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
+        public static SeaOrdrModel GetModel(string seridid)
+        {
+            return Ho_HotelOrderAccess.GetSeaModel(seridid);
+        }
+
+        /// <summary>
         /// 预定资源查询
         /// </summary>
         /// <param name="request"></param>
