@@ -9,6 +9,7 @@ using HotelBase.Entity.Models;
 using HotelBase.Entity.Tables;
 using HotelBase.Service;
 using HotelBase.Web.Controllers;
+using Newtonsoft.Json;
 
 namespace HotelBase.Web.Controller.System
 {
@@ -367,6 +368,52 @@ namespace HotelBase.Web.Controller.System
         }
 
         #endregion
+
+        /// <summary>
+        /// 导出资源
+        /// </summary>
+        /// <param name="request"></param>
+        public void ExportHotel(string request)
+        {
+            if (!string.IsNullOrWhiteSpace(request))
+            {
+                try
+                {
+                    var exrequest = JsonConvert.DeserializeObject<HotelSearchRequest>(request);
+                    var alldata = HotelBll.GetExportList(exrequest);
+                    if (alldata != null && alldata.List.Any())
+                    {
+                        var data = alldata.List;
+                        List<HotelExportResponse> emlist = new List<HotelExportResponse>();
+                        for (int i = 0; i < data.Count(); i++)
+                        {
+                            var detail = new HotelExportResponse();
+                            detail.ProvName = data[i].ProvName ?? "";
+                            detail.CityName = data[i].CityName ?? "";
+                            detail.Id = data[i].Id;
+                            detail.OutId = data[i].OutId;
+                            detail.HotelAddress = data[i].HotelAddress ?? "";
+                            detail.HotelPhone = data[i].HotelPhone;
+                            detail.Name = data[i].Name ?? "";
+                            detail.GdLonLat = data[i].GdLonLat;
+                            emlist.Add(detail);
+                        }
+                        var newdata = ConvertHelper.ListToDataTable(emlist);
+                        var filed = "ProvName;CityName;Id;OutId;HotelAddress;HotelPhone;Name;GdLonLat";
+                        var headName = "省份#城市#趣浪酒店id#供应商酒店id#酒店地址#酒店电话#酒店名#经纬度";
+                        IList<ExcelHelper.NPOIModel> list = new List<ExcelHelper.NPOIModel>();
+                        list.Add(new ExcelHelper.NPOIModel(newdata, filed, "Sheet1", headName));
+                        var fileName = "导出资源" + DateTime.Now.ToString("yyyyMMddhhssmm");
+                        ExcelHelper.NewExport(fileName, list, 0);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("异常", ex);
+                }
+
+            }
+        }
 
         #region 获取订单所需酒店详情
         /// <summary>

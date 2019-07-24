@@ -28,6 +28,16 @@ namespace HotelBase.Service
         }
 
         /// <summary>
+        /// 酒店查询
+        /// </summary>
+        /// <param name="request"></param>
+        public static BasePageResponse<HotelExportResponse> GetExportList(HotelSearchRequest request)
+        {
+            var response = H_HotelInfoAccess.GetExportList(request);
+            return response;
+        }
+
+        /// <summary>
         /// 查询酒店详情
         /// </summary>
         /// <param name="model"></param>

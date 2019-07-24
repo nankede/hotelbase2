@@ -62,9 +62,9 @@ namespace HotelBase.DataAccess.Resource
             //    sqlWhere.Append(" AND SLinker Like @LinkerName ");
             //    para.Add("@LinkerName", $"%{request.LinkerName}%");
             //}
-            if (request.IsValid > 0)
+            if (request.IsValid >= 0)
             {
-                sqlWhere.Append(" AND SIsValid = @IsValid ");
+                sqlWhere.Append(" AND HIIsValid = @IsValid ");
                 para.Add("@IsValid", request.IsValid == 1 ? 1 : 0);
             }
             if (request.ProvId > 0)
@@ -127,6 +127,106 @@ namespace HotelBase.DataAccess.Resource
             }
             return response;
         }
+
+
+        /// <summary>
+        /// 酒店导出
+        /// </summary>
+        /// <param name="request"></param>
+        public static BasePageResponse<HotelExportResponse> GetExportList(HotelSearchRequest request)
+        {
+            var response = new BasePageResponse<HotelExportResponse>();
+            var sql = new StringBuilder();
+            var sqlTotal = new StringBuilder();
+            var sqlWhere = new StringBuilder();
+            var para = new DynamicParameters();
+            var idList = new List<int>();//酒店Id 
+            var hrsList = new List<H_HotelRoomRuleModel>();//价格政策查的供应商
+            var hotelList = new List<H_HotelInfoModel>();//酒店列表
+            if (request.SourceId > 0 || !string.IsNullOrEmpty(request.SupplierName))
+            {//需要查政策
+                hrsList = GetSupplier(request.SourceId, request.SupplierName, null);
+                idList = hrsList?.Select(x => x.HIId)?.ToList();
+            }
+
+            #region Where条件
+            if (idList != null && idList.Count > 0)
+            {
+                sqlWhere.Append($" AND Id IN ({string.Join(",", idList)} ) ");
+            }
+
+            if (request.Id > 0)
+            {
+                sqlWhere.Append(" AND Id = @Id ");
+                para.Add("@Id", request.Id);
+            }
+            if (request.IsValid >= 0)
+            {
+                sqlWhere.Append(" AND HIIsValid = @IsValid ");
+                para.Add("@IsValid", request.IsValid == 1 ? 1 : 0);
+            }
+            if (request.ProvId > 0)
+            {
+                sqlWhere.Append(" AND HIProvinceId = @ProvId ");
+                para.Add("@ProvId", request.ProvId);
+            }
+            if (request.CityId > 0)
+            {
+                sqlWhere.Append(" AND HICityId = @CityId ");
+                para.Add("@CityId", request.CityId);
+            }
+            if (!string.IsNullOrEmpty(request.Name))
+            {
+                sqlWhere.Append(" AND HIName Like @Name ");
+                para.Add("@Name", $"%{request.Name}%");
+            }
+
+            #endregion
+
+            sqlTotal.Append(" SELECT Count(1) FROM h_hotelinfo WHERE 1=1 ");
+            sqlTotal.Append(sqlWhere);
+            var total = MysqlHelper.GetScalar<int>(sqlTotal.ToString(), para);
+            response.IsSuccess = 1;
+            if (total > 0)
+            {
+                sql.Append(" SELECT * FROM h_hotelinfo   WHERE 1=1  ");
+                sql.Append(sqlWhere);
+                sql.Append(" ORDER BY ID DESC ");
+                //sql.Append(MysqlHelper.GetPageSql(request.PageIndex, request.PageSize));
+                response.Total = total;
+                hotelList = MysqlHelper.GetList<H_HotelInfoModel>(sql.ToString(), para);
+                //重新查资源
+                hrsList = GetSupplier(0, string.Empty, hotelList.Select(x => x.Id).ToList());
+                response.List = new List<HotelExportResponse>();
+                hotelList?.ForEach(x =>
+                {
+                    var price = hrsList.Where(s => s.HIId == x.Id)?.ToList();
+                    var source = string.Empty;
+                    var supplierName = string.Empty;
+                    if (price != null && price.Count > 0)
+                    {
+                        source = string.Join(",", price.Select(s => s.HRRSourceName).Distinct());
+                        supplierName = string.Join(",", price.Select(s => s.HRRSupplierName).Distinct());
+                    }
+                    response.List.Add(new HotelExportResponse
+                    {
+                        Id = x.Id,
+                        Name = x.HIName,
+                        HotelAddress=x.HIAddress,
+                        HotelPhone=x.HILinkPhone,
+                        GdLonLat=x.HIGdLonLat,
+                        OutId=x.HIOutId,
+                        CityId = x.HICityId,
+                        CityName = x.HICity,
+                        ProvName = x.HIProvince,
+                        ProvId = x.HIProvinceId
+                    });
+                });
+            }
+            return response;
+        }
+
+
         /// <summary>
         /// 查询供应商
         /// </summary>

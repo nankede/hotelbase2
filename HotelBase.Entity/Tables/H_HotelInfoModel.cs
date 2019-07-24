@@ -364,5 +364,47 @@ namespace HotelBase.Entity.Tables
             set { _hIUpdateTime = value; }
         }
 
+        /// <summary>
+        /// 数据库字段：HIOutId
+        /// </summary>
+        private int _hIOutId = 0;
+
+        /// <summary>
+        /// 外部Id
+        /// </summary>
+        [Column("HIOutId")]
+        public int HIOutId
+        {
+            get { return _hIOutId; }
+            set { _hIOutId = value; }
+        }
+        /// <summary>
+        /// 数据库字段：HIOutType
+        /// </summary>
+        private int _hIOutType = 0;
+
+        /// <summary>
+        /// 外部类型
+        /// </summary>
+        [Column("HIOutType")]
+        public int HIOutType
+        {
+            get { return _hIOutType; }
+            set { _hIOutType = value; }
+        }
+
+        /// <summary>
+        /// 数据库字段：HIGdLonLat
+        /// </summary>
+        private string _hIGdLonLat = string.Empty;
+        /// <summary>
+        /// 高德经度,纬度
+        /// </summary>
+        [Column("HIGdLonLat")]
+        public string HIGdLonLat
+        {
+            get { return _hIGdLonLat; }
+            set { _hIGdLonLat = value; }
+        }
     }
 }

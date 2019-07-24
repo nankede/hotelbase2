@@ -56,6 +56,43 @@ namespace HotelBase.Entity.Models
         public string SupplierName { get; set; }
 
     }
+
+
+
+    /// <summary>
+    /// 酒店导出
+    /// </summary>
+    public class HotelExportResponse
+    {
+        /// <summary>酒店Id</summary>
+        public int Id { get; set; }
+        /// <summary>省份Id</summary>
+        public int ProvId { get; set; }
+        /// <summary>省份</summary>
+        public string ProvName { get; set; }
+        /// <summary>城市Id</summary>
+        public int CityId { get; set; }
+        /// <summary>城市</summary>
+        public string CityName { get; set; }
+        /// <summary>酒店名称</summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// 供应商酒店id
+        /// </summary>
+        public int OutId { get; set; }
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public string HotelAddress { get; set; }
+        /// <summary>
+        /// 经纬
+        /// </summary>
+        public string GdLonLat { get; set; }
+
+        public string HotelPhone { get; set; }
+
+    }
+
     #endregion
 
     #region 酒店房型

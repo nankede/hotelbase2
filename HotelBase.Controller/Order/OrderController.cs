@@ -212,26 +212,38 @@ namespace HotelBase.Web.Controller.System
                 if (type == "1" && model.IsSuccess == 1)//更新成功通知飞猪
                 {
                     var order = OrderBll.GetModel(id);
-                    if (order != null && order.HODistributorId == 2)//飞猪
+                    if (order != null)
                     {
-                        //状态通知
-                        int status = 0;
-                        switch (state)
+                        if (order.HODistributorId == 2)//飞猪
                         {
-                            case "1":
-                                status = 2;
-                                break;
-                            case "2":
-                                status = 6;
-                                break;
-                            case "3":
-                                status = 5;
-                                break;
+                            //状态通知
+                            int status = 0;
+                            switch (state)
+                            {
+                                case "1":
+                                    status = 2;
+                                    break;
+                                case "2":
+                                    status = 6;
+                                    break;
+                                case "3":
+                                    status = 5;
+                                    break;
+                            }
+                            if (status > 0)
+                            {
+                                var api = OpenApi.HotelOrderStatus(id, status);
+                                logmodel.HOLRemark = "状态更改通知飞猪：请求参数{id=" + id + ",状态：" + state + "}；返回结果：" + api;
+                                OrderLogBll.AddOrderModel(logmodel);
+                            }
                         }
-                        if (status > 0)
+                        if (order.HOSupplierId == 2 && state == "3")//致和订单取消订单
                         {
-                            OpenApi.HotelOrderStatus(id, status);
+                            var api = OpenApi.HotelOrderCancel(id);
+                            logmodel.HOLRemark = "致和手动取消订单：请求参数{id=" + id + ",状态：" + state + "}；返回结果：" + api;
+                            OrderLogBll.AddOrderModel(logmodel);
                         }
+
                     }
                 }
             }

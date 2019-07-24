@@ -34,8 +34,8 @@
                         <label>有效性</label>
                     </div>
                     <div class="lay-form-item-control">
-                        <select class="lay-select  lay-input" ng-model="Search.Valid" ng-init="Search.Valid=-1"
-                                ng-options="item.Code as item. Name for item in Config.ValidSource"></select>
+                        <select class="lay-select  lay-input" ng-model="Search.IsValid" ng-init="Search.IsValid=-1"
+                                ng-options="item.Code as item. Name for item in config.ValidSource"></select>
                     </div>
                 </div>
             </div>
@@ -73,6 +73,7 @@
         <div class="btnContain_sar">
             <input id="btnSearch" type="button" class="lay-btn lay-btn-primary" value="查询" ng-click="search(1)">
             <input type="button" class="lay-btn lay-btn-primary" value="新增" ng-click="detail(0)">
+            <input type="button" class="lay-btn lay-btn-primary" value="导出" ng-click="export()">
         </div>
     </div>
     <table class="lay-table">
@@ -149,6 +150,7 @@
                 sourceUrl: "/system/getdiclistbypcode/?pCode=101",
                 areaUrl: "/system/GetAreaList/?pid=",
                 listUrl: "/hotel/getlist/",
+                exportUrl: "/hotel/exporthotel",
                 validUrl: "/hotel/setvalid/",
                 ValidSource: [{
                     Code: -1,
@@ -163,16 +165,16 @@
             }
             //页面初始化
             $scope.pageInit = function () {
-                $scope.Search = {
-                    PageIndex: 1,
-                    Id: '',
-                    Name: '',
-                    SupplierName: '',
-                    Valid: -1,
-                    ProvId: 0,
-                    CityId: 0,
-                    SourceId: 0
-                };
+                //$scope.Search = {
+                //    PageIndex: 1,
+                //    Id: '',
+                //    Name: '',
+                //    SupplierName: '',
+                //    Valid: -1,
+                //    ProvId: 0,
+                //    CityId: 0,
+                //    SourceId: 0
+                //};
                 $scope.getSource();
                 $scope.getArea(0);
                 $scope.search(1);
@@ -224,6 +226,14 @@
                     $scope.search(index);
                 };
                 pager.render();
+            }
+
+            //导出
+            $scope.export = function () {
+                var para = $scope.Search;
+                console.log(JSON.stringify(para));
+                console.log($scope.config.exportUrl + "?request=" + JSON.stringify(para));
+                window.location.href = $scope.config.exportUrl + "?request=" + JSON.stringify(para);
             }
 
             //获取来源

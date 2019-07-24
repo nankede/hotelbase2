@@ -22,5 +22,18 @@ namespace HotelBase.Service
             var url = $"http://openapi.lyqllx.com/order/update?serialId={serialId}&optType={optType}&distributor=2";
             return ApiHelper.HttpGet(url);
         }
+
+
+
+        /// <summary>
+        /// 取消致和订单
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <returns></returns>
+        public static string HotelOrderCancel(string serialId)
+        {
+            var url = $"http://localhost:8076/api/Order/OperatAtourOrder?searchtype=2&orderid={serialId}&type=2";
+            return ApiHelper.HttpPost(url, "");
+        }
     }
 }
