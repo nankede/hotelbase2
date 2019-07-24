@@ -237,12 +237,12 @@ namespace HotelBase.Web.Controller.System
                                 OrderLogBll.AddOrderModel(logmodel);
                             }
                         }
-                        if (order.HOSupplierId == 2 && state == "3")//致和订单取消订单
-                        {
-                            var api = OpenApi.HotelOrderCancel(id);
-                            logmodel.HOLRemark = "致和手动取消订单：请求参数{id=" + id + ",状态：" + state + "}；返回结果：" + api;
-                            OrderLogBll.AddOrderModel(logmodel);
-                        }
+                        //if (order.HOSupplierId == 2 && state == "3")//致和订单取消订单
+                        //{
+                        //    var api = OpenApi.HotelOrderCancel(id);
+                        //    logmodel.HOLRemark = "致和手动取消订单：请求参数{id=" + id + ",状态：" + state + "}；返回结果：" + api;
+                        //    OrderLogBll.AddOrderModel(logmodel);
+                        //}
 
                     }
                 }
