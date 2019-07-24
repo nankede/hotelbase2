@@ -243,14 +243,13 @@
             });
 
 
-            $scope.GetDate = function (data,type) {
+            $scope.GetDate = function (data, type) {
                 var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
                 //不带时分秒
                 if (type == 0) {
                     return time = date.toLocaleDateString();
                 }
-                else
-                {
+                else {
                     var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
                     var datetime = date.toLocaleDateString() + " " + (date.getHours() < 10 ? "0" + date.getHours() : date
                         .getHours())
@@ -309,8 +308,7 @@
 
             $scope.GetLastdate = function (data) {
                 var datetime = "";
-                if (data.length > 0)
-                {
+                if (data.length > 0) {
                     var date = eval(data.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
                     datetime = (date.getHours() < 10 ? "0" + date.getHours() : date
                         .getHours())
@@ -341,16 +339,23 @@
                             $scope.m = data;
                             $("#count").html($scope.m.HOChild + $scope.m.HOAdult);
                             if ($scope.m.HOStatus != 0) {
-                                $("#btsure").attr("disabled", true);
-                                $("#btfail").attr("disabled", true);
-                                $("#btcalel").attr("disabled", true);
+                                if ($scope.m.HOSupplierId == 2 && $scope.m.HOStatus == 1)//致和已确认订单
+                                {
+                                    $("#btsure").attr("disabled", true);
+                                    $("#btfail").attr("disabled", true);
+                                }
+                                else {
+                                    $("#btsure").attr("disabled", true);
+                                    $("#btfail").attr("disabled", true);
+                                    $("#btcalel").attr("disabled", true);
+                                }
                             }
                             $("#HOOutSerialId").val($scope.m.HOOutSerialId)
                             $("#HOSupplierSerialId").val($scope.m.HOSupplierSerialId)
                             $("#ordercommis").html($scope.m.HOSellPrice - $scope.m.HOContractPrice);
                             $("#email").html($scope.m.SLinkMail + "/" + $scope.m.SLinkFax);
-                            $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate,0);
-                            $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate,0);
+                            $scope.m.HOCheckInDate = $scope.GetDate($scope.m.HOCheckInDate, 0);
+                            $scope.m.HOCheckOutDate = $scope.GetDate($scope.m.HOCheckOutDate, 0);
                         }
                         $scope.$apply();
                     },
@@ -363,8 +368,7 @@
                 });
             }
 
-            $scope.GetPartName = function (id, list,type)
-            {
+            $scope.GetPartName = function (id, list, type) {
                 var name = "";
                 if (list && id > 0) {
                     if (type == 1) {
@@ -373,8 +377,7 @@
                                 name = item.Name;
                         });
                     }
-                    else
-                    {
+                    else {
                         $.each(list, function (index, item) {
                             if (item.Code == id)
                                 name = item.Name;
