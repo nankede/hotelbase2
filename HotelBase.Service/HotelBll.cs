@@ -1,4 +1,5 @@
-﻿using HotelBase.Common;
+﻿using Component.Access.DapperExtensions.Lambda;
+using HotelBase.Common;
 using HotelBase.DataAccess.Resource;
 using HotelBase.DataAccess.System;
 using HotelBase.Entity;
@@ -207,7 +208,7 @@ namespace HotelBase.Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static BasePageResponse<H_HotelInfoModel>  GetProductList(ProductRequest request)
+        public static BasePageResponse<H_HotelInfoModel> GetProductList(ProductRequest request)
         {
             return H_HotelInfoAccess.GetProductList(request);
         }
@@ -219,6 +220,86 @@ namespace HotelBase.Service
         public static BasePageResponse<H_HotelInfoModel> GetGiveAll(InGiveRequest request)
         {
             return H_HotelInfoAccess.GetGiveAll(request);
+        }
+
+        /// <summary>
+        /// 查询资源日志
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BasePageResponse<GetResourceLogResponse> GetLogList(GetResourceLogRequest request)
+        {
+            var logDb = new H_ResourceLogAccess();
+            var hotelDb = new H_HotelInfoAccess();
+
+            var idList = new List<int>();
+
+            if (request.OutId > 0)
+            {
+                var hlist = hotelDb.Query().Where(x => x.HIOutId == request.OutId).ToList();
+                hlist?.ForEach(x =>
+                {
+                    idList.Add(x.Id);
+                });
+            }
+            if (request.HotelId > 0)
+            {
+                idList.Add(request.HotelId);
+            }
+            var query = logDb.Query().OrderByDescending(x => x.Id);
+            if (idList.Count > 0)
+            {
+                query.Where(x => x.RLOutId.In(idList));
+            }
+            if (request.TypeId > 0)
+            {
+                query.Where(x => x.RLLogType == request.TypeId);
+            }
+            query.Page(request.PageIndex, request.PageSize);
+
+            var list = query.ToList();
+            if (list != null && list.Count > 0)
+            {
+                var total = query.Count();
+                var hids = list.Select(x => x.RLOutId).Distinct().ToList();
+                var hotelList = hotelDb.Query().Where(x => x.Id.In(hids)).ToList();
+
+
+                return new BasePageResponse<GetResourceLogResponse>
+                {
+                    IsSuccess = 1,
+                    Total = total,
+                    List = list.Select(x =>
+                    {
+                        var hotel = hotelList.FirstOrDefault(h => h.Id == x.RLOutId);
+
+                        return new GetResourceLogResponse
+                        {
+                            Id = x.Id,
+                            HotelName = hotel.HIName,
+                            RLOutId = x.RLOutId,
+                            OutId = hotel.HIOutId.ToString(),
+                            OutType = hotel.HIOutType == 1 ? "亚朵" : hotel.HIOutType == 2 ? "喜玩" : "其他",
+                            Price = "",
+                            PriceDate = "",
+                            RLAddDepartId = x.RLAddDepartId,
+                            RLAddDepartName = x.RLAddDepartName,
+                            RLAddId = x.RLAddId,
+                            RLAddName = x.RLAddName,
+                            RLAddTime = x.RLAddTime,
+                            RLLogType = x.RLLogType,
+                            RLRemark = x.RLRemark,
+                            Stone = "",
+                            TypeName = ""
+                        };
+                    }).ToList()
+                };
+
+            }
+            return new BasePageResponse<GetResourceLogResponse>();
+
+
+
         }
     }
 

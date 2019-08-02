@@ -212,10 +212,10 @@ namespace HotelBase.DataAccess.Resource
                     {
                         Id = x.Id,
                         Name = x.HIName,
-                        HotelAddress=x.HIAddress,
-                        HotelPhone=x.HILinkPhone,
-                        GdLonLat=x.HIGdLonLat,
-                        OutId=x.HIOutId,
+                        HotelAddress = x.HIAddress,
+                        HotelPhone = x.HILinkPhone,
+                        GdLonLat = x.HIGdLonLat,
+                        OutId = x.HIOutId,
                         CityId = x.HICityId,
                         CityName = x.HICity,
                         ProvName = x.HIProvince,
@@ -394,7 +394,7 @@ namespace HotelBase.DataAccess.Resource
             {
                 sb.Append(" AND hr.ID IS NULL");
             }
-            else if(request.IsRank == 1)
+            else if (request.IsRank == 1)
             {
                 sb.Append(" AND hr.ID IS NOT NULL");
                 if (request.DistributorId > 0)
@@ -460,6 +460,16 @@ namespace HotelBase.DataAccess.Resource
                 response.AllList = list;
             }
             return response;
+        }
+    }
+
+    /// <summary>
+    /// 资源日志
+    /// </summary>
+    public class H_ResourceLogAccess : BaseAccess<H_ResourceLogModel>
+    {
+        public H_ResourceLogAccess() : base(MysqlHelper.Db_HotelBase)
+        {
         }
     }
 }

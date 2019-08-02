@@ -483,5 +483,30 @@ namespace HotelBase.Web.Controller.System
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        #region 资源日志
+
+
+        /// <summary>
+        /// 酒店列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ResourceLog()
+        {
+            return View();
+        }
+
+
+        /// <summary>
+        /// 查询资源日志
+        /// </summary>
+        public JsonResult getloglist(GetResourceLogRequest request)
+        {
+
+            return Json(HotelBll.GetLogList(request), JsonRequestBehavior.AllowGet);
+
+        }
+
+        #endregion
     }
 }

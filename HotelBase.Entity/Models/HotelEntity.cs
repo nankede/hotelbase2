@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelBase.Entity.Tables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -223,4 +224,35 @@ namespace HotelBase.Entity.Models
     }
 
     #endregion
+
+
+
+    /// <summary>
+    /// 查询资源日志
+    /// </summary>
+    public class GetResourceLogRequest : BaseRequest
+    {
+        public int HotelId { get; set; }
+        public int OutId { get; set; }
+        public int TypeId { get; set; }
+
+    }
+
+    public class GetResourceLogResponse : H_ResourceLogModel
+    {
+        /// <summary> 外部类型 </summary>
+        public string OutType { get; set; }
+        /// <summary> 外部酒店Id </summary>
+        public string OutId { get; set; }
+        /// <summary> 酒店名称 </summary>
+        public string HotelName { get; set; }
+        /// <summary> 日期 </summary>
+        public string PriceDate { get; set; }
+        /// <summary> 价格 </summary>
+        public string Price { get; set; }
+        /// <summary> 库存 </summary>
+        public string Stone { get; set; }
+        public string TypeName { get; set; }
+        public string AddDate { get { return RLAddTime.ToString("yyyy-MM-dd HH:mm:ss"); } }
+    }
 }
