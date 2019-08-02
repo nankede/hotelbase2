@@ -56,7 +56,7 @@
                 <td ng-bind="u.AddDate"></td>
             </tr>
 
-            <tr ng-hide="userList!=null &&userList.length > 0">
+            <tr ng-hide="logList!=null &&logList.length > 0">
                 <td colspan="6" class="lay-table-empty">暂无数据显示</td>
             </tr>
         </tbody>
@@ -111,7 +111,8 @@
             //查询
             $scope.search = function (index) {
                 index = !index || index <= 0 ? 1 : index;
-                var para = { PageIndex: index };
+                var para = $scope.Search;
+                para.PageIndex = index;
                 eLoading.show();
                 $.ajax({
                     url: $scope.config.listUrl,
@@ -121,7 +122,8 @@
                     timeout: 20000,
                     success: function (data) {
                         var msg = "";
-                        $scope.userList = [];
+                        $scope.logList = [];
+                        $scope.pagerInit(1, 0);
                         if (data != null && data.IsSuccess > 0) {
                             $scope.logList = data.List;
                             $scope.pagerInit(index, data.Total);
