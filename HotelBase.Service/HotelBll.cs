@@ -272,7 +272,9 @@ namespace HotelBase.Service
                     List = list.Select(x =>
                     {
                         var hotel = hotelList.FirstOrDefault(h => h.Id == x.RLOutId);
-
+                        var strList = x.RLRemark.Split(':');
+                        //亚朵更新价格: 110004:北京三元桥亚朵酒店: 2:594.15:0:20190802
+                        //0 1 2 3 4 5 6
                         return new GetResourceLogResponse
                         {
                             Id = x.Id,
@@ -280,8 +282,8 @@ namespace HotelBase.Service
                             RLOutId = x.RLOutId,
                             OutId = hotel.HIOutId.ToString(),
                             OutType = hotel.HIOutType == 1 ? "亚朵" : hotel.HIOutType == 2 ? "喜玩" : "其他",
-                            Price = "",
-                            PriceDate = "",
+                            Price = strList.Length > 4 ? strList[4] : string.Empty,
+                            PriceDate = strList.Length > 6 ? strList[6] : string.Empty,
                             RLAddDepartId = x.RLAddDepartId,
                             RLAddDepartName = x.RLAddDepartName,
                             RLAddId = x.RLAddId,
@@ -289,7 +291,7 @@ namespace HotelBase.Service
                             RLAddTime = x.RLAddTime,
                             RLLogType = x.RLLogType,
                             RLRemark = x.RLRemark,
-                            Stone = "",
+                            Stone = strList.Length > 5 ? strList[5] : string.Empty,
                             TypeName = ""
                         };
                     }).ToList()
